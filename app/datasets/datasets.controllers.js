@@ -7,8 +7,8 @@
  *  @name datasetsMainController
  *  @description Clears the table of content when a data set is selected and adds the scrollto function
  */
-datasetsModule.controller('datasetsMainController', ['$scope', '$translate', '$anchorScroll', 'datasetsFactory', 'datasetsDataelementsFactory',
-function($scope, $translate, $anchorScroll, datasetsFactory, datasetsDataelementsFactory) {
+datasetsModule.controller('datasetsMainController', ['$scope', '$translate', '$anchorScroll','$sessionStorage', 'datasetsFactory','datasetsLinkFactory', 'datasetsDataelementsFactory',
+function($scope, $translate,$sessionStorage, $anchorScroll, datasetsFactory, datasetsLinkFactory, datasetsDataelementsFactory) {
     $('#datasets').tab('show');
     
     /*
@@ -49,7 +49,27 @@ function($scope, $translate, $anchorScroll, datasetsFactory, datasetsDataelement
      */
     $scope.datasets = datasetsFactory.get({blackList: $scope.blacklist_datasets}, function() {
         endLoadingState(true);
-    });
+    }); 
+    
+    
+    if(sessionStorage.getItem('dataSetName') !== null)
+    {
+        $scope.dataSetName = sessionStorage.getItem('dataSetName');
+        sessionStorage.clear();
+        
+        $scope.datasets = datasetsLinkFactory.get({displayName: $scope.dataSetName}, function() {
+            endLoadingState(true);
+        });
+    }
+    /*else
+    {
+        $scope.datasets = datasetsFactory.get({blackList: $scope.blacklist_datasets}, function() {
+            endLoadingState(true);
+        });
+    }*/
+    
+    console.log($scope.datasetsLink);
+    console.log($scope.datasets);
 
     $scope.datasetDataElements = {};
 

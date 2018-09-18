@@ -1,0 +1,137 @@
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    List of contributors: https://github.com/MSFOCBA
+    Please refer to the LICENSE.md and LICENSES-DEP.md for complete licenses.
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<div ng-controller="dossierIndicatorsMainController" id="DossierPanel" class="row">
+	<div id="headerDossierPanel" class="col-md-12 headerPanel">
+		<h1>{{'Indicators' | translate}}</h1>
+		<p>{{'Number of Indicators' | translate}}: {{indicators.indicators.length}}</p>
+		<div class="col-md-2">
+			<select class="form-control col-md-2" ng-options="indicators.name for indicators in indicators.indicators | orderBy: 'name'" name="selectProgram" id="drpBoxServices" ng-model="selectedIndicator">
+				<option value="" disabled selected>Select an Indicator</option>
+			</select>
+		</div>
+	</div>
+	<div class="col-md-12" ng-if="selectedIndicator">
+		<div id="DossierTitleContainer" class="row">
+			<br>
+			<h1>{{selectedIndicator.name}}</h1>
+			<br>
+			<h4>{{selectedIndicator.description}}</h4>
+		</div>
+		
+		<div id="tocContainer" class="row">
+			<h3 ng-if="selectedIndicator" style="text-decoration: underline;">{{'dos_Table of Content'| translate}}</h3>
+			<ul ng-repeat="i in toc.entries | orderBy:'parent.index'">
+				<li><big><b><a href="" class="pageref" ng-click="scrollTo(i.parent.id)" target="_self">{{i.parent.displayName}}</a></b></big>
+					<ul ng-repeat="j in i.children">
+						<li><a href="" class="pageref" ng-click="scrollTo(j.id)">{{j.displayName}}</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div class="col-md-12" ng-controller="dossierIndicatorsTitle">
+			<div class="col-md-12"  ng-show="numerator.value != ''">
+				<h2 id="formulaIndicator"> {{'Formula of Indicator' | translate}}</h2>
+				<div class="col-md-12">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>{{'Numerator' | translate}}</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>{{numeratorEnd}}</td>
+							</tr>
+						</tbody>
+					</table>
+					<br/>
+				</div>
+				<div class="col-md-12">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>{{'Denominator' | translate}}</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>{{denominatorEnd}}</td>
+							</tr>
+						</tbody>
+					</table>
+					<br/>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-12" ng-controller="dossierNumeratorTable">
+			<div class="col-md-12"  ng-show="tabNumeratorRegroups.length > 0">
+				<h2 id="numerator"> {{'Numerator' | translate}}</h2>
+				<p>{{selectedIndicator.numeratorDescription}}</p>
+				<div class="col-md-12">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>{{'Type' | translate}}</th>
+								<th>{{'Name' | translate}}</th>
+								<th>{{'DataSets' | translate}}</th>
+								<th>{{'Program' | translate}}</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat= "tabNumeratorRegroup in tabNumeratorRegroups | orderBy: 'name'">
+								<td>{{tabNumeratorRegroup.type}}</td>
+								<td>{{tabNumeratorRegroup.name}}</td>
+								<td>
+									<ul ng-repeat="dataSets in tabNumeratorRegroup.dataSets">
+										<a href="#/datasets"><input type="button" value="{{dataSets}}" ng-click="save(dataSets)" ></a>
+									</ul>
+								</td>
+								<td>
+									<ul ng-repeat="program in tabNumeratorRegroup.program">
+										<a href="#/dossierPrograms"><input type="button" value="{{program}}" ng-click="saveProgram(program)"></a>
+									</ul>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-12" ng-controller="dossierDenominatorTable">
+			<div class="col-md-12"  ng-show="tabDenominatorRegroups.length > 0">
+				<h2 id="denominator"> {{'Denominator' | translate}}</h2>
+				<p>{{selectedIndicator.denominatorDescription}}</p>
+				<div class="col-md-12">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>{{'Type' | translate}}</th>
+								<th>{{'Name' | translate}}</th>
+								<th>{{'DataSets' | translate}}</th>
+								<th>{{'Program' | translate}}</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="tabDenominatorRegroup in tabDenominatorRegroups | orderBy: 'name'">
+								<td>{{tabDenominatorRegroup.typeDenominator}}</td>
+								<td>{{tabDenominatorRegroup.nameDenominator}}</td>
+								<td>
+									<ul ng-repeat="dataSets in tabDenominatorRegroup.dataSetsDenominator">
+										<a href="#/datasets"><input type="button" value="{{dataSets}}" ng-click="save(dataSets)" ></a>
+									</ul>
+								</td>
+								<td>
+									<ul ng-repeat="program in tabDenominatorRegroup.programDenominator">
+										<a href="#/dossierPrograms"><input type="button" value="{{program}}" ng-click="saveProgram(program)"></a>
+									</ul>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

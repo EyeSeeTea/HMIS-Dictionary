@@ -4,7 +4,7 @@
 ------------------------------------------------------------------------------------*/
 var qryPrograms = dhisUrl + 'programs.json?fields=id,displayName,displayDescription,programStages[id]&paging=false';
 
-var qryProgramStageSections = dhisUrl + 'programStages/:programStageId.json?fields=id,displayName,repeatable,sortOrder,programStageSections[id,displayName,dataElements[displayName,displayFormName,displayDescription,valueType,optionSetValue,optionSet[options[displayName]]]],programStageDataElements[dataElement[displayName,displayFormName,displayDescription,valueType,optionSetValue,optionSet[options[displayName]]]]&paging=false';
+var qryProgramStageSections = dhisUrl + 'programStages/:programStageId.json?fields=id,displayName,description,repeatable,sortOrder,programStageSections[id,displayName,dataElements[displayName,displayFormName,displayDescription,valueType,optionSetValue,optionSet[options[displayName]]]],programStageDataElements[dataElement[displayName,displayFormName,displayDescription,valueType,optionSetValue,optionSet[options[displayName]]]]&paging=false';
 
 var qryProgramIndicators = dhisUrl + 'programs/:programId.json?fields=programIndicators[displayName,displayDescription,expression,filter]';
 
@@ -26,6 +26,7 @@ dossierProgramsModule.factory('dossiersProgramsFactory', ['$resource',
     }
 ]);
 
+
 dossierProgramsModule.factory('dossiersProgramStageSectionsFactory', ['$resource',
     function($resource) {
         return $resource(qryProgramStageSections, {
@@ -39,20 +40,20 @@ dossierProgramsModule.factory('dossiersProgramStageSectionsFactory', ['$resource
     }
 ]);
 
-var qryProgramIndicators = dhisUrl + 'programs/:programId.json?fields=programIndicators[displayName,displayDescription,expression,filter]';
-
-dossierProgramsModule.factory('dossiersProgramIndicatorsFactory', ['$resource',
-    function($resource) {
-        return $resource(qryProgramIndicators, {
-            programId: '@programId'
-        }, {
-            query: {
-                method: 'GET',
-                isArray: false
-            }
-        });
-    }
-]);
+//var qryProgramIndicators = dhisUrl + 'programs/:programId.json?fields=programIndicators[displayName,displayDescription,expression,filter]';
+//
+//dossierProgramsModule.factory('dossiersProgramIndicatorsFactory', ['$resource',
+//    function($resource) {
+//        return $resource(qryProgramIndicators, {
+//            programId: '@programId'
+//        }, {
+//            query: {
+//                method: 'GET',
+//                isArray: false
+//            }
+//        });
+//    }
+//]);
 
 var qryProgramIndicatorExpressions = dhisUrl + 'programIndicators/expression/description'
 
@@ -138,3 +139,76 @@ dossierProgramsModule.factory('dossiersProgramEventChartFactory', ['$resource',
         });
     }
 ]);
+
+//Récuparation des informations realtives à la tâche #16 : ADD PROGRAM RULES TO THE METADATA DOCUMENTATION APP
+
+//Requête de récupération des données :-----------------------------------------------------------------------------------------------
+// Pour programRules
+var qryProgramRules = dhisUrl + 'programRules.json?filter=program.id\\:eq\\::programId&fields=name,description,priority,condition&paging=false';
+
+//Pour  programRuleVariable
+var qryProgramRuleVariables = dhisUrl + 'programRuleVariables.json?filter=program.id\\:eq\\::programId&fields=name,dataElement[valueType,optionSetValue,optionSet[options[displayName]]]&paging=false';
+
+//Récupération des données relatives à programRules
+dossierProgramsModule.factory('dossiersProgramRulesFactory',['$resource',
+    function($resource){
+        return $resource(qryProgramRules,{
+            programId: '@programId'
+        }, {
+            query : {
+                method : 'GET',
+                isArray: false
+            }
+        });
+    }
+]);
+
+//Récuperation des données relatives à programRuleVariables
+dossierProgramsModule.factory('dossiersProgramRuleVariablesFactory',['$resource',
+    function($resource){
+        return $resource(qryProgramRuleVariables,{
+            programId: '@programId'
+        }, {
+            query : {
+                method : 'GET',
+                isArray: false
+            }
+        });
+    }
+]);
+
+//Task 15: Link indicators to programs
+
+//Requête de récupération des données :
+var qryProgramIndicators = dhisUrl + 'programIndicators.json?filter=program.id\\:eq\\::programId&fields=displayName,description,expression,filter&paging=false';
+
+dossierProgramsModule.factory('dossiersProgramIndicatorsFactory', ['$resource',
+    function($resource) {
+        return $resource(qryProgramIndicators, {
+            programId: '@programId'
+        }, {
+            query: {
+                method: 'GET',
+                isArray: false
+            }
+        });
+    }
+]);
+
+var qryTest = dhisUrl + 'programs.json?filter=displayName\\:eq\\::displayName&fields=id,displayName,displayDescription,programStages[id]&paging=false';
+
+dossierProgramsModule.factory('dossiersProgramsLinkTestFactory', ['$resource',
+    function($resource) {
+        return $resource(qryTest, {
+            displayName: '@displayName'
+        }, {
+            query: {
+                method: 'GET',
+                isArray: false
+            }
+        });
+    }
+]);
+
+
+

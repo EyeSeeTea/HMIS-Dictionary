@@ -17,6 +17,21 @@ datasetsModule.factory('datasetsFactory', ['$resource',
     }
 ]);
 
+var qryDatasetsLink = dhisUrl + 'dataSets.json?paging=false&filter=displayName\\:eq\\::displayName&fields=id,displayName';
+
+datasetsModule.factory('datasetsLinkFactory', ['$resource',
+    function($resource) {
+        return $resource(qryDatasetsLink, {
+                displayName: '@displayName'
+            }, {
+            query: {
+                method: 'GET',
+                isArray: false
+            }
+        });
+    }
+]);
+
 
 var qryDatasetDataelements = dhisUrl + 'dataSets/:datasetId?fields=id,displayName,sections[id,displayName,dataElements[id,displayName,displayFormName,displayDescription,valueType,optionSetValue,optionSet[options[displayName]],categoryCombo[id,displayName]]],dataSetElements[categoryCombo[id,displayName],dataElement[id,displayName,displayFormName,displayDescription,valueType,optionSetValue,optionSet[options[displayName]],categoryCombo[id,displayName]]]&paging=false'
 

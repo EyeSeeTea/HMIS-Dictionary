@@ -7,10 +7,9 @@
 	<div id="headerDossierPanel" class="col-md-12 headerPanel">
 		<h1>{{'Programs' | translate}}</h1>
 		<p>{{'Number of Programs' | translate}}: {{programs.programs.length}}</p>
-		<!--<p>{{'Number of Data Elements in Program' | translate}}: {{programDataElements.programStageDataElements.length}}</p>
-		<p>{{'Number of Indicators in Program' | translate}}: {{selectedProgram.programIndicators.length}}</p>-->
 		<div class="col-md-2">
-			<select class="form-control col-md-2" ng-options="program.displayName for program in programs.programs | orderBy: 'displayName'" name="selectProgram" id="drpBoxServices" ng-model="selectedProgram">
+			<select class="form-control col-md-2" ng-options="program.displayName for program in programs.programs | orderBy: 'displayName'"
+					name="selectProgram" id="drpBoxServices" ng-model="selectedProgram">
 				<option value="" disabled selected>Select a program</option>
 			</select>
 		</div>
@@ -21,15 +20,16 @@
 		<div id="DossierTitleContainer" class="row">
 			<br>
 			<h1>{{selectedProgram.displayName}}</h1>
+			<p>{{selectedProgram.displayDescription}}</p>
 		</div>
 		<br>
 
 		<div id="tocContainer" class="row">
 			<h3 style="text-decoration: underline;">{{'dos_Table of Content'| translate}}</h3>
-			<ul ng-if="selectedProgram.displayDescription">
+			<!--<ul ng-if="selectedProgram.displayDescription">
 				<li><big><b><a href="" class="pageref" ng-click='scrollTo("DossierTextTitleContainer",22)'>{{'dos_Description of Program' | translate}}</a></b></big>
 				</li>
-			</ul>
+			</ul> -->
 			<ul ng-repeat="i in toc.entries | orderBy:'parent.index'">
 				<li><big><b><a href="" class="pageref" ng-click="scrollTo(i.parent.id)" target="_self">{{i.parent.displayName}}</a></b></big>
 					<ul ng-repeat="j in i.children">
@@ -39,15 +39,16 @@
 			</ul>
 		</div>
 
-		<div id="DossierTextTitleContainer" ng-if="selectedProgram.displayDescription" class="row headerGroup">
+		<!-- <div id="DossierTextTitleContainer" ng-if="selectedProgram.displayDescription" class="row headerGroup">
 			<br>
 			<h1>{{'dos_Description of Program' | translate}}</h1>
 			<div ng-bind-html="trustAsHtml(selectedProgram.displayDescription)"></div>
-		</div>
+		</div> -->
 
 		<div id="stageContainer" ng-controller="dossiersProgramSectionController">
 			<div class="col-md-12" ng-repeat="stage in stages | orderBy:'sortOrder'">
 				<h2 class="stage" id="{{stage.id}}">{{stage.displayName}}</h2>
+				<h3 class="stage" id="{{stage.id}}">{{stage.description}}</h3>
 				<div class="col-md-12" ng-repeat="section in stage.programStageSections">
 					<h3 class="section" id="{{section.id}}">{{section.displayName}}</h3>
 					<p>{{'Number of Elements in Section'| translate}}: {{section.dataElements.length}}</p>
@@ -186,6 +187,74 @@
 				</div>
 			</div>
 		</div>
-
+		<div class="col-md-12" ng-controller="dossierProgramRulesController">
+			<div class="col-md-12"  ng-show="programRulesAll.length > 0">
+				<h2 id="programRulesAll"> {{'Program Rules' | translate}}</h2>
+				<div  class="col-md-12">
+					<p>{{'Number of Program Rules' | translate}}: {{programRulesAll.length}}</p>
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>{{'Name' | translate}} </th>
+								<th>{{'Description' | translate}}</th>
+								<th>{{'Priority' | translate}}</th>
+								<th>{{'Variable Name' | translate}}</th>
+								<th>{{'DataValueType' | translate}}</th>
+								<th>{{'Options' | translate}}</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="programRule in programRulesAll | orderBy: 'name'">
+								<td>{{programRule.name}}</td>
+								<td>{{programRule.description}}</td>
+								<td>{{programRule.priority}}</td>
+								<td>
+									<ul ng-repeat="variable in programRule.variable" >
+										<li>{{variable}}</li>
+									</ul>
+								</td>
+								<td>
+									<ul ng-repeat="ValueType in programRule.dataElementValueType">
+										<li>{{ValueType}}</li>
+									</ul>
+								</td>
+								<td>
+									<select ng-if="programRule.options" class="form-control col-md-2">
+										<option selected>See options</option>
+										<option ng-repeat="option in programRule.options">{{option.displayName}}</option>
+									</select>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-12" ng-controller="dossiersProgramIndicatorsController">
+			<div class="col-md-12"  ng-show="programIndicators.length > 0">
+				<h2 id="programIndicators"> {{'Program Indicator' | translate}}</h2>
+				<div  class="col-md-12">
+					<p>{{'Number of Indicators' | translate}} : {{programIndicators.length}}</p>
+					<table class="table table-striped" >
+						<thead>
+							<tr>
+								<th>{{'Name' | translate}}</th>
+								<th>{{'Description' | translate}}</th>
+								<th>{{'Expression' | translate}}</th>
+								<th>{{'Filter' | translate}}</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="programIndicator in programIndicators | orderBy: 'displayName'">
+								<td>{{programIndicator.displayName}}</td>
+								<td>{{programIndicator.description}}</td>
+								<td>{{programIndicator.expression}}</td>
+								<td>{{programIndicator.filter}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>

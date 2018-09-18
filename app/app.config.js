@@ -11,9 +11,10 @@ var dossiersReaderModule = angular.module('dossiersReaderModule', []);
 var searchModule = angular.module('searchModule', ['ngTable', 'ui.bootstrap']);
 var dossiersModule = angular.module('dossiersModule', ['dossiersEditorModule','dossiersReaderModule']);
 var dossierProgramsModule = angular.module('dossierProgramsModule', []);
-var datasetsModule = angular.module('datasetsModule', [])
+var datasetsModule = angular.module('datasetsModule', []);
+var dossierIndicatorsModule = angular.module('dossierIndicatorsModule', []);
 
-var appModule = angular.module('appModule', ['ui.router', 'd2Menu', 'ngSanitize', 'pascalprecht.translate', 'ngResource', 'dossiersModule', 'dossierProgramsModule', 'datasetsModule','searchModule', 'adminModule'/*, 'graphModule'*/]);
+var appModule = angular.module('appModule', ['ui.router', 'd2Menu', 'ngSanitize', 'pascalprecht.translate', 'ngResource','ngSessionStorage', 'dossiersModule', 'dossierProgramsModule', 'datasetsModule','dossierIndicatorsModule','searchModule', 'adminModule'/*, 'graphModule'*/]);
 
 /*
  * 	@alias appModule.config
@@ -21,8 +22,12 @@ var appModule = angular.module('appModule', ['ui.router', 'd2Menu', 'ngSanitize'
  * 	@description Configures the appModule so it manages routes and translations
  *	@todo
  */
+
+//$routeProvider
 appModule.config(['$stateProvider', '$urlRouterProvider', '$translateProvider', function($stateProvider, $urlRouterProvider, $translateProvider) {
 
+    
+    
     $urlRouterProvider.otherwise("/search")
 
     $stateProvider
@@ -55,10 +60,15 @@ appModule.config(['$stateProvider', '$urlRouterProvider', '$translateProvider', 
             url:'/admin',
             templateUrl: 'app/admin/admin.view.html'
         })
+		.state('dossierIndicators',{
+			url:'/dossierIndicators',
+			templateUrl: 'app/dossierIndicators/dossierIndicators.view.html'
+		});
         /*.state('graph', {
             url:'/graph',
             templateUrl: 'app/graph/graph.view.html',
-        })*/;
+        })*/
+        
 
     $translateProvider.useStaticFilesLoader({
         prefix: 'languages/',
@@ -77,6 +87,7 @@ appModule.config(['$stateProvider', '$urlRouterProvider', '$translateProvider', 
         }
     );
 
+
     $translateProvider.fallbackLanguage(['en']);
 
     jQuery.ajax({
@@ -94,5 +105,8 @@ appModule.config(['$stateProvider', '$urlRouterProvider', '$translateProvider', 
     }).fail(function() {
         $translateProvider.determinePreferredLanguage();
     });
+    
+
 
 }]);
+
