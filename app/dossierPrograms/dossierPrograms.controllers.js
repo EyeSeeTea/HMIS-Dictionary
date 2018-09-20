@@ -564,7 +564,7 @@ dossierProgramsModule.controller('dossierProgramRulesController',['$scope','$q',
         }); 
 }]);
 
-dossierProgramsModule.controller('dossiersProgramIndicatorsController',['$scope','$q','dossiersProgramIndicatorsFactory',function($scope,$q,dossiersProgramIndicatorsFactory)
+dossierProgramsModule.controller('dossiersProgramIndicatorsController',['$scope','$q','dossiersProgramIndicatorsFactory', 'dossiersProgramExpressionFactory', 'dossiersProgramFilterFactory', function($scope,$q,dossiersProgramIndicatorsFactory, dossiersProgramExpressionFactory, dossiersProgramFilterFactory)
 {
     $scope.programIndicators4TOC =
     {
@@ -572,7 +572,33 @@ dossierProgramsModule.controller('dossiersProgramIndicatorsController',['$scope'
         id: "programIndicators",
         index: 102
     };
-    
+
+    //gets the "readable" expressions for each indicator expression
+    recursiveAssignExpression = function(i) {
+        if (i >= $scope.programIndicators.length) return;
+        dossiersProgramExpressionFactory.save({}, $scope.programIndicators[i].expression,
+            function (data) {
+                $scope.programIndicators[i].expression = data.description;
+                recursiveAssignExpression(i+1);
+            });
+
+    }
+
+    //gets the "readable" expressions for each indicator expression and filter
+    recursiveAssignFilter = function(i) {
+        if (i >= $scope.programIndicators.length) return;
+        if (typeof($scope.programIndicators[i].filter) === 'undefined') {
+            recursiveAssignFilter(i+1);
+            return;
+        }
+        dossiersProgramFilterFactory.save({}, $scope.programIndicators[i].filter,
+            function (data) {
+                $scope.programIndicators[i].filter = data.description;
+                recursiveAssignFilter(i+1);
+            });
+
+    }
+
     $scope.$watch('selectedProgram',function()
     {
         ping();
@@ -594,6 +620,8 @@ dossierProgramsModule.controller('dossiersProgramIndicatorsController',['$scope'
                 if($scope.programIndicators.length > 0)
                 {
                     addtoTOC($scope.toc, null, $scope.programIndicators4TOC, "Program Indicators");
+                    recursiveAssignExpression(0);
+                    recursiveAssignFilter(0);
                 }
             });
         }
