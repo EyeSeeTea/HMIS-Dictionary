@@ -71,6 +71,7 @@
 								<td>
 									<ul ng-if="dataElement.optionSet.options" class="col-md-2">
 										<li ng-repeat="option in dataElement.optionSet.options | limitTo:25">{{option.displayName}}</li>
+										<li ng-if="dataElement.optionSet.options.length > 25">...</li>
 									</ul>
 								</td>
 							</tr>
@@ -220,6 +221,7 @@
 								<td>
 									<ul ng-if="programRule.options" class="col-md-2">
 										<li ng-repeat="option in programRule.options | limitTo:25">{{option.displayName}}</li>
+										<li ng-if="programRule.options.length > 25">...</li>
 									</ul>
 								</td>
 							</tr>
