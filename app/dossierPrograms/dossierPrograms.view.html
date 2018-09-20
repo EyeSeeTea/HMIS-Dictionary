@@ -69,10 +69,9 @@
 								<td>{{dataElement.displayDescription}}</td>
 								<td>{{dataElement.valueType}}</td>
 								<td>
-									<select ng-if="dataElement.optionSet.options" class="form-control col-md-2">
-										<option selected>See options</option>
-										<option ng-repeat="option in dataElement.optionSet.options">{{option.displayName}}</option>
-									</select>
+									<ul ng-if="dataElement.optionSet.options" class="col-md-2">
+										<li ng-repeat="option in dataElement.optionSet.options | limitTo:25">{{option.displayName}}</li>
+									</ul>
 								</td>
 							</tr>
 						</tbody>
@@ -219,10 +218,9 @@
 									</ul>
 								</td>
 								<td>
-									<select ng-if="programRule.options" class="form-control col-md-2">
-										<option selected>See options</option>
-										<option ng-repeat="option in programRule.options">{{option.displayName}}</option>
-									</select>
+									<ul ng-if="programRule.options" class="col-md-2">
+										<li ng-repeat="option in programRule.options | limitTo:25">{{option.displayName}}</li>
+									</ul>
 								</td>
 							</tr>
 						</tbody>
