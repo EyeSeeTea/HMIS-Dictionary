@@ -4,7 +4,7 @@
     "private": true,
     "scripts": {
         "prebuild": "rm -rf HMIS_Dictionary.zip",
-        "build": "zip -r HMIS_Dictionary.zip ."
+        "build": "zip -r HMIS_Dictionary.zip app/ assets/ bower_components/ doc/ languages/ bower.json index.html manifest.webapp package.json README.md"
     },
     "homepage": ".",
     "dependencies": {
