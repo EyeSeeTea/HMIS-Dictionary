@@ -1,0 +1,13 @@
+{
+    "name": "hmis-dictionary",
+    "version": "0.0.1",
+    "private": true,
+    "scripts": {
+        "prebuild": "rm -rf HMIS_Dictionary.zip",
+        "build": "zip -r HMIS_Dictionary.zip ."
+    },
+    "homepage": ".",
+    "dependencies": {
+        "npm": "^6.4.1"
+    }
+}
