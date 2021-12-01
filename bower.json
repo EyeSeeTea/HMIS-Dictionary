@@ -10,7 +10,7 @@
     "angucomplete-alt": "2.5.0",
     "angular-resource": "1.5.9",
     "angular-sanitize": "1.5.9",
-    "angular-table": "2.1.0",
+    "angular-table": "1.0.0",
     "angular-translate": "2.9.0",
     "angular-translate-loader-static-files": "2.11.0",
     "angular-ui-bootstrap": "2.3.0",
@@ -18,8 +18,10 @@
     "angular-ui-tinymce": "0.0.17",
     "bootstrap": "3.3.7",
     "bootstrap-vertical-tabs": "1.2.1",
+    "lodash": "4.17.11",
     "jquery": "2.2.4",
     "tinymce": "4.5",
     "d3": "4.4.0"
+    
   }
 }

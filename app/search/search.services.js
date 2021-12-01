@@ -14,7 +14,7 @@ var qry_dataElementsDescriptions = dhisUrl + 'dataElements.json?fields=id,displa
 var qry_dataElementsGroups = dhisUrl + 'dataElements.json?fields=id,dataSetElements[dataSet[displayName,id,code,attributeValues[value]]]&paging=false&filter=domainType\\:eq\\:AGGREGATE';
 
 var qry_dataElementsAll = dhisUrl + 'dataElements.json?' +
-    'fields=id,code,attributeValues[value, attribute[id]],displayName,displayDescription,displayFormName,dataSetElements[dataSet[displayName,id,code,attributeValues[value]]]' +
+    'fields=id,code,attributeValues[value, attribute[id]],displayName,displayDescription,displayFormName,dataSetElements[dataSet[displayName,id,code,attributeValues[*]]]' +
     '&paging=false&filter=domainType\\:eq\\:AGGREGATE';
 
 
@@ -41,6 +41,7 @@ var qry_organisationUnitGroupSets = dhisUrl + 'organisationUnitGroupSets/:ougsUI
 
 //programIndicators
 var qry_programIndicatorsAll = dhisUrl + 'programIndicators.json?fields=id,displayName, description&paging=false';
+
 
 
 searchModule.factory('searchAllFactory', ['$resource',function($resource) {
@@ -107,6 +108,73 @@ searchModule.factory('searchAllDataElementsBisFactory', ['$resource',
             query: {
                 method: 'GET',
                 isArray: false
+            }
+        });
+    }
+]);
+
+var qryTables = dhisUrl + 'reportTables';
+
+searchModule.factory('searchTableFactory', ['$resource', function($resource) {
+    return {
+       // get_table:       $resource(qryTables, {}, { query: { method: 'GET',  isArray: false  }   }),
+        set_table:       $resource(qryTables, {}, { query: { method: 'POST', isArray: false  } }),
+       // upd_table:       $resource(qryTables, {}, { query: { method: 'PUT', isArray: false  } }),
+    };
+}]);
+
+var qryTable = dhisUrl + 'reportTables';
+searchModule.factory('getTableFactory', ['$resource',
+    function($resource) {
+        return $resource(qryTable, {
+            name: '@name'
+        }, {
+            query: {
+                method: 'GET',
+                isArray: false
+            }
+        });
+    }
+]);
+var qryServices = dhisUrl + 'organisationUnitGroupSets/:uid?fields=organisationUnitGroups[id]';
+searchModule.factory('getServices', ['$resource',
+    function($resource) {
+        return $resource(qryServices, {
+            uid: '@uid'
+        }, {
+            query: {
+                method: 'GET',
+                isArray: false
+            }
+        });
+    }
+]);
+
+
+var qryTableUpdate = dhisUrl + 'reportTables/:uid';
+
+searchModule.factory('updateTable', ['$resource',
+    function($resource) {
+        return $resource(qryTableUpdate, {
+            uid: '@uid'
+        }, {
+            update: {
+                method: 'PUT'
+            }
+        });
+    }
+]);
+
+
+var qrySharing = dhisUrl + 'sharing?type=reportTable&id=:uid';
+
+searchModule.factory('updateSharing', ['$resource',
+    function($resource) {
+        return $resource(qrySharing, {
+            uid: '@uid'
+        }, {
+            update: {
+                method: 'PUT'
             }
         });
     }
