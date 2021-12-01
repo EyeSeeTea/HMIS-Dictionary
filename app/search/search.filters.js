@@ -8,6 +8,7 @@ searchModule.filter('highlight', function($sce) {
         if ((phrase_glo || (phrase_col && name )) && text) {
             if (phrase_glo) {
                 var phrase_temp = phrase_glo.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$]/g, "\\$&");
+                
                 var mots_glo = phrase_temp.split('|');
                 mots_glo = mots_glo.map(function(s) { return s.trim() }).filter(function(t) { return t !== "" });
                 mots_glo = mots_glo.filter(function(n){ return (n != undefined && n != '') });

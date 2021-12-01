@@ -169,8 +169,10 @@
 				<span ng-bind-html='object.object_ICD10 | highlight: table.globalSearchTerm:params.filter():"object_ICD10"'></span>
 			</td>
 		
-			<td sortable="'object_name'" filter="{object_name:'./app/search/search.table.html'}" ng-if="true" data-title="'object_name' | translate">
+			<td sortable="'object_name'"  filter="{object_name:'./app/search/search.table.html'}" ng-if="true" data-title="'object_name' | translate">
 				<span ng-bind-html='object.object_name | highlight: table.globalSearchTerm:params.filter():"object_name"'></span>
+			<a ng-if='object.object_type=="indicator"' href="" ng-click="getTable(object.object_name,
+			object.object_id,object.object_numerator ,  object.object_denominator)"><img src="./assets/img/pivottable.png" alt="View Table" width="15"></a>
 			</td>
 			<td sortable="'object_form'" filter="{object_form:'./app/search/search.table.html'}" ng-if="false" data-title="'object_form' | translate">
 				<span ng-bind-html='object.object_form | highlight: table.globalSearchTerm:params.filter():"object_form"'></span>

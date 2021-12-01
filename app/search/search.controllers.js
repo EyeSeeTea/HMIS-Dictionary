@@ -3,11 +3,14 @@
     Please refer to the LICENSE.md and LICENSES-DEP.md for complete licenses.
 ------------------------------------------------------------------------------------*/
 
-searchModule.controller('searchController', ['ExcelFactory', '$timeout', '$scope', '$translate', 'NgTableParams', 'searchAllFactory', function (ExcelFactory, $timeout, $scope, $translate, NgTableParams, searchAllFactory) {
+
+searchModule.controller('searchController', ['ExcelFactory', '$window',
+'$timeout', '$scope', '$translate', 'NgTableParams', 
+'searchAllFactory', 'searchTableFactory','getTableFactory','updateTable','updateSharing','getServices', function (ExcelFactory, $window, $timeout, $scope, $translate, NgTableParams, searchAllFactory, searchTableFactory,getTableFactory,updateTable, updateSharing, getServices) {
 
     $('#search').tab('show');
+ 
     
-
     if ($scope.show_dossiers) {
         console.log("searchModule: Service set defined " + $scope.serviceSetUID);
         searchAllFactory.get_organisationUnitGroupSets.query({
@@ -39,6 +42,7 @@ searchModule.controller('searchController', ['ExcelFactory', '$timeout', '$scope
         });
         return temp;
     };
+    
 
     /*
      * Filter dataElements and indicators that are not associated to a dataSet or an indicatorGroup
@@ -74,7 +78,7 @@ searchModule.controller('searchController', ['ExcelFactory', '$timeout', '$scope
                     temp = temp || ($scope.blacklist_indicatorgroups.indexOf(ig.id) == -1);
                 });
             }
-            return temp;
+                       return temp;
         }
     };
 
@@ -82,11 +86,40 @@ searchModule.controller('searchController', ['ExcelFactory', '$timeout', '$scope
     self.isFiltersVisible = false;
 
     self.applyGlobalSearch = function () {
+        var x = _.cloneDeep(self.tableParams.data);
+        var x2 = _.cloneDeep(self.tableParams.data);
+       // console.log("Con acentos x");
+       // console.log(x);
         var term = self.globalSearchTerm;
         //var term_or = self.globalSearchTerm.split('||');
         var filter_content = self.tableParams.filter();
         filter_content.$ = term;
+        
+             
+        x.map(function(item,index){
+        item.object_description=_.deburr(item.object_description);
+        item.objectGroup_name=_.deburr(item.objectGroup_name);
+        item.object_form=_.deburr(item.object_form);
+        item.object_name=_.deburr(item.object_name);  
+         
+           return item;
+          });
+       
+    //      console.log("Sin acentos self.tableParams.data");
+    //      console.log(x);
         self.tableParams.filter(filter_content);
+        
+       /*
+        self.tableParams.data.map(function(item, index){
+
+            item.object_description=x[index].object_description;
+            item.objectGroup_name= x[index].objectGroup_name;
+            item.object_form=x[index].object_form;
+            item.object_name=x[index].object_name;
+            return item;
+
+        })
+        */
     };
 
     startLoadingState(false);
@@ -154,6 +187,199 @@ searchModule.controller('searchController', ['ExcelFactory', '$timeout', '$scope
         }
     });
 
+    $scope.getTable  = function (name, id, numerator, denominator)
+    {
+        dataElements= extractDefromInd(numerator, denominator);
+     dataElements.push(id);
+      getServices.query({
+        uid: "BtFXTpKRl6n"
+    }, function(services) {
+        
+    $scope.serviceItems=services.organisationUnitGroups;
+    
+    });
+
+    
+    
+
+        payload={	"columns": [{
+            "dimension": "pe",
+            "items": [{
+                "id": "THIS_YEAR"
+            }]
+        },
+        {
+            "dimension": "BtFXTpKRl6n",
+            "items": $scope.serviceItems,
+            /*
+            [{"id": "yE2gim5zf6O" }, {"id": "ItsTxGI1mPr" },{"id": "luXYP2gbXAw" },
+            {"id": "EXJNFuz4qvV"}, {"id": "Nr7ugEFGcxv"}, {"id": "R6gkWNQJgyM" },
+            {"id": "OaBEh0YCXww" }, {"id": "P2OT6qp9dLo" },{"id": "hNpNXjiSmbB"},
+            { "id": "FC8mvWjD4ZY"},{"id": "sE49bt0kXEj"},{"id": "tKhHbXZLsba"}, {                "id": "SWwBmU72aS5"            },
+            {"id": "T5aMe2MFm02"},{"id": "r6uG5FALkS3"},{"id": "fNeyMnZZtjO"},        {                "id": "rnpeIP2Hglo"            },            {                "id": "LPUnCW9NjxX"            },            {                "id": "m4O3cnJXGVv"            },           {                "id": "GbVsHdOX6C6"            },            {                "id": "glSRvjr6MHn"            },            {                "id": "AbHQsEeCj1f"            },            {                "id": "gNBa5Kjwndn"            },           {                "id": "wHXEcFMAYSs"            },            {                "id": "z0ZERaDu6b2"            },
+            {"id": "RaUPzLrVxoC"},{"id": "BJTte7WCV8u"},{"id": "WQj4Q7d7Arr"},            {                "id": "u0Lz87duKc1"            },            {                "id": "QeZ0n7fG3qe"            },            {                "id": "U1HqaCiydLc"            },            {                "id": "VzmfaJEFawS"            },            {                "id": "ONFgLK6XScq"            },            {                "id": "rUCNmZdKZIk"            },            {                "id": "UJzwS21A4kL"            }
+        ]
+    */    
+    }], 
+        
+        "rows": [{
+            "dimension": "dx",
+            "items": []
+        }],
+            "filters": [{
+                "dimension": "ou",
+                "items": [{
+                    "id": "USER_ORGUNIT"
+                }]
+            }],
+            "name": "test_table3",
+            "favorite": false,
+            "subscribed": false,
+            "description": "Created with HMIS Dictionary",
+            "showDimensionLabels": true,
+            "hideEmptyRows": false,
+            "hideEmptyColumns": false,
+            "stickyColumnDimension": false,
+            "stickyRowDimension": false,
+            "skipRounding": false,
+            "aggregationType": "DEFAULT",
+            "numberType": "VALUE",
+            "measureCriteria": "",
+            "dataApprovalLevel": null,
+            "showHierarchy": false,
+            "completedOnly": false,
+            "displayDensity": "NORMAL",
+            "fontSize": "NORMAL",
+            "digitGroupSeparator": "SPACE",
+            "legendSet": null,
+            "legendDisplayStyle": "FILL",
+            "legendDisplayStrategy": "FIXED",
+            "regression": false,
+            "cumulative": false,
+            "sortOrder": 0,
+            "topLimit": 0,
+            "rowTotals": true,
+            "colTotals": true,
+            "rowSubTotals": true,
+            "colSubTotals": true,
+            "reportParams": {
+                "paramReportingPeriod": false,
+                "paramOrganisationUnit": false,
+                "paramParentOrganisationUnit": false
+            },
+            "userGroupAccesses": [
+                {
+                "access": "rw------",
+                "userGroupUid": "epFY01iJN0Z",
+                "displayName": "ALL USERS",
+                "id": "epFY01iJN0Z"
+                }
+                ]
+        };
+
+
+        sharing={"object":{"id":"LEP0WHTGYUe",
+        "name": "name",
+        "publicAccess":"--------",
+        "externalAccess":false,
+        "userGroupAccesses":[
+            {"id":"epFY01iJN0Z","name":"ALL USERS","access":"rw------"}
+        ]}};
+
+
+        items=dataElements.map(id=>{return {"id": id}});
+
+      //  console.log(items);
+        payload.name=name+" - "+id
+        payload.rows[0].items=items;
+    
+     
+        $scope.table = getTableFactory.query({
+            filter: "name:eq:"+payload.name
+        }, function(tbl) {
+     
+
+if (tbl && tbl.reportTables[0] ) 
+{
+        if (tbl.reportTables[0].id) {
+        console.log("Updating Table");
+        payload.id=tbl.reportTables[0].id;
+        sharing.object.id=tbl.reportTables[0].id;
+        sharing.object.name=tbl.reportTables[0].name;
+
+        updateTable.update({
+            uid: tbl.reportTables[0].id
+        },
+        payload
+        , function(response) {
+            
+            updateSharing.update({uid: tbl.reportTables[0].id},sharing, function(res){});
+
+            uid=tbl.reportTables[0].id
+            //console.log(uid)
+            $window.open(dhisroot+'/dhis-web-pivot/?id='+uid, '_blank');
+            
+        });
+}}
+
+if (tbl.reportTables[0]==undefined) {
+        console.log("Creating Table");
+        searchTableFactory.set_table.query(payload,
+            function(response){
+                uid=response.response.uid;
+                updateSharing.update({uid: uid},sharing, function(res){});
+               // console.log(uid)
+                $window.open(dhisroot+'/dhis-web-pivot/?id='+uid, '_blank');
+        
+ });
+}
+
+        });
+
+   
+       };
+ 
+        
+    
+
+     function extractDefromInd(numerator, denominator)
+    {
+        de_num =extractDefromFormula(numerator);
+        de_den=extractDefromFormula(denominator);
+        return de_num.concat(de_den);
+    }
+
+     function extractDefromFormula(formula)
+  {
+    formula=formula.replace(/I{/g, "#{");
+    var numerators_array = formula.split("#");
+
+    console.log(numerators_array);
+
+    //var numerators_array2= formula.split("I{");
+    
+    //console.log(numerators_array2);
+
+    var num_filtered = numerators_array.filter(id => id != "");
+    var num_filtered = num_filtered.filter(id => id != " ");
+    var num_filtered = num_filtered.filter(id => id != "(");
+    var num_filtered2 = num_filtered.map(el => el.split("{")[1]);
+
+    var num_filtered3 = num_filtered2.map(el => {
+      if (el != undefined) {
+        return el.split("}")[0];
+      }
+    });
+    var num_filtered3 = num_filtered3.map(el => {
+      if (el != undefined) {
+        return el.split(".")[0];
+      }
+    });
+    return num_filtered3;
+
+}
+
+
     $scope.parseFormula = function (formula, dataElements, categoryOptionCombos, programIndicators) {
         var operatorRegex = /}\s*[\+\-\*]\s*(#|I)/g;
         var dataElementRegex = /#\{\w*}/g;
@@ -199,9 +425,11 @@ searchModule.controller('searchController', ['ExcelFactory', '$timeout', '$scope
         "</span>" +
             "</span>";
     }
+  
+
 
     function load_table_info() {
-
+        var servicesCode=[];
         var start = new Date();
 
         var temp = {};
@@ -225,7 +453,16 @@ searchModule.controller('searchController', ['ExcelFactory', '$timeout', '$scope
 
                     obj.dataSetElements.forEach(function (grp) {
                         if ($scope.servicesList && grp.dataSet.attributeValues.length > 0 && grp.dataSet.attributeValues[0].value) {
-                            var servicesCode = grp.dataSet.attributeValues[0].value.split('_');
+                            attributes=grp.dataSet.attributeValues.filter(at=>at.attribute.id=="pG4YeQyynJh");
+                          // grp.dataSet.attributeValues.forEach( function (attrib) {
+                          // if (attrib.attribute.id=='pG4YeQyynJh') {
+                          //console.log("ATRIBUTOS: "+attributes )  ;    
+                          if (attributes[0]!=undefined) {
+                          servicesCode = attributes[0].value.split('_');
+                          }
+                           //}
+                           // })
+                            console.log("SERVICE CODE" + servicesCode);
                             servicesCode.shift();
                             servicesCode.forEach(function (code) {
                                 if ($scope.servicesList[code]) {
@@ -345,6 +582,8 @@ searchModule.controller('searchController', ['ExcelFactory', '$timeout', '$scope
                             object_code: obj.code,
                             object_name: obj.displayName,
                             object_form: obj.displayFormName,
+                            object_numerator: obj.numerator,
+                            object_denominator: obj.denominator,
                             object_den_formula: $scope.parseFormula(obj.denominator, temp, categoryOptionCombosTemp, programIndicatorsTemp),
                             object_num_formula: $scope.parseFormula(obj.numerator, temp, categoryOptionCombosTemp, programIndicatorsTemp),
                             object_description: obj.displayDescription,
@@ -364,7 +603,8 @@ searchModule.controller('searchController', ['ExcelFactory', '$timeout', '$scope
                 $scope.loaded.get_indicatorsDescriptions = true;
                 $scope.loaded.get_indicatorGroups = true;
                 $scope.allObjects = Object.keys(temp).map(function (key) { return temp[key]; });
-
+                //console.log("temp");
+                //console.log(temp);
                 console.log("searchModule: Indicators loaded")
 
                 return "done";
