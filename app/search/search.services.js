@@ -136,10 +136,10 @@ searchModule.factory('getTableFactory', ['$resource',
         });
     }
 ]);
-var qryServices = dhisUrl + 'organisationUnitGroupSets/:uid?fields=organisationUnitGroups[id]';
+var qryServices2 = dhisUrl + 'organisationUnitGroupSets/:uid?fields=organisationUnitGroups[id]';
 searchModule.factory('getServices', ['$resource',
     function($resource) {
-        return $resource(qryServices, {
+        return $resource(qryServices2, {
             uid: '@uid'
         }, {
             query: {

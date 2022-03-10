@@ -211,15 +211,7 @@ searchModule.controller('searchController', ['ExcelFactory', '$window',
         {
             "dimension": "BtFXTpKRl6n",
             "items": $scope.serviceItems,
-            /*
-            [{"id": "yE2gim5zf6O" }, {"id": "ItsTxGI1mPr" },{"id": "luXYP2gbXAw" },
-            {"id": "EXJNFuz4qvV"}, {"id": "Nr7ugEFGcxv"}, {"id": "R6gkWNQJgyM" },
-            {"id": "OaBEh0YCXww" }, {"id": "P2OT6qp9dLo" },{"id": "hNpNXjiSmbB"},
-            { "id": "FC8mvWjD4ZY"},{"id": "sE49bt0kXEj"},{"id": "tKhHbXZLsba"}, {                "id": "SWwBmU72aS5"            },
-            {"id": "T5aMe2MFm02"},{"id": "r6uG5FALkS3"},{"id": "fNeyMnZZtjO"},        {                "id": "rnpeIP2Hglo"            },            {                "id": "LPUnCW9NjxX"            },            {                "id": "m4O3cnJXGVv"            },           {                "id": "GbVsHdOX6C6"            },            {                "id": "glSRvjr6MHn"            },            {                "id": "AbHQsEeCj1f"            },            {                "id": "gNBa5Kjwndn"            },           {                "id": "wHXEcFMAYSs"            },            {                "id": "z0ZERaDu6b2"            },
-            {"id": "RaUPzLrVxoC"},{"id": "BJTte7WCV8u"},{"id": "WQj4Q7d7Arr"},            {                "id": "u0Lz87duKc1"            },            {                "id": "QeZ0n7fG3qe"            },            {                "id": "U1HqaCiydLc"            },            {                "id": "VzmfaJEFawS"            },            {                "id": "ONFgLK6XScq"            },            {                "id": "rUCNmZdKZIk"            },            {                "id": "UJzwS21A4kL"            }
-        ]
-    */    
+     
     }], 
         
         "rows": [{
@@ -462,7 +454,7 @@ if (tbl.reportTables[0]==undefined) {
                           }
                            //}
                            // })
-                            console.log("SERVICE CODE" + servicesCode);
+                           // console.log("SERVICE CODE" + servicesCode);
                             servicesCode.shift();
                             servicesCode.forEach(function (code) {
                                 if ($scope.servicesList[code]) {
