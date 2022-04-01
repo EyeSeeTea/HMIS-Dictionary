@@ -189,9 +189,9 @@ searchModule.controller('searchController', ['ExcelFactory', '$window',
 
     $scope.getTable  = function (name, id, numerator, denominator)
     {
-        dataElements= extractDefromInd(numerator, denominator);
-     dataElements.push(id);
-      getServices.query({
+     dataElements= extractDefromInd(numerator, denominator);
+     dataElements.push(id); //INDICATOR
+     getServices.query({
         uid: "BtFXTpKRl6n"
     }, function(services) {
         
@@ -202,72 +202,132 @@ searchModule.controller('searchController', ['ExcelFactory', '$window',
     
     
 
-        payload={	"columns": [{
-            "dimension": "pe",
-            "items": [{
-                "id": "THIS_YEAR"
-            }]
-        },
-        {
-            "dimension": "BtFXTpKRl6n",
-            "items": $scope.serviceItems,
-     
-    }], 
-        
-        "rows": [{
-            "dimension": "dx",
-            "items": []
-        }],
-            "filters": [{
-                "dimension": "ou",
-                "items": [{
-                    "id": "USER_ORGUNIT"
-                }]
-            }],
-            "name": "test_table3",
-            "favorite": false,
-            "subscribed": false,
-            "description": "Created with HMIS Dictionary",
-            "showDimensionLabels": true,
-            "hideEmptyRows": false,
-            "hideEmptyColumns": false,
-            "stickyColumnDimension": false,
-            "stickyRowDimension": false,
-            "skipRounding": false,
-            "aggregationType": "DEFAULT",
+        payload={
+	
+            "name": "TEST",
+            "showData": false,
+            "fixRowHeaders": false,
             "numberType": "VALUE",
-            "measureCriteria": "",
-            "dataApprovalLevel": null,
-            "showHierarchy": false,
-            "completedOnly": false,
-            "displayDensity": "NORMAL",
-            "fontSize": "NORMAL",
-            "digitGroupSeparator": "SPACE",
-            "legendSet": null,
-            "legendDisplayStyle": "FILL",
-            "legendDisplayStrategy": "FIXED",
-            "regression": false,
-            "cumulative": false,
-            "sortOrder": 0,
-            "topLimit": 0,
-            "rowTotals": true,
-            "colTotals": true,
-            "rowSubTotals": true,
-            "colSubTotals": true,
-            "reportParams": {
-                "paramReportingPeriod": false,
-                "paramOrganisationUnit": false,
-                "paramParentOrganisationUnit": false
+            "legend": {
+                "showKey": false,
+                "style": "FILL",
+                "strategy": "FIXED"
             },
+            "publicAccess": "--------",
+            "type": "PIVOT_TABLE",
+            "hideEmptyColumns": false,
+            "hideEmptyRows": false,
+            "subscribed": false,
+            "parentGraphMap": {},
+            "rowSubTotals": true,
+            "displayDensity": "NORMAL",
+            "displayDescription": "Created with HMIS Dictionary",
+            "regressionType": "NONE",
+            "completedOnly": false,
+            "cumulativeValues": false,
+            "colTotals": true,
+            "showDimensionLabels": true,
+            "sortOrder": 0,
+            "fontSize": "NORMAL",
+            "favorite": false,
+            "topLimit": 0,
+            "hideEmptyRowItems": "NONE",
+            "aggregationType": "DEFAULT",
+            "displayName": "TEST",
+            "hideSubtitle": false,
+            "description": "Created with HMIS Dictionary",
+            "fixColumnHeaders": false,
+            "percentStackedValues": false,
+            "colSubTotals": true,
+            "noSpaceBetweenColumns": false,
+            "showHierarchy": false,
+            "rowTotals": true,
+            "seriesKey": {
+                "hidden": false
+            },
+            "digitGroupSeparator": "SPACE",
+            "hideTitle": false,
+            "regression": false,
+            "colorSet": "DEFAULT",
+            "skipRounding": false,
+            
+            "fontStyle": {},
+            "access": {
+                "read": true,
+                "update": true,
+                "externalize": true,
+                "delete": true,
+                "write": true,
+                "manage": true
+            },
+            "reportingParams": {
+                "organisationUnit": false,
+                "reportingPeriod": false,
+                "parentOrganisationUnit": false,
+                "grandParentOrganisationUnit": false
+            },
+          
+            "axes": [],
+            "translations": [],
+            "yearlySeries": [],
+            "interpretations": [],
             "userGroupAccesses": [
                 {
-                "access": "rw------",
-                "userGroupUid": "epFY01iJN0Z",
-                "displayName": "ALL USERS",
-                "id": "epFY01iJN0Z"
+                    "access": "rw------",
+                    "userGroupUid": "epFY01iJN0Z",
+                    "displayName": "ALL USERS",
+                    "id": "epFY01iJN0Z"
                 }
-                ]
-        };
+            ],
+            "subscribers": [],
+            "userAccesses": [],
+            "favorites": [],
+            "columns": [
+                {
+                    "dimension": "pe",
+                    "items": [
+                        {
+                            "id": "THIS_YEAR"
+                        }
+                    ]
+                },
+                {
+                    "dimension": "BtFXTpKRl6n",
+                    "items": [
+                        {
+                            "id": "ALL_ITEMS"
+                        }
+                    ]
+                }
+            ],
+            "filters": [
+                {
+                    "dimension": "ou",
+                    "items": [
+                        {
+                            "id": "USER_ORGUNIT"
+                        }
+                        
+                    ]
+                }
+            ],
+            "rows": [
+                {
+                    "dimension": "dx",
+                    "items": [
+                        {
+                            "id": "DqqSJFWB392"
+                        },
+                        {
+                            "id": "qywsusOdy33"
+                        }
+                    ]
+                }
+            ],
+            "series": [],
+            "outlierAnalysis": null,
+            "cumulative": false
+        }
 
 
         sharing={"object":{"id":"LEP0WHTGYUe",
@@ -280,48 +340,47 @@ searchModule.controller('searchController', ['ExcelFactory', '$window',
 
 
         items=dataElements.map(id=>{return {"id": id}});
-
-      //  console.log(items);
+    
         payload.name=name+" - "+id
         payload.rows[0].items=items;
-    
+
      
         $scope.table = getTableFactory.query({
             filter: "name:eq:"+payload.name
         }, function(tbl) {
      
 
-if (tbl && tbl.reportTables[0] ) 
+if (tbl && tbl.visualizations[0] ) 
 {
-        if (tbl.reportTables[0].id) {
+        if (tbl.visualizations[0].id) {
         console.log("Updating Table");
-        payload.id=tbl.reportTables[0].id;
-        sharing.object.id=tbl.reportTables[0].id;
-        sharing.object.name=tbl.reportTables[0].name;
+        payload.id=tbl.visualizations[0].id;
+        sharing.object.id=tbl.visualizations[0].id;
+        sharing.object.name=tbl.visualizations[0].name;
 
         updateTable.update({
-            uid: tbl.reportTables[0].id
+            uid: tbl.visualizations[0].id
         },
         payload
         , function(response) {
             
-            updateSharing.update({uid: tbl.reportTables[0].id},sharing, function(res){});
+            updateSharing.update({uid: tbl.visualizations[0].id},sharing, function(res){});
 
-            uid=tbl.reportTables[0].id
+            uid=tbl.visualizations[0].id
             //console.log(uid)
-            $window.open(dhisroot+'/dhis-web-pivot/?id='+uid, '_blank');
+            $window.open(dhisroot+'/dhis-web-data-visualizer/index.html#/'+uid, '_blank');
             
         });
 }}
 
-if (tbl.reportTables[0]==undefined) {
+if (tbl.visualizations[0]==undefined) {
         console.log("Creating Table");
         searchTableFactory.set_table.query(payload,
             function(response){
                 uid=response.response.uid;
                 updateSharing.update({uid: uid},sharing, function(res){});
                // console.log(uid)
-                $window.open(dhisroot+'/dhis-web-pivot/?id='+uid, '_blank');
+                $window.open(dhisroot+'/dhis-web-data-visualizer/index.html#/'+uid, '_blank');
         
  });
 }
@@ -346,7 +405,7 @@ if (tbl.reportTables[0]==undefined) {
     formula=formula.replace(/I{/g, "#{");
     var numerators_array = formula.split("#");
 
-    console.log(numerators_array);
+    //console.log(numerators_array);
 
     //var numerators_array2= formula.split("I{");
     
