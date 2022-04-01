@@ -113,7 +113,7 @@ searchModule.factory('searchAllDataElementsBisFactory', ['$resource',
     }
 ]);
 
-var qryTables = dhisUrl + 'reportTables';
+var qryTables = dhisUrl + 'visualizations';
 
 searchModule.factory('searchTableFactory', ['$resource', function($resource) {
     return {
@@ -123,7 +123,7 @@ searchModule.factory('searchTableFactory', ['$resource', function($resource) {
     };
 }]);
 
-var qryTable = dhisUrl + 'reportTables';
+var qryTable = dhisUrl + 'visualizations';
 searchModule.factory('getTableFactory', ['$resource',
     function($resource) {
         return $resource(qryTable, {
@@ -151,7 +151,7 @@ searchModule.factory('getServices', ['$resource',
 ]);
 
 
-var qryTableUpdate = dhisUrl + 'reportTables/:uid';
+var qryTableUpdate = dhisUrl + 'visualizations/:uid';
 
 searchModule.factory('updateTable', ['$resource',
     function($resource) {
@@ -166,7 +166,7 @@ searchModule.factory('updateTable', ['$resource',
 ]);
 
 
-var qrySharing = dhisUrl + 'sharing?type=reportTable&id=:uid';
+var qrySharing = dhisUrl + 'sharing?type=visualization&id=:uid';
 
 searchModule.factory('updateSharing', ['$resource',
     function($resource) {
