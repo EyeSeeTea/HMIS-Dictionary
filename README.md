@@ -57,7 +57,7 @@ For example:
 shell:~$ HOST=localhost PORT=8082 DHIS=http://localhost:8080 AUTH='admin:district' npm start
 ```
 
-This deploys a `http-server` serving the app with a proxy to the DHIS2 instance to serve the DHIS2 API calls.
+This deploys a [http-server](https://github.com/http-party/http-server) serving the app with a proxy to the DHIS2 instance to serve the DHIS2 API calls.
 The `npm start` command has the following argument fallback values:
 - HOST: localhost
 - PORT: 8082
