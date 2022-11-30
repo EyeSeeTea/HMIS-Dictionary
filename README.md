@@ -35,7 +35,34 @@ Some elements are still hardcoded:
 - The search panel will not show *dataElements* or *indicators* that are not associated to a *dataSet* or an *indicatorGroup*
 - Only *dataElements* in the aggregated domain are currently taken into account: [app/search/search.services.js#L7](https://github.com/msf-ocba/HMIS_Dictionary/blob/master/app/search/search.services.js#L7), [app/search/search.services.js#L11](https://github.com/msf-ocba/HMIS_Dictionary/blob/master/app/search/search.services.js#L11) and [app/search/search.services.js#L14](https://github.com/msf-ocba/HMIS_Dictionary/blob/master/app/search/search.services.js#L14)
 - The app is currently available in English, French, Spanish and Portuguese and uses the content of DHIS2 in these 4 languages (as available per MSF OCBA configuration): [app/app.config.js#L60](https://github.com/msf-ocba/HMIS_Dictionary/blob/master/app/app.config.js#L60), [app/dossiersEditor/dossiersEditor.controllers.js#L44](https://github.com/msf-ocba/HMIS_Dictionary/blob/master/app/dossiersEditor/dossiersEditor.controllers.js#L44) and [languages/](https://github.com/msf-ocba/HMIS_Dictionary/tree/master/languages).
-  
+
+## Setup and Installation
+
+Build the app running:
+
+```console
+shell:~$ npm install # first time only
+shell:~$ npm run build
+```
+This will create a `HMIS_Dictionary.zip` file that can be manually installed in DHIS2 App Management.
+
+## Development
+
+The above mentioned method of deploying the app is not suited for development. To deploy a local instance of the app use:
+```console
+shell:~$ HOST=<address> PORT=<port> DHIS=<dhis2_instance_url> AUTH=<user:passwd> npm start
+```
+For example:
+```console
+shell:~$ HOST=localhost PORT=8082 DHIS=http://localhost:8080 AUTH='admin:district' npm start
+```
+
+This deploys a `http-server` serving the app with a proxy to the DHIS2 instance to serve the DHIS2 API calls.
+The `npm start` command has the following argument fallback values:
+- HOST: localhost
+- PORT: 8082
+- DHIS: http://localhost:8080
+
 ## Feedback
 
 hmis@barcelona.msf.org
