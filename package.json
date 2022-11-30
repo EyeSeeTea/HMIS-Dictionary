@@ -10,9 +10,7 @@
     "scripts": {
         "prebuild": "rm -rf HMIS_Dictionary.zip",
         "build": "zip -r HMIS_Dictionary.zip .",
-        "post": "npm run build; curl -X POST -u admin:district -F file=@HMIS_Dictionary.zip 'http://localhost:8080/api/apps'",
-        "start": "http-server . -a ${HOST:-localhost} -p ${PORT:-8082} -c-1 -P ${DHIS:-http://localhost:8080} --proxy-options.auth $AUTH",
-        "dev-start": "http-server . -a localhost -p 8082 -c-1 -P http://localhost:8080/ --proxy-options.auth admin:district"
+        "start": "http-server . -a ${HOST:-localhost} -p ${PORT:-8082} -c-1 -P ${DHIS:-http://localhost:8080} --proxy-options.auth $AUTH"
     },
     "homepage": "https://github.com/EyeSeeTea/HMIS-Dictionary",
     "dependencies": {
