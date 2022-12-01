@@ -36,7 +36,7 @@
         "postinstall": "sh build-bower-deps.sh",
         "build-folder": "rm -rf build/ && d2-manifest package.json manifest.webapp && mkdir build && yarn run manifest && cp -r bower_components app assets languages doc assets/img/Logo_48.png index.html build",
         "build": "yarn build-folder && rm -f $npm_package_name.zip && cd build && zip --quiet -r ../$npm_package_name.zip *",
-        "start": "export $(xargs < .env) && http-server . -a $HOST -p $PORT -c-1 -P $REACT_APP_DHIS2_BASE_URL --proxy-options.auth $REACT_APP_DHIS2_AUTH",
+        "start": "export $(xargs < .env.local) && http-server . -a $HOST -p $PORT -c-1 -P $REACT_APP_DHIS2_BASE_URL --proxy-options.auth $REACT_APP_DHIS2_AUTH",
         "manifest": "d2-manifest package.json build/manifest.webapp",
         "prettify": "prettier \"./**/*.{js,jsx,json,css,ts,tsx}\" --write"
     },

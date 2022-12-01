@@ -63,7 +63,7 @@ The `yarn start` command has the following argument fallback values:
 - PORT: 8082
 - DHIS: http://localhost:8080
 
-The app package manager has been migrated from `bower` to `yarn` with [bower-away](https://github.com/sheerun/bower-away). The `build-bower-deps.sh` script is used as a postinstall script to make a copy of the necessary files to the `bower_components` folder to avoid uploading unnecessary files with the app build zip file. 
+The app package manager has been migrated from `bower` to `yarn` with [bower-away](https://github.com/sheerun/bower-away). The `build-bower-deps.sh` script is used as a postinstall script to make a copy of the necessary files to the `bower_components` folder to avoid uploading unnecessary files with the app build zip file.
 
 ## Feedback
 
