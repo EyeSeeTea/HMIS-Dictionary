@@ -58,10 +58,7 @@ shell:~$ HOST=localhost PORT=8082 DHIS=http://localhost:8080 AUTH='admin:distric
 ```
 
 This deploys a [http-server](https://github.com/http-party/http-server) serving the app with a proxy to the DHIS2 instance to serve the DHIS2 API calls.
-The `yarn start` command has the following argument fallback values:
-- HOST: localhost
-- PORT: 8082
-- DHIS: http://localhost:8080
+The `yarn start` command reads the variables present in `.env.local` to start the local server. Use `.env` as a template to create it.
 
 The app package manager has been migrated from `bower` to `yarn` with [bower-away](https://github.com/sheerun/bower-away). The `build-bower-deps.sh` script is used as a postinstall script to make a copy of the necessary files to the `bower_components` folder to avoid uploading unnecessary files with the app build zip file.
 
