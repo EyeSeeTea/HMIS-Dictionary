@@ -3,43 +3,53 @@
     Please refer to the LICENSE.md and LICENSES-DEP.md for complete licenses.
 ------------------------------------------------------------------------------------*/
 
-var dhisroot = window.location.href.split('/api/')[0]
-var dhisUrl = dhisroot + '/api/';
+var dhisroot = window.location.href.split("/api/")[0];
+var dhisUrl = dhisroot + "/api/";
 
-var qryPing = dhisUrl + 'system/ping';
+var qryPing = dhisUrl + "system/ping";
 
-appModule.factory('Ping', ['$resource',
-    function($resource) {
-        return $resource(qryPing, {}, {
-            query: {
-                method: 'GET',
-                transformResponse: function(data, headers) {
-                    //if no data return so no warnings
-                    if (data == '') {
-                        return;
-                    }
+appModule.factory("Ping", [
+    "$resource",
+    function ($resource) {
+        return $resource(
+            qryPing,
+            {},
+            {
+                query: {
+                    method: "GET",
+                    transformResponse: function (data, headers) {
+                        //if no data return so no warnings
+                        if (data == "") {
+                            return;
+                        }
 
-                    return {
-                        data: $.extend({}, eval("{" + data + '}'))
-                    };
-                }
+                        return {
+                            data: $.extend({}, eval("{" + data + "}")),
+                        };
+                    },
+                },
             }
-        });
-    }
+        );
+    },
 ]);
 
-var qryMe = dhisUrl + 'me?fields=userGroups[name]';
+var qryMe = dhisUrl + "me?fields=userGroups[name]";
 
-appModule.factory('meFactory', ['$resource',
-    function($resource) {
-     	return $resource(qryMe,	{},	{ 
-            get: { method: 'GET'} 
-        });
-    }
+appModule.factory("meFactory", [
+    "$resource",
+    function ($resource) {
+        return $resource(
+            qryMe,
+            {},
+            {
+                get: { method: "GET" },
+            }
+        );
+    },
 ]);
 
-appModule.factory('csv_to_json', [
-    function(csv) {
+appModule.factory("csv_to_json", [
+    function (csv) {
         var lines = csv.split("\n");
         var result = [];
         var headers = lines[0].split(",");
@@ -55,7 +65,7 @@ appModule.factory('csv_to_json', [
 
         //return result; //JavaScript object
         return JSON.stringify(result); //JSON
-    }
+    },
 ]);
 
 //http://127.0.0.1:8989/dhis/api/dataStore/HMIS_Dictionary/

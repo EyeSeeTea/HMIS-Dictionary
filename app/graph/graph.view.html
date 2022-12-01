@@ -3,10 +3,11 @@
     Please refer to the LICENSE.md and LICENSES-DEP.md for complete licenses.
  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
- <div ng-controller="graphMainController" class="row">
-     <div id="headerPanel" class="col-md-12 headerPanel row">
- 		<h1>{{'Graph' | translate}}</h1>
-        <div angucomplete-alt
+<div ng-controller="graphMainController" class="row">
+    <div id="headerPanel" class="col-md-12 headerPanel row">
+        <h1>{{'Graph' | translate}}</h1>
+        <div
+            angucomplete-alt
             placeholder="Search and select graph node"
             pause="100"
             selected-object="nodeSelected"
@@ -16,8 +17,8 @@
             minlength="1"
             input-class="form-control form-control-small"
             match-class="highlighted"
-            class="col-md-3">
-        </div>
- 	<div class="col-md-12" id="d3graph">
+            class="col-md-3"
+        ></div>
+        <div class="col-md-12" id="d3graph"></div>
     </div>
- </div>
+</div>

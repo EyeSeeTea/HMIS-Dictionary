@@ -1,5 +1,5 @@
 {
-    "INDEX.HTML":       "****************************",
+    "INDEX.HTML": "****************************",
 
     "idx_Dossiers": "Dossiers",
     "idx_Search": "Recherche",
@@ -8,10 +8,10 @@
     "idx_Programs": "Programmes",
     "idx_DataSets": "Ens. données",
 
-    "MODULE:ALL":       "****************************",
+    "MODULE:ALL": "****************************",
     "OPEN": "Ouvrir",
 
-    "MODULE:DOSSIERS":  "****************************",
+    "MODULE:DOSSIERS": "****************************",
 
     "dos_Dossiers": "Dossiers",
     "dos_Number of Services": "Nombre de Services",
@@ -42,8 +42,7 @@
 
     "dos_Comments": "Commentaires",
 
-
-    "MODULE:SEARCH":    "****************************",
+    "MODULE:SEARCH": "****************************",
 
     "srch_SearchAll": "Recherche",
     "srch_SearchAll_Clear": "Effacer les filtres",
@@ -81,5 +80,5 @@
     "srch_exportToExcel": "Exporter cette page vers Excel",
 
     "MODULE:PROGRAMS": "***************************",
-    "dos_Description of Program":"Description du Programme"
+    "dos_Description of Program": "Description du Programme"
 }

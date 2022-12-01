@@ -6,7 +6,7 @@
     "idx_Graph": "Graph",
     "idx_Admin": "Admin",
 
-    "MODULE:ALL":       "****************************",
+    "MODULE:ALL": "****************************",
     "OPEN": "Abrir",
 
     "MODULE: DOSSIERS": "****************************",
@@ -39,7 +39,6 @@
     "dos_DenominatorIndicator": "Denominator",
 
     "dos_Comments": "Comentários",
-
 
     "MÓDULO: PROCURAR": "****************************",
 
@@ -77,5 +76,4 @@
     "srch_Help": "Ajuda",
     "srch_Help_Text": "<p>Esta interface é feita para simplificar o acesso do usuário à terminologia associada às informações coletadas com o HMIS.<br><ul><li>Através da guia <b>Pesquisar</b> você pode diretamente Procure um termo em todas as colunas da tabela. Você também pode exibir os filtros de coluna, que permitem pesquisar informações em uma coluna específica. Utilize 'Limpar filtros' para redefinir todos os filtros.<i>Os usuários experientes podem usar palavra-chave '|' (OR) para pesquisar vários objetos.</i></li><li>Através da guia <b>Selecionar colunas</b> você pode selecionar colunas a serem exibidas na tabela. <i>Os usuários experientes podem usar as colunas avançadas para realizar pesquisas detalhadas através de IDs.</i></li></ul>Você pode finalmente exportar os resultados da sua pesquisa para o Excel (página por página, e não se esqueça de salvar como .xls).</p>",
     "srch_exportToExcel": "Exportar esta página para o Excel"
-
 }

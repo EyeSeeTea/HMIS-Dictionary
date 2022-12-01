@@ -5,7 +5,7 @@
 
  <div ng-controller="adminMainController" class="row">
      <div id="headerPanel" class="col-md-12 headerPanel row">
- 		    <h1>{{'idx_Admin' | translate}}</h1>
+             <h1>{{'idx_Admin' | translate}}</h1>
 
         <div class="col-md-12">
             <div class="alert alert-info rounded" role="alert">
@@ -30,8 +30,8 @@
 
                         <div class="col-md-9">
                             <select class="col-md-12 form-control" ng-options="UG.name for UG in UGList.userGroups | orderBy: 'name'" name="selectUG" id="drpBoxUG" ng-model="selectedUG">
-                				<option value="" disabled>Select...</option>
-                			</select>
+                                <option value="" disabled>Select...</option>
+                            </select>
                         </div>
                         <div class="col-md-3">
                             <button type="submit" class="btn btn-primary disabled" id="submitUG" ng-click="submitUG()">Submit</button>
@@ -58,8 +58,8 @@
 
                         <div class="col-md-9">
                             <select class="col-md-12 form-control" ng-options="OUGS.name for OUGS in OUGSList.organisationUnitGroupSets | orderBy: 'name'" name="selectOUGS" id="drpBoxOUGS" ng-model="selectedOUGS">
-                				<option value="" disabled>Select...</option>
-                			</select>
+                                <option value="" disabled>Select...</option>
+                            </select>
                         </div>
                         <div class="col-md-3">
                             <button type="submit" class="btn btn-primary disabled" id="submitOUGS" ng-click="submitOUGS()">Submit</button>
@@ -156,7 +156,7 @@
                 </div>
             </div>
 
-		</div>
+        </div>
 
     </div>
  </div>
