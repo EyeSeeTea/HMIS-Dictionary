@@ -41,24 +41,24 @@ Some elements are still hardcoded:
 Build the app running:
 
 ```console
-shell:~$ npm install # first time only
-shell:~$ npm run build
+shell:~$ yarn install # first time only
+shell:~$ yarn build
 ```
-This will create a `HMIS_Dictionary.zip` file that can be manually installed in DHIS2 App Management.
+This will create a `hmis-dictionary.zip` file that can be manually installed in DHIS2 App Management.
 
 ## Development
 
 The above mentioned method of deploying the app is not suited for development. To deploy a local instance of the app use:
 ```console
-shell:~$ HOST=<address> PORT=<port> DHIS=<dhis2_instance_url> AUTH=<user:passwd> npm start
+shell:~$ HOST=<address> PORT=<port> DHIS=<dhis2_instance_url> AUTH=<user:passwd> yarn start
 ```
 For example:
 ```console
-shell:~$ HOST=localhost PORT=8082 DHIS=http://localhost:8080 AUTH='admin:district' npm start
+shell:~$ HOST=localhost PORT=8082 DHIS=http://localhost:8080 AUTH='admin:district' yarn start
 ```
 
 This deploys a [http-server](https://github.com/http-party/http-server) serving the app with a proxy to the DHIS2 instance to serve the DHIS2 API calls.
-The `npm start` command has the following argument fallback values:
+The `yarn start` command has the following argument fallback values:
 - HOST: localhost
 - PORT: 8082
 - DHIS: http://localhost:8080

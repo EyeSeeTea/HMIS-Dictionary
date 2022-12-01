@@ -33,7 +33,8 @@
     "prettier": "2.6.1"
   },
   "scripts": {
-    "build-folder": "rm -rf build/ && d2-manifest package.json manifest.webapp && mkdir build && yarn run manifest && sh build-bower-deps.sh",
+    "postinstall": "sh build-bower-deps.sh",
+    "build-folder": "rm -rf build/ && d2-manifest package.json manifest.webapp && mkdir build && yarn run manifest && cp -r bower_components app assets languages doc assets/img/Logo_48.png index.html build",
     "build": "yarn build-folder && rm -f $npm_package_name.zip && cd build && zip --quiet -r ../$npm_package_name.zip *",
     "start": "http-server . -a ${HOST:-localhost} -p ${PORT:-8082} -c-1 -P ${DHIS:-http://localhost:8080} --proxy-options.auth $AUTH",
     "manifest": "d2-manifest package.json build/manifest.webapp",
