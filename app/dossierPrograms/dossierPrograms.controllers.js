@@ -128,61 +128,71 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
     },
 ]);
 
-/** 
-dossierProgramsModule.controller('dossiersProgramIndicatorController', ['$scope', 'dossiersProgramExpressionFactory', 'dossiersProgramFilterFactory', 'dossiersProgramIndicatorsFactory', function($scope, dossiersProgramExpressionFactory, dossiersProgramFilterFactory, dossiersProgramIndicatorsFactory) {
-
-    $scope.indicators4TOC = {
-        displayName: "Program indicators",
-        id: "IndicatorGroupsContainer",
-        index: 97
+dossierProgramsModule.controller("dossiersProgramIndicatorController", [
+    "$scope",
+    "dossiersProgramExpressionFactory",
+    "dossiersProgramFilterFactory",
+    "dossiersProgramIndicatorsFactory",
+    function (
+        $scope,
+        dossiersProgramExpressionFactory,
+        dossiersProgramFilterFactory,
+        dossiersProgramIndicatorsFactory
+    ) {
+        $scope.indicators4TOC = {
+            displayName: "Program indicators",
+            id: "IndicatorGroupsContainer",
+            index: 97,
         };
 
-    //gets the "readable" expressions for each indicator expression
-    recursiveAssignExpression = function(i) {
-        if (i >= $scope.indicators.programIndicators.length) return;
-        dossiersProgramExpressionFactory.save({}, $scope.indicators.programIndicators[i].expression,
-                         function (data) {
-                            $scope.indicators.programIndicators[i].expression = data.description;
-                            recursiveAssignExpression(i+1);
-                        });
-
-    }
-
-    //gets the "readable" expressions for each indicator expression and filter
-    recursiveAssignFilter = function(i) {
-        if (i >= $scope.indicators.programIndicators.length) return;
-        if (typeof($scope.indicators.programIndicators[i].filter) === 'undefined') {
-            recursiveAssignFilter(i+1);
-            return;
-        }
-        dossiersProgramFilterFactory.save({}, $scope.indicators.programIndicators[i].filter,
-                         function (data) {
-                            $scope.indicators.programIndicators[i].filter = data.description;
-                            recursiveAssignFilter(i+1);
-                        });
-
-    }
-
-    $scope.$watch('selectedProgram', function() {
-        ping();
-        if ($scope.selectedProgram) {
-            startLoadingState(false);
-            //get indicators, add to TOC
-            $scope.indicators = dossiersProgramIndicatorsFactory.get({
-                programId: $scope.selectedProgram.id
-            }, function() {
-                if ($scope.indicators.programIndicators.length > 0) {
-                    addtoTOC($scope.toc,null,$scope.indicators4TOC,"Indicators");
-                    recursiveAssignExpression(0);
-                    recursiveAssignFilter(0);
+        //gets the "readable" expressions for each indicator expression
+        recursiveAssignExpression = function (i) {
+            if (i >= $scope.indicators.programIndicators.length) return;
+            dossiersProgramExpressionFactory.save(
+                {},
+                $scope.indicators.programIndicators[i].expression,
+                function (data) {
+                    $scope.indicators.programIndicators[i].expression = data.description;
+                    recursiveAssignExpression(i + 1);
                 }
-                endLoadingState(true);
-            });
-        }
-    });
+            );
+        };
 
-}]);
-*/
+        //gets the "readable" expressions for each indicator expression and filter
+        recursiveAssignFilter = function (i) {
+            if (i >= $scope.indicators.programIndicators.length) return;
+            if (typeof $scope.indicators.programIndicators[i].filter === "undefined") {
+                recursiveAssignFilter(i + 1);
+                return;
+            }
+            dossiersProgramFilterFactory.save({}, $scope.indicators.programIndicators[i].filter, function (data) {
+                $scope.indicators.programIndicators[i].filter = data.description;
+                recursiveAssignFilter(i + 1);
+            });
+        };
+
+        $scope.$watch("selectedProgram", function () {
+            ping();
+            if ($scope.selectedProgram) {
+                startLoadingState(false);
+                //get indicators, add to TOC
+                $scope.indicators = dossiersProgramIndicatorsFactory.get(
+                    {
+                        programId: $scope.selectedProgram.id,
+                    },
+                    function (data) {
+                        if ($scope.indicators.programIndicators.length > 0) {
+                            addtoTOC($scope.toc, null, $scope.indicators4TOC, "Indicators");
+                            recursiveAssignExpression(0);
+                            recursiveAssignFilter(0);
+                        }
+                        endLoadingState(true);
+                    }
+                );
+            }
+        });
+    },
+]);
 
 dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
     "$scope",
@@ -255,13 +265,11 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
                         const num = indicator.numerator;
                         const den = indicator.denominator;
                         let m;
-                        console.debug($scope.selectedProgram.id);
                         while ((m = regex.exec(num)) !== null) {
                             // This is necessary to avoid infinite loops with zero-width matches
                             if (m.index === regex.lastIndex) {
                                 regex.lastIndex++;
                             }
-                            console.debug(m[1]);
                             if (m[1] == $scope.selectedProgram.id) {
                                 if ($scope.indicators.indexOf(indicator) == -1) $scope.indicators.push(indicator);
                                 return;
@@ -422,7 +430,6 @@ dossierProgramsModule.controller("dossiersProgramRuleVariablesController", [
                     },
                     function (data) {
                         $scope.ruleVariables = data.programRuleVariables.map(rule => ({ ...rule }));
-                        console.debug(`$scope.ruleVariables: ${JSON.stringify($scope.ruleVariables)}`);
 
                         if ($scope.ruleVariables.length > 0) {
                             addtoTOC($scope.toc, null, $scope.ruleVariables4TOC, "Program Rules");

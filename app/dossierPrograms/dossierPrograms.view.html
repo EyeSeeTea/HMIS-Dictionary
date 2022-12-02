@@ -210,32 +210,56 @@
             </div>
         </div>
 
-        <!--
-        <div class="col-md-12"  ng-controller="dossiersProgramIndicatorController" id="IndicatorGroupsContainer" ng-show="indicators.programIndicators[0]">
-            <h2 class="indicatorGroup" id="indicators">{{'Program indicators' | translate}}</h2>
-            <div  class="col-md-12">
-                <p>{{'Number of Indicators' | translate}}: {{indicators.programIndicators.length}}</p>
+        <div
+            class="col-md-12"
+            ng-controller="dossiersProgramIndicatorController"
+            id="IndicatorGroupsContainer"
+            ng-show="indicators.programIndicators[0]"
+        >
+            <h2 class="indicatorGroup" id="indicators">{{ "Program indicators" | translate }}</h2>
+            <div class="col-md-12">
+                <p>{{ "Number of Indicators" | translate }}: {{ indicators.programIndicators.length }}</p>
                 <table class="indicatorTable table table-striped">
                     <thead>
                         <tr>
-                            <th>{{'Name' | translate}}</th>
-                            <th>{{'Description' | translate}}</th>
-                            <th>{{'Expression' | translate}}</th>
-                            <th>{{'Filter' | translate}}</th>
+                            <th>{{ "Name" | translate }}</th>
+                            <th>{{ "Description" | translate }}</th>
+                            <th>{{ "Filter" | translate }}</th>
+                            <th>{{ "Calculation" | translate }}</th>
+                            <th>{{ "Aggregation Type" | translate }}</th>
+                            <th>{{ "Type of Program indicator" | translate }}</th>
+                            <th>{{ "Boundaries" | translate }}</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="indicator in  indicators.programIndicators | orderBy: 'displayName'">
-                            <td>{{indicator.displayName}}</td>
-                            <td>{{indicator.displayDescription}}</td>
-                            <td>{{indicator.expression}}</td>
-                            <td>{{indicator.filter}}</td>
+                            <td>{{ indicator.displayName }}</td>
+                            <td>{{ indicator.displayDescription }}</td>
+                            <td>{{ indicator.filter }}</td>
+                            <td>{{ indicator.expression }}</td>
+                            <td>{{ indicator.aggregationType }}</td>
+                            <td>{{ indicator.analyticsType }}</td>
+                            <td>
+                                <ul ng-if="indicator.analyticsPeriodBoundaries">
+                                    <li ng-repeat="boundarie in indicator.analyticsPeriodBoundaries">
+                                        <p>Boundary target: {{ boundarie.boundaryTarget }}</p>
+                                        <p ng-if="boundarie.analyticsPeriodBoundaryType">
+                                            Analytics period boundary type: {{ boundarie.analyticsPeriodBoundaryType }}
+                                        </p>
+                                        <p ng-if="boundarie.offsetPeriods">
+                                            Offset period by amount: {{ boundarie.offsetPeriods }}
+                                        </p>
+                                        <p ng-if="boundarie.offsetPeoffsetPeriodTyperiods">
+                                            Period type: {{ boundarie.offsetPeriodType }}
+                                        </p>
+                                    </li>
+                                </ul>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
-        -->
 
         <div class="col-md-12" id="indicatorContainer" ng-controller="dossierProgramGlobalIndicatorController">
             <div ng-if="indicators.length > 0" col-md-12>

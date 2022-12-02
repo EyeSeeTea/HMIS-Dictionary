@@ -11,12 +11,6 @@ var qryProgramStageSections =
     optionSetValue,optionSet[name,options[displayName]]]],programStageDataElements[dataElement[displayName,displayFormName,\
     displayDescription,valueType,optionSetValue,optionSet[name,options[displayName]]]]&paging=false";
 
-var qryProgramIndicators =
-    dhisUrl + "programs/:programId.json?fields=programIndicators[displayName,displayDescription,expression,filter]";
-
-var qryProgramIndicatorExpressions = dhisUrl + "programIndicators/expression/description";
-var qryProgramIndicatorFilters = dhisUrl + "programIndicators/filter/description";
-
 // Only public EventReports and EventCharts
 var qryEventReports =
     dhisUrl +
@@ -60,7 +54,10 @@ dossierProgramsModule.factory("dossiersProgramStageSectionsFactory", [
 ]);
 
 var qryProgramIndicators =
-    dhisUrl + "programs/:programId.json?fields=programIndicators[displayName,displayDescription,expression,filter]";
+    dhisUrl +
+    "programs/:programId.json?fields=programIndicators[displayName,displayDescription,\
+    filter,expression,aggregationType,analyticsType,\
+    analyticsPeriodBoundaries[boundaryTarget,analyticsPeriodBoundaryType,offsetPeriods,offsetPeriodType]]&paging=false";
 
 dossierProgramsModule.factory("dossiersProgramIndicatorsFactory", [
     "$resource",
