@@ -23,7 +23,8 @@ var appModule = angular.module("appModule", [
     "dossierProgramsModule",
     "datasetsModule",
     "searchModule",
-    "adminModule" /*, 'graphModule'*/,
+    "adminModule",
+    /*, 'graphModule'*/,
 ]);
 
 /*
