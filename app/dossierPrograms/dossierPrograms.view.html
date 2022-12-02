@@ -134,7 +134,7 @@
                             <td>{{ tea.valueType }}</td>
                             <td>{{ tea.aggregationType }}</td>
                             <td>
-                                <div ng-if="tea.optionSet.options.length > 0">
+                                <div ng-if="tea.optionSet.options">
                                     <p>Option Set name: {{ tea.optionSet.name }}</p>
                                     <select class="form-control col-md-2">
                                         <option selected>See options</option>
@@ -142,6 +142,68 @@
                                     </select>
                                 </div>
                             </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-12" id="RuleContainer" ng-controller="dossiersProgramRuleController">
+            <div ng-if="rules.length > 0" col-md-12>
+                <h3 class="section" id="rules">Program Rules</h3>
+                <p>{{ "Number of Rules in Program" | translate }}: {{ rules.length }}</p>
+                <table class="sectionElementsTable table table-striped">
+                    <thead>
+                        <tr>
+                            <th>{{ "Name" | translate }}</th>
+                            <th>{{ "Description" | translate }}</th>
+                            <th>{{ "Program Stage" | translate }}</th>
+                            <th>{{ "Condition" | translate }}</th>
+                            <th>{{ "Program Rule Actions" | translate }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="rule in rules">
+                            <td>{{ rule.name }}</td>
+                            <td>{{ rule.description }}</td>
+                            <td>{{ rule.programStage.name }}</td>
+                            <td>{{ rule.condition }}</td>
+                            <td>
+                                <ul ng-if="rule.programRuleActions.length > 0">
+                                    <li ng-repeat="prAction in rule.programRuleActions">
+                                        <p>Type: {{ prAction.programRuleActionType }}</p>
+                                        <p>Evaluation Time: {{ prAction.evaluationTime }}</p>
+                                        <p>Content: {{ prAction.content }}</p>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-12" id="RuleVariablesContainer" ng-controller="dossiersProgramRuleVariablesController">
+            <div ng-if="ruleVariables.length > 0" col-md-12>
+                <h3 class="section" id="ruleVariables">Program Rules Variables</h3>
+                <p>{{ "Number of Rule Variables in Program" | translate }}: {{ ruleVariables.length }}</p>
+                <table class="sectionElementsTable table table-striped">
+                    <thead>
+                        <tr>
+                            <th>{{ "Name" | translate }}</th>
+                            <th>{{ "Source type" | translate }}</th>
+                            <th>{{ "Program Stage" | translate }}</th>
+                            <th>{{ "Data element" | translate }}</th>
+                            <th>{{ "Tracked Entity Attribute" | translate }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="var in ruleVariables">
+                            <td>{{var.name}}</td>
+                            <td>{{var.programRuleVariableSourceType}}</td>
+                            <td>{{var.programStage.name}}</td>
+                            <td>{{var.dataElement.name}}</td>
+                            <td>{{var.trackedEntityAttribute.name}}</td>
                         </tr>
                     </tbody>
                 </table>

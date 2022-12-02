@@ -217,3 +217,73 @@ dossierProgramsModule.factory("dossiersProgramTEAsFactory", [
         );
     },
 ]);
+
+var qryProgramRules =
+    dhisUrl +
+    "programRules.json?filter=program.id\\:in\\:[:programId]&fields=name,description,programStage[name],condition,\
+    programRuleActions[programRuleActionType,evaluationTime,content]&paging=false";
+
+dossierProgramsModule.factory("dossiersProgramRulesFactory", [
+    "$resource",
+    function ($resource) {
+        return $resource(
+            qryProgramRules,
+            {
+                programId: "@programId",
+            },
+            {
+                query: {
+                    method: "GET",
+                    isArray: false,
+                },
+            }
+        );
+    },
+]);
+
+var qryProgramRulesConditionDescription = dhisUrl + "programRules/condition/description?programId=:programId";
+
+dossierProgramsModule.factory("dossiersProgramRulesConditionDescription", [
+    "$resource",
+    function ($resource) {
+        return $resource(
+            qryProgramRulesConditionDescription,
+            {
+                programId: "@programId",
+            },
+            {
+                save: {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "text/plain",
+                    },
+                    data: "@expression",
+                    isArray: false,
+                },
+            }
+        );
+    },
+]);
+
+var qryProgramRuleVariables =
+    dhisUrl +
+    "programRuleVariables.json?filter=program.id\\:in\\:[:programId]&fields=name,programRuleVariableSourceType,\
+    programStage[name],dataElement[name],trackedEntityAttribute[name]&paging=false";
+
+dossierProgramsModule.factory("dossiersProgramRuleVariablesFactory", [
+    "$resource",
+    function ($resource) {
+        return $resource(
+            qryProgramRuleVariables,
+            {
+                programId: "@programId",
+            },
+            {
+                query: {
+                    method: "GET",
+                    isArray: false,
+                },
+            }
+        );
+    },
+]);

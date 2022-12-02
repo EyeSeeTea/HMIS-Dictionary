@@ -333,6 +333,109 @@ dossierProgramsModule.controller("dossiersProgramTEAController", [
     },
 ]);
 
+
+dossierProgramsModule.controller("dossiersProgramRuleController", [
+    "$scope",
+    "$translate",
+    "dossiersProgramRulesFactory",
+    "dossiersProgramRulesConditionDescription",
+    function ($scope, $translate, dossiersProgramRulesFactory, dossiersProgramRulesConditionDescription) {
+        $scope.rules4TOC = {
+            displayName: "Program Rules",
+            id: "RuleContainer",
+            index: 121,
+        };
+
+        /* 
+        @name recursiveAssignConditionDescription
+        @description Gets the "readable" expressions for each program rule condition
+        @scope dossiersProgramRuleController
+        */
+        recursiveAssignConditionDescription = function (i) {
+            if (i >= $scope.rules.length) return;
+            dossiersProgramRulesConditionDescription.save(
+                { programId: $scope.selectedProgram.id },
+                $scope.rules[i].condition,
+                function (data) {
+                    $scope.rules[i].condition = data.description;
+                    recursiveAssignConditionDescription(i + 1);
+                }
+            );
+        };
+
+        /* 
+        @name none
+        @description Gets the program rules information, translates it and shows it
+        @dependencies dossiersProgramRulesFactory, dossiersProgramRulesConditionDescription
+        @scope dossiersProgramRuleController
+         */
+        $scope.$watch("selectedProgram", function () {
+            ping();
+            if ($scope.selectedProgram) {
+                startLoadingState(false);
+
+                dossiersProgramRulesFactory.get(
+                    {
+                        programId: $scope.selectedProgram.id,
+                    },
+                    function (data) {
+                        $scope.rules = data.programRules.map(rule => ({ ...rule }));
+
+                        if ($scope.rules.length > 0) {
+                            addtoTOC($scope.toc, null, $scope.rules4TOC, "Program Rules");
+                            recursiveAssignConditionDescription(0);
+                        }
+
+                        endLoadingState(true);
+                    }
+                );
+            }
+        });
+    },
+]);
+
+dossierProgramsModule.controller("dossiersProgramRuleVariablesController", [
+    "$scope",
+    "$translate",
+    "dossiersProgramRuleVariablesFactory",
+    function ($scope, $translate, dossiersProgramRuleVariablesFactory) {
+        $scope.ruleVariables4TOC = {
+            displayName: "Program Rule Variables",
+            id: "RuleVariablesContainer",
+            index: 122,
+        };
+
+        /* 
+        @name none
+        @description Gets the program rules variables information, translates it and shows it
+        @dependencies dossiersProgramRuleVariablesFactory
+        @scope dossiersProgramRuleVariablesController
+         */
+        $scope.$watch("selectedProgram", function () {
+            ping();
+            if ($scope.selectedProgram) {
+                startLoadingState(false);
+
+                dossiersProgramRuleVariablesFactory.get(
+                    {
+                        programId: $scope.selectedProgram.id,
+                    },
+                    function (data) {
+                        $scope.ruleVariables = data.programRuleVariables.map(rule => ({ ...rule }));
+                        console.debug(`$scope.ruleVariables: ${JSON.stringify($scope.ruleVariables)}`);
+
+                        if ($scope.ruleVariables.length > 0) {
+                            addtoTOC($scope.toc, null, $scope.ruleVariables4TOC, "Program Rules");
+                        }
+
+                        endLoadingState(true);
+                    }
+                );
+            }
+        });
+    },
+]);
+
 dossierProgramsModule.controller("dossiersProgramAnalysisController", [
     "$scope",
     "$q",
