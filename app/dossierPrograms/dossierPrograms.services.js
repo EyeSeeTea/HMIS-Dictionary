@@ -8,8 +8,8 @@ var qryProgramStageSections =
     dhisUrl +
     "programStages/:programStageId.json?fields=id,displayName,repeatable,sortOrder,\
     programStageSections[id,displayName,dataElements[displayName,displayFormName,displayDescription,valueType,\
-    optionSetValue,optionSet[options[displayName]]]],programStageDataElements[dataElement[displayName,displayFormName,\
-    displayDescription,valueType,optionSetValue,optionSet[options[displayName]]]]&paging=false";
+    optionSetValue,optionSet[name,options[displayName]]]],programStageDataElements[dataElement[displayName,displayFormName,\
+    displayDescription,valueType,optionSetValue,optionSet[name,options[displayName]]]]&paging=false";
 
 var qryProgramIndicators =
     dhisUrl + "programs/:programId.json?fields=programIndicators[displayName,displayDescription,expression,filter]";

@@ -89,12 +89,15 @@
                                 <td>{{ dataElement.displayDescription }}</td>
                                 <td>{{ dataElement.valueType }}</td>
                                 <td>
-                                    <select ng-if="dataElement.optionSet.options" class="form-control col-md-2">
-                                        <option selected>See options</option>
-                                        <option ng-repeat="option in dataElement.optionSet.options">
-                                            {{ option.displayName }}
-                                        </option>
-                                    </select>
+                                    <div ng-if="dataElement.optionSet.options">
+                                        <p>Option Set name: {{ dataElement.optionSet.name }}</p>
+                                        <select class="form-control col-md-2">
+                                            <option selected>See options</option>
+                                            <option ng-repeat="option in dataElement.optionSet.options">
+                                                {{ option.displayName }}
+                                            </option>
+                                        </select>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -117,9 +120,9 @@
                             <th>{{ "Form name" | translate }}</th>
                             <th>{{ "code" | translate }}</th>
                             <th>{{ "Description" | translate }}</th>
-                            <th>{{ "Option set" | translate }}</th>
                             <th>{{ "Value Type" | translate }}</th>
                             <th>{{ "Aggregation Type" | translate }}</th>
+                            <th>{{ "Option set" | translate }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -136,8 +139,6 @@
                                     <select class="form-control col-md-2">
                                         <option selected>See options</option>
                                         <option ng-repeat="option in tea.optionSet.options">{{ option.name }}</option>
-
-
                                     </select>
                                 </div>
                             </td>
