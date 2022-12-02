@@ -6,7 +6,10 @@ var qryPrograms = dhisUrl + "programs.json?fields=id,displayName,displayDescript
 
 var qryProgramStageSections =
     dhisUrl +
-    "programStages/:programStageId.json?fields=id,displayName,repeatable,sortOrder,programStageSections[id,displayName,dataElements[displayName,displayFormName,displayDescription,valueType,optionSetValue,optionSet[options[displayName]]]],programStageDataElements[dataElement[displayName,displayFormName,displayDescription,valueType,optionSetValue,optionSet[options[displayName]]]]&paging=false";
+    "programStages/:programStageId.json?fields=id,displayName,repeatable,sortOrder,\
+    programStageSections[id,displayName,dataElements[displayName,displayFormName,displayDescription,valueType,\
+    optionSetValue,optionSet[options[displayName]]]],programStageDataElements[dataElement[displayName,displayFormName,\
+    displayDescription,valueType,optionSetValue,optionSet[options[displayName]]]]&paging=false";
 
 var qryProgramIndicators =
     dhisUrl + "programs/:programId.json?fields=programIndicators[displayName,displayDescription,expression,filter]";
@@ -117,7 +120,8 @@ dossierProgramsModule.factory("dossiersProgramFilterFactory", [
 
 var qryProgramGlobalIndicators =
     dhisUrl +
-    "indicators?fields=displayName,indicatorType[displayName],description,numerator,numeratorDescription,denominator,denominatorDescription&paging=false";
+    "indicators?fields=displayName,indicatorType[displayName],description,numerator,numeratorDescription,denominator,\
+    denominatorDescription&paging=false";
 
 datasetsModule.factory("programGlobalIndicators", [
     "$resource",
@@ -178,6 +182,29 @@ dossierProgramsModule.factory("dossiersProgramEventChartFactory", [
     function ($resource) {
         return $resource(
             qryEventCharts,
+            {
+                programId: "@programId",
+            },
+            {
+                query: {
+                    method: "GET",
+                    isArray: false,
+                },
+            }
+        );
+    },
+]);
+
+var qryProgramTrackedEntityAttributes =
+    dhisUrl +
+    "programs/:programId.json?fields=programTrackedEntityAttributes[trackedEntityAttribute\
+    [name,formName,code,description,optionSet[name,options[name]],valueType,aggregationType]]&paging=false";
+
+dossierProgramsModule.factory("dossiersProgramTEAsFactory", [
+    "$resource",
+    function ($resource) {
+        return $resource(
+            qryProgramTrackedEntityAttributes,
             {
                 programId: "@programId",
             },

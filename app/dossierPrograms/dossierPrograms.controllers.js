@@ -255,13 +255,13 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
                         const num = indicator.numerator;
                         const den = indicator.denominator;
                         let m;
-                        console.log($scope.selectedProgram.id);
+                        console.debug($scope.selectedProgram.id);
                         while ((m = regex.exec(num)) !== null) {
                             // This is necessary to avoid infinite loops with zero-width matches
                             if (m.index === regex.lastIndex) {
                                 regex.lastIndex++;
                             }
-                            console.log(m[1]);
+                            console.debug(m[1]);
                             if (m[1] == $scope.selectedProgram.id) {
                                 if ($scope.indicators.indexOf(indicator) == -1) $scope.indicators.push(indicator);
                                 return;
@@ -290,6 +290,49 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
     },
 ]);
 
+dossierProgramsModule.controller("dossiersProgramTEAController", [
+    "$scope",
+    "$translate",
+    "dossiersProgramTEAsFactory",
+    function ($scope, $translate, dossiersProgramTEAsFactory) {
+        $scope.trackedEntityAttributes4TOC = {
+            displayName: "Tracked Entity Attributes",
+            id: "trackedEntityAttributeContainer",
+            index: 99,
+        };
+
+        /*
+    @name none
+    @description Gets the tracked entity attributes information, translates it and shows it
+    @dependencies dossiersProgramTEAsFactory
+    @scope dossiersProgramTEAController
+    */
+        $scope.$watch("selectedProgram", function () {
+            ping();
+            if ($scope.selectedProgram) {
+                startLoadingState(false);
+
+                dossiersProgramTEAsFactory.get(
+                    {
+                        programId: $scope.selectedProgram.id,
+                    },
+                    function (data) {
+                        $scope.trackedEntityAttributes = data.programTrackedEntityAttributes.map(teas => ({
+                            ...teas.trackedEntityAttribute,
+                        }));
+
+                        if ($scope.trackedEntityAttributes.length > 0) {
+                            addtoTOC($scope.toc, null, $scope.trackedEntityAttributes4TOC, "Tracked Entity Attributes");
+                        }
+
+                        endLoadingState(true);
+                    }
+                );
+            }
+        });
+    },
+]);
+
 dossierProgramsModule.controller("dossiersProgramAnalysisController", [
     "$scope",
     "$q",
@@ -299,13 +342,13 @@ dossierProgramsModule.controller("dossiersProgramAnalysisController", [
         $scope.eventReports4TOC = {
             displayName: "Public Event Reports",
             id: "EventReportsContainer",
-            index: 99,
+            index: 120,
         };
 
         $scope.eventCharts4TOC = {
             displayName: "Public Event Charts",
             id: "EventChartsContainer",
-            index: 100,
+            index: 121,
         };
 
         getEventReportUrl = function (eventReportId) {

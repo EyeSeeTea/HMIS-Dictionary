@@ -103,6 +103,50 @@
             </div>
         </div>
 
+        <div class="col-md-12" id="trackedEntityAttributeContainer" ng-controller="dossiersProgramTEAController">
+            <div ng-if="trackedEntityAttributes.length > 0" col-md-12>
+                <h3 class="section" id="trackedEntityAttributes">Tracked Entity Attributes</h3>
+                <p>
+                    {{ "Number of Tracked Entity Attributes in Program" | translate }}:
+                    {{ trackedEntityAttributes.length }}
+                </p>
+                <table class="sectionElementsTable table table-striped">
+                    <thead>
+                        <tr>
+                            <th>{{ "Name" | translate }}</th>
+                            <th>{{ "Form name" | translate }}</th>
+                            <th>{{ "code" | translate }}</th>
+                            <th>{{ "Description" | translate }}</th>
+                            <th>{{ "Option set" | translate }}</th>
+                            <th>{{ "Value Type" | translate }}</th>
+                            <th>{{ "Aggregation Type" | translate }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="tea in trackedEntityAttributes">
+                            <td>{{ tea.name }}</td>
+                            <td>{{ tea.formName }}</td>
+                            <td>{{ tea.code }}</td>
+                            <td>{{ tea.description }}</td>
+                            <td>{{ tea.valueType }}</td>
+                            <td>{{ tea.aggregationType }}</td>
+                            <td>
+                                <div ng-if="tea.optionSet.options.length > 0">
+                                    <p>Option Set name: {{ tea.optionSet.name }}</p>
+                                    <select class="form-control col-md-2">
+                                        <option selected>See options</option>
+                                        <option ng-repeat="option in tea.optionSet.options">{{ option.name }}</option>
+
+
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         <!--
         <div class="col-md-12"  ng-controller="dossiersProgramIndicatorController" id="IndicatorGroupsContainer" ng-show="indicators.programIndicators[0]">
             <h2 class="indicatorGroup" id="indicators">{{'Program indicators' | translate}}</h2>
