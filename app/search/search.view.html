@@ -20,7 +20,7 @@
                                 aria-expanded="true"
                                 aria-controls="collapseOne"
                             >
-                                {{'srch_SearchAll' | translate}}
+                                {{ "srch_SearchAll" | translate }}
                             </a>
                         </h4>
                     </div>
@@ -46,7 +46,7 @@
                                         <input
                                             type="text"
                                             class="form-control"
-                                            placeholder="{{'srch_SearchAll_Here' | translate}}"
+                                            placeholder="{{ 'srch_SearchAll_Here' | translate }}"
                                             name="searchTerm"
                                             ng-model="table.globalSearchTerm"
                                             ng-change="table.applyGlobalSearch()"
@@ -58,7 +58,7 @@
                                                 ng-disabled="!table.tableParams.hasFilter()"
                                                 ng-click="table.tableParams.filter({});table.globalSearchTerm=null;"
                                             >
-                                                {{'srch_SearchAll_Clear' | translate}}
+                                                {{ "srch_SearchAll_Clear" | translate }}
                                             </button>
                                         </span>
                                     </div>
@@ -66,8 +66,8 @@
                             </div>
                             <div class="col-xs-2">
                                 <label class="checkbox-inline" style="margin-top: 6px">
-                                    <input type="checkbox" ng-model="table.isFiltersVisible" /> {{'srch_SearchAll_Row' |
-                                    translate}}
+                                    <input type="checkbox" ng-model="table.isFiltersVisible" />
+                                    {{ "srch_SearchAll_Row" | translate }}
                                 </label>
                             </div>
                         </div>
@@ -86,7 +86,7 @@
                                 aria-expanded="false"
                                 aria-controls="collapseTwo"
                             >
-                                {{'srch_SelectColumns' | translate}}
+                                {{ "srch_SelectColumns" | translate }}
                             </a>
                         </h4>
                     </div>
@@ -94,7 +94,9 @@
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-xs-3">
-                                    <p><b>{{'srch_SelectColumns_objBasics' | translate}}</b></p>
+                                    <p>
+                                        <b>{{ "srch_SelectColumns_objBasics" | translate }}</b>
+                                    </p>
                                     <div class="col-xs-1"></div>
                                     <div class="col-xs-11">
                                         <label
@@ -107,12 +109,14 @@
                                                 ng-model-options="{ getterSetter: true }"
                                                 ng-model="col.show"
                                             />
-                                            {{col.title()}}
+                                            {{ col.title() }}
                                         </label>
                                     </div>
                                 </div>
                                 <div class="col-xs-3">
-                                    <p><b>{{'srch_SelectColumns_objDescs' | translate}}</b></p>
+                                    <p>
+                                        <b>{{ "srch_SelectColumns_objDescs" | translate }}</b>
+                                    </p>
                                     <div class="col-xs-1"></div>
                                     <div class="col-xs-11">
                                         <label
@@ -125,12 +129,14 @@
                                                 ng-model-options="{ getterSetter: true }"
                                                 ng-model="col.show"
                                             />
-                                            {{col.title()}}
+                                            {{ col.title() }}
                                         </label>
                                     </div>
                                 </div>
                                 <div class="col-xs-3">
-                                    <p><b>{{'srch_SelectColumns_grpBasics' | translate}}</b></p>
+                                    <p>
+                                        <b>{{ "srch_SelectColumns_grpBasics" | translate }}</b>
+                                    </p>
                                     <div class="col-xs-1"></div>
                                     <div class="col-xs-11">
                                         <label
@@ -143,12 +149,14 @@
                                                 ng-model-options="{ getterSetter: true }"
                                                 ng-model="col.show"
                                             />
-                                            {{col.title()}}
+                                            {{ col.title() }}
                                         </label>
                                     </div>
                                 </div>
                                 <div class="col-xs-3" ng-show="show_dossiers">
-                                    <p><b>{{'srch_SelectColumns_servBasics' | translate}}</b></p>
+                                    <p>
+                                        <b>{{ "srch_SelectColumns_servBasics" | translate }}</b>
+                                    </p>
                                     <div class="col-xs-1"></div>
                                     <div class="col-xs-11">
                                         <label
@@ -161,7 +169,7 @@
                                                 ng-model-options="{ getterSetter: true }"
                                                 ng-model="col.show"
                                             />
-                                            {{col.title()}}
+                                            {{ col.title() }}
                                         </label>
                                     </div>
                                 </div>
@@ -180,7 +188,7 @@
                                                 ng-model-options="{ getterSetter: true }"
                                                 ng-model="col.show"
                                             />
-                                            {{col.title()}}
+                                            {{ col.title() }}
                                         </label>
                                     </div>
                                 </div>
@@ -198,7 +206,7 @@
                                                 ng-model-options="{ getterSetter: true }"
                                                 ng-model="col.show"
                                             />
-                                            {{col.title()}}
+                                            {{ col.title() }}
                                         </label>
                                     </div>
                                 </div>
@@ -215,16 +223,16 @@
                                                 ng-model-options="{ getterSetter: true }"
                                                 ng-model="col.show"
                                             />
-                                            {{col.title()}}
+                                            {{ col.title() }}
                                         </label>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-12">
-                                    <a href ng-click="advanced = !advanced"
-                                        >{{'Show / Hide advanced columns' | translate}}</a
-                                    >
+                                    <a href ng-click="advanced = !advanced">{{
+                                        "Show / Hide advanced columns" | translate
+                                    }}</a>
                                 </div>
                             </div>
                         </div>
@@ -243,7 +251,7 @@
                                 aria-expanded="false"
                                 aria-controls="collapseThree"
                             >
-                                {{'srch_Help' | translate}}
+                                {{ "srch_Help" | translate }}
                             </a>
                         </h4>
                     </div>
@@ -326,7 +334,7 @@
                     ng-bind-html='object.object_name | highlight: table.globalSearchTerm:params.filter():"object_name"'
                 ></span>
                 <a
-                    ng-if='object.object_type=="indicator"'
+                    ng-if="object.object_type == 'indicator'"
                     href=""
                     ng-click="getTable(object.object_name,
 			object.object_id,object.object_numerator ,  object.object_denominator)"
@@ -439,6 +447,6 @@
         </tr>
     </table>
     <button class="btn btn-link" ng-click="exportToExcel('#searchTable')">
-        <span class="glyphicon glyphicon-share"></span> {{'srch_exportToExcel' | translate}}
+        <span class="glyphicon glyphicon-share"></span> {{ "srch_exportToExcel" | translate }}
     </button>
 </div>

@@ -5,8 +5,8 @@
 
 <div ng-controller="datasetsMainController" id="DossierPanel" class="row">
     <div id="headerDossierPanel" class="col-md-12 headerPanel">
-        <h1>{{'idx_DataSets' | translate}}</h1>
-        <p>{{'Number of Data Sets' | translate}}: {{datasets.dataSets.length}}</p>
+        <h1>{{ "idx_DataSets" | translate }}</h1>
+        <p>{{ "Number of Data Sets" | translate }}: {{ datasets.dataSets.length }}</p>
 
         <div class="col-md-2">
             <select
@@ -16,7 +16,7 @@
                 id="drpBoxServices"
                 ng-model="selectedDataset"
             >
-                <option value="" disabled selected>{{'Select a Data Set' | translate}}</option>
+                <option value="" disabled selected>{{ "Select a Data Set" | translate }}</option>
             </select>
         </div>
     </div>
@@ -24,23 +24,25 @@
     <div class="col-md-12">
         <div id="DossierTitleContainer" ng-if="selectedDataset" class="row">
             <br />
-            <h1>{{selectedDataset.displayName}}</h1>
+            <h1>{{ selectedDataset.displayName }}</h1>
         </div>
         <br />
 
         <div id="tocContainer" class="row">
-            <h3 ng-if="selectedDataset" style="text-decoration: underline">{{'dos_Table of Content'| translate}}</h3>
+            <h3 ng-if="selectedDataset" style="text-decoration: underline">{{ "dos_Table of Content" | translate }}</h3>
             <ul ng-repeat="i in toc.entries | orderBy:'parent.index'">
                 <li>
                     <big
                         ><b
-                            ><a href="" class="pageref" ng-click="scrollTo(i.parent.id)" target="_self"
-                                >{{i.parent.displayName}}</a
-                            ></b
+                            ><a href="" class="pageref" ng-click="scrollTo(i.parent.id)" target="_self">{{
+                                i.parent.displayName
+                            }}</a></b
                         ></big
                     >
                     <ul ng-repeat="j in i.children">
-                        <li><a href="" class="pageref" ng-click="scrollTo(j.id)">{{j.displayName}}</a></li>
+                        <li>
+                            <a href="" class="pageref" ng-click="scrollTo(j.id)">{{ j.displayName }}</a>
+                        </li>
                     </ul>
                 </li>
             </ul>
@@ -48,47 +50,46 @@
 
         <div class="col-md-12" id="sectionContainer" ng-controller="datasetSectionController">
             <div ng-repeat="section in datasetDataElements.sections">
-                <h3 class="section" id="{{section.id}}">{{section.displayName}}</h3>
-                <p>{{'Number of Elements in Section'| translate}}: {{section.dataElements.length}}</p>
+                <h3 class="section" id="{{ section.id }}">{{ section.displayName }}</h3>
+                <p>{{ "Number of Elements in Section" | translate }}: {{ section.dataElements.length }}</p>
                 <table class="sectionElementsTable table table-striped">
                     <thead>
                         <tr>
-                            <th>{{'dos_NameElement'| translate}}</th>
-                            <th>{{'dos_FormNameElement'| translate}}</th>
-                            <th>{{'dos_DescriptionElement'| translate}}</th>
-                            <th>{{'DataTypeElement' | translate}}</th>
-                            <th>{{'Options' | translate}}</th>
-                            <th>{{'Category combination' | translate}}</th>
+                            <th>{{ "dos_NameElement" | translate }}</th>
+                            <th>{{ "dos_FormNameElement" | translate }}</th>
+                            <th>{{ "dos_DescriptionElement" | translate }}</th>
+                            <th>{{ "DataTypeElement" | translate }}</th>
+                            <th>{{ "Options" | translate }}</th>
+                            <th>{{ "Category combination" | translate }}</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="dataElement in section.dataElements">
-                            <td>{{dataElement.displayName || dataElement.dataElement.displayName}}</td>
-                            <td>{{dataElement.displayFormName || dataElement.dataElement.displayFormName}}</td>
-                            <td>{{dataElement.displayDescription || dataElement.dataElement.displayDescription}}</td>
-                            <td>{{dataElement.valueType || dataElement.dataElement.valueType}}</td>
+                            <td>{{ dataElement.displayName || dataElement.dataElement.displayName }}</td>
+                            <td>{{ dataElement.displayFormName || dataElement.dataElement.displayFormName }}</td>
+                            <td>{{ dataElement.displayDescription || dataElement.dataElement.displayDescription }}</td>
+                            <td>{{ dataElement.valueType || dataElement.dataElement.valueType }}</td>
                             <!--choose between having or not having section-->
                             <td ng-if="dataElement.displayName">
                                 <ul>
                                     <li ng-repeat="option in dataElement.optionSet.options">
-                                        <div>{{option.displayName || "-"}}</div>
+                                        <div>{{ option.displayName || "-" }}</div>
                                     </li>
                                 </ul>
                             </td>
                             <td ng-if="!dataElement.displayName">
                                 <ul>
                                     <li ng-repeat="option in dataElement.dataElement.optionSet.options">
-                                        <div>{{option.displayName || "-"}}</div>
+                                        <div>{{ option.displayName || "-" }}</div>
                                     </li>
                                 </ul>
                             </td>
-                            <!-- -->
                             <td
                                 ng-init="categoryCombo=getCategoryCombination(dataElement.id || dataElement.dataElement.id, $parent.$index, $index)"
                             >
-                                <a href="" class="pageref" ng-click="scrollTo(categoryCombo.id)" target="_self"
-                                    >{{categoryCombo.displayName}}</a
-                                >
+                                <a href="" class="pageref" ng-click="scrollTo(categoryCombo.id)" target="_self">{{
+                                    categoryCombo.displayName
+                                }}</a>
                             </td>
                         </tr>
                     </tbody>
@@ -102,28 +103,30 @@
                 <table class="sectionElementsTable table table-striped">
                     <thead>
                         <tr>
-                            <th>{{'Category combination'| translate}}</th>
-                            <th>{{'Categories'| translate}}</th>
-                            <th>{{'Items' | translate}}</th>
+                            <th>{{ "Category combination" | translate }}</th>
+                            <th>{{ "Categories" | translate }}</th>
+                            <th>{{ "Items" | translate }}</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat-start="categoryCombo in categoryCombos.categoryCombos">
-                            <td id="{{categoryCombo.id}}" rowspan="{{categoryCombo.categories.length}}">
-                                {{categoryCombo.displayName}}
+                            <td id="{{ categoryCombo.id }}" rowspan="{{ categoryCombo.categories.length }}">
+                                {{ categoryCombo.displayName }}
                             </td>
-                            <td>{{categoryCombo.categories[0].displayName}}</td>
+                            <td>{{ categoryCombo.categories[0].displayName }}</td>
                             <td>
                                 <ul>
-                                    <li ng-repeat="item in categoryCombo.categories[0].items">{{item.displayName}}</li>
+                                    <li ng-repeat="item in categoryCombo.categories[0].items">
+                                        {{ item.displayName }}
+                                    </li>
                                 </ul>
                             </td>
                         </tr>
                         <tr ng-repeat-end ng-repeat="category in categoryCombo.categories.slice(1)">
-                            <td>{{category.displayName}}</td>
+                            <td>{{ category.displayName }}</td>
                             <td>
                                 <ul>
-                                    <li ng-repeat="item in category.items">{{item.displayName}}</li>
+                                    <li ng-repeat="item in category.items">{{ item.displayName }}</li>
                                 </ul>
                             </td>
                         </tr>
@@ -138,22 +141,22 @@
                 <table class="sectionElementsTable table table-striped">
                     <thead>
                         <tr>
-                            <th>{{'Name'| translate}}</th>
-                            <th>{{'Type'| translate}}</th>
-                            <th>{{'Numerator' | translate}}</th>
-                            <th>{{'Numerator description'| translate}}</th>
-                            <th>{{'Denominator'| translate}}</th>
-                            <th>{{'Denominator description' | translate}}</th>
+                            <th>{{ "Name" | translate }}</th>
+                            <th>{{ "Type" | translate }}</th>
+                            <th>{{ "Numerator" | translate }}</th>
+                            <th>{{ "Numerator description" | translate }}</th>
+                            <th>{{ "Denominator" | translate }}</th>
+                            <th>{{ "Denominator description" | translate }}</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="indicator in indicators |  orderBy: 'displayName'">
-                            <td>{{indicator.displayName}}</td>
-                            <td>{{indicator.indicatorType.displayName}}</td>
-                            <td>{{indicator.numerator}}</td>
-                            <td>{{indicator.numeratorDescription}}</td>
-                            <td>{{indicator.denominator}}</td>
-                            <td>{{indicator.denominatorDescription}}</td>
+                            <td>{{ indicator.displayName }}</td>
+                            <td>{{ indicator.indicatorType.displayName }}</td>
+                            <td>{{ indicator.numerator }}</td>
+                            <td>{{ indicator.numeratorDescription }}</td>
+                            <td>{{ indicator.denominator }}</td>
+                            <td>{{ indicator.denominatorDescription }}</td>
                         </tr>
                     </tbody>
                 </table>

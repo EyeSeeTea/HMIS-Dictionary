@@ -5,8 +5,8 @@
 
 <div ng-controller="dossierProgramsMainController" id="DossierPanel" class="row">
     <div id="headerDossierPanel" class="col-md-12 headerPanel">
-        <h1>{{'Programs' | translate}}</h1>
-        <p>{{'Number of Programs' | translate}}: {{programs.programs.length}}</p>
+        <h1>{{ "Programs" | translate }}</h1>
+        <p>{{ "Number of Programs" | translate }}: {{ programs.programs.length }}</p>
         <!--<p>{{'Number of Data Elements in Program' | translate}}: {{programDataElements.programStageDataElements.length}}</p>
         <p>{{'Number of Indicators in Program' | translate}}: {{selectedProgram.programIndicators.length}}</p>-->
         <div class="col-md-2">
@@ -25,19 +25,19 @@
     <div class="col-md-12" ng-if="selectedProgram">
         <div id="DossierTitleContainer" class="row">
             <br />
-            <h1>{{selectedProgram.displayName}}</h1>
+            <h1>{{ selectedProgram.displayName }}</h1>
         </div>
         <br />
 
         <div id="tocContainer" class="row">
-            <h3 style="text-decoration: underline">{{'dos_Table of Content'| translate}}</h3>
+            <h3 style="text-decoration: underline">{{ "dos_Table of Content" | translate }}</h3>
             <ul ng-if="selectedProgram.displayDescription">
                 <li>
                     <big
                         ><b
-                            ><a href="" class="pageref" ng-click='scrollTo("DossierTextTitleContainer",22)'
-                                >{{'dos_Description of Program' | translate}}</a
-                            ></b
+                            ><a href="" class="pageref" ng-click='scrollTo("DossierTextTitleContainer",22)'>{{
+                                "dos_Description of Program" | translate
+                            }}</a></b
                         ></big
                     >
                 </li>
@@ -46,13 +46,15 @@
                 <li>
                     <big
                         ><b
-                            ><a href="" class="pageref" ng-click="scrollTo(i.parent.id)" target="_self"
-                                >{{i.parent.displayName}}</a
-                            ></b
+                            ><a href="" class="pageref" ng-click="scrollTo(i.parent.id)" target="_self">{{
+                                i.parent.displayName
+                            }}</a></b
                         ></big
                     >
                     <ul ng-repeat="j in i.children">
-                        <li><a href="" class="pageref" ng-click="scrollTo(j.id)">{{j.displayName}}</a></li>
+                        <li>
+                            <a href="" class="pageref" ng-click="scrollTo(j.id)">{{ j.displayName }}</a>
+                        </li>
                     </ul>
                 </li>
             </ul>
@@ -60,37 +62,37 @@
 
         <div id="DossierTextTitleContainer" ng-if="selectedProgram.displayDescription" class="row headerGroup">
             <br />
-            <h1>{{'dos_Description of Program' | translate}}</h1>
+            <h1>{{ "dos_Description of Program" | translate }}</h1>
             <div ng-bind-html="trustAsHtml(selectedProgram.displayDescription)"></div>
         </div>
 
         <div id="stageContainer" ng-controller="dossiersProgramSectionController">
             <div class="col-md-12" ng-repeat="stage in stages | orderBy:'sortOrder'">
-                <h2 class="stage" id="{{stage.id}}">{{stage.displayName}}</h2>
+                <h2 class="stage" id="{{ stage.id }}">{{ stage.displayName }}</h2>
                 <div class="col-md-12" ng-repeat="section in stage.programStageSections">
-                    <h3 class="section" id="{{section.id}}">{{section.displayName}}</h3>
-                    <p>{{'Number of Elements in Section'| translate}}: {{section.dataElements.length}}</p>
+                    <h3 class="section" id="{{ section.id }}">{{ section.displayName }}</h3>
+                    <p>{{ "Number of Elements in Section" | translate }}: {{ section.dataElements.length }}</p>
                     <table class="sectionElementsTable table table-striped">
                         <thead>
                             <tr>
-                                <th>{{'dos_NameElement'| translate}}</th>
-                                <th>{{'dos_FormNameElement'| translate}}</th>
-                                <th>{{'dos_DescriptionElement'| translate}}</th>
-                                <th>{{'DataTypeElement' | translate}}</th>
-                                <th>{{'Options' | translate}}</th>
+                                <th>{{ "dos_NameElement" | translate }}</th>
+                                <th>{{ "dos_FormNameElement" | translate }}</th>
+                                <th>{{ "dos_DescriptionElement" | translate }}</th>
+                                <th>{{ "DataTypeElement" | translate }}</th>
+                                <th>{{ "Options" | translate }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="dataElement in section.dataElements">
-                                <td>{{dataElement.displayName}}</td>
-                                <td>{{dataElement.displayFormName}}</td>
-                                <td>{{dataElement.displayDescription}}</td>
-                                <td>{{dataElement.valueType}}</td>
+                                <td>{{ dataElement.displayName }}</td>
+                                <td>{{ dataElement.displayFormName }}</td>
+                                <td>{{ dataElement.displayDescription }}</td>
+                                <td>{{ dataElement.valueType }}</td>
                                 <td>
                                     <select ng-if="dataElement.optionSet.options" class="form-control col-md-2">
                                         <option selected>See options</option>
                                         <option ng-repeat="option in dataElement.optionSet.options">
-                                            {{option.displayName}}
+                                            {{ option.displayName }}
                                         </option>
                                     </select>
                                 </td>
@@ -134,22 +136,22 @@
                 <table class="sectionElementsTable table table-striped">
                     <thead>
                         <tr>
-                            <th>{{'Name'| translate}}</th>
-                            <th>{{'Type'| translate}}</th>
-                            <th>{{'Numerator' | translate}}</th>
-                            <th>{{'Numerator description'| translate}}</th>
-                            <th>{{'Denominator'| translate}}</th>
-                            <th>{{'Denominator description' | translate}}</th>
+                            <th>{{ "Name" | translate }}</th>
+                            <th>{{ "Type" | translate }}</th>
+                            <th>{{ "Numerator" | translate }}</th>
+                            <th>{{ "Numerator description" | translate }}</th>
+                            <th>{{ "Denominator" | translate }}</th>
+                            <th>{{ "Denominator description" | translate }}</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="indicator in indicators |  orderBy: 'displayName'">
-                            <td>{{indicator.displayName}}</td>
-                            <td>{{indicator.indicatorType.displayName}}</td>
-                            <td>{{indicator.numerator}}</td>
-                            <td>{{indicator.numeratorDescription}}</td>
-                            <td>{{indicator.denominator}}</td>
-                            <td>{{indicator.denominatorDescription}}</td>
+                            <td>{{ indicator.displayName }}</td>
+                            <td>{{ indicator.indicatorType.displayName }}</td>
+                            <td>{{ indicator.numerator }}</td>
+                            <td>{{ indicator.numeratorDescription }}</td>
+                            <td>{{ indicator.denominator }}</td>
+                            <td>{{ indicator.denominatorDescription }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -158,25 +160,25 @@
 
         <div class="col-md-12" ng-controller="dossiersProgramAnalysisController">
             <div class="col-md-12" id="EventReportsContainer" ng-show="eventReports.length > 0">
-                <h2 class="EventReportsGroup" id="eventReports">{{'Event Reports' | translate}}</h2>
+                <h2 class="EventReportsGroup" id="eventReports">{{ "Event Reports" | translate }}</h2>
                 <div class="col-md-12">
-                    <p>{{'Number of Event Reports' | translate}}: {{eventReports.length}}</p>
+                    <p>{{ "Number of Event Reports" | translate }}: {{ eventReports.length }}</p>
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>{{'Name' | translate}}</th>
-                                <th>{{'Description' | translate}}</th>
-                                <th>{{'Link' | translate}}</th>
+                                <th>{{ "Name" | translate }}</th>
+                                <th>{{ "Description" | translate }}</th>
+                                <th>{{ "Link" | translate }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="eventReport in  eventReports | orderBy: 'displayName'">
-                                <td>{{eventReport.displayName}}</td>
-                                <td>{{eventReport.displayDescription}}</td>
+                                <td>{{ eventReport.displayName }}</td>
+                                <td>{{ eventReport.displayDescription }}</td>
                                 <td>
-                                    <a ng-href="{{eventReport.url}}" class="btn btn-info" role="button"
-                                        >{{'OPEN' | translate}}</a
-                                    >
+                                    <a ng-href="{{ eventReport.url }}" class="btn btn-info" role="button">{{
+                                        "OPEN" | translate
+                                    }}</a>
                                 </td>
                             </tr>
                         </tbody>
@@ -185,25 +187,25 @@
             </div>
 
             <div class="col-md-12" id="EventChartsContainer" ng-show="eventCharts.length > 0">
-                <h2 class="EventChartsGroup" id="eventCharts">{{'Event Charts' | translate}}</h2>
+                <h2 class="EventChartsGroup" id="eventCharts">{{ "Event Charts" | translate }}</h2>
                 <div class="col-md-12">
-                    <p>{{'Number of Event Charts' | translate}}: {{eventCharts.length}}</p>
+                    <p>{{ "Number of Event Charts" | translate }}: {{ eventCharts.length }}</p>
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>{{'Name' | translate}}</th>
-                                <th>{{'Description' | translate}}</th>
-                                <th>{{'Link' | translate}}</th>
+                                <th>{{ "Name" | translate }}</th>
+                                <th>{{ "Description" | translate }}</th>
+                                <th>{{ "Link" | translate }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="eventChart in  eventCharts | orderBy: 'displayName'">
-                                <td>{{eventChart.displayName}}</td>
-                                <td>{{eventChart.displayDescription}}</td>
+                                <td>{{ eventChart.displayName }}</td>
+                                <td>{{ eventChart.displayDescription }}</td>
                                 <td>
-                                    <a ng-href="{{eventChart.url}}" class="btn btn-info" role="button"
-                                        >{{'OPEN' | translate}}</a
-                                    >
+                                    <a ng-href="{{ eventChart.url }}" class="btn btn-info" role="button">{{
+                                        "OPEN" | translate
+                                    }}</a>
                                 </td>
                             </tr>
                         </tbody>
