@@ -341,13 +341,19 @@ dossierProgramsModule.controller("dossiersProgramTEAController", [
     },
 ]);
 
-
 dossierProgramsModule.controller("dossiersProgramRuleController", [
     "$scope",
     "$translate",
     "dossiersProgramRulesFactory",
     "dossiersProgramRulesConditionDescription",
-    function ($scope, $translate, dossiersProgramRulesFactory, dossiersProgramRulesConditionDescription) {
+    "dossiersProgramRulesActionsTemplateName",
+    function (
+        $scope,
+        $translate,
+        dossiersProgramRulesFactory,
+        dossiersProgramRulesConditionDescription,
+        dossiersProgramRulesActionsTemplateName
+    ) {
         $scope.rules4TOC = {
             displayName: "Program Rules",
             id: "RuleContainer",
@@ -359,7 +365,7 @@ dossierProgramsModule.controller("dossiersProgramRuleController", [
         @description Gets the "readable" expressions for each program rule condition
         @scope dossiersProgramRuleController
         */
-        recursiveAssignConditionDescription = function (i) {
+        function recursiveAssignConditionDescription(i) {
             if (i >= $scope.rules.length) return;
             dossiersProgramRulesConditionDescription.save(
                 { programId: $scope.selectedProgram.id },
@@ -369,12 +375,35 @@ dossierProgramsModule.controller("dossiersProgramRuleController", [
                     recursiveAssignConditionDescription(i + 1);
                 }
             );
-        };
+        }
+
+        /* 
+        @name assignProgramRulesActionsTemplateName
+        @description Gets the template name for each templateUid
+        @scope dossiersProgramRuleController
+        */
+        function assignProgramRulesActionsTemplateName() {
+            const templateUid = $scope.rules.flatMap(rule =>
+                rule.programRuleActions.flatMap(pra => pra.templateUid ?? [])
+            );
+
+            dossiersProgramRulesActionsTemplateName.get({ templateUid: templateUid }, function (data) {
+                $scope.rules.forEach(rule => {
+                    rule.programRuleActions.forEach(pra => {
+                        if (pra.templateUid) {
+                            pra.template = data.programNotificationTemplates.find(
+                                itemToFind => itemToFind.id === pra.templateUid
+                            )?.name;
+                        }
+                    });
+                });
+            });
+        }
 
         /* 
         @name none
         @description Gets the program rules information, translates it and shows it
-        @dependencies dossiersProgramRulesFactory, dossiersProgramRulesConditionDescription
+        @dependencies dossiersProgramRulesFactory, dossiersProgramRulesConditionDescription, dossiersProgramRulesActionsTemplateName
         @scope dossiersProgramRuleController
          */
         $scope.$watch("selectedProgram", function () {
@@ -391,6 +420,7 @@ dossierProgramsModule.controller("dossiersProgramRuleController", [
 
                         if ($scope.rules.length > 0) {
                             addtoTOC($scope.toc, null, $scope.rules4TOC, "Program Rules");
+                            assignProgramRulesActionsTemplateName();
                             recursiveAssignConditionDescription(0);
                         }
 
