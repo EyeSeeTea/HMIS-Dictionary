@@ -329,11 +329,11 @@
             class="col-md-12"
             ng-controller="dossiersProgramIndicatorController"
             id="IndicatorGroupsContainer"
-            ng-show="indicators.programIndicators[0]"
+            ng-show="programIndicators[0]"
         >
             <h2 class="indicatorGroup" id="indicators">{{ "Program indicators" | translate }}</h2>
             <div class="col-md-12">
-                <p>{{ "Number of Indicators" | translate }}: {{ indicators.programIndicators.length }}</p>
+                <p>{{ "Number of Indicators" | translate }}: {{ programIndicators.length }}</p>
                 <table class="indicatorTable table table-striped">
                     <thead>
                         <tr>
@@ -348,14 +348,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="indicator in  indicators.programIndicators | orderBy: 'displayName'">
+                        <tr ng-repeat="indicator in  programIndicators | orderBy: 'displayName'">
                             <td>{{ indicator.displayName }}</td>
                             <td>{{ indicator.displayDescription }}</td>
                             <td>{{ indicator.filter }}</td>
                             <td>{{ indicator.expression }}</td>
                             <td>{{ indicator.aggregationType }}</td>
                             <td>{{ indicator.analyticsType }}</td>
-                            <td>{{ indicator.stageRef.name }}</td>
+                            <td>
+                                <ul ng-if="indicator.stageRef">
+                                    <li ng-repeat="stageRef in indicator.stageRef">
+                                        {{ stageRef }}
+                                    </li>
+                                </ul>
+                            </td>
                             <td>
                                 <ul ng-if="indicator.analyticsPeriodBoundaries">
                                     <li ng-repeat="boundarie in indicator.analyticsPeriodBoundaries">
@@ -391,6 +397,7 @@
                             <th>{{ "Numerator description" | translate }}</th>
                             <th>{{ "Denominator" | translate }}</th>
                             <th>{{ "Denominator description" | translate }}</th>
+                            <th>{{ "Stage(s) referenced:" | translate }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -402,6 +409,13 @@
                             <td>{{ indicator.numeratorDescription }}</td>
                             <td>{{ indicator.denominator }}</td>
                             <td>{{ indicator.denominatorDescription }}</td>
+                            <td>
+                                <ul ng-if="indicator.stageRef">
+                                    <li ng-repeat="stageRef in indicator.stageRef">
+                                        {{ stageRef }}
+                                    </li>
+                                </ul>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

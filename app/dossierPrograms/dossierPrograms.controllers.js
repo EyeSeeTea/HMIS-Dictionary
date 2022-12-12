@@ -9,19 +9,7 @@ dossierProgramsModule.controller("dossierProgramsMainController", [
     "$anchorScroll",
     "$sce",
     "dossiersProgramsFactory",
-    "dossiersProgramStageSectionsFactory",
-    "dossiersProgramIndicatorsFactory",
-    "dossiersProgramExpressionFactory",
-    function (
-        $scope,
-        $translate,
-        $anchorScroll,
-        $sce,
-        dossiersProgramsFactory,
-        dossiersProgramStageSectionsFactory,
-        dossiersProgramIndicatorsFactory,
-        dossiersProgramExpressionFactory
-    ) {
+    function ($scope, $translate, $anchorScroll, $sce, dossiersProgramsFactory) {
         $("#dossiersPrograms").tab("show");
 
         /*
@@ -130,63 +118,104 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
 
 dossierProgramsModule.controller("dossiersProgramIndicatorController", [
     "$scope",
-    "dossiersProgramExpressionFactory",
-    "dossiersProgramFilterFactory",
+    "$rootScope",
+    "dossiersProgramIndicatorExpressionFactory",
+    "dossiersProgramIndicatorFilterFactory",
+    "dossiersProgramIndicatorStagesFactory",
     "dossiersProgramIndicatorsFactory",
     function (
         $scope,
-        dossiersProgramExpressionFactory,
-        dossiersProgramFilterFactory,
+        $rootScope,
+        dossiersProgramIndicatorExpressionFactory,
+        dossiersProgramIndicatorFilterFactory,
+        dossiersProgramIndicatorStagesFactory,
         dossiersProgramIndicatorsFactory
     ) {
-        $scope.indicators4TOC = {
+        $scope.programIndicators4TOC = {
             displayName: "Program indicators",
             id: "IndicatorGroupsContainer",
             index: 97,
         };
 
-        //gets the "readable" expressions for each indicator expression
-        recursiveAssignExpression = function (i) {
-            if (i >= $scope.indicators.programIndicators.length) return;
-            dossiersProgramExpressionFactory.save(
-                {},
-                $scope.indicators.programIndicators[i].expression,
-                function (data) {
-                    $scope.indicators.programIndicators[i].expression = data.description;
-                    recursiveAssignExpression(i + 1);
-                }
-            );
-        };
+        function getStageRef(filter) {
+            const psdeRegex = /#{(\w+)\.\w+}/g;
+            let stageRefArray = psdeRegex.exec(filter);
+            if (stageRefArray && stageRefArray.length > 1) {
+                stageRefArray.shift();
+                return $scope.programStages.filter(ps => stageRefArray.includes(ps.id)).flatMap(ps => ps.name);
+            }
+        }
 
-        //gets the "readable" expressions for each indicator expression and filter
-        recursiveAssignFilter = function (i) {
-            if (i >= $scope.indicators.programIndicators.length) return;
-            if (typeof $scope.indicators.programIndicators[i].filter === "undefined") {
+        /*
+         *  @name recursiveAssignExpression
+         *  @description Gets the "readable" expressions for each indicator expression
+         *  @scope dossiersProgramIndicatorController
+         */
+        function recursiveAssignExpression(i) {
+            if (i >= $scope.programIndicators.length) return;
+            dossiersProgramIndicatorExpressionFactory.save({}, $scope.programIndicators[i].expression, function (data) {
+                $scope.programIndicators[i].expression = data.description.replaceAll("\\.", ".");
+                recursiveAssignExpression(i + 1);
+            });
+        }
+
+        /*
+         *  @name recursiveAssignFilter
+         *  @description Gets the "readable" expressions for each indicator filter
+         *  @scope dossiersProgramIndicatorController
+         */
+        function recursiveAssignFilter(i) {
+            if (i >= $scope.programIndicators.length) return;
+            if (typeof $scope.programIndicators[i].filter === "undefined") {
                 recursiveAssignFilter(i + 1);
                 return;
             }
-            dossiersProgramFilterFactory.save({}, $scope.indicators.programIndicators[i].filter, function (data) {
-                $scope.indicators.programIndicators[i].filter = data.description;
+            $scope.programIndicators[i].stageRef = getStageRef($scope.programIndicators[i].filter);
+            dossiersProgramIndicatorFilterFactory.save({}, $scope.programIndicators[i].filter, function (data) {
+                $scope.programIndicators[i].filter = data.description.replaceAll("\\.", ".");
                 recursiveAssignFilter(i + 1);
             });
-        };
+        }
 
+        /*
+         *  @name none
+         *  @description Gets the program indicator information, translates it and shows it
+         *  @dependencies dossiersProgramIndicatorsFactory, dossiersProgramIndicatorStagesFactory
+         *  @scope dossiersProgramIndicatorController
+         */
         $scope.$watch("selectedProgram", function () {
             ping();
             if ($scope.selectedProgram) {
                 startLoadingState(false);
                 //get indicators, add to TOC
-                $scope.indicators = dossiersProgramIndicatorsFactory.get(
+                dossiersProgramIndicatorsFactory.get(
                     {
                         programId: $scope.selectedProgram.id,
                     },
                     function (data) {
-                        if ($scope.indicators.programIndicators.length > 0) {
-                            addtoTOC($scope.toc, null, $scope.indicators4TOC, "Indicators");
-                            recursiveAssignExpression(0);
-                            recursiveAssignFilter(0);
-                        }
-                        endLoadingState(true);
+                        dossiersProgramIndicatorStagesFactory.get(
+                            {
+                                programId: $scope.selectedProgram.id,
+                            },
+                            function (psData) {
+                                $scope.programStages = psData.programs[0].programStages.map(ps => ps);
+                                if (data.programIndicators.length > 0) {
+                                    $scope.programIndicators = data.programIndicators;
+                                    addtoTOC($scope.toc, null, $scope.programIndicators4TOC, "Indicators");
+                                    recursiveAssignExpression(0);
+                                    recursiveAssignFilter(0);
+                                    $rootScope.programIndicators = $scope.programIndicators.flatMap(pi => {
+                                        return {
+                                            id: pi.id,
+                                            name: pi.displayName,
+                                            expression: pi.expression,
+                                        };
+                                    });
+                                    $rootScope.programStages = $scope.programStages;
+                                }
+                                endLoadingState(true);
+                            }
+                        );
                     }
                 );
             }
@@ -196,11 +225,19 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
 
 dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
     "$scope",
+    "$rootScope",
     "$translate",
-    "programGlobalIndicators",
-    "programIndicatorExpression",
+    "dossiersProgramGlobalIndicatorsFactory",
+    "dossiersProgramGlobalIndicatorExpressionFactory",
     "Ping",
-    function ($scope, $translate, programGlobalIndicators, programIndicatorExpression, Ping) {
+    function (
+        $scope,
+        $rootScope,
+        $translate,
+        dossiersProgramGlobalIndicatorsFactory,
+        dossiersProgramGlobalIndicatorExpressionFactory,
+        Ping
+    ) {
         $scope.indicators4TOC = {
             displayName: "Indicators",
             id: "indicatorContainer",
@@ -212,9 +249,9 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
          *  @description Gets the "readable" expressions for each indicator numerator
          *  @scope dossierProgramGlobalIndicatorController
          */
-        recursiveAssignNumerator = function (i) {
+        function recursiveAssignNumerator(i) {
             if (i >= $scope.indicators.length) return;
-            programIndicatorExpression.get(
+            dossiersProgramGlobalIndicatorExpressionFactory.get(
                 {
                     expression: $scope.indicators[i].numerator,
                 },
@@ -224,16 +261,16 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
                 },
                 true
             );
-        };
+        }
 
         /*
          *  @name recursiveAssignNumerator
          *  @description Gets the "readable" expressions for each indicator denominator
          *  @scope dossierProgramGlobalIndicatorController
          */
-        recursiveAssignDenominator = function (i) {
+        function recursiveAssignDenominator(i) {
             if (i >= $scope.indicators.length) return;
-            programIndicatorExpression.get(
+            dossiersProgramGlobalIndicatorExpressionFactory.get(
                 {
                     expression: $scope.indicators[i].denominator,
                 },
@@ -243,49 +280,72 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
                 },
                 true
             );
-        };
+        }
+
+        /*
+         *  @name parseExpression
+         *  @description Parse numerator/denominator to identify references
+         *  @scope dossierProgramGlobalIndicatorController
+         */
+        function parseExpression(indicator, item) {
+            const regexArray = [/D{(\w+)\.?(\w+)?}/g, /A{(\w+)\.?\w+?}/g, /I{(\w+)}/g];
+            let m;
+            regexArray.forEach((regex, index) => {
+                while ((m = regex.exec(item)) !== null) {
+                    // This is necessary to avoid infinite loops with zero-width matches
+                    if (m.index === regex.lastIndex) {
+                        regex.lastIndex++;
+                    }
+                    if (index === 0) {
+                        if (
+                            (ps = $scope.programStages.find(ps => {
+                                return ps.programStageDataElements.find(de => de.dataElement.id === m[2]) !== undefined;
+                            }))
+                        ) {
+                            if (!indicator.stageRef) indicator.stageRef = [];
+                            indicator.stageRef = indicator.stageRef.concat(ps.name);
+                        }
+                    }
+                    if (index === 2) {
+                        if ((pi = $scope.programIndicators.find(pi => pi.id === m[1]))) {
+                            if (!indicator.stageRef) indicator.stageRef = [];
+                            if ($scope.programStages)
+                                indicator.stageRef = indicator.stageRef.concat(
+                                    $scope.programStages.flatMap(ps =>
+                                        pi.expression.search(ps.id) !== -1 ? ps.name : []
+                                    )
+                                );
+                            if ($scope.indicators.indexOf(indicator) == -1) $scope.indicators.push(indicator);
+                        }
+                    }
+                    if (m[1] == $scope.selectedProgram.id) {
+                        if ($scope.indicators.indexOf(indicator) == -1) $scope.indicators.push(indicator);
+                        return;
+                    }
+                }
+            });
+        }
 
         /*
          *  @name none
          *  @description Gets the indicator information, translates it and shows it
-         *  @dependencies programGlobalIndicators, programIndicatorExpression
+         *  @dependencies dossiersProgramGlobalIndicatorsFactory, dossiersProgramGlobalIndicatorExpressionFactory
          *  @scope dossierProgramGlobalIndicatorController
          */
-        $scope.$watch("selectedProgram", function () {
+        $scope.$watchGroup(["selectedProgram", "programIndicators", "programStages"], function () {
             ping();
-            if ($scope.selectedProgram) {
+            if ($scope.selectedProgram && $scope.programIndicators && $scope.programStages) {
                 startLoadingState(false);
                 $scope.indicators = [];
-                //Query indicator information
 
-                $scope.allIndicators = programGlobalIndicators.get(function () {
+                //Query indicator information
+                $scope.allIndicators = dossiersProgramGlobalIndicatorsFactory.get(function () {
                     endLoadingState(true);
                     $scope.allIndicators.indicators.forEach(function (indicator) {
-                        const regex = /D{(\w+)\.?\w+?}/g;
                         const num = indicator.numerator;
                         const den = indicator.denominator;
-                        let m;
-                        while ((m = regex.exec(num)) !== null) {
-                            // This is necessary to avoid infinite loops with zero-width matches
-                            if (m.index === regex.lastIndex) {
-                                regex.lastIndex++;
-                            }
-                            if (m[1] == $scope.selectedProgram.id) {
-                                if ($scope.indicators.indexOf(indicator) == -1) $scope.indicators.push(indicator);
-                                return;
-                            }
-                        }
-
-                        while ((m = regex.exec(den)) !== null) {
-                            // This is necessary to avoid infinite loops with zero-width matches
-                            if (m.index === regex.lastIndex) {
-                                regex.lastIndex++;
-                            }
-                            if (m[1] == $scope.selectedProgram.id) {
-                                if ($scope.indicators.indexOf(indicator) == -1) $scope.indicators.push(indicator);
-                                return;
-                            }
-                        }
+                        parseExpression(indicator, num);
+                        parseExpression(indicator, den);
                     }, this);
                     if ($scope.indicators.length > 0) {
                         addtoTOC($scope.toc, null, $scope.indicators4TOC, "Indicators");
