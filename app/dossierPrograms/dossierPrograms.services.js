@@ -53,7 +53,7 @@ dossierProgramsModule.factory("dossiersProgramStageSectionsFactory", [
 
 var qryProgramIndicators =
     dhisUrl +
-    "programs/:programId?fields=programIndicators[displayName,displayDescription,\
+    "programs/:programId?fields=programIndicators[id,displayName,displayDescription,\
     filter,expression,aggregationType,analyticsType,\
     analyticsPeriodBoundaries[boundaryTarget,analyticsPeriodBoundaryType,offsetPeriods,offsetPeriodType]]&paging=false";
 
@@ -77,7 +77,7 @@ dossierProgramsModule.factory("dossiersProgramIndicatorsFactory", [
 
 var qryProgramIndicatorExpressions = dhisUrl + "programIndicators/expression/description";
 
-dossierProgramsModule.factory("dossiersProgramExpressionFactory", [
+dossierProgramsModule.factory("dossiersProgramIndicatorExpressionFactory", [
     "$resource",
     function ($resource) {
         return $resource(
@@ -96,7 +96,7 @@ dossierProgramsModule.factory("dossiersProgramExpressionFactory", [
 
 var qryProgramIndicatorFilters = dhisUrl + "programIndicators/filter/description";
 
-dossierProgramsModule.factory("dossiersProgramFilterFactory", [
+dossierProgramsModule.factory("dossiersProgramIndicatorFilterFactory", [
     "$resource",
     function ($resource) {
         return $resource(
@@ -113,12 +113,34 @@ dossierProgramsModule.factory("dossiersProgramFilterFactory", [
     },
 ]);
 
+var qryProgramIndicatorStages =
+    dhisUrl +
+    "programs?filter=id\\:eq\\::programId&fields=programStages[id,name,programStageDataElements[dataElement[id]]]&paging=false";
+
+dossierProgramsModule.factory("dossiersProgramIndicatorStagesFactory", [
+    "$resource",
+    function ($resource) {
+        return $resource(
+            qryProgramIndicatorStages,
+            {
+                programId: "@programId",
+            },
+            {
+                query: {
+                    method: "GET",
+                    isArray: false,
+                },
+            }
+        );
+    },
+]);
+
 var qryProgramGlobalIndicators =
     dhisUrl +
-    "indicators?fields=displayName,indicatorType[displayName],description,numerator,numeratorDescription,denominator,\
-    denominatorDescription&paging=false";
+    "indicators?fields=displayName,displayDescription,indicatorType[displayName],description,numerator,\
+    numeratorDescription,denominator,denominatorDescription&paging=false";
 
-datasetsModule.factory("programGlobalIndicators", [
+datasetsModule.factory("dossiersProgramGlobalIndicatorsFactory", [
     "$resource",
     function ($resource) {
         return $resource(
@@ -134,13 +156,13 @@ datasetsModule.factory("programGlobalIndicators", [
     },
 ]);
 
-var qryProgramIndicatorExpression = dhisUrl + "expressions/description?expression=:expression";
+var qryProgramGlobalIndicatorExpression = dhisUrl + "expressions/description?expression=:expression";
 
-datasetsModule.factory("programIndicatorExpression", [
+datasetsModule.factory("dossiersProgramGlobalIndicatorExpressionFactory", [
     "$resource",
     function ($resource) {
         return $resource(
-            qryProgramIndicatorExpression,
+            qryProgramGlobalIndicatorExpression,
             {
                 expression: "@expression",
             },
