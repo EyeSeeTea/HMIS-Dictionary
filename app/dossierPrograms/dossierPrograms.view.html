@@ -106,6 +106,103 @@
             </div>
         </div>
 
+        <div
+            class="col-md-12"
+            ng-controller="dossiersProgramIndicatorController"
+            id="IndicatorGroupsContainer"
+            ng-show="programIndicators[0]"
+        >
+            <h2 class="indicatorGroup" id="indicators">{{ "Program indicators" | translate }}</h2>
+            <div class="col-md-12">
+                <p>{{ "Number of Indicators" | translate }}: {{ programIndicators.length }}</p>
+                <table class="indicatorTable table table-striped">
+                    <thead>
+                        <tr>
+                            <th>{{ "Name" | translate }}</th>
+                            <th>{{ "Description" | translate }}</th>
+                            <th>{{ "Filter" | translate }}</th>
+                            <th>{{ "Calculation" | translate }}</th>
+                            <th>{{ "Aggregation Type" | translate }}</th>
+                            <th>{{ "Type of Program indicator" | translate }}</th>
+                            <th>{{ "Stage(s) referenced:" | translate }}</th>
+                            <th>{{ "Boundaries" | translate }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="indicator in  programIndicators | orderBy: 'displayName'">
+                            <td>{{ indicator.displayName }}</td>
+                            <td>{{ indicator.displayDescription }}</td>
+                            <td>{{ indicator.filter }}</td>
+                            <td>{{ indicator.expression }}</td>
+                            <td>{{ indicator.aggregationType }}</td>
+                            <td>{{ indicator.analyticsType }}</td>
+                            <td>
+                                <ul ng-if="indicator.stageRef">
+                                    <li ng-repeat="stageRef in indicator.stageRef">
+                                        {{ stageRef }}
+                                    </li>
+                                </ul>
+                            </td>
+                            <td>
+                                <ul ng-if="indicator.analyticsPeriodBoundaries">
+                                    <li ng-repeat="boundarie in indicator.analyticsPeriodBoundaries">
+                                        <div>Boundary target: {{ boundarie.boundaryTarget }}</div>
+                                        <div ng-if="boundarie.analyticsPeriodBoundaryType">
+                                            Analytics period boundary type: {{ boundarie.analyticsPeriodBoundaryType }}
+                                        </div>
+                                        <div ng-if="boundarie.offsetPeriods">
+                                            Offset period by amount: {{ boundarie.offsetPeriods }}
+                                        </div>
+                                        <div ng-if="boundarie.offsetPeoffsetPeriodTyperiods">
+                                            Period type: {{ boundarie.offsetPeriodType }}
+                                        </div>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-12" id="indicatorContainer" ng-controller="dossierProgramGlobalIndicatorController">
+            <div ng-if="indicators.length > 0" col-md-12>
+                <h3 class="section" id="indicators">Indicators</h3>
+                <table class="sectionElementsTable table table-striped">
+                    <thead>
+                        <tr>
+                            <th>{{ "Name" | translate }}</th>
+                            <th>{{ "Description" | translate }}</th>
+                            <th>{{ "Type" | translate }}</th>
+                            <th>{{ "Numerator" | translate }}</th>
+                            <th>{{ "Numerator description" | translate }}</th>
+                            <th>{{ "Denominator" | translate }}</th>
+                            <th>{{ "Denominator description" | translate }}</th>
+                            <th>{{ "Stage(s) referenced:" | translate }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="indicator in indicators |  orderBy: 'displayName'">
+                            <td>{{ indicator.displayName }}</td>
+                            <td>{{ indicator.displayDescription }}</td>
+                            <td>{{ indicator.indicatorType.displayName }}</td>
+                            <td>{{ indicator.numerator }}</td>
+                            <td>{{ indicator.numeratorDescription }}</td>
+                            <td>{{ indicator.denominator }}</td>
+                            <td>{{ indicator.denominatorDescription }}</td>
+                            <td>
+                                <ul ng-if="indicator.stageRef">
+                                    <li ng-repeat="stageRef in indicator.stageRef">
+                                        {{ stageRef }}
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         <div class="col-md-12" id="trackedEntityAttributeContainer" ng-controller="dossiersProgramTEAController">
             <div ng-if="trackedEntityAttributes.length > 0" col-md-12>
                 <h3 class="section" id="trackedEntityAttributes">Tracked Entity Attributes</h3>
@@ -319,103 +416,6 @@
                             <td>{{var.programStage.name}}</td>
                             <td>{{var.dataElement.name}}</td>
                             <td>{{var.trackedEntityAttribute.name}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div
-            class="col-md-12"
-            ng-controller="dossiersProgramIndicatorController"
-            id="IndicatorGroupsContainer"
-            ng-show="programIndicators[0]"
-        >
-            <h2 class="indicatorGroup" id="indicators">{{ "Program indicators" | translate }}</h2>
-            <div class="col-md-12">
-                <p>{{ "Number of Indicators" | translate }}: {{ programIndicators.length }}</p>
-                <table class="indicatorTable table table-striped">
-                    <thead>
-                        <tr>
-                            <th>{{ "Name" | translate }}</th>
-                            <th>{{ "Description" | translate }}</th>
-                            <th>{{ "Filter" | translate }}</th>
-                            <th>{{ "Calculation" | translate }}</th>
-                            <th>{{ "Aggregation Type" | translate }}</th>
-                            <th>{{ "Type of Program indicator" | translate }}</th>
-                            <th>{{ "Stage(s) referenced:" | translate }}</th>
-                            <th>{{ "Boundaries" | translate }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="indicator in  programIndicators | orderBy: 'displayName'">
-                            <td>{{ indicator.displayName }}</td>
-                            <td>{{ indicator.displayDescription }}</td>
-                            <td>{{ indicator.filter }}</td>
-                            <td>{{ indicator.expression }}</td>
-                            <td>{{ indicator.aggregationType }}</td>
-                            <td>{{ indicator.analyticsType }}</td>
-                            <td>
-                                <ul ng-if="indicator.stageRef">
-                                    <li ng-repeat="stageRef in indicator.stageRef">
-                                        {{ stageRef }}
-                                    </li>
-                                </ul>
-                            </td>
-                            <td>
-                                <ul ng-if="indicator.analyticsPeriodBoundaries">
-                                    <li ng-repeat="boundarie in indicator.analyticsPeriodBoundaries">
-                                        <div>Boundary target: {{ boundarie.boundaryTarget }}</div>
-                                        <div ng-if="boundarie.analyticsPeriodBoundaryType">
-                                            Analytics period boundary type: {{ boundarie.analyticsPeriodBoundaryType }}
-                                        </div>
-                                        <div ng-if="boundarie.offsetPeriods">
-                                            Offset period by amount: {{ boundarie.offsetPeriods }}
-                                        </div>
-                                        <div ng-if="boundarie.offsetPeoffsetPeriodTyperiods">
-                                            Period type: {{ boundarie.offsetPeriodType }}
-                                        </div>
-                                    </li>
-                                </ul>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="col-md-12" id="indicatorContainer" ng-controller="dossierProgramGlobalIndicatorController">
-            <div ng-if="indicators.length > 0" col-md-12>
-                <h3 class="section" id="indicators">Indicators</h3>
-                <table class="sectionElementsTable table table-striped">
-                    <thead>
-                        <tr>
-                            <th>{{ "Name" | translate }}</th>
-                            <th>{{ "Description" | translate }}</th>
-                            <th>{{ "Type" | translate }}</th>
-                            <th>{{ "Numerator" | translate }}</th>
-                            <th>{{ "Numerator description" | translate }}</th>
-                            <th>{{ "Denominator" | translate }}</th>
-                            <th>{{ "Denominator description" | translate }}</th>
-                            <th>{{ "Stage(s) referenced:" | translate }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="indicator in indicators |  orderBy: 'displayName'">
-                            <td>{{ indicator.displayName }}</td>
-                            <td>{{ indicator.displayDescription }}</td>
-                            <td>{{ indicator.indicatorType.displayName }}</td>
-                            <td>{{ indicator.numerator }}</td>
-                            <td>{{ indicator.numeratorDescription }}</td>
-                            <td>{{ indicator.denominator }}</td>
-                            <td>{{ indicator.denominatorDescription }}</td>
-                            <td>
-                                <ul ng-if="indicator.stageRef">
-                                    <li ng-repeat="stageRef in indicator.stageRef">
-                                        {{ stageRef }}
-                                    </li>
-                                </ul>
-                            </td>
                         </tr>
                     </tbody>
                 </table>

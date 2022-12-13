@@ -417,7 +417,7 @@ dossierProgramsModule.controller("dossiersProgramRuleController", [
         $scope.rules4TOC = {
             displayName: "Program Rules",
             id: "RuleContainer",
-            index: 121,
+            index: 100,
         };
 
         /* 
@@ -500,7 +500,7 @@ dossierProgramsModule.controller("dossiersProgramRuleVariablesController", [
         $scope.ruleVariables4TOC = {
             displayName: "Program Rule Variables",
             id: "RuleVariablesContainer",
-            index: 122,
+            index: 101,
         };
 
         /* 
@@ -542,13 +542,13 @@ dossierProgramsModule.controller("dossiersProgramAnalysisController", [
         $scope.eventReports4TOC = {
             displayName: "Public Event Reports",
             id: "EventReportsContainer",
-            index: 120,
+            index: 102,
         };
 
         $scope.eventCharts4TOC = {
             displayName: "Public Event Charts",
             id: "EventChartsContainer",
-            index: 121,
+            index: 103,
         };
 
         getEventReportUrl = function (eventReportId) {
