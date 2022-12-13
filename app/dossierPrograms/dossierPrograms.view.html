@@ -79,6 +79,7 @@
                                 <th>{{ "dos_FormNameElement" | translate }}</th>
                                 <th>{{ "dos_DescriptionElement" | translate }}</th>
                                 <th>{{ "DataTypeElement" | translate }}</th>
+                                <th>{{ "Calculation mode" | translate }}</th>
                                 <th>{{ "Options" | translate }}</th>
                             </tr>
                         </thead>
@@ -88,6 +89,17 @@
                                 <td>{{ dataElement.displayFormName }}</td>
                                 <td>{{ dataElement.displayDescription }}</td>
                                 <td>{{ dataElement.valueType }}</td>
+                                <td>
+                                    <div ng-switch="dataElement.calcMode.type">
+                                        <div ng-switch-when="programRule">
+                                            Program Rule: {{ dataElement.calcMode.name }}
+                                        </div>
+                                        <div ng-switch-when="other">
+                                            Other
+                                        </div>
+                                        <div ng-switch-default>Direct data entry</div>
+                                    </div>
+                                </td>
                                 <td>
                                     <div ng-if="dataElement.optionSet.options">
                                         <p>Option Set name: {{ dataElement.optionSet.name }}</p>
