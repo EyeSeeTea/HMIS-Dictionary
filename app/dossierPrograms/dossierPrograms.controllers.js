@@ -66,6 +66,42 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
     "dossiersProgramStageSectionsFactory",
     "Ping",
     function ($scope, $q, $translate, dossiersProgramStageSectionsFactory, Ping) {
+        /*
+         *  @name createStageWithoutSections
+         *  @description Display stage data elements as a "phantom" stage and add stage to table of contents
+         *  @scope dossiersProgramSectionController
+         */
+        function createStageWithoutSections(stage, toc) {
+            // Line to make it compatible with view
+            stage.programStageSections = [
+                {
+                    displayName: "Data Elements",
+                    dataElements: stage.programStageDataElements.map(function (stageDataElement) {
+                        return stageDataElement.dataElement;
+                    }),
+                },
+            ];
+
+            addtoTOC($scope.toc, null, toc, "programs");
+            return stage;
+        }
+
+        /*
+         *  @name createStageWithSections
+         *  @description Display stage sections data elements and add them to the table of contents
+         *  @scope dossiersProgramSectionController
+         */
+        function createStageWithSections(stage, toc) {
+            addtoTOC($scope.toc, stage.programStageSections, toc, "programs");
+            return stage;
+        }
+
+        /*
+         *  @name none
+         *  @description Gets the program stages information, translates it and shows it
+         *  @dependencies dossiersProgramStageSectionsFactory, dossiersProgramStageCalcModeFactory
+         *  @scope dossiersProgramSectionController
+         */
         $scope.$watch("selectedProgram", function () {
             ping();
             if ($scope.selectedProgram) {
@@ -89,30 +125,6 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
                 });
             }
         });
-
-        function createStageWithoutSections(stage, toc) {
-            // Line to make it compatible with view
-            stage.programStageSections = [
-                {
-                    displayName: "Data Elements",
-                    dataElements: stage.programStageDataElements.map(function (stageDataElement) {
-                        return stageDataElement.dataElement;
-                    }),
-                },
-            ];
-            /**
-        for (i = 0; i < resultStage.programStageSections[0].dataElements.length; ++i) {
-            resultStage.programStageSections[0].dataElements[i] = resultStage.programStageSections[0].dataElements[i].dataElement;
-        }
-        */
-            addtoTOC($scope.toc, null, toc, "programs");
-            return stage;
-        }
-
-        function createStageWithSections(stage, toc) {
-            addtoTOC($scope.toc, stage.programStageSections, toc, "programs");
-            return stage;
-        }
     },
 ]);
 
