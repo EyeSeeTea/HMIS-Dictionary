@@ -98,6 +98,50 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
         }
 
         /*
+         *  @name makeSectionsCalcMode
+         *  @description Determine the "Calculation mode" of the stage sections data elements
+         *  @scope dossiersProgramSectionController
+         */
+        function makeSectionsCalcMode(stage, assignedDEArray, hiddenSectionsArray) {
+            stage.programStageSections.forEach(pss => {
+                pss.dataElements.forEach(pssDE => {
+                    assignedDEArray.forEach(adeArray => {
+                        if (adeArray.ids.includes(pssDE.id)) {
+                            pssDE.calcMode = { type: "programRule", name: adeArray.name };
+                        } else if (!pssDE.calcMode) {
+                            pssDE.calcMode = { type: "default" };
+                        }
+                    });
+                });
+
+                if (hiddenSectionsArray.includes(pss.id)) {
+                    pss.dataElements.forEach(pssDE => {
+                        if (pssDE.calcMode.type !== "programRule") {
+                            pssDE.calcMode = { type: "other" };
+                        }
+                    });
+                }
+            });
+        }
+
+        /*
+         *  @name makeStageCalcMode
+         *  @description Determine the "Calculation mode" of the stage data elements
+         *  @scope dossiersProgramSectionController
+         */
+        function makeStageCalcMode(stage, assignedDEArray) {
+            stage.programStageDataElements.forEach(psde => {
+                assignedDEArray.forEach(adeArray => {
+                    if (adeArray.ids.includes(psde.dataElement.id)) {
+                        psde.dataElement.calcMode = { type: "programRule", name: adeArray.name };
+                    } else if (!psde.dataElement.calcMode) {
+                        psde.dataElement.calcMode = { type: "default" };
+                    }
+                });
+            });
+        }
+
+        /*
          *  @name none
          *  @description Gets the program stages information, translates it and shows it
          *  @dependencies dossiersProgramStageSectionsFactory, dossiersProgramStageCalcModeFactory
@@ -148,8 +192,13 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
                                 id: stage.id,
                                 index: index,
                             };
-                            if (stage.programStageSections.length == 0) return createStageWithoutSections(stage, toc);
-                            else return createStageWithSections(stage, toc);
+                            if (stage.programStageSections.length == 0) {
+                                makeStageCalcMode(stage, assignedDEArray);
+                                return createStageWithoutSections(stage, toc);
+                            } else {
+                                makeSectionsCalcMode(stage, assignedDEArray, hiddenSectionsArray);
+                                return createStageWithSections(stage, toc);
+                            }
                         });
                         endLoadingState(true);
                     });
