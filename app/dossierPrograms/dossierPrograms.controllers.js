@@ -64,8 +64,9 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
     "$q",
     "$translate",
     "dossiersProgramStageSectionsFactory",
+    "dossiersProgramStageCalcModeFactory",
     "Ping",
-    function ($scope, $q, $translate, dossiersProgramStageSectionsFactory, Ping) {
+    function ($scope, $q, $translate, dossiersProgramStageSectionsFactory, dossiersProgramStageCalcModeFactory, Ping) {
         /*
          *  @name createStageWithoutSections
          *  @description Display stage data elements as a "phantom" stage and add stage to table of contents
@@ -111,17 +112,47 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
                     return dossiersProgramStageSectionsFactory.get({ programStageId: stage.id }).$promise;
                 });
 
-                $q.all(stageSectionPromises).then(function (stages) {
-                    $scope.stages = stages.map(function (stage, index) {
-                        var toc = {
-                            displayName: "Stage: " + stage.displayName + (stage.repeatable ? " (Repeatable)" : ""),
-                            id: stage.id,
-                            index: index,
-                        };
-                        if (stage.programStageSections.length == 0) return createStageWithoutSections(stage, toc);
-                        else return createStageWithSections(stage, toc);
+                $q.resolve(
+                    dossiersProgramStageCalcModeFactory.get({ programId: $scope.selectedProgram.id }).$promise,
+                    data => ($scope.programRules = data.programRules)
+                ).then(() => {
+                    $q.all(stageSectionPromises).then(function (stages) {
+                        const hiddenSectionsArray = $scope.programRules.flatMap(pr => {
+                            return pr.programRuleActions.flatMap(pra => {
+                                if (pra.programRuleActionType === "HIDESECTION") {
+                                    return pra.programStageSection.id;
+                                } else {
+                                    return [];
+                                }
+                            });
+                        });
+
+                        const assignedDEArray = $scope.programRules.flatMap(pr => {
+                            const idArray = pr.programRuleActions.flatMap(pra => {
+                                if (pra.programRuleActionType === "ASSIGN") {
+                                    return pra.dataElement.id;
+                                } else {
+                                    return [];
+                                }
+                            });
+
+                            return {
+                                name: pr.name,
+                                ids: idArray,
+                            };
+                        });
+
+                        $scope.stages = stages.map(function (stage, index) {
+                            var toc = {
+                                displayName: "Stage: " + stage.displayName + (stage.repeatable ? " (Repeatable)" : ""),
+                                id: stage.id,
+                                index: index,
+                            };
+                            if (stage.programStageSections.length == 0) return createStageWithoutSections(stage, toc);
+                            else return createStageWithSections(stage, toc);
+                        });
+                        endLoadingState(true);
                     });
-                    endLoadingState(true);
                 });
             }
         });
