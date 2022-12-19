@@ -156,7 +156,7 @@ dossierProgramsModule.factory("dossiersProgramIndicatorStagesFactory", [
 
 var qryProgramGlobalIndicators =
     dhisUrl +
-    "indicators?fields=displayName,displayDescription,indicatorType[displayName],description,numerator," +
+    "indicators?fields=id,displayName,displayDescription,indicatorType[displayName],description,numerator," +
     "numeratorDescription,denominator,denominatorDescription&paging=false";
 
 datasetsModule.factory("dossiersProgramGlobalIndicatorsFactory", [
@@ -350,5 +350,21 @@ dossierProgramsModule.factory("dossiersProgramRuleVariablesFactory", [
                 },
             }
         );
+    },
+]);
+
+var qryTables = dhisUrl + "visualizations";
+var qryTableUpdate = dhisUrl + "visualizations/:uid";
+var qrySharing = dhisUrl + "sharing?type=visualization&id=:uid";
+
+searchModule.factory("dossiersProgramVisualizationTableFactory", [
+    "$resource",
+    function ($resource) {
+        return {
+            get_table: $resource(qryTables, {}, { query: { method: "GET", isArray: false } }),
+            set_table: $resource(qryTables, {}, { query: { method: "POST", isArray: false } }),
+            upd_table: $resource(qryTableUpdate, { uid: "@uid" }, { query: { method: "PUT", isArray: false } }),
+            upd_sharing: $resource(qrySharing, { uid: "@uid" }, { query: { method: "PUT" } }),
+        };
     },
 ]);
