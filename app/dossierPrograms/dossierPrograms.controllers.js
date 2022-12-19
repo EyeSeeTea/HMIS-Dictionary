@@ -208,22 +208,6 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
     },
 ]);
 
-function extractDefromInd(numerator, denominator) {
-    const de_num = extractDefromFormula(numerator);
-    const de_den = extractDefromFormula(denominator);
-    return de_num.concat(de_den);
-}
-
-function extractDefromFormula(formula) {
-    let dataElements = [];
-    const regex = /#{(\w+)}/g;
-    while ((findings = regex.exec(formula))) {
-        dataElements.push(findings[1]);
-    }
-
-    return dataElements;
-}
-
 dossierProgramsModule.controller("makeIndicatorVisualizations", [
     "$scope",
     "$window",
@@ -302,9 +286,9 @@ dossierProgramsModule.controller("makeIndicatorVisualizations", [
                     {
                         access: "rw------",
                         // userGroup: ALL USERS :: epFY01iJN0Z
-                        userGroupUid: "oIqi2qH9krm",
+                        userGroupUid: "epFY01iJN0Z",
                         displayName: "ALL USERS",
-                        id: "oIqi2qH9krm",
+                        id: "epFY01iJN0Z",
                     },
                 ],
                 subscribers: [],
@@ -320,7 +304,7 @@ dossierProgramsModule.controller("makeIndicatorVisualizations", [
                         ],
                     },
                     {
-                        dimension: "RRktxsaiGZo",
+                        dimension: "BtFXTpKRl6n",
                         items: [
                             {
                                 id: "ALL_ITEMS",
@@ -362,7 +346,7 @@ dossierProgramsModule.controller("makeIndicatorVisualizations", [
                     name: "name",
                     publicAccess: "--------",
                     externalAccess: false,
-                    userGroupAccesses: [{ id: "oIqi2qH9krm", name: "ALL USERS", access: "rw------" }],
+                    userGroupAccesses: [{ id: "epFY01iJN0Z", name: "ALL USERS", access: "rw------" }],
                 },
             };
 
@@ -553,41 +537,31 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
         };
 
         /*
-         *  @name recursiveAssignNumerator
-         *  @description Gets the "readable" expressions for each indicator numerator
+         *  @name extractDefromInd
+         *  @description Get the dataElements Ids for numerator and denominator
          *  @scope dossierProgramGlobalIndicatorController
          */
-        function recursiveAssignNumerator(i) {
-            if (i >= $scope.indicators.length) return;
-            dossiersProgramGlobalIndicatorExpressionFactory.get(
-                {
-                    expression: $scope.indicators[i].numerator,
-                },
-                function (data) {
-                    $scope.indicators[i].numerator = data.description;
-                    recursiveAssignNumerator(i + 1);
-                },
-                true
-            );
+        function extractDefromInd(numerator, denominator) {
+            const de_num = extractDefromFormula(numerator);
+            const de_den = extractDefromFormula(denominator);
+
+            return de_num.concat(de_den);
         }
 
         /*
-         *  @name recursiveAssignNumerator
-         *  @description Gets the "readable" expressions for each indicator denominator
+         *  @name extractDefromFormula
+         *  @description Get the dataElements Ids for expression
          *  @scope dossierProgramGlobalIndicatorController
          */
-        function recursiveAssignDenominator(i) {
-            if (i >= $scope.indicators.length) return;
-            dossiersProgramGlobalIndicatorExpressionFactory.get(
-                {
-                    expression: $scope.indicators[i].denominator,
-                },
-                function (data) {
-                    $scope.indicators[i].denominator = data.description;
-                    recursiveAssignDenominator(i + 1);
-                },
-                true
-            );
+        function extractDefromFormula(formula) {
+            let dataElements = [];
+            const regex = /#{(\w+)}/g;
+
+            while ((findings = regex.exec(formula))) {
+                dataElements.push(findings[1]);
+            }
+
+            return dataElements;
         }
 
         /*
@@ -632,6 +606,44 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
                     }
                 }
             });
+        }
+
+        /*
+         *  @name recursiveAssignNumerator
+         *  @description Gets the "readable" expressions for each indicator numerator
+         *  @scope dossierProgramGlobalIndicatorController
+         */
+        function recursiveAssignNumerator(i) {
+            if (i >= $scope.indicators.length) return;
+            dossiersProgramGlobalIndicatorExpressionFactory.get(
+                {
+                    expression: $scope.indicators[i].numerator,
+                },
+                function (data) {
+                    $scope.indicators[i].numerator = data.description;
+                    recursiveAssignNumerator(i + 1);
+                },
+                true
+            );
+        }
+
+        /*
+         *  @name recursiveAssignNumerator
+         *  @description Gets the "readable" expressions for each indicator denominator
+         *  @scope dossierProgramGlobalIndicatorController
+         */
+        function recursiveAssignDenominator(i) {
+            if (i >= $scope.indicators.length) return;
+            dossiersProgramGlobalIndicatorExpressionFactory.get(
+                {
+                    expression: $scope.indicators[i].denominator,
+                },
+                function (data) {
+                    $scope.indicators[i].denominator = data.description;
+                    recursiveAssignDenominator(i + 1);
+                },
+                true
+            );
         }
 
         /*
