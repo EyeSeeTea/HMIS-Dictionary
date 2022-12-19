@@ -191,6 +191,7 @@
                             <th>{{ "Denominator" | translate }}</th>
                             <th>{{ "Denominator description" | translate }}</th>
                             <th>{{ "Stage(s) referenced:" | translate }}</th>
+                            <th>{{ "Visualization:" | translate }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -208,6 +209,20 @@
                                         {{ stageRef }}
                                     </li>
                                 </ul>
+                            </td>
+                            <td>
+                                <a
+                                    {{ indicator.visDataElements }}
+                                    ng-if="indicator.visDataElements"
+                                    ng-controller="makeIndicatorVisualizations"
+                                    href=""
+                                    ng-click="getTable(
+                                        indicator.displayName,
+                                        indicator.id,
+                                        indicator.visDataElements
+                                        )"
+                                    ><img src="./assets/img/pivottable.png" alt="View Table" width="15"/>
+                                </a>
                             </td>
                         </tr>
                     </tbody>
