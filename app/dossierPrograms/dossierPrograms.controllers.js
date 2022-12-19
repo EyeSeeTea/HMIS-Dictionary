@@ -208,6 +208,222 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
     },
 ]);
 
+function extractDefromInd(numerator, denominator) {
+    const de_num = extractDefromFormula(numerator);
+    const de_den = extractDefromFormula(denominator);
+    return de_num.concat(de_den);
+}
+
+function extractDefromFormula(formula) {
+    let dataElements = [];
+    const regex = /#{(\w+)}/g;
+    while ((findings = regex.exec(formula))) {
+        dataElements.push(findings[1]);
+    }
+
+    return dataElements;
+}
+
+dossierProgramsModule.controller("makeIndicatorVisualizations", [
+    "$scope",
+    "$window",
+    "dossiersProgramVisualizationTableFactory",
+    function ($scope, $window, dossiersProgramVisualizationTableFactory) {
+        $scope.getTable = function (name, id, dataElements) {
+            payload = {
+                name: "TEST",
+                showData: false,
+                fixRowHeaders: false,
+                numberType: "VALUE",
+                legend: {
+                    showKey: false,
+                    style: "FILL",
+                    strategy: "FIXED",
+                },
+                publicAccess: "--------",
+                type: "PIVOT_TABLE",
+                hideEmptyColumns: false,
+                hideEmptyRows: false,
+                subscribed: false,
+                parentGraphMap: {},
+                rowSubTotals: true,
+                displayDensity: "NORMAL",
+                displayDescription: "Created with HMIS Dictionary",
+                regressionType: "NONE",
+                completedOnly: false,
+                cumulativeValues: false,
+                colTotals: true,
+                showDimensionLabels: true,
+                sortOrder: 0,
+                fontSize: "NORMAL",
+                favorite: false,
+                topLimit: 0,
+                hideEmptyRowItems: "NONE",
+                aggregationType: "DEFAULT",
+                displayName: "TEST",
+                hideSubtitle: false,
+                description: "Created with HMIS Dictionary",
+                fixColumnHeaders: false,
+                percentStackedValues: false,
+                colSubTotals: true,
+                noSpaceBetweenColumns: false,
+                showHierarchy: false,
+                rowTotals: true,
+                seriesKey: {
+                    hidden: false,
+                },
+                digitGroupSeparator: "SPACE",
+                hideTitle: false,
+                regression: false,
+                colorSet: "DEFAULT",
+                skipRounding: false,
+
+                fontStyle: {},
+                access: {
+                    read: true,
+                    update: true,
+                    externalize: true,
+                    delete: true,
+                    write: true,
+                    manage: true,
+                },
+                reportingParams: {
+                    organisationUnit: false,
+                    reportingPeriod: false,
+                    parentOrganisationUnit: false,
+                    grandParentOrganisationUnit: false,
+                },
+
+                axes: [],
+                translations: [],
+                yearlySeries: [],
+                interpretations: [],
+                userGroupAccesses: [
+                    {
+                        access: "rw------",
+                        // userGroup: ALL USERS :: epFY01iJN0Z
+                        userGroupUid: "oIqi2qH9krm",
+                        displayName: "ALL USERS",
+                        id: "oIqi2qH9krm",
+                    },
+                ],
+                subscribers: [],
+                userAccesses: [],
+                favorites: [],
+                columns: [
+                    {
+                        dimension: "pe",
+                        items: [
+                            {
+                                id: "THIS_YEAR",
+                            },
+                        ],
+                    },
+                    {
+                        dimension: "RRktxsaiGZo",
+                        items: [
+                            {
+                                id: "ALL_ITEMS",
+                            },
+                        ],
+                    },
+                ],
+                filters: [
+                    {
+                        dimension: "ou",
+                        items: [
+                            {
+                                id: "USER_ORGUNIT",
+                            },
+                        ],
+                    },
+                ],
+                rows: [
+                    {
+                        dimension: "dx",
+                        items: [
+                            {
+                                id: "DqqSJFWB392",
+                            },
+                            {
+                                id: "qywsusOdy33",
+                            },
+                        ],
+                    },
+                ],
+                series: [],
+                outlierAnalysis: null,
+                cumulative: false,
+            };
+
+            sharing = {
+                object: {
+                    id: "LEP0WHTGYUe",
+                    name: "name",
+                    publicAccess: "--------",
+                    externalAccess: false,
+                    userGroupAccesses: [{ id: "oIqi2qH9krm", name: "ALL USERS", access: "rw------" }],
+                },
+            };
+
+            items = dataElements.map(id => {
+                return { id: id };
+            });
+            items.push({ id: id });
+
+            payload.name = name + " - " + id;
+            payload.rows[0].items = items;
+
+            $scope.table = dossiersProgramVisualizationTableFactory.get_table.query(
+                {
+                    filter: "name:eq:" + payload.name,
+                },
+                function (tbl) {
+                    if (tbl && tbl.visualizations[0]) {
+                        if (tbl.visualizations[0].id) {
+                            console.log("Updating Table");
+                            payload.id = tbl.visualizations[0].id;
+                            sharing.object.id = tbl.visualizations[0].id;
+                            sharing.object.name = tbl.visualizations[0].name;
+
+                            dossiersProgramVisualizationTableFactory.upd_table.query(
+                                {
+                                    uid: tbl.visualizations[0].id,
+                                },
+                                payload,
+                                function (response) {
+                                    dossiersProgramVisualizationTableFactory.upd_sharing.query(
+                                        { uid: tbl.visualizations[0].id },
+                                        sharing,
+                                        function (res) { }
+                                    );
+
+                                    uid = tbl.visualizations[0].id;
+
+                                    $window.open(dhisroot + "/dhis-web-data-visualizer/index.html#/" + uid, "_blank");
+                                }
+                            );
+                        }
+                    }
+
+                    if (tbl.visualizations[0] == undefined) {
+                        console.log("Creating Table");
+                        dossiersProgramVisualizationTableFactory.set_table.query(payload, function (response) {
+                            uid = response.response.uid;
+                            dossiersProgramVisualizationTableFactory.upd_sharing.query(
+                                { uid: uid },
+                                sharing,
+                                function (res) { }
+                            );
+                            $window.open(dhisroot + "/dhis-web-data-visualizer/index.html#/" + uid, "_blank");
+                        });
+                    }
+                }
+            );
+        };
+    },
+]);
+
 dossierProgramsModule.controller("dossiersProgramIndicatorController", [
     "$scope",
     "$rootScope",
@@ -439,6 +655,8 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
                         parseExpression(indicator, num);
                         parseExpression(indicator, den);
                         if (indicator.stageRef) indicator.stageRef = _.uniq(indicator.stageRef);
+
+                        indicator.visDataElements = extractDefromInd(num, den);
                     }, this);
                     if ($scope.indicators.length > 0) {
                         addtoTOC($scope.toc, null, $scope.indicators4TOC, "Indicators");
