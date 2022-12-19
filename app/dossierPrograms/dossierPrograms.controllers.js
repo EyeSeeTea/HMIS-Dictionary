@@ -234,7 +234,7 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
             let stageRefArray = psdeRegex.exec(filter);
             if (stageRefArray && stageRefArray.length > 1) {
                 stageRefArray.shift();
-                return $scope.programStages.filter(ps => stageRefArray.includes(ps.id)).flatMap(ps => ps.name);
+                return _.uniq($scope.programStages.filter(ps => stageRefArray.includes(ps.id)).flatMap(ps => ps.name));
             }
         }
 
@@ -438,6 +438,7 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
                         const den = indicator.denominator;
                         parseExpression(indicator, num);
                         parseExpression(indicator, den);
+                        if (indicator.stageRef) indicator.stageRef = _.uniq(indicator.stageRef);
                     }, this);
                     if ($scope.indicators.length > 0) {
                         addtoTOC($scope.toc, null, $scope.indicators4TOC, "Indicators");
@@ -518,7 +519,7 @@ dossierProgramsModule.controller("dossiersProgramRuleController", [
         @scope dossiersProgramRuleController
         */
         function recursiveAssignConditionDescription(i) {
-            if (i >= $scope.rules.length) return;
+            if (i >= $scope.rules.length || !$scope.rules[i].condition) return;
             dossiersProgramRulesConditionDescription.save(
                 { programId: $scope.selectedProgram.id },
                 $scope.rules[i].condition,
