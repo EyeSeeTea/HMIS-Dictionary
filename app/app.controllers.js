@@ -33,7 +33,7 @@ appModule.controller("appSharedController", [
                 async: false,
             })
             .success(function (admin) {
-                admin = jQuery.parseJSON(admin);
+                admin = JSON.parse(admin);
                 $scope.userAdminGroup = admin.value;
                 if ($scope.userAdminGroup) {
                     console.log("appModule: Group of users authorised to administrate: " + admin.value);
@@ -64,7 +64,7 @@ appModule.controller("appSharedController", [
                 async: false,
             })
             .success(function (servicelist) {
-                servicelist = jQuery.parseJSON(servicelist);
+                servicelist = JSON.parse(servicelist);
                 $scope.serviceSetUID = servicelist.value;
                 if ($scope.serviceSetUID) {
                     console.log(
@@ -92,7 +92,7 @@ appModule.controller("appSharedController", [
                 async: false,
             })
             .success(function (DSlist) {
-                DSlist = jQuery.parseJSON(DSlist);
+                DSlist = JSON.parse(DSlist);
                 console.log(DSlist);
                 $scope.blacklist_datasets = DSlist;
                 if ($scope.blacklist_datasets) {
@@ -119,7 +119,7 @@ appModule.controller("appSharedController", [
                 async: false,
             })
             .success(function (IGlist) {
-                IGlist = jQuery.parseJSON(IGlist);
+                IGlist = JSON.parse(IGlist);
                 $scope.blacklist_indicatorgroups = IGlist;
                 if ($scope.blacklist_indicatorgroups) {
                     console.log("appModule: List of blacklisted indicatorGroups: " + IGlist.value);
@@ -145,7 +145,7 @@ appModule.controller("appSharedController", [
                 async: false,
             })
             .success(function (me) {
-                me = jQuery.parseJSON(me);
+                me = JSON.parse(me);
                 var authUser = me.userGroups.some(function (userGroup) {
                     return userGroup.name == $scope.userAdminGroup;
                 });
@@ -168,7 +168,7 @@ appModule.controller("appSharedController", [
                 async: false,
             })
             .success(function (dossierConfigComplete) {
-                dossierConfigComplete = jQuery.parseJSON(dossierConfigComplete);
+                dossierConfigComplete = JSON.parse(dossierConfigComplete);
                 console.log("appModule: dossierConfigComplete: ", dossierConfigComplete);
                 if (dossierConfigComplete.value) {
                     $scope.show_dossiers = true;
