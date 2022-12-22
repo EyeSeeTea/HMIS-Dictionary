@@ -112,15 +112,13 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
                             pssDE.calcMode = { type: "default" };
                         }
                     });
-                });
 
-                if (hiddenSectionsArray.includes(pss.id)) {
-                    pss.dataElements.forEach(pssDE => {
+                    if (hiddenSectionsArray.includes(pss.id)) {
                         if (pssDE.calcMode.type !== "programRule") {
                             pssDE.calcMode = { type: "other" };
                         }
-                    });
-                }
+                    }
+                });
             });
         }
 
@@ -164,7 +162,7 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
                         const hiddenSectionsArray = $scope.programRules.flatMap(pr => {
                             return pr.programRuleActions.flatMap(pra => {
                                 if (pra.programRuleActionType === "HIDESECTION") {
-                                    return pra.programStageSection.id;
+                                    return [pra.programStageSection.id];
                                 } else {
                                     return [];
                                 }
