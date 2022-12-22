@@ -92,7 +92,7 @@
                                     <div ng-if="dataElement.optionSet.options">
                                         <p>{{ "Option Set name" | translate }}: {{ dataElement.optionSet.name }}</p>
                                         <select class="form-control col-md-2">
-                                            <option selected>See options</option>
+                                            <option selected>{{ "See options" | translate }}</option>
                                             <option ng-repeat="option in dataElement.optionSet.options">
                                                 {{ option.displayName }}
                                             </option>
