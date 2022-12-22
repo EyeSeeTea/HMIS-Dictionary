@@ -2,7 +2,11 @@
     List of contributors: https://github.com/MSFOCBA
     Please refer to the LICENSE.md and LICENSES-DEP.md for complete licenses.
 ------------------------------------------------------------------------------------*/
-var qryPrograms = dhisUrl + "programs?fields=id,displayName,displayDescription,programStages[id]&paging=false";
+var qryPrograms =
+    dhisUrl +
+    "programs?fields=" +
+    ["id", "displayName", "displayDescription", "programStages[id]"].join(",") +
+    "&paging=false";
 
 dossierProgramsModule.factory("dossiersProgramsFactory", [
     "$resource",
@@ -22,10 +26,36 @@ dossierProgramsModule.factory("dossiersProgramsFactory", [
 
 var qryProgramStageSections =
     dhisUrl +
-    "programStages/:programStageId?fields=id,displayName,repeatable,sortOrder," +
-    "programStageSections[id,displayName,dataElements[id,displayName,displayFormName,displayDescription,valueType," +
-    "optionSetValue,optionSet[name,options[displayName]]]],programStageDataElements[dataElement[id,displayName," +
-    "displayFormName,displayDescription,valueType,optionSetValue,optionSet[name,options[displayName]]]]&paging=false";
+    "programStages/:programStageId?fields=" +
+    [
+        "id",
+        "displayName",
+        "repeatable",
+        "sortOrder",
+        [
+            "programStageSections[id",
+            "displayName",
+            "dataElements[id",
+            "displayName",
+            "displayFormName",
+            "displayDescription",
+            "valueType",
+            "optionSetValue",
+            "optionSet[name",
+            "options[displayName]]]]",
+        ].join(","),
+        [
+            "programStageDataElements[dataElement[id",
+            "displayName",
+            "displayFormName",
+            "displayDescription",
+            "valueType",
+            "optionSetValue",
+            "optionSet[name",
+            "options[displayName]]]]",
+        ].join(","),
+    ].join(",") +
+    "&paging=false";
 
 dossierProgramsModule.factory("dossiersProgramStageSectionsFactory", [
     "$resource",
@@ -47,10 +77,20 @@ dossierProgramsModule.factory("dossiersProgramStageSectionsFactory", [
 
 var qryProgramRulesDataElements =
     dhisUrl +
-    "programRules?filter=program.id\\:eq\\::programId&" +
-    "filter=programRuleActions.programRuleActionType\\:in\\:[ASSIGN,HIDESECTION]&" +
-    "fields=name,programRuleActions[programRuleActionType,dataElement[id,displayName]," +
-    "programStageSection[id,displayName]&paging=false";
+    [
+        "programRules?filter=program.id\\:eq\\::programId",
+        "filter=programRuleActions.programRuleActionType\\:in\\:[ASSIGN,HIDESECTION]",
+        "fields=",
+    ].join("&") +
+    [
+        "name",
+        "programRuleActions[programRuleActionType",
+        "dataElement[id",
+        "displayName]",
+        "programStageSection[id",
+        "displayName]",
+    ].join(",") +
+    "&paging=false";
 
 dossierProgramsModule.factory("dossiersProgramStageCalcModeFactory", [
     "$resource",
@@ -72,9 +112,22 @@ dossierProgramsModule.factory("dossiersProgramStageCalcModeFactory", [
 
 var qryProgramIndicators =
     dhisUrl +
-    "programs/:programId?fields=programIndicators[id,displayName,displayDescription," +
-    "filter,expression,aggregationType,analyticsType," +
-    "analyticsPeriodBoundaries[boundaryTarget,analyticsPeriodBoundaryType,offsetPeriods,offsetPeriodType]]&paging=false";
+    "programs/:programId?fields=" +
+    "programIndicators[" +
+    [
+        "id",
+        "displayName",
+        "displayDescription",
+        "filter",
+        "expression",
+        "aggregationType",
+        "analyticsType",
+        "analyticsPeriodBoundaries[boundaryTarget",
+        "analyticsPeriodBoundaryType",
+        "offsetPeriods",
+        "offsetPeriodType]",
+    ].join(",") +
+    "]&paging=false";
 
 dossierProgramsModule.factory("dossiersProgramIndicatorsFactory", [
     "$resource",
@@ -134,7 +187,10 @@ dossierProgramsModule.factory("dossiersProgramIndicatorFilterFactory", [
 
 var qryProgramIndicatorStages =
     dhisUrl +
-    "programs?filter=id\\:eq\\::programId&fields=programStages[id,name,programStageDataElements[dataElement[id]]]&paging=false";
+    "programs?filter=id\\:eq\\::programId&fields=" +
+    "programStages[" +
+    ["id", "name", "programStageDataElements[dataElement[id]]"].join(",") +
+    "]&paging=false";
 
 dossierProgramsModule.factory("dossiersProgramIndicatorStagesFactory", [
     "$resource",
@@ -156,8 +212,19 @@ dossierProgramsModule.factory("dossiersProgramIndicatorStagesFactory", [
 
 var qryProgramGlobalIndicators =
     dhisUrl +
-    "indicators?fields=id,displayName,displayDescription,indicatorType[displayName],description,numerator," +
-    "numeratorDescription,denominator,denominatorDescription&paging=false";
+    "indicators?fields=" +
+    [
+        "id",
+        "displayName",
+        "displayDescription",
+        "indicatorType[displayName]",
+        "description",
+        "numerator",
+        "numeratorDescription",
+        "denominator",
+        "denominatorDescription",
+    ].join(",") +
+    "&paging=false";
 
 datasetsModule.factory("dossiersProgramGlobalIndicatorsFactory", [
     "$resource",
@@ -197,7 +264,10 @@ datasetsModule.factory("dossiersProgramGlobalIndicatorExpressionFactory", [
 
 // Only public EventReports and EventCharts
 var qryEventReports =
-    dhisUrl + "eventReports?filter=program.id\\:eq\\::programId&fields=id,displayName,displayDescription&paging=false";
+    dhisUrl +
+    "eventReports?filter=program.id\\:eq\\::programId&fields=" +
+    ["id", "displayName", "displayDescription"].join(",") +
+    "&paging=false";
 
 dossierProgramsModule.factory("dossiersProgramEventReportFactory", [
     "$resource",
@@ -218,7 +288,10 @@ dossierProgramsModule.factory("dossiersProgramEventReportFactory", [
 ]);
 
 var qryEventCharts =
-    dhisUrl + "eventCharts?filter=program.id\\:eq\\::programId&fields=id,displayName,displayDescription&paging=false";
+    dhisUrl +
+    "eventCharts?filter=program.id\\:eq\\::programId&fields=" +
+    ["id", "displayName", "displayDescription"].join(",") +
+    "&paging=false";
 
 dossierProgramsModule.factory("dossiersProgramEventChartFactory", [
     "$resource",
@@ -240,8 +313,18 @@ dossierProgramsModule.factory("dossiersProgramEventChartFactory", [
 
 var qryProgramTrackedEntityAttributes =
     dhisUrl +
-    "programs/:programId?fields=programTrackedEntityAttributes[trackedEntityAttribute" +
-    "[name,formName,code,description,optionSet[name,options[name]],valueType,aggregationType]]&paging=false";
+    "programs/:programId?fields=" +
+    [
+        "programTrackedEntityAttributes[trackedEntityAttribute[name",
+        "formName",
+        "code",
+        "description",
+        "optionSet[name",
+        "options[name]]",
+        "valueType",
+        "aggregationType]]",
+    ].join(",") +
+    "&paging=false";
 
 dossierProgramsModule.factory("dossiersProgramTEAsFactory", [
     "$resource",
@@ -263,9 +346,24 @@ dossierProgramsModule.factory("dossiersProgramTEAsFactory", [
 
 var qryProgramRules =
     dhisUrl +
-    "programRules?filter=program.id\\:eq\\::programId&fields=name,description,programStage[name],condition," +
-    "programRuleActions[programRuleActionType,dataElement[name],trackedEntityAttribute[name],option[name]," +
-    "optionGroup[name],programStage[name],programStageSection[name],templateUid,content,data]&paging=false";
+    "programRules?filter=program.id\\:eq\\::programId&fields=" +
+    [
+        "name",
+        "description",
+        "programStage[name]",
+        "condition",
+        "programRuleActions[programRuleActionType",
+        "dataElement[name]",
+        "trackedEntityAttribute[name]",
+        "option[name]",
+        "optionGroup[name]",
+        "programStage[name]",
+        "programStageSection[name]",
+        "templateUid",
+        "content",
+        "data]",
+    ].join(",") +
+    "&paging=false";
 
 dossierProgramsModule.factory("dossiersProgramRulesFactory", [
     "$resource",
@@ -332,8 +430,15 @@ dossierProgramsModule.factory("dossiersProgramRulesActionsTemplateName", [
 
 var qryProgramRuleVariables =
     dhisUrl +
-    "programRuleVariables?filter=program.id\\:eq\\::programId&fields=name,programRuleVariableSourceType," +
-    "programStage[name],dataElement[name],trackedEntityAttribute[name]&paging=false";
+    "programRuleVariables?filter=program.id\\:eq\\::programId&fields=" +
+    [
+        "name",
+        "programRuleVariableSourceType",
+        "programStage[name]",
+        "dataElement[name]",
+        "trackedEntityAttribute[name]",
+    ].join(",") +
+    "&paging=false";
 
 dossierProgramsModule.factory("dossiersProgramRuleVariablesFactory", [
     "$resource",
