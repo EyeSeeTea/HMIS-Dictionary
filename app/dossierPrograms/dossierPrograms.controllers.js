@@ -211,8 +211,8 @@ dossierProgramsModule.controller("makeIndicatorVisualizations", [
     "$window",
     "dossiersProgramVisualizationTableFactory",
     function ($scope, $window, dossiersProgramVisualizationTableFactory) {
-        $scope.getTable = function (name, id, dataElements) {
-            payload = {
+        $scope.getTable = function (name, id, rowItems) {
+            const payload = {
                 name: "TEST",
                 showData: false,
                 fixRowHeaders: false,
@@ -283,7 +283,6 @@ dossierProgramsModule.controller("makeIndicatorVisualizations", [
                 userGroupAccesses: [
                     {
                         access: "rw------",
-                        // userGroup: ALL USERS :: epFY01iJN0Z
                         userGroupUid: "epFY01iJN0Z",
                         displayName: "ALL USERS",
                         id: "epFY01iJN0Z",
@@ -338,7 +337,7 @@ dossierProgramsModule.controller("makeIndicatorVisualizations", [
                 cumulative: false,
             };
 
-            sharing = {
+            const sharing = {
                 object: {
                     id: "LEP0WHTGYUe",
                     name: "name",
@@ -348,13 +347,10 @@ dossierProgramsModule.controller("makeIndicatorVisualizations", [
                 },
             };
 
-            items = dataElements.map(id => {
-                return { id: id };
-            });
-            items.push({ id: id });
+            let items = [{ id: id }];
 
             payload.name = name + " - " + id;
-            payload.rows[0].items = items;
+            payload.rows[0].items = rowItems ? items.concat(rowItems.map(id => ({ id: id }))) : items;
 
             $scope.table = dossiersProgramVisualizationTableFactory.get_table.query(
                 {
@@ -380,7 +376,7 @@ dossierProgramsModule.controller("makeIndicatorVisualizations", [
                                         function (res) { }
                                     );
 
-                                    uid = tbl.visualizations[0].id;
+                                    const uid = tbl.visualizations[0].id;
 
                                     $window.open(dhisroot + "/dhis-web-data-visualizer/index.html#/" + uid, "_blank");
                                 }
@@ -391,7 +387,7 @@ dossierProgramsModule.controller("makeIndicatorVisualizations", [
                     if (tbl.visualizations[0] == undefined) {
                         console.log("Creating Table");
                         dossiersProgramVisualizationTableFactory.set_table.query(payload, function (response) {
-                            uid = response.response.uid;
+                            const uid = response.response.uid;
                             dossiersProgramVisualizationTableFactory.upd_sharing.query(
                                 { uid: uid },
                                 sharing,
@@ -427,6 +423,11 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
             index: 97,
         };
 
+        /*
+         *  @name getStageRef
+         *  @description Gets the stages referenced by the filter.
+         *  @scope dossiersProgramIndicatorController
+         */
         function getStageRef(filter) {
             const psdeRegex = /#{(\w+)\.\w+}/g;
             let stageRefArray = psdeRegex.exec(filter);
@@ -535,23 +536,23 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
         };
 
         /*
-         *  @name extractDefromInd
-         *  @description Get the dataElements Ids for numerator and denominator
+         *  @name extractVisItemsFromInd
+         *  @description Get the visualization aditional items IDs for numerator and denominator
          *  @scope dossierProgramGlobalIndicatorController
          */
-        function extractDefromInd(numerator, denominator) {
-            const de_num = extractDefromFormula(numerator);
-            const de_den = extractDefromFormula(denominator);
+        function extractVisItemsFromInd(numerator, denominator) {
+            const de_num = extractVisItemsFromFormula(numerator);
+            const de_den = extractVisItemsFromFormula(denominator);
 
             return de_num.concat(de_den);
         }
 
         /*
-         *  @name extractDefromFormula
-         *  @description Get the dataElements Ids for expression
+         *  @name extractVisItemsFromFormula
+         *  @description Get the visualization aditional items IDs for expression
          *  @scope dossierProgramGlobalIndicatorController
          */
-        function extractDefromFormula(formula) {
+        function extractVisItemsFromFormula(formula) {
             let dataElements = [];
             const regex = /#{(\w+)}/g;
 
@@ -666,7 +667,7 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
                         parseExpression(indicator, den);
                         if (indicator.stageRef) indicator.stageRef = _.uniq(indicator.stageRef);
 
-                        indicator.visDataElements = extractDefromInd(num, den);
+                        indicator.rowItems = extractVisItemsFromInd(num, den);
                     }, this);
                     if ($scope.indicators.length > 0) {
                         addtoTOC($scope.toc, null, $scope.indicators4TOC, "Indicators");
