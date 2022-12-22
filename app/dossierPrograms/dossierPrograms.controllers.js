@@ -553,14 +553,16 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
          *  @scope dossierProgramGlobalIndicatorController
          */
         function extractVisItemsFromFormula(formula) {
-            let dataElements = [];
-            const regex = /#{(\w+)}/g;
+            let items = [];
+            const regexArray = [/#{(\w+)}/g, /I{(\w+)}/g];
 
-            while ((findings = regex.exec(formula))) {
-                dataElements.push(findings[1]);
-            }
+            regexArray.forEach(regex => {
+                while ((results = regex.exec(formula))) {
+                    items.push(results[1]);
+                }
+            });
 
-            return dataElements;
+            return items;
         }
 
         /*
