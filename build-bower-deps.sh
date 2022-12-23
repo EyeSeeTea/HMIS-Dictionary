@@ -55,3 +55,6 @@ cp -r node_modules/@bower_components/tinymce/themes bower_components/tinymce/the
 # angular-ui-tinymce
 install -D node_modules/@bower_components/angular-ui-tinymce/dist/tinymce.min.js bower_components/angular-ui-tinymce/tinymce.min.js
 install -D node_modules/@bower_components/angular-ui-tinymce/LICENSE bower_components/angular-ui-tinymce/LICENSE.txt
+# angular-sessionstorage
+install -D node_modules/angular-sessionstorage/angular-sessionstorage.js bower_components/angular-sessionstorage/angular-sessionstorage.js
+install -D node_modules/angular-sessionstorage/LICENSE bower_components/angular-sessionstorage/LICENSE
