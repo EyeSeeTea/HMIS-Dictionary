@@ -17,7 +17,8 @@ appModule.controller("appSharedController", [
     "$stateParams",
     "$http",
     "$window",
-    function ($scope, $translate, $state, $location, $anchorScroll, $stateParams, $http, $window) {
+    "$sessionStorage",
+    function ($scope, $translate, $state, $location, $anchorScroll, $stateParams, $http, $window, $sessionStorage) {
         this.$route = $state;
         this.$location = $location;
         this.$routeParams = $stateParams;

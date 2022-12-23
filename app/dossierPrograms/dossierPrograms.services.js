@@ -473,3 +473,35 @@ searchModule.factory("dossiersProgramVisualizationTableFactory", [
         };
     },
 ]);
+
+// TODO: remove if priority is not added
+/* var qryProgramRules2 =
+    dhisUrl +
+    "programRules.json?filter=program.id\\:eq\\::programId&fields=name,description,priority,condition&paging=false"; */
+
+// TODO: remove if dataElement options are not added
+/* var qryProgramRuleVariables2 =
+    dhisUrl +
+    "programRuleVariables.json?filter=program.id\\:eq\\::programId&fields=name,dataElement[valueType,optionSetValue,optionSet[options[displayName]]]&paging=false"; */
+
+var qryTest =
+    dhisUrl +
+    "programs.json?filter=displayName\\:eq\\::displayName&fields=id,displayName,displayDescription,programStages[id]&paging=false";
+
+dossierProgramsModule.factory("dossiersProgramsLinkTestFactory", [
+    "$resource",
+    function ($resource) {
+        return $resource(
+            qryTest,
+            {
+                displayName: "@displayName",
+            },
+            {
+                query: {
+                    method: "GET",
+                    isArray: false,
+                },
+            }
+        );
+    },
+]);
