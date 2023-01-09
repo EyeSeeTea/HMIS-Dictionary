@@ -3,7 +3,7 @@
     Please refer to the LICENSE.md and LICENSES-DEP.md for complete licenses.
 ------------------------------------------------------------------------------------*/
 
-var dhisroot = window.location.href.split("/api/")[0];
+var dhisroot = window.location.href.replace(/#.*$/, "").split("/api/")[0];
 var dhisUrl = dhisroot + "/api/";
 
 var qryPing = dhisUrl + "system/ping";

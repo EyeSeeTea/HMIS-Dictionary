@@ -369,40 +369,39 @@ dossierProgramsModule.controller("makeIndicatorVisualizations", [
                 },
                 function (tbl) {
                     if (tbl && tbl.visualizations[0]) {
-                        if (tbl.visualizations[0].id) {
+                        const visualizationId = tbl.visualizations[0].id;
+                        if (visualizationId) {
                             console.log("Updating Table");
-                            payload.id = tbl.visualizations[0].id;
-                            sharing.object.id = tbl.visualizations[0].id;
+                            payload.id = visualizationId;
+                            sharing.object.id = visualizationId;
                             sharing.object.name = tbl.visualizations[0].name;
 
                             dossiersProgramVisualizationTableFactory.upd_table.query(
                                 {
-                                    uid: tbl.visualizations[0].id,
+                                    uid: visualizationId,
                                 },
                                 payload,
                                 function (response) {
                                     dossiersProgramVisualizationTableFactory.upd_sharing.query(
-                                        { uid: tbl.visualizations[0].id },
+                                        { uid: visualizationId },
                                         sharing,
-                                        function (res) { }
+                                        function (res) {}
                                     );
 
-                                    const uid = tbl.visualizations[0].id;
+                                    const uid = visualizationId;
 
                                     $window.open(dhisroot + "/dhis-web-data-visualizer/index.html#/" + uid, "_blank");
                                 }
                             );
                         }
-                    }
-
-                    if (tbl.visualizations[0] == undefined) {
+                    } else if (tbl.visualizations[0] === undefined) {
                         console.log("Creating Table");
                         dossiersProgramVisualizationTableFactory.set_table.query(payload, function (response) {
                             const uid = response.response.uid;
                             dossiersProgramVisualizationTableFactory.upd_sharing.query(
                                 { uid: uid },
                                 sharing,
-                                function (res) { }
+                                function (res) {}
                             );
                             $window.open(dhisroot + "/dhis-web-data-visualizer/index.html#/" + uid, "_blank");
                         });
