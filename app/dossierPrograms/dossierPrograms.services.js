@@ -474,6 +474,7 @@ searchModule.factory("dossiersProgramVisualizationTableFactory", [
     },
 ]);
 
+
 var qryTest =
     dhisUrl +
     "programs.json?filter=displayName\\:eq\\::displayName&fields=id,displayName,displayDescription,programStages[id]&paging=false";
