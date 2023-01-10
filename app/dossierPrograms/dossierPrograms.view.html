@@ -89,12 +89,15 @@
                                 <td>{{ dataElement.displayDescription }}</td>
                                 <td>{{ dataElement.valueType }}</td>
                                 <td>
-                                    <select ng-if="dataElement.optionSet.options" class="form-control col-md-2">
-                                        <option selected>See options</option>
-                                        <option ng-repeat="option in dataElement.optionSet.options">
-                                            {{ option.displayName }}
-                                        </option>
-                                    </select>
+                                    <div ng-if="dataElement.optionSet.options">
+                                        <p>{{ "Option Set name" | translate }}: {{ dataElement.optionSet.name }}</p>
+                                        <select class="form-control col-md-2">
+                                            <option selected>{{ "See options" | translate }}</option>
+                                            <option ng-repeat="option in dataElement.optionSet.options">
+                                                {{ option.displayName }}
+                                            </option>
+                                        </select>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -103,55 +106,343 @@
             </div>
         </div>
 
-        <!--
-        <div class="col-md-12"  ng-controller="dossiersProgramIndicatorController" id="IndicatorGroupsContainer" ng-show="indicators.programIndicators[0]">
-            <h2 class="indicatorGroup" id="indicators">{{'Program indicators' | translate}}</h2>
-            <div  class="col-md-12">
-                <p>{{'Number of Indicators' | translate}}: {{indicators.programIndicators.length}}</p>
+        <div
+            class="col-md-12"
+            ng-controller="dossiersProgramIndicatorController"
+            id="IndicatorGroupsContainer"
+            ng-show="programIndicators[0]"
+        >
+            <h2 class="indicatorGroup" id="indicators">{{ "Program indicators" | translate }}</h2>
+            <div class="col-md-12">
+                <p>{{ "Number of Indicators" | translate }}: {{ programIndicators.length }}</p>
                 <table class="indicatorTable table table-striped">
                     <thead>
                         <tr>
-                            <th>{{'Name' | translate}}</th>
-                            <th>{{'Description' | translate}}</th>
-                            <th>{{'Expression' | translate}}</th>
-                            <th>{{'Filter' | translate}}</th>
+                            <th>{{ "Name" | translate }}</th>
+                            <th>{{ "Description" | translate }}</th>
+                            <th>{{ "Filter" | translate }}</th>
+                            <th>{{ "Calculation" | translate }}</th>
+                            <th>{{ "Aggregation Type" | translate }}</th>
+                            <th>{{ "Type of Program indicator" | translate }}</th>
+                            <th>{{ "Stage(s) referenced:" | translate }}</th>
+                            <th>{{ "Boundaries" | translate }}</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="indicator in  indicators.programIndicators | orderBy: 'displayName'">
-                            <td>{{indicator.displayName}}</td>
-                            <td>{{indicator.displayDescription}}</td>
-                            <td>{{indicator.expression}}</td>
-                            <td>{{indicator.filter}}</td>
+                        <tr ng-repeat="indicator in programIndicators | orderBy: 'displayName'">
+                            <td>{{ indicator.displayName }}</td>
+                            <td>{{ indicator.displayDescription }}</td>
+                            <td>{{ indicator.filter }}</td>
+                            <td>{{ indicator.expression }}</td>
+                            <td>{{ indicator.aggregationType }}</td>
+                            <td>{{ indicator.analyticsType }}</td>
+                            <td>
+                                <ul ng-if="indicator.stageRef">
+                                    <li ng-repeat="stageRef in indicator.stageRef">
+                                        {{ stageRef }}
+                                    </li>
+                                </ul>
+                            </td>
+                            <td>
+                                <ul ng-if="indicator.analyticsPeriodBoundaries">
+                                    <li ng-repeat="boundarie in indicator.analyticsPeriodBoundaries">
+                                        <div>{{ "Boundary target" | translate }}: {{ boundarie.boundaryTarget }}</div>
+                                        <div ng-if="boundarie.analyticsPeriodBoundaryType">
+                                            {{ "Analytics period boundary type" | translate }}:
+                                            {{ boundarie.analyticsPeriodBoundaryType }}
+                                        </div>
+                                        <div ng-if="boundarie.offsetPeriods">
+                                            {{ "Offset period by amount" | translate }}:
+                                            {{ boundarie.offsetPeriods }}
+                                        </div>
+                                        <div ng-if="boundarie.offsetPeoffsetPeriodTyperiods">
+                                            {{ "Period type" | translate }}: {{ boundarie.offsetPeriodType }}
+                                        </div>
+                                    </li>
+                                </ul>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
-        -->
 
         <div class="col-md-12" id="indicatorContainer" ng-controller="dossierProgramGlobalIndicatorController">
             <div ng-if="indicators.length > 0" col-md-12>
-                <h3 class="section" id="indicators">Indicators</h3>
+                <h3 class="section" id="indicators">{{ "Indicators" | translate }}</h3>
                 <table class="sectionElementsTable table table-striped">
                     <thead>
                         <tr>
                             <th>{{ "Name" | translate }}</th>
+                            <th>{{ "Description" | translate }}</th>
                             <th>{{ "Type" | translate }}</th>
                             <th>{{ "Numerator" | translate }}</th>
                             <th>{{ "Numerator description" | translate }}</th>
                             <th>{{ "Denominator" | translate }}</th>
                             <th>{{ "Denominator description" | translate }}</th>
+                            <th>{{ "Stage(s) referenced:" | translate }}</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="indicator in indicators |  orderBy: 'displayName'">
                             <td>{{ indicator.displayName }}</td>
+                            <td>{{ indicator.displayDescription }}</td>
                             <td>{{ indicator.indicatorType.displayName }}</td>
                             <td>{{ indicator.numerator }}</td>
                             <td>{{ indicator.numeratorDescription }}</td>
                             <td>{{ indicator.denominator }}</td>
                             <td>{{ indicator.denominatorDescription }}</td>
+                            <td>
+                                <ul ng-if="indicator.stageRef">
+                                    <li ng-repeat="stageRef in indicator.stageRef">
+                                        {{ stageRef }}
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-12" id="trackedEntityAttributeContainer" ng-controller="dossiersProgramTEAController">
+            <div ng-if="trackedEntityAttributes.length > 0" col-md-12>
+                <h3 class="section" id="trackedEntityAttributes">{{ "Tracked Entity Attributes" | translate }}</h3>
+                <p>
+                    {{ "Number of Tracked Entity Attributes in Program" | translate }}:
+                    {{ trackedEntityAttributes.length }}
+                </p>
+                <table class="sectionElementsTable table table-striped">
+                    <thead>
+                        <tr>
+                            <th>{{ "Name" | translate }}</th>
+                            <th>{{ "Form name" | translate }}</th>
+                            <th>{{ "code" | translate }}</th>
+                            <th>{{ "Description" | translate }}</th>
+                            <th>{{ "Value Type" | translate }}</th>
+                            <th>{{ "Aggregation Type" | translate }}</th>
+                            <th>{{ "Option set" | translate }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="tea in trackedEntityAttributes">
+                            <td>{{ tea.name }}</td>
+                            <td>{{ tea.formName }}</td>
+                            <td>{{ tea.code }}</td>
+                            <td>{{ tea.description }}</td>
+                            <td>{{ tea.valueType }}</td>
+                            <td>{{ tea.aggregationType }}</td>
+                            <td>
+                                <div ng-if="tea.optionSet.options">
+                                    <p>{{ "Option Set name" | translate }}: {{ tea.optionSet.name }}</p>
+                                    <select class="form-control col-md-2">
+                                        <option selected>{{ "See options" | translate }}</option>
+                                        <option ng-repeat="option in tea.optionSet.options">{{ option.name }}</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-12" id="RuleContainer" ng-controller="dossiersProgramRuleController">
+            <div ng-if="rules.length > 0" col-md-12>
+                <h3 class="section" id="rules">{{ "Program Rules" | translate }}</h3>
+                <p>{{ "Number of Rules in Program" | translate }}: {{ rules.length }}</p>
+                <table class="sectionElementsTable table table-striped">
+                    <thead>
+                        <tr>
+                            <th>{{ "Name" | translate }}</th>
+                            <th>{{ "Description" | translate }}</th>
+                            <th>{{ "Program Stage" | translate }}</th>
+                            <th>{{ "Condition" | translate }}</th>
+                            <th>{{ "Program Rule Actions" | translate }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="rule in rules">
+                            <td>{{ rule.name }}</td>
+                            <td>{{ rule.description }}</td>
+                            <td>{{ rule.programStage.name }}</td>
+                            <td>{{ rule.condition }}</td>
+                            <td>
+                                <ul ng-if="rule.programRuleActions">
+                                    <li ng-repeat="prAction in rule.programRuleActions">
+                                        <div ng-switch="prAction.programRuleActionType">
+                                            {{ "Type" | translate }}: {{ prAction.programRuleActionType }}
+                                            <div ng-switch-when="ASSIGN">
+                                                <div ng-if="prAction.dataElement">
+                                                    {{ "Data element" | translate }}: {{ prAction.dataElement.name }}
+                                                </div>
+                                                <div ng-if="prAction.trackedEntityAttribute">
+                                                    {{ "Tracked Entity Attribute" | translate }}:
+                                                    {{ prAction.trackedEntityAttribute.name }}
+                                                </div>
+                                                <div ng-if="prAction.content">
+                                                    {{ "Program rule variable to assign to" | translate }}:
+                                                    {{ prAction.content }}
+                                                </div>
+                                                <div ng-if="prAction.data">
+                                                    {{ "Expression" | translate }}: {{ prAction.data }}
+                                                </div>
+                                            </div>
+                                            <div ng-switch-when="DISPLAYKEYVALUEPAIR">
+                                                <div ng-if="prAction.location">
+                                                    {{ "Display widget" | translate }}: {{ prAction.location }}
+                                                </div>
+                                                <div ng-if="prAction.content">
+                                                    {{ "Key label" | translate }}: {{ prAction.content }}
+                                                </div>
+                                                <div ng-if="prAction.data">
+                                                    {{ "Expression" | translate }}: {{ prAction.data }}
+                                                </div>
+                                            </div>
+                                            <div ng-switch-when="DISPLAYTEXT">
+                                                <div ng-if="prAction.location">
+                                                    {{ "Display widget" | translate }}: {{ prAction.location }}
+                                                </div>
+                                                <div ng-if="prAction.content">
+                                                    {{ "Static text" | translate }}: {{ prAction.content }}
+                                                </div>
+                                                <div ng-if="prAction.data">
+                                                    {{ "Expression" | translate }}: {{ prAction.data }}
+                                                </div>
+                                            </div>
+                                            <div
+                                                ng-switch-when="ERRORONCOMPLETE|SHOWERROR|SHOWWARNING|WARNINGONCOMPLETE"
+                                            >
+                                                <div ng-if="prAction.dataElement">
+                                                    {{ "Data element" | translate }}: {{ prAction.dataElement.name }}
+                                                </div>
+                                                <div ng-if="prAction.trackedEntityAttribute">
+                                                    {{ "Tracked Entity Attribute" | translate }}:
+                                                    {{ prAction.trackedEntityAttribute.name }}
+                                                </div>
+                                                <div ng-if="prAction.content">
+                                                    {{ "Static text" | translate }}: {{ prAction.content }}
+                                                </div>
+                                                <div ng-if="prAction.data">
+                                                    {{ "Expression" | translate }}: {{ prAction.data }}
+                                                </div>
+                                            </div>
+                                            <div ng-switch-when="HIDEFIELD">
+                                                <div ng-if="prAction.dataElement">
+                                                    {{ "Data element" | translate }}: {{ prAction.dataElement.name }}
+                                                </div>
+                                                <div ng-if="prAction.trackedEntityAttribute">
+                                                    {{ "Tracked Entity Attribute" | translate }}:
+                                                    {{ prAction.trackedEntityAttribute.name }}
+                                                </div>
+                                                <div ng-if="prAction.content">
+                                                    {{ "Custom message for blanked field" | translate }}:
+                                                    {{ prAction.content }}
+                                                </div>
+                                            </div>
+                                            <div ng-switch-when="HIDEOPTION">
+                                                <div ng-if="prAction.dataElement">
+                                                    {{ "Data element" | translate }}: {{ prAction.dataElement.name }}
+                                                </div>
+                                                <div ng-if="prAction.trackedEntityAttribute">
+                                                    {{ "Tracked Entity Attribute" | translate }}:
+                                                    {{ prAction.trackedEntityAttribute.name }}
+                                                </div>
+                                                <div ng-if="prAction.content">
+                                                    {{ "Option to hide" | translate }}: {{ prAction.option.name }}
+                                                </div>
+                                            </div>
+                                            <div ng-switch-when="HIDEOPTIONGROUP">
+                                                <div ng-if="prAction.dataElement">
+                                                    {{ "Data element" | translate }}: {{ prAction.dataElement.name }}
+                                                </div>
+                                                <div ng-if="prAction.trackedEntityAttribute">
+                                                    {{ "Tracked Entity Attribute" | translate }}:
+                                                    {{ prAction.trackedEntityAttribute.name }}
+                                                </div>
+                                                <div ng-if="prAction.content">
+                                                    {{ "Option group to hide" | translate }}: {{ prAction.option.name }}
+                                                </div>
+                                            </div>
+                                            <div ng-switch-when="HIDEPROGRAMSTAGE">
+                                                <div ng-if="prAction.programStage">
+                                                    {{ "Program stage to hide" | translate }}:
+                                                    {{ prAction.programStage.name }}
+                                                </div>
+                                            </div>
+                                            <div ng-switch-when="HIDESECTION">
+                                                <div ng-if="prAction.programStageSection">
+                                                    {{ "Program stage section to hide" | translate }}:
+                                                    {{ prAction.programStageSection.name }}
+                                                </div>
+                                            </div>
+                                            <div ng-switch-when="SETMANDATORYFIELD">
+                                                <div ng-if="prAction.dataElement">
+                                                    {{ "Data element" | translate }}: {{ prAction.dataElement.name }}
+                                                </div>
+                                                <div ng-if="prAction.trackedEntityAttribute">
+                                                    {{ "Tracked Entity Attribute" | translate }}:
+                                                    {{ prAction.trackedEntityAttribute.name }}
+                                                </div>
+                                            </div>
+                                            <div ng-switch-when="SCHEDULEMESSAGE">
+                                                <div ng-if="prAction.data">
+                                                    {{ "Date to send message" | translate }}: {{ prAction.data }}
+                                                </div>
+                                                <div ng-if="prAction.template">
+                                                    {{ "Message template" | translate }}: {{ prAction.template }}
+                                                </div>
+                                            </div>
+                                            <div ng-switch-when="SENDMESSAGE">
+                                                <div ng-if="prAction.template">
+                                                    {{ "Message template" | translate }}: {{ prAction.template }}
+                                                </div>
+                                            </div>
+                                            <div ng-switch-when="SHOWOPTIONGROUP">
+                                                <div ng-if="prAction.dataElement">
+                                                    {{ "Data element" | translate }}: {{ prAction.dataElement.name }}
+                                                </div>
+                                                <div ng-if="prAction.trackedEntityAttribute">
+                                                    {{ "Tracked Entity Attribute" | translate }}:
+                                                    {{ prAction.trackedEntityAttribute.name }}
+                                                </div>
+                                                <div ng-if="prAction.optionGroup">
+                                                    {{ "Option group to show" | translate }}:
+                                                    {{ prAction.optionGroup.name }}
+                                                </div>
+                                            </div>
+                                            <div ng-switch-default></div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-12" id="RuleVariablesContainer" ng-controller="dossiersProgramRuleVariablesController">
+            <div ng-if="ruleVariables.length > 0" col-md-12>
+                <h3 class="section" id="ruleVariables">{{ "Program Rules Variables" | translate }}</h3>
+                <p>{{ "Number of Rule Variables in Program" | translate }}: {{ ruleVariables.length }}</p>
+                <table class="sectionElementsTable table table-striped">
+                    <thead>
+                        <tr>
+                            <th>{{ "Name" | translate }}</th>
+                            <th>{{ "Source type" | translate }}</th>
+                            <th>{{ "Program Stage" | translate }}</th>
+                            <th>{{ "Data element" | translate }}</th>
+                            <th>{{ "Tracked Entity Attribute" | translate }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="var in ruleVariables">
+                            <td>{{var.name}}</td>
+                            <td>{{var.programRuleVariableSourceType}}</td>
+                            <td>{{var.programStage.name}}</td>
+                            <td>{{var.dataElement.name}}</td>
+                            <td>{{var.trackedEntityAttribute.name}}</td>
                         </tr>
                     </tbody>
                 </table>

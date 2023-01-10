@@ -2,25 +2,11 @@
     List of contributors: https://github.com/MSFOCBA
     Please refer to the LICENSE.md and LICENSES-DEP.md for complete licenses.
 ------------------------------------------------------------------------------------*/
-var qryPrograms = dhisUrl + "programs.json?fields=id,displayName,displayDescription,programStages[id]&paging=false";
-
-var qryProgramStageSections =
+var qryPrograms =
     dhisUrl +
-    "programStages/:programStageId.json?fields=id,displayName,repeatable,sortOrder,programStageSections[id,displayName,dataElements[displayName,displayFormName,displayDescription,valueType,optionSetValue,optionSet[options[displayName]]]],programStageDataElements[dataElement[displayName,displayFormName,displayDescription,valueType,optionSetValue,optionSet[options[displayName]]]]&paging=false";
-
-var qryProgramIndicators =
-    dhisUrl + "programs/:programId.json?fields=programIndicators[displayName,displayDescription,expression,filter]";
-
-var qryProgramIndicatorExpressions = dhisUrl + "programIndicators/expression/description";
-var qryProgramIndicatorFilters = dhisUrl + "programIndicators/filter/description";
-
-// Only public EventReports and EventCharts
-var qryEventReports =
-    dhisUrl +
-    "eventReports.json?filter=program.id\\:eq\\::programId&fields=id,displayName,displayDescription&paging=false";
-var qryEventCharts =
-    dhisUrl +
-    "eventCharts.json?filter=program.id\\:eq\\::programId&fields=id,displayName,displayDescription&paging=false";
+    "programs?fields=" +
+    ["id", "displayName", "displayDescription", "programStages[id]"].join(",") +
+    "&paging=false";
 
 dossierProgramsModule.factory("dossiersProgramsFactory", [
     "$resource",
@@ -37,6 +23,37 @@ dossierProgramsModule.factory("dossiersProgramsFactory", [
         );
     },
 ]);
+
+var qryProgramStageSections =
+    dhisUrl +
+    "programStages/:programStageId?fields=" +
+    [
+        "id",
+        "displayName",
+        "repeatable",
+        "sortOrder",
+        [
+            "programStageSections[id",
+            "displayName",
+            "dataElements[displayName",
+            "displayFormName",
+            "displayDescription",
+            "valueType",
+            "optionSetValue",
+            "optionSet[name",
+            "options[displayName]]]]",
+        ].join(","),
+        [
+            "programStageDataElements[dataElement[displayName",
+            "displayFormName",
+            "displayDescription",
+            "valueType",
+            "optionSetValue",
+            "optionSet[name",
+            "options[displayName]]]]",
+        ].join(","),
+    ].join(",") +
+    "&paging=false";
 
 dossierProgramsModule.factory("dossiersProgramStageSectionsFactory", [
     "$resource",
@@ -57,7 +74,23 @@ dossierProgramsModule.factory("dossiersProgramStageSectionsFactory", [
 ]);
 
 var qryProgramIndicators =
-    dhisUrl + "programs/:programId.json?fields=programIndicators[displayName,displayDescription,expression,filter]";
+    dhisUrl +
+    "programs/:programId?fields=" +
+    "programIndicators[" +
+    [
+        "id",
+        "displayName",
+        "displayDescription",
+        "filter",
+        "expression",
+        "aggregationType",
+        "analyticsType",
+        "analyticsPeriodBoundaries[boundaryTarget",
+        "analyticsPeriodBoundaryType",
+        "offsetPeriods",
+        "offsetPeriodType]",
+    ].join(",") +
+    "]&paging=false";
 
 dossierProgramsModule.factory("dossiersProgramIndicatorsFactory", [
     "$resource",
@@ -79,7 +112,7 @@ dossierProgramsModule.factory("dossiersProgramIndicatorsFactory", [
 
 var qryProgramIndicatorExpressions = dhisUrl + "programIndicators/expression/description";
 
-dossierProgramsModule.factory("dossiersProgramExpressionFactory", [
+dossierProgramsModule.factory("dossiersProgramIndicatorExpressionFactory", [
     "$resource",
     function ($resource) {
         return $resource(
@@ -98,7 +131,7 @@ dossierProgramsModule.factory("dossiersProgramExpressionFactory", [
 
 var qryProgramIndicatorFilters = dhisUrl + "programIndicators/filter/description";
 
-dossierProgramsModule.factory("dossiersProgramFilterFactory", [
+dossierProgramsModule.factory("dossiersProgramIndicatorFilterFactory", [
     "$resource",
     function ($resource) {
         return $resource(
@@ -115,11 +148,47 @@ dossierProgramsModule.factory("dossiersProgramFilterFactory", [
     },
 ]);
 
+var qryProgramIndicatorStages =
+    dhisUrl +
+    "programs?filter=id\\:eq\\::programId&fields=" +
+    "programStages[" +
+    ["id", "name", "programStageDataElements[dataElement[id]]"].join(",") +
+    "]&paging=false";
+
+dossierProgramsModule.factory("dossiersProgramIndicatorStagesFactory", [
+    "$resource",
+    function ($resource) {
+        return $resource(
+            qryProgramIndicatorStages,
+            {
+                programId: "@programId",
+            },
+            {
+                query: {
+                    method: "GET",
+                    isArray: false,
+                },
+            }
+        );
+    },
+]);
+
 var qryProgramGlobalIndicators =
     dhisUrl +
-    "indicators?fields=displayName,indicatorType[displayName],description,numerator,numeratorDescription,denominator,denominatorDescription&paging=false";
+    "indicators?fields=" +
+    [
+        "displayName",
+        "displayDescription",
+        "indicatorType[displayName]",
+        "description",
+        "numerator",
+        "numeratorDescription",
+        "denominator",
+        "denominatorDescription",
+    ].join(",") +
+    "&paging=false";
 
-datasetsModule.factory("programGlobalIndicators", [
+datasetsModule.factory("dossiersProgramGlobalIndicatorsFactory", [
     "$resource",
     function ($resource) {
         return $resource(
@@ -135,13 +204,13 @@ datasetsModule.factory("programGlobalIndicators", [
     },
 ]);
 
-var qryProgramIndicatorExpression = dhisUrl + "expressions/description?expression=:expression";
+var qryProgramGlobalIndicatorExpression = dhisUrl + "expressions/description?expression=:expression";
 
-datasetsModule.factory("programIndicatorExpression", [
+datasetsModule.factory("dossiersProgramGlobalIndicatorExpressionFactory", [
     "$resource",
     function ($resource) {
         return $resource(
-            qryProgramIndicatorExpression,
+            qryProgramGlobalIndicatorExpression,
             {
                 expression: "@expression",
             },
@@ -154,6 +223,13 @@ datasetsModule.factory("programIndicatorExpression", [
         );
     },
 ]);
+
+// Only public EventReports and EventCharts
+var qryEventReports =
+    dhisUrl +
+    "eventReports?filter=program.id\\:eq\\::programId&fields=" +
+    ["id", "displayName", "displayDescription"].join(",") +
+    "&paging=false";
 
 dossierProgramsModule.factory("dossiersProgramEventReportFactory", [
     "$resource",
@@ -173,11 +249,164 @@ dossierProgramsModule.factory("dossiersProgramEventReportFactory", [
     },
 ]);
 
+var qryEventCharts =
+    dhisUrl +
+    "eventCharts?filter=program.id\\:eq\\::programId&fields=" +
+    ["id", "displayName", "displayDescription"].join(",") +
+    "&paging=false";
+
 dossierProgramsModule.factory("dossiersProgramEventChartFactory", [
     "$resource",
     function ($resource) {
         return $resource(
             qryEventCharts,
+            {
+                programId: "@programId",
+            },
+            {
+                query: {
+                    method: "GET",
+                    isArray: false,
+                },
+            }
+        );
+    },
+]);
+
+var qryProgramTrackedEntityAttributes =
+    dhisUrl +
+    "programs/:programId?fields=" +
+    [
+        "programTrackedEntityAttributes[trackedEntityAttribute[name",
+        "formName",
+        "code",
+        "description",
+        "optionSet[name",
+        "options[name]]",
+        "valueType",
+        "aggregationType]]",
+    ].join(",") +
+    "&paging=false";
+
+dossierProgramsModule.factory("dossiersProgramTEAsFactory", [
+    "$resource",
+    function ($resource) {
+        return $resource(
+            qryProgramTrackedEntityAttributes,
+            {
+                programId: "@programId",
+            },
+            {
+                query: {
+                    method: "GET",
+                    isArray: false,
+                },
+            }
+        );
+    },
+]);
+
+var qryProgramRules =
+    dhisUrl +
+    "programRules?filter=program.id\\:eq\\::programId&fields=" +
+    [
+        "name",
+        "description",
+        "programStage[name]",
+        "condition",
+        "programRuleActions[programRuleActionType",
+        "dataElement[name]",
+        "trackedEntityAttribute[name]",
+        "option[name]",
+        "optionGroup[name]",
+        "programStage[name]",
+        "programStageSection[name]",
+        "templateUid",
+        "content",
+        "data]",
+    ].join(",") +
+    "&paging=false";
+
+dossierProgramsModule.factory("dossiersProgramRulesFactory", [
+    "$resource",
+    function ($resource) {
+        return $resource(
+            qryProgramRules,
+            {
+                programId: "@programId",
+            },
+            {
+                query: {
+                    method: "GET",
+                    isArray: false,
+                },
+            }
+        );
+    },
+]);
+
+var qryProgramRulesConditionDescription = dhisUrl + "programRules/condition/description?programId=:programId";
+
+dossierProgramsModule.factory("dossiersProgramRulesConditionDescription", [
+    "$resource",
+    function ($resource) {
+        return $resource(
+            qryProgramRulesConditionDescription,
+            {
+                programId: "@programId",
+            },
+            {
+                save: {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "text/plain",
+                    },
+                    data: "@expression",
+                    isArray: false,
+                },
+            }
+        );
+    },
+]);
+
+var qryProgramRulesActionsTemplateName =
+    dhisUrl + "programNotificationTemplates?filter=id\\:in\\:[:templateUid]&fields=id,name&paging=false";
+
+dossierProgramsModule.factory("dossiersProgramRulesActionsTemplateName", [
+    "$resource",
+    function ($resource) {
+        return $resource(
+            qryProgramRulesActionsTemplateName,
+            {
+                templateUid: "@templateUid",
+            },
+            {
+                query: {
+                    method: "GET",
+                    isArray: false,
+                },
+            }
+        );
+    },
+]);
+
+var qryProgramRuleVariables =
+    dhisUrl +
+    "programRuleVariables?filter=program.id\\:eq\\::programId&fields=" +
+    [
+        "name",
+        "programRuleVariableSourceType",
+        "programStage[name]",
+        "dataElement[name]",
+        "trackedEntityAttribute[name]",
+    ].join(",") +
+    "&paging=false";
+
+dossierProgramsModule.factory("dossiersProgramRuleVariablesFactory", [
+    "$resource",
+    function ($resource) {
+        return $resource(
+            qryProgramRuleVariables,
             {
                 programId: "@programId",
             },
