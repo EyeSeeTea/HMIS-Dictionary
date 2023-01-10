@@ -1,159 +1,183 @@
 <!DOCTYPE html>
 <html ng-app="appModule">
+    <head>
+        <title>Metadata Dictionary</title>
 
-	<head>
+        <!-- dependencies: jQuery -->
+        <script src="bower_components/jquery/jquery.min.js"></script>
 
-		<title>Metadata Dictionary</title>
+        <!-- dependencies: Bootstrap -->
+        <script src="bower_components/bootstrap/js/bootstrap.min.js"></script>
+        <link href="bower_components/bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet" media="all" />
+        <link
+            href="bower_components/bootstrap-vertical-tabs/bootstrap.vertical-tabs.css"
+            type="text/css"
+            rel="stylesheet"
+            media="all"
+        />
 
-		<!-- dependencies: jQuery -->
-		<script src="bower_components/jquery/jquery.min.js">								</script>
-		
-		<!-- dependencies: Bootstrap -->
-		<script src="bower_components/bootstrap/js/bootstrap.min.js">					</script>
-		<link 	href="bower_components/bootstrap/css/bootstrap.min.css" 				type="text/css" rel="stylesheet" media="all">
-		<link 	href="bower_components/bootstrap-vertical-tabs/bootstrap.vertical-tabs.css"	type="text/css" rel="stylesheet" media="all">
+        <!-- dependencies: Angular -->
+        <script src="bower_components/angular/angular.min.js"></script>
+        <script src="bower_components/angular-resource/angular-resource.min.js"></script>
+        <script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+        <script src="bower_components/angular-table/ng-table.min.js"></script>
+        <link href="bower_components/angular-table/ng-table.min.css" type="text/css" rel="stylesheet" media="all" />
+        <script src="bower_components/angular-translate/angular-translate.min.js"></script>
+        <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
+        <script src="bower_components/angular-ui-bootstrap/ui-bootstrap-tpls-2.3.0.min.js"></script>
+        <script src="bower_components/angular-ui-router/angular-ui-router.min.js"></script>
 
-		<!-- dependencies: Angular -->
-		<script src="bower_components/angular/angular.min.js">								</script>
-		<script src="bower_components/angular-resource/angular-resource.min.js">			</script>
-		<script src="bower_components/angular-sanitize/angular-sanitize.min.js">			</script>
-		<script src="bower_components/angular-table/ng-table.min.js">						</script>
-		<link 	href="bower_components/angular-table/ng-table.min.css"						type="text/css" rel="stylesheet" media="all">
-		<script src="bower_components/angular-translate/angular-translate.min.js">			</script>
-		<script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
-		<script src="bower_components/angular-ui-bootstrap/ui-bootstrap-tpls-2.3.0.min.js">	</script>
-		<script src="bower_components/angular-ui-router/angular-ui-router.min.js">			</script>
+        <!-- dependencies: graph module # currently not used -->
+        <!-- <script src="bower_components/angucomplete-alt/angucomplete-alt.min.js"></script>
+        <link 	href="bower_components/angucomplete-alt/angucomplete-alt.css" type="text/css" rel="stylesheet" media="all">
+        <script src="bower_components/d3/d3.min.js"></script> -->
 
-		<!-- dependencies: graph module # currently not used -->
-	<!--<script src="bower_components/angucomplete-alt/angucomplete-alt.min.js">			</script>
-		<link 	href="bower_components/angucomplete-alt/angucomplete-alt.css"				type="text/css" rel="stylesheet" media="all">
-		<script src="bower_components/d3/d3.min.js">										</script>-->
+        <script src="bower_components/lodash/lodash.js"></script>
 
-		<script src="bower_components/lodash/lodash.js">
-		</script>
+        <!-- dependencies: TinyMCE -->
+        <script src="bower_components/tinymce/tinymce.min.js"></script>
+        <script src="bower_components/angular-ui-tinymce/tinymce.min.js"></script>
 
-		<!-- dependencies: TinyMCE -->
-		<script src="bower_components/tinymce/tinymce.min.js">								</script>
-		<script src="bower_components/angular-ui-tinymce/tinymce.min.js">					</script>
+        <!-- app: core -->
+        <script src="app/app.config.js"></script>
+        <script src="app/app.services.js"></script>
+        <script src="app/app.controllers.js"></script>
+        <link href="assets/fonts/rajdhani.css" type="text/css" rel="stylesheet" />
+        <link href="app/app.css.css" type="text/css" rel="stylesheet" media="all" />
 
-		<!-- app: core -->
-		<script src="app/app.config.js">													</script>
-		<script src="app/app.services.js">													</script>
-		<script src="app/app.controllers.js">												</script>
-		<link 	href="assets/fonts/rajdhani.css"											type="text/css" rel="stylesheet">
-		<link 	href="app/app.css.css"														type="text/css" rel="stylesheet" media="all">
+        <!-- app: module-dossiers -->
+        <script src="app/dossiers/dossiers.services.js"></script>
+        <script src="app/dossiers/dossiers.controllers.js"></script>
+        <!-- app: module-dossiersEditor -->
+        <script src="app/dossiersEditor/dossiersEditor.services.js"></script>
+        <script src="app/dossiersEditor/dossiersEditor.controllers.js"></script>
+        <!-- app: module-dossiersReader -->
+        <link href="app/dossiersReader/dossiersReader.css.css" type="text/css" rel="stylesheet" media="all" />
+        <script src="app/dossiersReader/dossiersReader.services.js"></script>
+        <script src="app/dossiersReader/dossiersReader.controllers.js"></script>
 
-		<!-- app: module-dossiers -->
-		<script src="app/dossiers/dossiers.services.js">									</script>
-		<script src="app/dossiers/dossiers.controllers.js">									</script>
-		<!-- app: module-dossiersEditor -->
-		<script src="app/dossiersEditor/dossiersEditor.services.js">						</script>
-		<script src="app/dossiersEditor/dossiersEditor.controllers.js">						</script>
-		<!-- app: module-dossiersReader -->
-		<link 	href="app/dossiersReader/dossiersReader.css.css"							type="text/css" rel="stylesheet" media="all">
-		<script src="app/dossiersReader/dossiersReader.services.js">						</script>
-		<script src="app/dossiersReader/dossiersReader.controllers.js">						</script>
+        <!-- app: module-dossiers-programs -->
+        <script src="app/datasets/datasets.services.js"></script>
+        <script src="app/datasets/datasets.controllers.js"></script>
 
-		<!-- app: module-dossiers-programs -->
-		<script src="app/datasets/datasets.services.js">									</script>
-		<script src="app/datasets/datasets.controllers.js">									</script>
+        <!-- app: module-dossiers-programs -->
+        <script src="app/dossierPrograms/dossierPrograms.services.js"></script>
+        <script src="app/dossierPrograms/dossierPrograms.controllers.js"></script>
 
-		<!-- app: module-dossiers-programs -->
-		<script src="app/dossierPrograms/dossierPrograms.services.js">						</script>
-		<script src="app/dossierPrograms/dossierPrograms.controllers.js">					</script>
+        <!-- app: module-search -->
+        <link href="app/search/search.css.css" type="text/css" rel="stylesheet" media="all" />
+        <script src="app/search/search.filters.js"></script>
+        <script src="app/search/search.services.js"></script>
+        <script src="app/search/search.controllers.js"></script>
 
-		<!-- app: module-search -->
-		<link 	href="app/search/search.css.css" 											type="text/css" rel="stylesheet" media="all">
-		<script src="app/search/search.filters.js">											</script>
-		<script src="app/search/search.services.js">										</script>
-		<script src="app/search/search.controllers.js">										</script>
+        <!-- app: module-admin  # currently not used -->
+        <link href="app/admin/admin.css.css" type="text/css" rel="stylesheet" media="all" />
+        <script src="app/admin/admin.services.js"></script>
+        <script src="app/admin/admin.controllers.js"></script>
 
-		<!-- app: module-admin  # currently not used -->
-		<link 	href="app/admin/admin.css.css" 												type="text/css" rel="stylesheet" media="all">
-		<script src="app/admin/admin.services.js">											</script>
-		<script src="app/admin/admin.controllers.js">										</script>
+        <!-- app: module-graph # currently not used -->
+        <!--<link 	href="app/graph/graph.css.css" type="text/css" rel="stylesheet" media="all">
+        <script src="app/graph/graph.controllers.js"></script>-->
+    </head>
 
-		<!-- app: module-graph # currently not used -->
-	<!--<link 	href="app/graph/graph.css.css"												type="text/css" rel="stylesheet" media="all">
-		<script src="app/graph/graph.controllers.js">										</script>-->
+    <body class="container-fluid">
+        <div ng-controller="appSharedController">
+            <!-- app: header menu -->
 
-	</head>
+            <div id="header">
+                <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+                <!-- DHIS2 Settings initialization for a baseUrl that is used for the menu -->
+                <script>
+                    window.dhis2 = window.dhis2 || {};
+                    dhis2.settings = dhis2.settings || {};
 
-	<body class="container-fluid">
+                    var dhisroot = window.location.href.split("/api/")[0];
+                    var dhisrootArr = dhisroot.split("/");
+                    console.log("index.html: Prefix: " + dhisrootArr[3]);
+                    if (dhisrootArr.length >= 4) {
+                        dhis2.settings.baseUrl = dhisrootArr[3];
+                    } else {
+                        dhis2.settings.baseUrl = "";
+                    }
+                </script>
 
-		<div ng-controller="appSharedController">
+                <!-- Menu scripts -->
+                <script src="../../../dhis-web-commons/javascripts/dhis2/dhis2.translate.js"></script>
+                <script src="../../../dhis-web-commons/javascripts/dhis2/dhis2.menu.js"></script>
+                <script src="../../../dhis-web-commons/javascripts/dhis2/dhis2.menu.ui.js"></script>
 
-			<!-- app: header menu -->
+                <!-- Stylesheets related to the menu -->
+                <link
+                    href="../../../dhis-web-commons/font-awesome/css/font-awesome.min.css"
+                    type="text/css"
+                    rel="stylesheet"
+                />
+                <link href="../../../dhis-web-commons/css/menu.css" type="text/css" rel="stylesheet" media="screen" />
+                <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-			<div id="header">
+                <div class="col-xs-4">
+                    <img
+                        id="header-banner"
+                        src="../../staticContent/logo_banner"
+                        style="cursor: pointer"
+                        title="View home page"
+                        onclick="window.location.href='../../../'"
+                    />
 
-				<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-				<!-- DHIS2 Settings initialization for a baseUrl that is used for the menu -->
-				<script>
-					window.dhis2 = window.dhis2 || {};
-					dhis2.settings = dhis2.settings || {};
+                    <!-- HARDCODED -->
+                    <span
+                        id="header-text"
+                        style="cursor: pointer"
+                        title="View home page"
+                        onclick="window.location.href='../../../'"
+                        >Metadata Dictionary</span
+                    >
+                </div>
+                <div class="col-xs-8">
+                    <div class="col-xs-11" d2-menu></div>
+                    <div class="col-xs-1 pull-right">
+                        <button
+                            disabled="disabled"
+                            type="button"
+                            onclick="javascript:window.print()"
+                            class="btn btn-link btn-lg printButton"
+                        >
+                            <span aria-hidden="true" class="glyphicon glyphicon-print"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
 
-					var dhisroot = window.location.href.split('/api/')[0];
-					var dhisrootArr = dhisroot.split('/');
-					console.log("index.html: Prefix: "+ dhisrootArr[3]);
-					if(dhisrootArr.length >= 4){
-						dhis2.settings.baseUrl = dhisrootArr[3];
-					}else {
-						dhis2.settings.baseUrl = '';
-					}
-				</script>
+            <!-- app: lateral menu -->
+            <ul id="menu-container" class="nav nav-tabs tabs-left sideways" onclick="tabSwitch()" role="tablist">
+                <li id="search" class="active" role="presentation">
+                    <a href="#search" data-toggle="tab" style="margin-top: 48px">{{ "idx_Search" | translate }}</a>
+                </li>
+                <li id="dossiers" ng-if="serviceSetUID" role="presentation">
+                    <a href="#dossiers" data-toggle="tab">{{ "idx_Dossiers" | translate }}</a>
+                </li>
+                <li id="dossierPrograms" role="presentation">
+                    <a href="#dossierPrograms" data-toggle="tab">{{ "Programs" | translate }}</a>
+                </li>
+                <li id="datasets" role="presentation">
+                    <a href="#datasets" data-toggle="tab">{{ "Data Sets" | translate }}</a>
+                </li>
+                <li id="admin" ng-show="show_admin" role="presentation">
+                    <a href="#admin" data-toggle="tab">{{ "idx_Admin" | translate }}</a>
+                </li>
+                <!--<li id="graph" role="presentation"><a href="#graph" data-toggle="tab">{{'idx_Graph' | translate}}</a></li> -->
+            </ul>
+            <div id="menu-background"></div>
 
-				<!-- Menu scripts -->
-				<script src="../../../dhis-web-commons/javascripts/dhis2/dhis2.translate.js"></script>
-				<script src="../../../dhis-web-commons/javascripts/dhis2/dhis2.menu.js">	</script>
-				<script src="../../../dhis-web-commons/javascripts/dhis2/dhis2.menu.ui.js">	</script>
+            <!-- app: view-container -->
+            <div id="view-container">
+                <div ui-view class="view-frame"></div>
+            </div>
+        </div>
 
-				<!-- Stylesheets related to the menu -->
-				<link 	href="../../../dhis-web-commons/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet">
-				<link 	href="../../../dhis-web-commons/css/menu.css"						type="text/css" rel="stylesheet" media="screen">
-				<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+        <!-- print: footer - nb: works only properly in firefox -->
+        <div id="print-foot"></div>
 
-				<div class="col-xs-4">
-					<img id="header-banner" src="../../staticContent/logo_banner" style="cursor:pointer" title="View home page" onclick="window.location.href='../../../'">
-
-					<!-- HARDCODED -->
-					<span id="header-text" style="cursor:pointer" title="View home page" onclick="window.location.href='../../../'">Metadata Dictionary</span>
-				</div>
-				<div class="col-xs-8">
-					<div class="col-xs-11" d2-menu>
-					</div>
-					<div class="col-xs-1 pull-right">
-						<button disabled="disabled" type="button" onclick="javascript:window.print()" class="btn btn-link btn-lg printButton">
-							<span aria-hidden="true" class="glyphicon glyphicon-print"></span>
-						</button>
-					</div>
-				</div>
-			</div>
-
-
-			<!-- app: lateral menu -->
-			<ul id="menu-container" class="nav nav-tabs tabs-left sideways" onclick="tabSwitch()" role="tablist" >
-			  	<li id="search" class="active" role="presentation"><a href="#search" data-toggle="tab" style="margin-top:48px;">{{'idx_Search' | translate}}</a></li>
-		      	<li id="dossiers" ng-if="serviceSetUID" role="presentation"><a href="#dossiers" data-toggle="tab">{{'idx_Dossiers' | translate}}</a></li>
-				<li id="dossierPrograms" role="presentation"><a href="#dossierPrograms" data-toggle="tab">{{'Programs' | translate}}</a></li>
-				<li id="datasets" role="presentation"><a href="#datasets" data-toggle="tab">{{'Data Sets' | translate}}</a></li>
-				<li id="admin" ng-show="show_admin" role="presentation"><a href="#admin" data-toggle="tab">{{'idx_Admin' | translate}}</a></li>
-		    <!--<li id="graph" role="presentation"><a href="#graph" data-toggle="tab">{{'idx_Graph' | translate}}</a></li> -->
-		    </ul>
-			<div id="menu-background"></div>
-
-			<!-- app: view-container -->
-			<div id="view-container">
-				<div ui-view class="view-frame"></div>
-			</div>
-
-		</div>
-
-		<!-- print: footer - nb: works only properly in firefox -->
-		<div id="print-foot"></div>
-
-		<div class="loading"></div>
-
-	</body>
-
+        <div class="loading"></div>
+    </body>
 </html>

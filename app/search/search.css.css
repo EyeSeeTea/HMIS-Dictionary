@@ -13,22 +13,22 @@ td {
 
 .panel-heading .accordion-toggle:after {
     /* symbol for "opening" panels */
-    font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */
-    content: "\e114";    /* adjust as needed, taken from bootstrap.css */
-    float: right;        /* adjust as needed */
-    color: grey;         /* adjust as needed */
+    font-family: "Glyphicons Halflings"; /* essential for enabling glyphicon */
+    content: "\e114"; /* adjust as needed, taken from bootstrap.css */
+    float: right; /* adjust as needed */
+    color: grey; /* adjust as needed */
 }
 .panel-heading .accordion-toggle.collapsed:after {
     /* symbol for "collapsed" panels */
-    content: "\e080";    /* adjust as needed, taken from bootstrap.css */
+    content: "\e080"; /* adjust as needed, taken from bootstrap.css */
 }
- label {
+label {
     font-weight: normal;
- }
+}
 
 .tableFilter {
-   font-weight: normal;
-   font-size: 12px;
+    font-weight: normal;
+    font-size: 12px;
 }
 
 .tooltipcontainer {
@@ -45,7 +45,7 @@ td {
     text-align: center;
     padding: 5px 0;
     border-radius: 6px;
- 
+
     /* Position the tooltip text - see examples below! */
     position: absolute;
     z-index: 1;

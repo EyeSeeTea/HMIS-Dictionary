@@ -15,7 +15,7 @@
 
 .label-Services {
     font-size: 8px !important;
-    stroke: #7B7D7D;
+    stroke: #7b7d7d;
     stroke-width: 0.1px;
     pointer-events: none;
 }
@@ -23,7 +23,7 @@
 .label-dataSets {
     font-size: 6px !important;
     fill: #424949;
-    stroke: #7B7D7D;
+    stroke: #7b7d7d;
     stroke-width: 0.1px;
     pointer-events: none;
 }
@@ -31,7 +31,7 @@
 .label-Sections {
     font-size: 4px !important;
     fill: #626567;
-    stroke: #7B7D7D;
+    stroke: #7b7d7d;
     stroke-width: 0.1px;
     pointer-events: none;
 }

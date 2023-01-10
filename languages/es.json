@@ -1,5 +1,5 @@
 {
-    "INDEX.HTML":       "****************************",
+    "INDEX.HTML": "****************************",
 
     "idx_Dossiers": "Dossiers",
     "idx_Search": "Busqueda",
@@ -8,10 +8,10 @@
     "idx_Programs": "Programas",
     "idx_DataSets": "Set de datos",
 
-    "MODULE:ALL":       "****************************",
+    "MODULE:ALL": "****************************",
     "OPEN": "Abrir",
 
-    "MODULE:DOSSIERS":  "****************************",
+    "MODULE:DOSSIERS": "****************************",
 
     "dos_Dossiers": "Dossiers",
     "dos_Number of Services": "Número de Servicios",
@@ -42,8 +42,7 @@
 
     "dos_Comments": "Comentarios",
 
-
-    "MODULE:SEARCH":    "****************************",
+    "MODULE:SEARCH": "****************************",
 
     "srch_SearchAll": "Búsqueda",
     "srch_SearchAll_Clear": "Reiniciar filtros",
@@ -58,7 +57,7 @@
     "object_form": "Nombre en el Formulario (solo datae.)",
     "object_id": "ID",
     "object_code": "Código",
-     "object_ICD10": "ICD10",
+    "object_ICD10": "ICD10",
 
     "srch_SelectColumns_objDescs": "Elementos de Datos o Indicadores - Descripciones",
     "object_description": "Descripción",
@@ -82,5 +81,5 @@
     "srch_exportToExcel": "Exportar esta página a Excel",
 
     "MODULE:PROGRAMS": "***************************",
-    "dos_Description of Program":"Descripción del programa"
+    "dos_Description of Program": "Descripción del programa"
 }
