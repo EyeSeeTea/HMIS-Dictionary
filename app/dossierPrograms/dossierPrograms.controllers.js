@@ -9,8 +9,7 @@ dossierProgramsModule.controller("dossierProgramsMainController", [
     "$anchorScroll",
     "$sce",
     "dossiersProgramsFactory",
-    "dossiersProgramsLinkTestFactory",
-    function ($scope, $translate, $anchorScroll, $sce, dossiersProgramsFactory, dossiersProgramsLinkTestFactory) {
+    function ($scope, $translate, $anchorScroll, $sce, dossiersProgramsFactory) {
         $("#dossiersPrograms").tab("show");
 
         /*
@@ -46,19 +45,9 @@ dossierProgramsModule.controller("dossierProgramsMainController", [
         //indicatorGroups = indicators
         //Datasets = dataElements
         startLoadingState(false);
-        if (sessionStorage.getItem("programName") !== null) {
-            $scope.programName = sessionStorage.getItem("programName");
-            console.log($scope.programName);
-            sessionStorage.clear();
-
-            $scope.programs = dossiersProgramsLinkTestFactory.get({ displayName: $scope.programName }, function () {
-                endLoadingState(false);
-            });
-        } else {
-            $scope.programs = dossiersProgramsFactory.get(function () {
-                endLoadingState(false);
-            });
-        }
+        $scope.programs = dossiersProgramsFactory.get(function () {
+            endLoadingState(false);
+        });
 
         //Clear the TOC
         $scope.$watch("selectedProgram", function () {
