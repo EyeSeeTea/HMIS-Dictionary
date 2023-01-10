@@ -12,6 +12,7 @@ var searchModule = angular.module("searchModule", ["ngTable", "ui.bootstrap"]);
 var dossiersModule = angular.module("dossiersModule", ["dossiersEditorModule", "dossiersReaderModule"]);
 var dossierProgramsModule = angular.module("dossierProgramsModule", []);
 var datasetsModule = angular.module("datasetsModule", []);
+var dossierIndicatorsModule = angular.module("dossierIndicatorsModule", []);
 
 var appModule = angular.module("appModule", [
     "ui.router",
@@ -19,12 +20,14 @@ var appModule = angular.module("appModule", [
     "ngSanitize",
     "pascalprecht.translate",
     "ngResource",
+    "ngSessionStorage",
     "dossiersModule",
     "dossierProgramsModule",
     "datasetsModule",
+    "dossierIndicatorsModule",
     "searchModule",
     "adminModule",
-    /*"graphModule", */
+    /* "graphModule", */
 ]);
 
 /*
@@ -69,6 +72,10 @@ appModule.config([
             .state("admin", {
                 url: "/admin",
                 templateUrl: "app/admin/admin.view.html",
+            })
+            .state("dossierIndicators", {
+                url: "/dossierIndicators",
+                templateUrl: "app/dossierIndicators/dossierIndicators.view.html",
             })
             .state("graph", {
                 url: "/graph",

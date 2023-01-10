@@ -58,6 +58,9 @@ cp -r node_modules/@bower_components/tinymce/themes bower_components/tinymce/the
 # angular-ui-tinymce
 install -D --mode=$mode node_modules/@bower_components/angular-ui-tinymce/dist/tinymce.min.js bower_components/angular-ui-tinymce/tinymce.min.js
 install -D --mode=$mode node_modules/@bower_components/angular-ui-tinymce/LICENSE bower_components/angular-ui-tinymce/LICENSE.txt
+# angular-sessionstorage
+install -D --mode=$mode node_modules/angular-sessionstorage/angular-sessionstorage.js bower_components/angular-sessionstorage/angular-sessionstorage.js
+install -D --mode=$mode node_modules/angular-sessionstorage/LICENSE bower_components/angular-sessionstorage/LICENSE
 # xlsx
 install -D --mode=$mode node_modules/xlsx/dist/xlsx.mini.min.js bower_components/xlsx/xlsx.mini.min.js
 install -D --mode=$mode node_modules/xlsx/LICENSE bower_components/xlsx/LICENSE
