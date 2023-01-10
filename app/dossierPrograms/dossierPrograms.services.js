@@ -473,3 +473,7 @@ searchModule.factory("dossiersProgramVisualizationTableFactory", [
         };
     },
 ]);
+
+dossierProgramsModule.service("dossiersProgramDataService", function () {
+    this.data = {};
+});
