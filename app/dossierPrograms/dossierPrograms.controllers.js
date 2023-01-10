@@ -64,32 +64,14 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
     "$q",
     "$translate",
     "dossiersProgramStageSectionsFactory",
+    "dossiersProgramStageCalcModeFactory",
     "Ping",
-    function ($scope, $q, $translate, dossiersProgramStageSectionsFactory, Ping) {
-        $scope.$watch("selectedProgram", function () {
-            ping();
-            if ($scope.selectedProgram) {
-                startLoadingState(false);
-                //Query sections and data elements
-                var stageSectionPromises = $scope.selectedProgram.programStages.map(function (stage) {
-                    return dossiersProgramStageSectionsFactory.get({ programStageId: stage.id }).$promise;
-                });
-
-                $q.all(stageSectionPromises).then(function (stages) {
-                    $scope.stages = stages.map(function (stage, index) {
-                        var toc = {
-                            displayName: "Stage: " + stage.displayName + (stage.repeatable ? " (Repeatable)" : ""),
-                            id: stage.id,
-                            index: index,
-                        };
-                        if (stage.programStageSections.length == 0) return createStageWithoutSections(stage, toc);
-                        else return createStageWithSections(stage, toc);
-                    });
-                    endLoadingState(true);
-                });
-            }
-        });
-
+    function ($scope, $q, $translate, dossiersProgramStageSectionsFactory, dossiersProgramStageCalcModeFactory, Ping) {
+        /*
+         *  @name createStageWithoutSections
+         *  @description Display stage data elements as a "phantom" stage and add stage to table of contents
+         *  @scope dossiersProgramSectionController
+         */
         function createStageWithoutSections(stage, toc) {
             // Line to make it compatible with view
             stage.programStageSections = [
@@ -100,19 +82,127 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
                     }),
                 },
             ];
-            /**
-        for (i = 0; i < resultStage.programStageSections[0].dataElements.length; ++i) {
-            resultStage.programStageSections[0].dataElements[i] = resultStage.programStageSections[0].dataElements[i].dataElement;
-        }
-        */
+
             addtoTOC($scope.toc, null, toc, "programs");
             return stage;
         }
 
+        /*
+         *  @name createStageWithSections
+         *  @description Display stage sections data elements and add them to the table of contents
+         *  @scope dossiersProgramSectionController
+         */
         function createStageWithSections(stage, toc) {
             addtoTOC($scope.toc, stage.programStageSections, toc, "programs");
             return stage;
         }
+
+        /*
+         *  @name makeSectionsCalcMode
+         *  @description Determine the "Calculation mode" of the stage sections data elements
+         *  @scope dossiersProgramSectionController
+         */
+        function makeSectionsCalcMode(stage, assignedDEArray, hiddenSectionsArray) {
+            stage.programStageSections.forEach(pss => {
+                pss.dataElements.forEach(pssDE => {
+                    assignedDEArray.forEach(adeArray => {
+                        if (adeArray.ids.includes(pssDE.id)) {
+                            pssDE.calcMode = { type: "programRule", name: adeArray.name };
+                        } else if (!pssDE.calcMode) {
+                            pssDE.calcMode = { type: "default" };
+                        }
+                    });
+
+                    if (hiddenSectionsArray.includes(pss.id)) {
+                        if (pssDE.calcMode.type !== "programRule") {
+                            pssDE.calcMode = { type: "other" };
+                        }
+                    }
+                });
+            });
+        }
+
+        /*
+         *  @name makeStageCalcMode
+         *  @description Determine the "Calculation mode" of the stage data elements
+         *  @scope dossiersProgramSectionController
+         */
+        function makeStageCalcMode(stage, assignedDEArray) {
+            stage.programStageDataElements.forEach(psde => {
+                assignedDEArray.forEach(adeArray => {
+                    if (adeArray.ids.includes(psde.dataElement.id)) {
+                        psde.dataElement.calcMode = { type: "programRule", name: adeArray.name };
+                    } else if (!psde.dataElement.calcMode) {
+                        psde.dataElement.calcMode = { type: "default" };
+                    }
+                });
+            });
+        }
+
+        /*
+         *  @name none
+         *  @description Gets the program stages information, translates it and shows it
+         *  @dependencies dossiersProgramStageSectionsFactory, dossiersProgramStageCalcModeFactory
+         *  @scope dossiersProgramSectionController
+         */
+        $scope.$watch("selectedProgram", function () {
+            ping();
+            if ($scope.selectedProgram) {
+                startLoadingState(false);
+                //Query sections and data elements
+                var stageSectionPromises = $scope.selectedProgram.programStages.map(function (stage) {
+                    return dossiersProgramStageSectionsFactory.get({ programStageId: stage.id }).$promise;
+                });
+
+                $q.resolve(
+                    dossiersProgramStageCalcModeFactory.get({ programId: $scope.selectedProgram.id }).$promise,
+                    data => ($scope.programRules = data.programRules)
+                ).then(() => {
+                    $q.all(stageSectionPromises).then(function (stages) {
+                        const hiddenSectionsArray = $scope.programRules.flatMap(pr => {
+                            return pr.programRuleActions.flatMap(pra => {
+                                if (pra.programRuleActionType === "HIDESECTION") {
+                                    return [pra.programStageSection.id];
+                                } else {
+                                    return [];
+                                }
+                            });
+                        });
+
+                        const assignedDEArray = $scope.programRules.flatMap(pr => {
+                            const idArray = pr.programRuleActions.flatMap(pra => {
+                                if (pra.programRuleActionType === "ASSIGN") {
+                                    return pra.dataElement.id;
+                                } else {
+                                    return [];
+                                }
+                            });
+
+                            return {
+                                name: pr.name,
+                                ids: idArray,
+                            };
+                        });
+
+                        $scope.stages = stages.map(function (stage, index) {
+                            var toc = {
+                                displayName: "Stage: " + stage.displayName + (stage.repeatable ? " (Repeatable)" : ""),
+                                id: stage.id,
+                                index: index,
+                            };
+                            if (stage.programStageSections.length == 0) {
+                                makeStageCalcMode(stage, assignedDEArray);
+                                return createStageWithoutSections(stage, toc);
+                            } else {
+                                makeSectionsCalcMode(stage, assignedDEArray, hiddenSectionsArray);
+                                return createStageWithSections(stage, toc);
+                            }
+                        });
+                        endLoadingState(true);
+                    });
+                });
+            }
+        });
     },
 ]);
 

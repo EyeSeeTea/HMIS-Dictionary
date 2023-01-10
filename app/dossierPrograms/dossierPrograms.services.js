@@ -35,7 +35,8 @@ var qryProgramStageSections =
         [
             "programStageSections[id",
             "displayName",
-            "dataElements[displayName",
+            "dataElements[id",
+            "displayName",
             "displayFormName",
             "displayDescription",
             "valueType",
@@ -44,7 +45,8 @@ var qryProgramStageSections =
             "options[displayName]]]]",
         ].join(","),
         [
-            "programStageDataElements[dataElement[displayName",
+            "programStageDataElements[dataElement[id",
+            "displayName",
             "displayFormName",
             "displayDescription",
             "valueType",
@@ -62,6 +64,41 @@ dossierProgramsModule.factory("dossiersProgramStageSectionsFactory", [
             qryProgramStageSections,
             {
                 programStageId: "@programStageId",
+            },
+            {
+                query: {
+                    method: "GET",
+                    isArray: false,
+                },
+            }
+        );
+    },
+]);
+
+var qryProgramRulesDataElements =
+    dhisUrl +
+    [
+        "programRules?filter=program.id\\:eq\\::programId",
+        "filter=programRuleActions.programRuleActionType\\:in\\:[ASSIGN,HIDESECTION]",
+        "fields=",
+    ].join("&") +
+    [
+        "name",
+        "programRuleActions[programRuleActionType",
+        "dataElement[id",
+        "displayName]",
+        "programStageSection[id",
+        "displayName]",
+    ].join(",") +
+    "&paging=false";
+
+dossierProgramsModule.factory("dossiersProgramStageCalcModeFactory", [
+    "$resource",
+    function ($resource) {
+        return $resource(
+            qryProgramRulesDataElements,
+            {
+                programId: "@programId",
             },
             {
                 query: {
