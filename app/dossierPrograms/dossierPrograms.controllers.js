@@ -9,7 +9,8 @@ dossierProgramsModule.controller("dossierProgramsMainController", [
     "$anchorScroll",
     "$sce",
     "dossiersProgramsFactory",
-    function ($scope, $translate, $anchorScroll, $sce, dossiersProgramsFactory) {
+    "dossiersProgramsLinkTestFactory",
+    function ($scope, $translate, $anchorScroll, $sce, dossiersProgramsFactory, dossiersProgramsLinkTestFactory) {
         $("#dossiersPrograms").tab("show");
 
         /*
@@ -45,9 +46,19 @@ dossierProgramsModule.controller("dossierProgramsMainController", [
         //indicatorGroups = indicators
         //Datasets = dataElements
         startLoadingState(false);
-        $scope.programs = dossiersProgramsFactory.get(function () {
-            endLoadingState(false);
-        });
+        if (sessionStorage.getItem("programName") !== null) {
+            $scope.programName = sessionStorage.getItem("programName");
+            console.log($scope.programName);
+            sessionStorage.clear();
+
+            $scope.programs = dossiersProgramsLinkTestFactory.get({ displayName: $scope.programName }, function () {
+                endLoadingState(false);
+            });
+        } else {
+            $scope.programs = dossiersProgramsFactory.get(function () {
+                endLoadingState(false);
+            });
+        }
 
         //Clear the TOC
         $scope.$watch("selectedProgram", function () {
@@ -66,7 +77,16 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
     "dossiersProgramStageSectionsFactory",
     "dossiersProgramStageCalcModeFactory",
     "Ping",
-    function ($scope, $q, $translate, dossiersProgramStageSectionsFactory, dossiersProgramStageCalcModeFactory, Ping) {
+    "dossiersProgramDataService",
+    function (
+        $scope,
+        $q,
+        $translate,
+        dossiersProgramStageSectionsFactory,
+        dossiersProgramStageCalcModeFactory,
+        Ping,
+        dossiersProgramDataService
+    ) {
         /*
          *  @name createStageWithoutSections
          *  @description Display stage data elements as a "phantom" stage and add stage to table of contents
@@ -210,7 +230,8 @@ dossierProgramsModule.controller("makeIndicatorVisualizations", [
     "$scope",
     "$window",
     "dossiersProgramVisualizationTableFactory",
-    function ($scope, $window, dossiersProgramVisualizationTableFactory) {
+    "dossiersProgramDataService",
+    function ($scope, $window, dossiersProgramVisualizationTableFactory, dossiersProgramDataService) {
         $scope.getTable = function (name, id, rowItems) {
             const payload = {
                 name: "TEST",
@@ -408,13 +429,15 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
     "dossiersProgramIndicatorFilterFactory",
     "dossiersProgramIndicatorStagesFactory",
     "dossiersProgramIndicatorsFactory",
+    "dossiersProgramDataService",
     function (
         $scope,
         $rootScope,
         dossiersProgramIndicatorExpressionFactory,
         dossiersProgramIndicatorFilterFactory,
         dossiersProgramIndicatorStagesFactory,
-        dossiersProgramIndicatorsFactory
+        dossiersProgramIndicatorsFactory,
+        dossiersProgramDataService
     ) {
         $scope.programIndicators4TOC = {
             displayName: "Program indicators",
@@ -502,6 +525,7 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
                                         };
                                     });
                                     $rootScope.programStages = $scope.programStages;
+                                    dossiersProgramDataService.data.programIndicators = $scope.programIndicators;
                                 }
                                 endLoadingState(true);
                             }
@@ -520,13 +544,15 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
     "dossiersProgramGlobalIndicatorsFactory",
     "dossiersProgramGlobalIndicatorExpressionFactory",
     "Ping",
+    "dossiersProgramDataService",
     function (
         $scope,
         $rootScope,
         $translate,
         dossiersProgramGlobalIndicatorsFactory,
         dossiersProgramGlobalIndicatorExpressionFactory,
-        Ping
+        Ping,
+        dossiersProgramDataService
     ) {
         $scope.indicators4TOC = {
             displayName: "Indicators",
@@ -674,6 +700,7 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
                         addtoTOC($scope.toc, null, $scope.indicators4TOC, "Indicators");
                         recursiveAssignNumerator(0);
                         recursiveAssignDenominator(0);
+                        dossiersProgramDataService.data.indicators = $scope.indicators;
                     }
                 });
             }
@@ -685,7 +712,8 @@ dossierProgramsModule.controller("dossiersProgramTEAController", [
     "$scope",
     "$translate",
     "dossiersProgramTEAsFactory",
-    function ($scope, $translate, dossiersProgramTEAsFactory) {
+    "dossiersProgramDataService",
+    function ($scope, $translate, dossiersProgramTEAsFactory, dossiersProgramDataService) {
         $scope.trackedEntityAttributes4TOC = {
             displayName: "Tracked Entity Attributes",
             id: "trackedEntityAttributeContainer",
@@ -693,11 +721,11 @@ dossierProgramsModule.controller("dossiersProgramTEAController", [
         };
 
         /*
-    @name none
-    @description Gets the tracked entity attributes information, translates it and shows it
-    @dependencies dossiersProgramTEAsFactory
-    @scope dossiersProgramTEAController
-    */
+        @name none
+        @description Gets the tracked entity attributes information, translates it and shows it
+        @dependencies dossiersProgramTEAsFactory
+        @scope dossiersProgramTEAController
+        */
         $scope.$watch("selectedProgram", function () {
             ping();
             if ($scope.selectedProgram) {
@@ -714,6 +742,7 @@ dossierProgramsModule.controller("dossiersProgramTEAController", [
 
                         if ($scope.trackedEntityAttributes.length > 0) {
                             addtoTOC($scope.toc, null, $scope.trackedEntityAttributes4TOC, "Tracked Entity Attributes");
+                            dossiersProgramDataService.data.trackedEntityAttributes = $scope.trackedEntityAttributes;
                         }
 
                         endLoadingState(true);
@@ -730,12 +759,14 @@ dossierProgramsModule.controller("dossiersProgramRuleController", [
     "dossiersProgramRulesFactory",
     "dossiersProgramRulesConditionDescription",
     "dossiersProgramRulesActionsTemplateName",
+    "dossiersProgramDataService",
     function (
         $scope,
         $translate,
         dossiersProgramRulesFactory,
         dossiersProgramRulesConditionDescription,
-        dossiersProgramRulesActionsTemplateName
+        dossiersProgramRulesActionsTemplateName,
+        dossiersProgramDataService
     ) {
         $scope.rules4TOC = {
             displayName: "Program Rules",
@@ -805,6 +836,7 @@ dossierProgramsModule.controller("dossiersProgramRuleController", [
                             addtoTOC($scope.toc, null, $scope.rules4TOC, "Program Rules");
                             assignProgramRulesActionsTemplateName();
                             recursiveAssignConditionDescription(0);
+                            dossiersProgramDataService.data.rules = $scope.rules;
                         }
 
                         endLoadingState(true);
@@ -819,7 +851,8 @@ dossierProgramsModule.controller("dossiersProgramRuleVariablesController", [
     "$scope",
     "$translate",
     "dossiersProgramRuleVariablesFactory",
-    function ($scope, $translate, dossiersProgramRuleVariablesFactory) {
+    "dossiersProgramDataService",
+    function ($scope, $translate, dossiersProgramRuleVariablesFactory, dossiersProgramDataService) {
         $scope.ruleVariables4TOC = {
             displayName: "Program Rule Variables",
             id: "RuleVariablesContainer",
@@ -846,6 +879,7 @@ dossierProgramsModule.controller("dossiersProgramRuleVariablesController", [
 
                         if ($scope.ruleVariables.length > 0) {
                             addtoTOC($scope.toc, null, $scope.ruleVariables4TOC, "Program Rules");
+                            dossiersProgramDataService.data.ruleVariables = $scope.ruleVariables;
                         }
 
                         endLoadingState(true);
@@ -910,5 +944,171 @@ dossierProgramsModule.controller("dossiersProgramAnalysisController", [
                 });
             }
         });
+    },
+]);
+
+dossierProgramsModule.controller("dossiersProgramExport", [
+    "$scope",
+    "dossiersProgramDataService",
+    "$filter",
+    function ($scope, dossiersProgramDataService, $filter) {
+        /* 
+        @name makeTEAWorksheet
+        @description Makes a worksheet from Tracked Entity Attributes data
+        @scope dossiersProgramExport
+        */
+        function makeTEAWorksheet(trackedEntityAttributes) {
+            var data = trackedEntityAttributes.map(item => {
+                return {
+                    Name: item?.name,
+                    "Form Name": item?.formName,
+                    Code: item?.code,
+                    Description: item?.description,
+                    "Aggregation Type": item?.aggregationType,
+                    "Value Type": item?.valueType,
+                    "Option Set Name": item?.optionSet?.name,
+                    "Option Set Options": item?.optionSet?.options.map(option => option.name).join(" | "),
+                };
+            });
+
+            return XLSX.utils.json_to_sheet(data);
+        }
+
+        /* 
+        @name makeIndicatorsWorksheet
+        @description Makes a worksheet from Indicators data
+        @scope dossiersProgramExport
+        */
+        function makeIndicatorsWorksheet(indicators) {
+            var data = indicators.map(item => {
+                return {
+                    Name: item?.displayName,
+                    Description: item?.displayDescription,
+                    Type: item?.indicatorType?.displayName,
+                    Numerator: item?.numerator,
+                    "Numerator description": item?.numeratorDescription,
+                    Denominator: item?.denominator,
+                    "Denominator description": item?.denominatorDescription,
+                    "Stages referenced": item?.stageRef?.join(" | "),
+                };
+            });
+
+            return XLSX.utils.json_to_sheet(data);
+        }
+
+        /* 
+        @name makeProgramIndicatorsWorksheet
+        @description Makes a worksheet from Program Indicators data
+        @scope dossiersProgramExport
+        */
+        function makeProgramIndicatorsWorksheet(programIndicators) {
+            var data = programIndicators.map(item => {
+                return {
+                    Name: item?.displayName,
+                    Description: item?.displayDescription,
+                    Filter: item?.filter,
+                    Calculation: item?.expression,
+                    "Aggregation Type": item?.aggregationType,
+                    "Type of Program indicator": item?.analyticsType,
+                    "Stages referenced": item?.stageRef?.join(" | "),
+                    Boundaries: item?.analyticsPeriodBoundaries
+                        ?.map(apb => JSON.stringify(_.omit(apb, "$$hashKey")))
+                        .join(" | "),
+                };
+            });
+
+            return XLSX.utils.json_to_sheet(data);
+        }
+
+        /* 
+        @name makeRulesWorksheet
+        @description Makes a worksheet from Program Rules data
+        @scope dossiersProgramExport
+        */
+        function makeRulesWorksheet(rules) {
+            var data = rules.map(item => {
+                return {
+                    Name: item?.name,
+                    Description: item?.description,
+                    "Program Stage": item?.programStage?.name,
+                    Condition: item?.condition,
+                    "Program Rule Actions": item?.programRuleActions?.map(pra => pra.programRuleActionType).join(" | "),
+                };
+            });
+
+            return XLSX.utils.json_to_sheet(data);
+        }
+
+        /* 
+        @name makeRuleVariablesWorksheet
+        @description Makes a worksheet from Program Rules Variables data
+        @scope dossiersProgramExport
+        */
+        function makeRuleVariablesWorksheet(ruleVariables) {
+            var data = ruleVariables.map(item => {
+                return {
+                    Name: item?.name,
+                    "Source type": item?.programRuleVariableSourceType,
+                    "Program Stage": item?.programStage?.name,
+                    "Data element": item?.dataElement?.name,
+                    "Tracked Entity Attribute": item?.trackedEntityAttribute?.name,
+                };
+            });
+
+            return XLSX.utils.json_to_sheet(data);
+        }
+
+        /* 
+        @name makeFilename
+        @description Makes xlsx file name from program name and timestamp
+        @scope dossiersProgramExport
+        */
+        function makeFilename() {
+            const filename = $scope.selectedProgram.displayName.replace(/[<>:"\\\/\|?\*]/g, "_");
+            return `${filename}-${$filter("date")(Date.now(), "dd-MM-yy_H-mm")}.xlsx`;
+        }
+
+        /* 
+        @name exportToExcel
+        @description Exports program dossier to xlsx spreadsheet
+        @scope dossiersProgramExport
+        */
+        $scope.exportToExcel = function () {
+            $scope.$watchGroup(["selectedProgram", "dossiersProgramDataService"], function () {
+                ping();
+                if ($scope.selectedProgram && $scope.button.clicked) {
+                    var workbook = XLSX.utils.book_new();
+
+                    for (const [key, value] of Object.entries(dossiersProgramDataService.data)) {
+                        switch (key) {
+                            case "programIndicators":
+                                var worksheet = makeProgramIndicatorsWorksheet(value);
+                                XLSX.utils.book_append_sheet(workbook, worksheet, "Program Indicators");
+                                break;
+                            case "indicators":
+                                var worksheet = makeIndicatorsWorksheet(value);
+                                XLSX.utils.book_append_sheet(workbook, worksheet, "Indicators");
+                                break;
+                            case "trackedEntityAttributes":
+                                var worksheet = makeTEAWorksheet(value);
+                                XLSX.utils.book_append_sheet(workbook, worksheet, "Tracked Entity Attributes");
+                                break;
+                            case "rules":
+                                var worksheet = makeRulesWorksheet(value);
+                                XLSX.utils.book_append_sheet(workbook, worksheet, "Program Rules");
+                                break;
+                            case "ruleVariables":
+                                var worksheet = makeRuleVariablesWorksheet(value);
+                                XLSX.utils.book_append_sheet(workbook, worksheet, "Program Rules Variables");
+                                break;
+                            default:
+                        }
+                    }
+
+                    XLSX.writeFile(workbook, makeFilename());
+                    $scope.button.clicked = false;
+                }
+            });
+        };
     },
 ]);
