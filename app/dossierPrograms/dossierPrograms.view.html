@@ -138,6 +138,7 @@
                             <th>{{ "Type of Program indicator" | translate }}</th>
                             <th>{{ "Stage(s) referenced:" | translate }}</th>
                             <th>{{ "Boundaries" | translate }}</th>
+                            <th>{{ "Visualization:" | translate }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -173,6 +174,18 @@
                                     </li>
                                 </ul>
                             </td>
+                            <td>
+                                <a
+                                    ng-controller="makeIndicatorVisualizations"
+                                    href=""
+                                    ng-click="getTable(
+                                        indicator.displayName,
+                                        indicator.id,
+                                        indicator.rowItems
+                                        )"
+                                    ><img src="./assets/img/pivottable.png" alt="View Table" width="15"/>
+                                </a>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -193,6 +206,7 @@
                             <th>{{ "Denominator" | translate }}</th>
                             <th>{{ "Denominator description" | translate }}</th>
                             <th>{{ "Stage(s) referenced:" | translate }}</th>
+                            <th>{{ "Visualization:" | translate }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -210,6 +224,18 @@
                                         {{ stageRef }}
                                     </li>
                                 </ul>
+                            </td>
+                            <td>
+                                <a
+                                    ng-controller="makeIndicatorVisualizations"
+                                    href=""
+                                    ng-click="getTable(
+                                        indicator.displayName,
+                                        indicator.id,
+                                        indicator.rowItems
+                                        )"
+                                    ><img src="./assets/img/pivottable.png" alt="View Table" width="15"/>
+                                </a>
                             </td>
                         </tr>
                     </tbody>

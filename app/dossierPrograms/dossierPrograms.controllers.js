@@ -206,6 +206,201 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
     },
 ]);
 
+dossierProgramsModule.controller("makeIndicatorVisualizations", [
+    "$scope",
+    "$window",
+    "dossiersProgramVisualizationTableFactory",
+    function ($scope, $window, dossiersProgramVisualizationTableFactory) {
+        $scope.getTable = function (name, id, rowItems) {
+            const payload = {
+                name: "TEST",
+                showData: false,
+                fixRowHeaders: false,
+                numberType: "VALUE",
+                legend: {
+                    showKey: false,
+                    style: "FILL",
+                    strategy: "FIXED",
+                },
+                publicAccess: "--------",
+                type: "PIVOT_TABLE",
+                hideEmptyColumns: false,
+                hideEmptyRows: false,
+                subscribed: false,
+                parentGraphMap: {},
+                rowSubTotals: true,
+                displayDensity: "NORMAL",
+                displayDescription: "Created with HMIS Dictionary",
+                regressionType: "NONE",
+                completedOnly: false,
+                cumulativeValues: false,
+                colTotals: true,
+                showDimensionLabels: true,
+                sortOrder: 0,
+                fontSize: "NORMAL",
+                favorite: false,
+                topLimit: 0,
+                hideEmptyRowItems: "NONE",
+                aggregationType: "DEFAULT",
+                displayName: "TEST",
+                hideSubtitle: false,
+                description: "Created with HMIS Dictionary",
+                fixColumnHeaders: false,
+                percentStackedValues: false,
+                colSubTotals: true,
+                noSpaceBetweenColumns: false,
+                showHierarchy: false,
+                rowTotals: true,
+                seriesKey: {
+                    hidden: false,
+                },
+                digitGroupSeparator: "SPACE",
+                hideTitle: false,
+                regression: false,
+                colorSet: "DEFAULT",
+                skipRounding: false,
+
+                fontStyle: {},
+                access: {
+                    read: true,
+                    update: true,
+                    externalize: true,
+                    delete: true,
+                    write: true,
+                    manage: true,
+                },
+                reportingParams: {
+                    organisationUnit: false,
+                    reportingPeriod: false,
+                    parentOrganisationUnit: false,
+                    grandParentOrganisationUnit: false,
+                },
+
+                axes: [],
+                translations: [],
+                yearlySeries: [],
+                interpretations: [],
+                userGroupAccesses: [
+                    {
+                        access: "rw------",
+                        userGroupUid: "epFY01iJN0Z",
+                        displayName: "ALL USERS",
+                        id: "epFY01iJN0Z",
+                    },
+                ],
+                subscribers: [],
+                userAccesses: [],
+                favorites: [],
+                columns: [
+                    {
+                        dimension: "pe",
+                        items: [
+                            {
+                                id: "THIS_YEAR",
+                            },
+                        ],
+                    },
+                    {
+                        dimension: "BtFXTpKRl6n",
+                        items: [
+                            {
+                                id: "ALL_ITEMS",
+                            },
+                        ],
+                    },
+                ],
+                filters: [
+                    {
+                        dimension: "ou",
+                        items: [
+                            {
+                                id: "USER_ORGUNIT",
+                            },
+                        ],
+                    },
+                ],
+                rows: [
+                    {
+                        dimension: "dx",
+                        items: [
+                            {
+                                id: "DqqSJFWB392",
+                            },
+                            {
+                                id: "qywsusOdy33",
+                            },
+                        ],
+                    },
+                ],
+                series: [],
+                outlierAnalysis: null,
+                cumulative: false,
+            };
+
+            const sharing = {
+                object: {
+                    id: "LEP0WHTGYUe",
+                    name: "name",
+                    publicAccess: "--------",
+                    externalAccess: false,
+                    userGroupAccesses: [{ id: "epFY01iJN0Z", name: "ALL USERS", access: "rw------" }],
+                },
+            };
+
+            let items = [{ id: id }];
+
+            payload.name = name + " - " + id;
+            payload.rows[0].items = rowItems ? items.concat(rowItems.map(id => ({ id: id }))) : items;
+
+            $scope.table = dossiersProgramVisualizationTableFactory.get_table.query(
+                {
+                    filter: "name:eq:" + payload.name,
+                },
+                function (tbl) {
+                    if (tbl && tbl.visualizations[0]) {
+                        const visualizationId = tbl.visualizations[0].id;
+                        if (visualizationId) {
+                            console.log("Updating Table");
+                            payload.id = visualizationId;
+                            sharing.object.id = visualizationId;
+                            sharing.object.name = tbl.visualizations[0].name;
+
+                            dossiersProgramVisualizationTableFactory.upd_table.query(
+                                {
+                                    uid: visualizationId,
+                                },
+                                payload,
+                                function (response) {
+                                    dossiersProgramVisualizationTableFactory.upd_sharing.query(
+                                        { uid: visualizationId },
+                                        sharing,
+                                        function (res) {}
+                                    );
+
+                                    const uid = visualizationId;
+
+                                    $window.open(dhisroot + "/dhis-web-data-visualizer/index.html#/" + uid, "_blank");
+                                }
+                            );
+                        }
+                    } else if (tbl.visualizations[0] === undefined) {
+                        console.log("Creating Table");
+                        dossiersProgramVisualizationTableFactory.set_table.query(payload, function (response) {
+                            const uid = response.response.uid;
+                            dossiersProgramVisualizationTableFactory.upd_sharing.query(
+                                { uid: uid },
+                                sharing,
+                                function (res) {}
+                            );
+                            $window.open(dhisroot + "/dhis-web-data-visualizer/index.html#/" + uid, "_blank");
+                        });
+                    }
+                }
+            );
+        };
+    },
+]);
+
 dossierProgramsModule.controller("dossiersProgramIndicatorController", [
     "$scope",
     "$rootScope",
@@ -227,6 +422,11 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
             index: 97,
         };
 
+        /*
+         *  @name getStageRef
+         *  @description Gets the stages referenced by the filter.
+         *  @scope dossiersProgramIndicatorController
+         */
         function getStageRef(filter) {
             const psdeRegex = /#{(\w+)\.\w+}/g;
             let stageRefArray = psdeRegex.exec(filter);
@@ -335,41 +535,33 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
         };
 
         /*
-         *  @name recursiveAssignNumerator
-         *  @description Gets the "readable" expressions for each indicator numerator
+         *  @name extractVisItemsFromInd
+         *  @description Get the visualization aditional items IDs for numerator and denominator
          *  @scope dossierProgramGlobalIndicatorController
          */
-        function recursiveAssignNumerator(i) {
-            if (i >= $scope.indicators.length) return;
-            dossiersProgramGlobalIndicatorExpressionFactory.get(
-                {
-                    expression: $scope.indicators[i].numerator,
-                },
-                function (data) {
-                    $scope.indicators[i].numerator = data.description;
-                    recursiveAssignNumerator(i + 1);
-                },
-                true
-            );
+        function extractVisItemsFromInd(numerator, denominator) {
+            const de_num = extractVisItemsFromFormula(numerator);
+            const de_den = extractVisItemsFromFormula(denominator);
+
+            return de_num.concat(de_den);
         }
 
         /*
-         *  @name recursiveAssignNumerator
-         *  @description Gets the "readable" expressions for each indicator denominator
+         *  @name extractVisItemsFromFormula
+         *  @description Get the visualization aditional items IDs for expression
          *  @scope dossierProgramGlobalIndicatorController
          */
-        function recursiveAssignDenominator(i) {
-            if (i >= $scope.indicators.length) return;
-            dossiersProgramGlobalIndicatorExpressionFactory.get(
-                {
-                    expression: $scope.indicators[i].denominator,
-                },
-                function (data) {
-                    $scope.indicators[i].denominator = data.description;
-                    recursiveAssignDenominator(i + 1);
-                },
-                true
-            );
+        function extractVisItemsFromFormula(formula) {
+            let items = [];
+            const regexArray = [/#{(\w+)}/g, /I{(\w+)}/g];
+
+            regexArray.forEach(regex => {
+                while ((results = regex.exec(formula))) {
+                    items.push(results[1]);
+                }
+            });
+
+            return items;
         }
 
         /*
@@ -417,6 +609,44 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
         }
 
         /*
+         *  @name recursiveAssignNumerator
+         *  @description Gets the "readable" expressions for each indicator numerator
+         *  @scope dossierProgramGlobalIndicatorController
+         */
+        function recursiveAssignNumerator(i) {
+            if (i >= $scope.indicators.length) return;
+            dossiersProgramGlobalIndicatorExpressionFactory.get(
+                {
+                    expression: $scope.indicators[i].numerator,
+                },
+                function (data) {
+                    $scope.indicators[i].numerator = data.description;
+                    recursiveAssignNumerator(i + 1);
+                },
+                true
+            );
+        }
+
+        /*
+         *  @name recursiveAssignNumerator
+         *  @description Gets the "readable" expressions for each indicator denominator
+         *  @scope dossierProgramGlobalIndicatorController
+         */
+        function recursiveAssignDenominator(i) {
+            if (i >= $scope.indicators.length) return;
+            dossiersProgramGlobalIndicatorExpressionFactory.get(
+                {
+                    expression: $scope.indicators[i].denominator,
+                },
+                function (data) {
+                    $scope.indicators[i].denominator = data.description;
+                    recursiveAssignDenominator(i + 1);
+                },
+                true
+            );
+        }
+
+        /*
          *  @name none
          *  @description Gets the indicator information, translates it and shows it
          *  @dependencies dossiersProgramGlobalIndicatorsFactory, dossiersProgramGlobalIndicatorExpressionFactory
@@ -437,6 +667,8 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
                         parseExpression(indicator, num);
                         parseExpression(indicator, den);
                         if (indicator.stageRef) indicator.stageRef = _.uniq(indicator.stageRef);
+
+                        indicator.rowItems = extractVisItemsFromInd(num, den);
                     }, this);
                     if ($scope.indicators.length > 0) {
                         addtoTOC($scope.toc, null, $scope.indicators4TOC, "Indicators");
