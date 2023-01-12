@@ -474,7 +474,6 @@ searchModule.factory("dossiersProgramVisualizationTableFactory", [
     },
 ]);
 
-
 var qryTest =
     dhisUrl +
     "programs.json?filter=displayName\\:eq\\::displayName&fields=id,displayName,displayDescription,programStages[id]&paging=false";
@@ -498,5 +497,12 @@ dossierProgramsModule.factory("dossiersProgramsLinkTestFactory", [
 ]);
 
 dossierProgramsModule.service("dossiersProgramDataService", function () {
-    this.data = {};
+    this.data = {
+        stages: undefined,
+        programIndicators: undefined,
+        indicators: undefined,
+        trackedEntityAttributes: undefined,
+        rules: undefined,
+        ruleVariables: undefined,
+    };
 });
