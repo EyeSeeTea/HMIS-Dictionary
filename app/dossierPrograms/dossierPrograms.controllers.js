@@ -218,6 +218,7 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
                                 return createStageWithSections(stage, toc);
                             }
                         });
+                        dossiersProgramDataService.data.stages = $scope.stages;
                         endLoadingState(true);
                     });
                 });
@@ -961,6 +962,83 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         function translate(tag) {
             return $translate.instant(tag);
         }
+
+        /* 
+        @name joinAndTrim
+        @description join array and trim to 32767 chars (cell maximum)
+        @scope dossiersProgramExport
+        */
+        function joinAndTrim(array) {
+            if (array === undefined) return;
+
+            let count = 0;
+            let index = 0;
+            for (const item of array) {
+                count += item.length;
+                if (count < 32733) {
+                    // Separator chars
+                    count += 3;
+                    index += 1;
+                } else {
+                    return "Not all entries fit in the cell | " + array.slice(0, index).join(" | ");
+                }
+            }
+
+            return array.join(" | ");
+        }
+
+        /* 
+        @name makeCalcMode
+        @description Makes Calculation Mode text from type
+        @scope dossiersProgramExport
+        */
+        function makeCalcMode(calcMode) {
+            if (calcMode?.type === "programRule") {
+                return `${translate("dos_ProgramRule")}: ${dataElement.calcMode.name}`;
+            } else if (calcMode?.type === "other") {
+                return `${translate("dos_Other")}`;
+            } else {
+                return `${translate("dos_DirectDataEntry")}`;
+            }
+        }
+
+        /* 
+        @name makeStageSectionWorksheet
+        @description Makes a worksheet from Stage Section / Data Elements data
+        @scope dossiersProgramExport
+        */
+        function makeStageSectionWorksheet(dataElements) {
+            var data = dataElements?.map(item => {
+                return {
+                    [translate("dos_NameElement")]: item?.displayName,
+                    [translate("dos_FormNameElement")]: item?.displayFormName,
+                    [translate("dos_DescriptionElement")]: item?.displayDescription,
+                    [translate("dos_ValueType")]: item?.valueType,
+                    [translate("dos_CalculationMode")]: makeCalcMode(item?.calcMode),
+                    [translate("dos_OptionSetName")]: item?.optionSet?.name,
+                    [translate("dos_OptionSetOptions")]: joinAndTrim(
+                        item?.optionSet?.options?.map(opt => opt.displayName)
+                    ),
+                };
+            });
+
+            return XLSX.utils.json_to_sheet(data);
+        }
+
+        /* 
+        @name makeStagesWorksheets
+        @description Makes a worksheet from Stage Section / Data Elements data
+        @scope dossiersProgramExport
+        */
+        function makeStagesWorksheets(stages, workbook) {
+            stages.forEach((stage, stgIndex) => {
+                stage.programStageSections.forEach((section, secIndex) => {
+                    var worksheet = makeStageSectionWorksheet(section.dataElements);
+                    XLSX.utils.book_append_sheet(workbook, worksheet, `Stage ${stgIndex + 1}-Section ${secIndex + 1}`);
+                });
+            });
+        }
+
         /* 
         @name makeTEAWorksheet
         @description Makes a worksheet from Tracked Entity Attributes data
@@ -1093,6 +1171,9 @@ dossierProgramsModule.controller("dossiersProgramExport", [
                     for (const [key, value] of Object.entries(dossiersProgramDataService.data)) {
                         if (value === undefined) continue;
                         switch (key) {
+                            case "stages":
+                                makeStagesWorksheets(value, workbook);
+                                break;
                             case "programIndicators":
                                 var worksheet = makeProgramIndicatorsWorksheet(value);
                                 XLSX.utils.book_append_sheet(workbook, worksheet, "Program Indicators");
