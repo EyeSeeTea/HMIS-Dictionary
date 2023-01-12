@@ -949,9 +949,18 @@ dossierProgramsModule.controller("dossiersProgramAnalysisController", [
 
 dossierProgramsModule.controller("dossiersProgramExport", [
     "$scope",
+    "$translate",
     "dossiersProgramDataService",
     "$filter",
-    function ($scope, dossiersProgramDataService, $filter) {
+    function ($scope, $translate, dossiersProgramDataService, $filter) {
+        /* 
+        @name translate
+        @description $translate.instant() wrapper
+        @scope dossiersProgramExport
+        */
+        function translate(tag) {
+            return $translate.instant(tag);
+        }
         /* 
         @name makeTEAWorksheet
         @description Makes a worksheet from Tracked Entity Attributes data
@@ -960,14 +969,14 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         function makeTEAWorksheet(trackedEntityAttributes) {
             var data = trackedEntityAttributes.map(item => {
                 return {
-                    Name: item?.name,
-                    "Form Name": item?.formName,
-                    Code: item?.code,
-                    Description: item?.description,
-                    "Aggregation Type": item?.aggregationType,
-                    "Value Type": item?.valueType,
-                    "Option Set Name": item?.optionSet?.name,
-                    "Option Set Options": item?.optionSet?.options.map(option => option.name).join(" | "),
+                    [translate("dos_NameElement")]: item?.name,
+                    [translate("dos_FormNameElement")]: item?.formName,
+                    [translate("dos_Code")]: item?.code,
+                    [translate("dos_DescriptionElement")]: item?.description,
+                    [translate("dos_AggregationType")]: item?.aggregationType,
+                    [translate("dos_ValueType")]: item?.valueType,
+                    [translate("dos_OptionSetName")]: item?.optionSet?.name,
+                    [translate("dos_OptionSetOptions")]: joinAndTrim(item?.optionSet?.options.map(option => option.name)),
                 };
             });
 
@@ -982,14 +991,14 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         function makeIndicatorsWorksheet(indicators) {
             var data = indicators.map(item => {
                 return {
-                    Name: item?.displayName,
-                    Description: item?.displayDescription,
-                    Type: item?.indicatorType?.displayName,
-                    Numerator: item?.numerator,
-                    "Numerator description": item?.numeratorDescription,
-                    Denominator: item?.denominator,
-                    "Denominator description": item?.denominatorDescription,
-                    "Stages referenced": item?.stageRef?.join(" | "),
+                    [translate("dos_NameElement")]: item?.displayName,
+                    [translate("dos_DescriptionElement")]: item?.displayDescription,
+                    [translate("dos_Type")]: item?.indicatorType?.displayName,
+                    [translate("dos_NumeratorIndicator")]: item?.numerator,
+                    [translate("dos_NumeratorDescription")]: item?.numeratorDescription,
+                    [translate("dos_DenominatorIndicator")]: item?.denominator,
+                    [translate("dos_DenominatorDescription")]: item?.denominatorDescription,
+                    [translate("dos_StagesReferenced")]: joinAndTrim(item?.stageRef),
                 };
             });
 
@@ -1004,16 +1013,16 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         function makeProgramIndicatorsWorksheet(programIndicators) {
             var data = programIndicators.map(item => {
                 return {
-                    Name: item?.displayName,
-                    Description: item?.displayDescription,
-                    Filter: item?.filter,
-                    Calculation: item?.expression,
-                    "Aggregation Type": item?.aggregationType,
-                    "Type of Program indicator": item?.analyticsType,
-                    "Stages referenced": item?.stageRef?.join(" | "),
-                    Boundaries: item?.analyticsPeriodBoundaries
-                        ?.map(apb => JSON.stringify(_.omit(apb, "$$hashKey")))
-                        .join(" | "),
+                    [translate("dos_NameElement")]: item?.displayName,
+                    [translate("dos_DescriptionElement")]: item?.displayDescription,
+                    [translate("dos_Filter")]: item?.filter,
+                    [translate("dos_Calculation")]: item?.expression,
+                    [translate("dos_AggregationType")]: item?.aggregationType,
+                    [translate("dos_TypeOfProgramIndicator")]: item?.analyticsType,
+                    [translate("dos_StagesReferenced")]: item?.stageRef?.join(" | "),
+                    [translate("dos_Boundaries")]: joinAndTrim(
+                        item?.analyticsPeriodBoundaries?.map(apb => JSON.stringify(_.omit(apb, "$$hashKey")))
+                    ),
                 };
             });
 
@@ -1028,11 +1037,13 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         function makeRulesWorksheet(rules) {
             var data = rules.map(item => {
                 return {
-                    Name: item?.name,
-                    Description: item?.description,
-                    "Program Stage": item?.programStage?.name,
-                    Condition: item?.condition,
-                    "Program Rule Actions": item?.programRuleActions?.map(pra => pra.programRuleActionType).join(" | "),
+                    [translate("dos_NameElement")]: item?.name,
+                    [translate("dos_DescriptionElement")]: item?.description,
+                    [translate("dos_ProgramStage")]: item?.programStage?.name,
+                    [translate("dos_Condition")]: item?.condition,
+                    [translate("dos_ProgramRuleActions")]: joinAndTrim(
+                        item?.programRuleActions?.map(pra => pra.programRuleActionType)
+                    ),
                 };
             });
 
@@ -1047,11 +1058,11 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         function makeRuleVariablesWorksheet(ruleVariables) {
             var data = ruleVariables.map(item => {
                 return {
-                    Name: item?.name,
-                    "Source type": item?.programRuleVariableSourceType,
-                    "Program Stage": item?.programStage?.name,
-                    "Data element": item?.dataElement?.name,
-                    "Tracked Entity Attribute": item?.trackedEntityAttribute?.name,
+                    [translate("dos_NameElement")]: item?.name,
+                    [translate("dos_SourceType")]: item?.programRuleVariableSourceType,
+                    [translate("dos_ProgramStage")]: item?.programStage?.name,
+                    [translate("dos_DataElement")]: item?.dataElement?.name,
+                    [translate("dos_TrackedEntityAttributes")]: item?.trackedEntityAttribute?.name,
                 };
             });
 
@@ -1080,6 +1091,7 @@ dossierProgramsModule.controller("dossiersProgramExport", [
                     var workbook = XLSX.utils.book_new();
 
                     for (const [key, value] of Object.entries(dossiersProgramDataService.data)) {
+                        if (value === undefined) continue;
                         switch (key) {
                             case "programIndicators":
                                 var worksheet = makeProgramIndicatorsWorksheet(value);
