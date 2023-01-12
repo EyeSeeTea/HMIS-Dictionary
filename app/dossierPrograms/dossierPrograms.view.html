@@ -5,8 +5,8 @@
 
 <div ng-controller="dossierProgramsMainController" id="DossierPanel" class="row">
     <div id="headerDossierPanel" class="col-md-12 headerPanel">
-        <h1>{{ "Programs" | translate }}</h1>
-        <p>{{ "Number of Programs" | translate }}: {{ programs.programs.length }}</p>
+        <h1>{{ "dos_Programs" | translate }}</h1>
+        <p>{{ "dos_NumberOfPrograms" | translate }}: {{ programs.programs.length }}</p>
         <div class="col-md-2">
             <select
                 class="form-control col-md-2"
@@ -31,7 +31,7 @@
                 ng-controller="dossiersProgramExport"
                 ng-click="button.clicked = true; exportToExcel();"
             >
-                <span class="glyphicon glyphicon-share"></span> {{ "srch_exportToExcel" | translate }}
+                <span class="glyphicon glyphicon-share"></span> {{ "dos_exportToExcel" | translate }}
             </button>
         </div>
         <br />
@@ -85,9 +85,9 @@
                                 <th>{{ "dos_NameElement" | translate }}</th>
                                 <th>{{ "dos_FormNameElement" | translate }}</th>
                                 <th>{{ "dos_DescriptionElement" | translate }}</th>
-                                <th>{{ "DataTypeElement" | translate }}</th>
-                                <th>{{ "Calculation mode" | translate }}</th>
-                                <th>{{ "Options" | translate }}</th>
+                                <th>{{ "dos_ValueType" | translate }}</th>
+                                <th>{{ "dos_CalculationMode" | translate }}</th>
+                                <th>{{ "dos_Options" | translate }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -99,19 +99,19 @@
                                 <td>
                                     <div ng-switch="dataElement.calcMode.type">
                                         <div ng-switch-when="programRule">
-                                            {{ "Program Rule" | translate }}: {{ dataElement.calcMode.name }}
+                                            {{ "dos_ProgramRule" | translate }}: {{ dataElement.calcMode.name }}
                                         </div>
                                         <div ng-switch-when="other">
-                                            {{ "Other" | translate }}
+                                            {{ "dos_Other" | translate }}
                                         </div>
-                                        <div ng-switch-default>{{ "Direct data entry" | translate }}</div>
+                                        <div ng-switch-default>{{ "dos_DirectDataEntry" | translate }}</div>
                                     </div>
                                 </td>
                                 <td>
                                     <div ng-if="dataElement.optionSet.options">
-                                        <p>{{ "Option Set name" | translate }}: {{ dataElement.optionSet.name }}</p>
+                                        <p>{{ "dos_OptionSetName" | translate }}: {{ dataElement.optionSet.name }}</p>
                                         <select class="form-control col-md-2">
-                                            <option selected>{{ "See options" | translate }}</option>
+                                            <option selected>{{ "dos_SeeOptions" | translate }}</option>
                                             <option ng-repeat="option in dataElement.optionSet.options">
                                                 {{ option.displayName }}
                                             </option>
@@ -137,15 +137,15 @@
                 <table class="indicatorTable table table-striped">
                     <thead>
                         <tr>
-                            <th>{{ "Name" | translate }}</th>
-                            <th>{{ "Description" | translate }}</th>
-                            <th>{{ "Filter" | translate }}</th>
-                            <th>{{ "Calculation" | translate }}</th>
-                            <th>{{ "Aggregation Type" | translate }}</th>
-                            <th>{{ "Type of Program indicator" | translate }}</th>
-                            <th>{{ "Stage(s) referenced:" | translate }}</th>
-                            <th>{{ "Boundaries" | translate }}</th>
-                            <th>{{ "Visualization:" | translate }}</th>
+                            <th>{{ "dos_NameElement" | translate }}</th>
+                            <th>{{ "dos_DescriptionElement" | translate }}</th>
+                            <th>{{ "dos_Filter" | translate }}</th>
+                            <th>{{ "dos_Calculation" | translate }}</th>
+                            <th>{{ "dos_AggregationType" | translate }}</th>
+                            <th>{{ "dos_TypeOfProgramIndicator" | translate }}</th>
+                            <th>{{ "dos_StagesReferenced" | translate }}</th>
+                            <th>{{ "dos_Boundaries" | translate }}</th> 
+                            <th>{{ "dos_Visualization" | translate }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -166,17 +166,17 @@
                             <td>
                                 <ul ng-if="indicator.analyticsPeriodBoundaries">
                                     <li ng-repeat="boundarie in indicator.analyticsPeriodBoundaries">
-                                        <div>{{ "Boundary target" | translate }}: {{ boundarie.boundaryTarget }}</div>
+                                        <div>{{ "dos_BoundaryTarget" | translate }}: {{ boundarie.boundaryTarget }}</div>
                                         <div ng-if="boundarie.analyticsPeriodBoundaryType">
-                                            {{ "Analytics period boundary type" | translate }}:
+                                            {{ "dos_AnalyticsBoundaryType" | translate }}:
                                             {{ boundarie.analyticsPeriodBoundaryType }}
                                         </div>
                                         <div ng-if="boundarie.offsetPeriods">
-                                            {{ "Offset period by amount" | translate }}:
+                                            {{ "dos_OffsetPeriod" | translate }}:
                                             {{ boundarie.offsetPeriods }}
                                         </div>
                                         <div ng-if="boundarie.offsetPeoffsetPeriodTyperiods">
-                                            {{ "Period type" | translate }}: {{ boundarie.offsetPeriodType }}
+                                            {{ "dos_PeriodType" | translate }}: {{ boundarie.offsetPeriodType }}
                                         </div>
                                     </li>
                                 </ul>
@@ -201,19 +201,19 @@
 
         <div class="col-md-12" id="indicatorContainer" ng-controller="dossierProgramGlobalIndicatorController">
             <div ng-if="indicators.length > 0" col-md-12>
-                <h3 class="section" id="indicators">{{ "Indicators" | translate }}</h3>
+                <h3 class="section" id="indicators">{{ "dos_Indicators" | translate }}</h3>
                 <table class="sectionElementsTable table table-striped">
                     <thead>
                         <tr>
-                            <th>{{ "Name" | translate }}</th>
-                            <th>{{ "Description" | translate }}</th>
-                            <th>{{ "Type" | translate }}</th>
-                            <th>{{ "Numerator" | translate }}</th>
-                            <th>{{ "Numerator description" | translate }}</th>
-                            <th>{{ "Denominator" | translate }}</th>
-                            <th>{{ "Denominator description" | translate }}</th>
-                            <th>{{ "Stage(s) referenced:" | translate }}</th>
-                            <th>{{ "Visualization:" | translate }}</th>
+                            <th>{{ "dos_NameElement" | translate }}</th>
+                            <th>{{ "dos_DescriptionElement" | translate }}</th>
+                            <th>{{ "dos_Type" | translate }}</th>
+                            <th>{{ "dos_NumeratorIndicator" | translate }}</th>
+                            <th>{{ "dos_NumeratorDescription" | translate }}</th>
+                            <th>{{ "dos_DenominatorIndicator" | translate }}</th>
+                            <th>{{ "dos_DenominatorDescription" | translate }}</th>
+                            <th>{{ "dos_StagesReferenced" | translate }}</th>
+                            <th>{{ "dos_Visualization:" | translate }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -252,21 +252,21 @@
 
         <div class="col-md-12" id="trackedEntityAttributeContainer" ng-controller="dossiersProgramTEAController">
             <div ng-if="trackedEntityAttributes.length > 0" col-md-12>
-                <h3 class="section" id="trackedEntityAttributes">{{ "Tracked Entity Attributes" | translate }}</h3>
+                <h3 class="section" id="trackedEntityAttributes">{{ "dos_TrackedEntityAttributes" | translate }}</h3>
                 <p>
-                    {{ "Number of Tracked Entity Attributes in Program" | translate }}:
+                    {{ "dos_TrackedEntityAttributesNumber" | translate }}:
                     {{ trackedEntityAttributes.length }}
                 </p>
                 <table class="sectionElementsTable table table-striped">
                     <thead>
                         <tr>
-                            <th>{{ "Name" | translate }}</th>
-                            <th>{{ "Form name" | translate }}</th>
-                            <th>{{ "code" | translate }}</th>
-                            <th>{{ "Description" | translate }}</th>
-                            <th>{{ "Value Type" | translate }}</th>
-                            <th>{{ "Aggregation Type" | translate }}</th>
-                            <th>{{ "Option set" | translate }}</th>
+                            <th>{{ "dos_NameElement" | translate }}</th>
+                            <th>{{ "dos_FormNameElement" | translate }}</th>
+                            <th>{{ "dos_Code" | translate }}</th>
+                            <th>{{ "dos_DescriptionElement" | translate }}</th>
+                            <th>{{ "dos_ValueType" | translate }}</th>
+                            <th>{{ "dos_AggregationType" | translate }}</th>
+                            <th>{{ "dos_OptionSet" | translate }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -279,9 +279,9 @@
                             <td>{{ tea.aggregationType }}</td>
                             <td>
                                 <div ng-if="tea.optionSet.options">
-                                    <p>{{ "Option Set name" | translate }}: {{ tea.optionSet.name }}</p>
+                                    <p>{{ "dos_OptionSetName" | translate }}: {{ tea.optionSet.name }}</p>
                                     <select class="form-control col-md-2">
-                                        <option selected>{{ "See options" | translate }}</option>
+                                        <option selected>{{ "dos_SeeOptions" | translate }}</option>
                                         <option ng-repeat="option in tea.optionSet.options">{{ option.name }}</option>
                                     </select>
                                 </div>
@@ -299,11 +299,11 @@
                 <table class="sectionElementsTable table table-striped">
                     <thead>
                         <tr>
-                            <th>{{ "Name" | translate }}</th>
-                            <th>{{ "Description" | translate }}</th>
-                            <th>{{ "Program Stage" | translate }}</th>
-                            <th>{{ "Condition" | translate }}</th>
-                            <th>{{ "Program Rule Actions" | translate }}</th>
+                            <th>{{ "dos_NameElement" | translate }}</th>
+                            <th>{{ "dos_DescriptionElement" | translate }}</th>
+                            <th>{{ "dos_ProgramStage" | translate }}</th>
+                            <th>{{ "dos_Condition" | translate }}</th>
+                            <th>{{ "dos_ProgramRuleActions" | translate }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -316,143 +316,143 @@
                                 <ul ng-if="rule.programRuleActions">
                                     <li ng-repeat="prAction in rule.programRuleActions">
                                         <div ng-switch="prAction.programRuleActionType">
-                                            {{ "Type" | translate }}: {{ prAction.programRuleActionType }}
+                                            {{ "dos_Type" | translate }}: {{ prAction.programRuleActionType }}
                                             <div ng-switch-when="ASSIGN">
                                                 <div ng-if="prAction.dataElement">
-                                                    {{ "Data element" | translate }}: {{ prAction.dataElement.name }}
+                                                    {{ "dos_DataElement" | translate }}: {{ prAction.dataElement.name }}
                                                 </div>
                                                 <div ng-if="prAction.trackedEntityAttribute">
-                                                    {{ "Tracked Entity Attribute" | translate }}:
+                                                    {{ "dos_TrackedEntityAttributes" | translate }}:
                                                     {{ prAction.trackedEntityAttribute.name }}
                                                 </div>
                                                 <div ng-if="prAction.content">
-                                                    {{ "Program rule variable to assign to" | translate }}:
+                                                    {{ "dos_ProgramRuleVariableAssign" | translate }}:
                                                     {{ prAction.content }}
                                                 </div>
                                                 <div ng-if="prAction.data">
-                                                    {{ "Expression" | translate }}: {{ prAction.data }}
+                                                    {{ "dos_Expression" | translate }}: {{ prAction.data }}
                                                 </div>
                                             </div>
                                             <div ng-switch-when="DISPLAYKEYVALUEPAIR">
                                                 <div ng-if="prAction.location">
-                                                    {{ "Display widget" | translate }}: {{ prAction.location }}
+                                                    {{ "dos_DisplayWidget" | translate }}: {{ prAction.location }}
                                                 </div>
                                                 <div ng-if="prAction.content">
-                                                    {{ "Key label" | translate }}: {{ prAction.content }}
+                                                    {{ "dos_KeyLabel" | translate }}: {{ prAction.content }}
                                                 </div>
                                                 <div ng-if="prAction.data">
-                                                    {{ "Expression" | translate }}: {{ prAction.data }}
+                                                    {{ "dos_Expression" | translate }}: {{ prAction.data }}
                                                 </div>
                                             </div>
                                             <div ng-switch-when="DISPLAYTEXT">
                                                 <div ng-if="prAction.location">
-                                                    {{ "Display widget" | translate }}: {{ prAction.location }}
+                                                    {{ "dos_DisplayWidget" | translate }}: {{ prAction.location }}
                                                 </div>
                                                 <div ng-if="prAction.content">
-                                                    {{ "Static text" | translate }}: {{ prAction.content }}
+                                                    {{ "dos_StaticText" | translate }}: {{ prAction.content }}
                                                 </div>
                                                 <div ng-if="prAction.data">
-                                                    {{ "Expression" | translate }}: {{ prAction.data }}
+                                                    {{ "dos_Expression" | translate }}: {{ prAction.data }}
                                                 </div>
                                             </div>
                                             <div
                                                 ng-switch-when="ERRORONCOMPLETE|SHOWERROR|SHOWWARNING|WARNINGONCOMPLETE"
                                             >
                                                 <div ng-if="prAction.dataElement">
-                                                    {{ "Data element" | translate }}: {{ prAction.dataElement.name }}
+                                                    {{ "dos_DataElement" | translate }}: {{ prAction.dataElement.name }}
                                                 </div>
                                                 <div ng-if="prAction.trackedEntityAttribute">
-                                                    {{ "Tracked Entity Attribute" | translate }}:
+                                                    {{ "dos_TrackedEntityAttributes" | translate }}:
                                                     {{ prAction.trackedEntityAttribute.name }}
                                                 </div>
                                                 <div ng-if="prAction.content">
-                                                    {{ "Static text" | translate }}: {{ prAction.content }}
+                                                    {{ "dos_StaticText" | translate }}: {{ prAction.content }}
                                                 </div>
                                                 <div ng-if="prAction.data">
-                                                    {{ "Expression" | translate }}: {{ prAction.data }}
+                                                    {{ "dos_Expression" | translate }}: {{ prAction.data }}
                                                 </div>
                                             </div>
                                             <div ng-switch-when="HIDEFIELD">
                                                 <div ng-if="prAction.dataElement">
-                                                    {{ "Data element" | translate }}: {{ prAction.dataElement.name }}
+                                                    {{ "dos_DataElement" | translate }}: {{ prAction.dataElement.name }}
                                                 </div>
                                                 <div ng-if="prAction.trackedEntityAttribute">
-                                                    {{ "Tracked Entity Attribute" | translate }}:
+                                                    {{ "dos_TrackedEntityAttributes" | translate }}:
                                                     {{ prAction.trackedEntityAttribute.name }}
                                                 </div>
                                                 <div ng-if="prAction.content">
-                                                    {{ "Custom message for blanked field" | translate }}:
+                                                    {{ "dos_CustomMessageBlankedField" | translate }}:
                                                     {{ prAction.content }}
                                                 </div>
                                             </div>
                                             <div ng-switch-when="HIDEOPTION">
                                                 <div ng-if="prAction.dataElement">
-                                                    {{ "Data element" | translate }}: {{ prAction.dataElement.name }}
+                                                    {{ "dos_DataElement" | translate }}: {{ prAction.dataElement.name }}
                                                 </div>
                                                 <div ng-if="prAction.trackedEntityAttribute">
-                                                    {{ "Tracked Entity Attribute" | translate }}:
+                                                    {{ "dos_TrackedEntityAttributes" | translate }}:
                                                     {{ prAction.trackedEntityAttribute.name }}
                                                 </div>
                                                 <div ng-if="prAction.content">
-                                                    {{ "Option to hide" | translate }}: {{ prAction.option.name }}
+                                                    {{ "dos_OptionToHide" | translate }}: {{ prAction.option.name }}
                                                 </div>
                                             </div>
                                             <div ng-switch-when="HIDEOPTIONGROUP">
                                                 <div ng-if="prAction.dataElement">
-                                                    {{ "Data element" | translate }}: {{ prAction.dataElement.name }}
+                                                    {{ "dos_DataElement" | translate }}: {{ prAction.dataElement.name }}
                                                 </div>
                                                 <div ng-if="prAction.trackedEntityAttribute">
-                                                    {{ "Tracked Entity Attribute" | translate }}:
+                                                    {{ "dos_TrackedEntityAttributes" | translate }}:
                                                     {{ prAction.trackedEntityAttribute.name }}
                                                 </div>
                                                 <div ng-if="prAction.content">
-                                                    {{ "Option group to hide" | translate }}: {{ prAction.option.name }}
+                                                    {{ "dos_OptionGroupToHide" | translate }}: {{ prAction.option.name }}
                                                 </div>
                                             </div>
                                             <div ng-switch-when="HIDEPROGRAMSTAGE">
                                                 <div ng-if="prAction.programStage">
-                                                    {{ "Program stage to hide" | translate }}:
+                                                    {{ "dos_OptionstageToHide" | translate }}:
                                                     {{ prAction.programStage.name }}
                                                 </div>
                                             </div>
                                             <div ng-switch-when="HIDESECTION">
                                                 <div ng-if="prAction.programStageSection">
-                                                    {{ "Program stage section to hide" | translate }}:
+                                                    {{ "dos_OptionstageSectionToHide" | translate }}:
                                                     {{ prAction.programStageSection.name }}
                                                 </div>
                                             </div>
                                             <div ng-switch-when="SETMANDATORYFIELD">
                                                 <div ng-if="prAction.dataElement">
-                                                    {{ "Data element" | translate }}: {{ prAction.dataElement.name }}
+                                                    {{ "dos_DataElement" | translate }}: {{ prAction.dataElement.name }}
                                                 </div>
                                                 <div ng-if="prAction.trackedEntityAttribute">
-                                                    {{ "Tracked Entity Attribute" | translate }}:
+                                                    {{ "dos_TrackedEntityAttributes" | translate }}:
                                                     {{ prAction.trackedEntityAttribute.name }}
                                                 </div>
                                             </div>
                                             <div ng-switch-when="SCHEDULEMESSAGE">
                                                 <div ng-if="prAction.data">
-                                                    {{ "Date to send message" | translate }}: {{ prAction.data }}
+                                                    {{ "dos_DateToSendMessage" | translate }}: {{ prAction.data }}
                                                 </div>
                                                 <div ng-if="prAction.template">
-                                                    {{ "Message template" | translate }}: {{ prAction.template }}
+                                                    {{ "dos_MessageTemplate" | translate }}: {{ prAction.template }}
                                                 </div>
                                             </div>
                                             <div ng-switch-when="SENDMESSAGE">
                                                 <div ng-if="prAction.template">
-                                                    {{ "Message template" | translate }}: {{ prAction.template }}
+                                                    {{ "dos_MessageTemplate" | translate }}: {{ prAction.template }}
                                                 </div>
                                             </div>
                                             <div ng-switch-when="SHOWOPTIONGROUP">
                                                 <div ng-if="prAction.dataElement">
-                                                    {{ "Data element" | translate }}: {{ prAction.dataElement.name }}
+                                                    {{ "dos_DataElement" | translate }}: {{ prAction.dataElement.name }}
                                                 </div>
                                                 <div ng-if="prAction.trackedEntityAttribute">
-                                                    {{ "Tracked Entity Attribute" | translate }}:
+                                                    {{ "dos_TrackedEntityAttributes" | translate }}:
                                                     {{ prAction.trackedEntityAttribute.name }}
                                                 </div>
                                                 <div ng-if="prAction.optionGroup">
-                                                    {{ "Option group to show" | translate }}:
+                                                    {{ "dos_OptionGroupToShow" | translate | translate }}:
                                                     {{ prAction.optionGroup.name }}
                                                 </div>
                                             </div>
@@ -469,16 +469,16 @@
 
         <div class="col-md-12" id="RuleVariablesContainer" ng-controller="dossiersProgramRuleVariablesController">
             <div ng-if="ruleVariables.length > 0" col-md-12>
-                <h3 class="section" id="ruleVariables">{{ "Program Rules Variables" | translate }}</h3>
-                <p>{{ "Number of Rule Variables in Program" | translate }}: {{ ruleVariables.length }}</p>
+                <h3 class="section" id="ruleVariables">{{ "dos_ProgramRulesVariables" | translate }}</h3>
+                <p>{{ "dos_ProgramRulesVariablesNumber" | translate }}: {{ ruleVariables.length }}</p>
                 <table class="sectionElementsTable table table-striped">
                     <thead>
                         <tr>
-                            <th>{{ "Name" | translate }}</th>
-                            <th>{{ "Source type" | translate }}</th>
-                            <th>{{ "Program Stage" | translate }}</th>
-                            <th>{{ "Data element" | translate }}</th>
-                            <th>{{ "Tracked Entity Attribute" | translate }}</th>
+                            <th>{{ "dos_NameElement" | translate }}</th>
+                            <th>{{ "dos_SourceType" | translate }}</th>
+                            <th>{{ "dos_ProgramStage" | translate }}</th>
+                            <th>{{ "dos_DataElement" | translate }}</th>
+                            <th>{{ "dos_TrackedEntityAttributes" | translate }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -496,15 +496,15 @@
 
         <div class="col-md-12" ng-controller="dossiersProgramAnalysisController">
             <div class="col-md-12" id="EventReportsContainer" ng-show="eventReports.length > 0">
-                <h2 class="EventReportsGroup" id="eventReports">{{ "Event Reports" | translate }}</h2>
+                <h2 class="EventReportsGroup" id="eventReports">{{ "dos_EventReports" | translate }}</h2>
                 <div class="col-md-12">
-                    <p>{{ "Number of Event Reports" | translate }}: {{ eventReports.length }}</p>
+                    <p>{{ "dos_EventReportsNumber" | translate }}: {{ eventReports.length }}</p>
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>{{ "Name" | translate }}</th>
-                                <th>{{ "Description" | translate }}</th>
-                                <th>{{ "Link" | translate }}</th>
+                                <th>{{ "dos_NameElement" | translate }}</th>
+                                <th>{{ "dos_DescriptionElement" | translate }}</th>
+                                <th>{{ "dos_Link" | translate }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -523,15 +523,15 @@
             </div>
 
             <div class="col-md-12" id="EventChartsContainer" ng-show="eventCharts.length > 0">
-                <h2 class="EventChartsGroup" id="eventCharts">{{ "Event Charts" | translate }}</h2>
+                <h2 class="EventChartsGroup" id="eventCharts">{{ "dos_EventCharts" | translate }}</h2>
                 <div class="col-md-12">
-                    <p>{{ "Number of Event Charts" | translate }}: {{ eventCharts.length }}</p>
+                    <p>{{ "dos_EventChartsNumber" | translate }}: {{ eventCharts.length }}</p>
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>{{ "Name" | translate }}</th>
-                                <th>{{ "Description" | translate }}</th>
-                                <th>{{ "Link" | translate }}</th>
+                                <th>{{ "dos_NameElement" | translate }}</th>
+                                <th>{{ "dos_DescriptionElement" | translate }}</th>
+                                <th>{{ "dos_Link" | translate }}</th>
                             </tr>
                         </thead>
                         <tbody>
