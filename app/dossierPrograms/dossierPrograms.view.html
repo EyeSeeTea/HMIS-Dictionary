@@ -355,9 +355,52 @@
                                                     {{ "dos_Expression" | translate }}: {{ prAction.data }}
                                                 </div>
                                             </div>
-                                            <div
-                                                ng-switch-when="ERRORONCOMPLETE|SHOWERROR|SHOWWARNING|WARNINGONCOMPLETE"
-                                            >
+                                            <div ng-switch-when="ERRORONCOMPLETE">
+                                                <div ng-if="prAction.dataElement">
+                                                    {{ "dos_DataElement" | translate }}: {{ prAction.dataElement.name }}
+                                                </div>
+                                                <div ng-if="prAction.trackedEntityAttribute">
+                                                    {{ "dos_TrackedEntityAttributes" | translate }}:
+                                                    {{ prAction.trackedEntityAttribute.name }}
+                                                </div>
+                                                <div ng-if="prAction.content">
+                                                    {{ "dos_StaticText" | translate }}: {{ prAction.content }}
+                                                </div>
+                                                <div ng-if="prAction.data">
+                                                    {{ "dos_Expression" | translate }}: {{ prAction.data }}
+                                                </div>
+                                            </div>
+                                            <div ng-switch-when="SHOWERROR">
+                                                <div ng-if="prAction.dataElement">
+                                                    {{ "dos_DataElement" | translate }}: {{ prAction.dataElement.name }}
+                                                </div>
+                                                <div ng-if="prAction.trackedEntityAttribute">
+                                                    {{ "dos_TrackedEntityAttributes" | translate }}:
+                                                    {{ prAction.trackedEntityAttribute.name }}
+                                                </div>
+                                                <div ng-if="prAction.content">
+                                                    {{ "dos_StaticText" | translate }}: {{ prAction.content }}
+                                                </div>
+                                                <div ng-if="prAction.data">
+                                                    {{ "dos_Expression" | translate }}: {{ prAction.data }}
+                                                </div>
+                                            </div>
+                                            <div ng-switch-when="SHOWWARNING">
+                                                <div ng-if="prAction.dataElement">
+                                                    {{ "dos_DataElement" | translate }}: {{ prAction.dataElement.name }}
+                                                </div>
+                                                <div ng-if="prAction.trackedEntityAttribute">
+                                                    {{ "dos_TrackedEntityAttributes" | translate }}:
+                                                    {{ prAction.trackedEntityAttribute.name }}
+                                                </div>
+                                                <div ng-if="prAction.content">
+                                                    {{ "dos_StaticText" | translate }}: {{ prAction.content }}
+                                                </div>
+                                                <div ng-if="prAction.data">
+                                                    {{ "dos_Expression" | translate }}: {{ prAction.data }}
+                                                </div>
+                                            </div>
+                                            <div ng-switch-when="WARNINGONCOMPLETE">
                                                 <div ng-if="prAction.dataElement">
                                                     {{ "dos_DataElement" | translate }}: {{ prAction.dataElement.name }}
                                                 </div>
@@ -452,7 +495,7 @@
                                                     {{ prAction.trackedEntityAttribute.name }}
                                                 </div>
                                                 <div ng-if="prAction.optionGroup">
-                                                    {{ "dos_OptionGroupToShow" | translate | translate }}:
+                                                    {{ "dos_OptionGroupToShow" | translate }}:
                                                     {{ prAction.optionGroup.name }}
                                                 </div>
                                             </div>
