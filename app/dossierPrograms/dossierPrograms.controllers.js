@@ -1037,7 +1037,7 @@ dossierProgramsModule.controller("dossiersProgramExport", [
                     XLSX.utils.book_append_sheet(
                         workbook,
                         worksheet,
-                        `${stage.displayName.slice(0, 20)}-${section.displayName.slice(0, 10)}`
+                        `${stage.displayName.slice(0, 20).replace(/[\\/*?:[\]]/g, "")}-${section.displayName.slice(0, 10).replace(/[\\/*?:[\]]/g, "")}`
                     );
                 });
             });
