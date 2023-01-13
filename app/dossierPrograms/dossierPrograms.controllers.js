@@ -1031,10 +1031,10 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         @scope dossiersProgramExport
         */
         function makeStagesWorksheets(stages, workbook) {
-            stages.forEach((stage, stgIndex) => {
-                stage.programStageSections.forEach((section, secIndex) => {
+            stages.forEach(stage => {
+                stage.programStageSections.forEach(section => {
                     var worksheet = makeStageSectionWorksheet(section.dataElements);
-                    XLSX.utils.book_append_sheet(workbook, worksheet, `Stage ${stgIndex + 1}-Section ${secIndex + 1}`);
+                    XLSX.utils.book_append_sheet(workbook, worksheet, `${stage.displayName.slice(0, 20)}-${section.displayName.slice(0, 10)}`);
                 });
             });
         }
@@ -1054,7 +1054,9 @@ dossierProgramsModule.controller("dossiersProgramExport", [
                     [translate("dos_AggregationType")]: item?.aggregationType,
                     [translate("dos_ValueType")]: item?.valueType,
                     [translate("dos_OptionSetName")]: item?.optionSet?.name,
-                    [translate("dos_OptionSetOptions")]: joinAndTrim(item?.optionSet?.options.map(option => option.name)),
+                    [translate("dos_OptionSetOptions")]: joinAndTrim(
+                        item?.optionSet?.options.map(option => option.name)
+                    ),
                 };
             });
 
