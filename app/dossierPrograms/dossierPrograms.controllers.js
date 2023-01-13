@@ -1034,7 +1034,11 @@ dossierProgramsModule.controller("dossiersProgramExport", [
             stages.forEach(stage => {
                 stage.programStageSections.forEach(section => {
                     var worksheet = makeStageSectionWorksheet(section.dataElements);
-                    XLSX.utils.book_append_sheet(workbook, worksheet, `${stage.displayName.slice(0, 20)}-${section.displayName.slice(0, 10)}`);
+                    XLSX.utils.book_append_sheet(
+                        workbook,
+                        worksheet,
+                        `${stage.displayName.slice(0, 20)}-${section.displayName.slice(0, 10)}`
+                    );
                 });
             });
         }
@@ -1110,6 +1114,75 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         }
 
         /* 
+        @name makeRulesActionsWorksheet
+        @description Makes a worksheet from Program Rules Actions data
+        @scope dossiersProgramExport
+        */
+        function makeRulesActionsWorksheet(rules) {
+            var data = rules.flatMap(item => {
+                if (!item.programRuleActions) return [];
+                return item.programRuleActions?.map(pra => {
+                    let fields = {};
+                    switch (pra.programRuleActionType) {
+                        case "ASSIGN":
+                            fields.dos_ProgramRuleVariableAssign = pra?.content;
+                            fields.dos_Expression = pra?.data;
+                            break;
+                        case "DISPLAYKEYVALUEPAIR":
+                            fields.dos_StaticText = pra?.content;
+                            fields.dos_Expression = pra?.data;
+                            break;
+                        case "DISPLAYTEXT":
+                            fields.dos_KeyLabel = pra?.content;
+                            fields.dos_Expression = pra?.data;
+                            break;
+                        case "ERRORONCOMPLETE":
+                        case "SHOWERROR":
+                        case "SHOWWARNING":
+                        case "WARNINGONCOMPLETE":
+                            fields.dos_StaticText = pra?.content;
+                            fields.dos_Expression = pra?.data;
+                            break;
+                        case "HIDEFIELD":
+                            fields.dos_CustomMessageBlankedField = pra?.content;
+                            fields.dos_OptionToHide = pra?.option?.name;
+                            break;
+                        case "HIDEOPTIONGROUP":
+                            fields.dos_OptionGroupToHide = pra?.option?.name;
+                            break;
+                        case "SCHEDULEMESSAGE":
+                            fields.dos_DateToSendMessage = pra?.data;
+                            break;
+                        default:
+                            break;
+                    }
+
+                    return {
+                        [translate("dos_NameElement")]: item.name,
+                        [translate("dos_Type")]: pra.programRuleActionType,
+                        [translate("dos_DataElement")]: pra.dataElement?.name,
+                        [translate("dos_TrackedEntityAttributes")]: pra?.trackedEntityAttribute?.name,
+                        [translate("dos_ProgramRuleVariableAssign")]: fields.dos_ProgramRuleVariableAssign,
+                        [translate("dos_Expression")]: fields.dos_Expression,
+                        [translate("dos_StaticText")]: fields.dos_StaticText,
+                        [translate("dos_KeyLabel")]: fields.dos_KeyLabel,
+                        [translate("dos_CustomMessageBlankedField")]: fields.dos_CustomMessageBlankedField,
+                        [translate("dos_OptionToHide")]: fields.dos_OptionToHide,
+                        [translate("dos_OptionGroupToHide")]: fields.dos_OptionGroupToHide,
+                        [translate("dos_DateToSendMessage")]: fields.dos_DateToSendMessage,
+                        [translate("dos_DisplayWidget")]: pra?.location,
+                        [translate("dos_OptionstageToHide")]: pra?.programStage?.name,
+                        [translate("dos_OptionstageSectionToHide")]: pra?.programStageSection?.name,
+                        [translate("dos_MessageTemplate")]: pra?.template,
+                        [translate("dos_OptionGroupToShow")]: pra?.optionGroup?.name,
+                    };
+                });
+            });
+
+            return XLSX.utils.json_to_sheet(data.map(i => _.omit(i, "")));
+        }
+
+        /* 
         @name makeRulesWorksheet
         @description Makes a worksheet from Program Rules data
         @scope dossiersProgramExport
@@ -1121,7 +1194,7 @@ dossierProgramsModule.controller("dossiersProgramExport", [
                     [translate("dos_DescriptionElement")]: item?.description,
                     [translate("dos_ProgramStage")]: item?.programStage?.name,
                     [translate("dos_Condition")]: item?.condition,
-                    [translate("dos_ProgramRuleActions")]: joinAndTrim(
+                    [translate("dos_ActionsTypes")]: joinAndTrim(
                         item?.programRuleActions?.map(pra => pra.programRuleActionType)
                     ),
                 };
@@ -1191,6 +1264,8 @@ dossierProgramsModule.controller("dossiersProgramExport", [
                             case "rules":
                                 var worksheet = makeRulesWorksheet(value);
                                 XLSX.utils.book_append_sheet(workbook, worksheet, "Program Rules");
+                                worksheet = makeRulesActionsWorksheet(value);
+                                XLSX.utils.book_append_sheet(workbook, worksheet, "Program Rules Actions");
                                 break;
                             case "ruleVariables":
                                 var worksheet = makeRuleVariablesWorksheet(value);
