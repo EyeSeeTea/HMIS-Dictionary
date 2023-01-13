@@ -1158,7 +1158,7 @@ dossierProgramsModule.controller("dossiersProgramExport", [
                     }
 
                     return {
-                        [translate("dos_NameElement")]: item.name,
+                        [`${translate("dos_ProgramRule")} ${translate("dos_NameElement")}`]: item.name,
                         [translate("dos_Type")]: pra.programRuleActionType,
                         [translate("dos_DataElement")]: pra.dataElement?.name,
                         [translate("dos_TrackedEntityAttributes")]: pra?.trackedEntityAttribute?.name,
