@@ -1,4 +1,3 @@
-//Récupération de tous les indicateurs : phase d'initialisation
 var qryIndicators =
     dhisUrl +
     "indicators.json?fields=id,name,numerator,denominator,description,numeratorDescription,denominatorDescription&paging=false";
@@ -61,7 +60,7 @@ dossierIndicatorsModule.factory("dossierIndicatorsDataSetsFactory", [
 ]);
 
 var qryIndicatorCategoryOptionCombos =
-    dhisUrl + "categoryOptionCombos.json?filter=id\\:eq\\::id&fields=name&paging=false"; //Modification de displayName par Name
+    dhisUrl + "categoryOptionCombos.json?filter=id\\:eq\\::id&fields=name&paging=false";
 
 dossierIndicatorsModule.factory("dossierIndicatorsCategoryOptionComboFactory", [
     "$resource",
