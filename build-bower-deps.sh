@@ -64,3 +64,6 @@ install -D --mode=$mode node_modules/angular-sessionstorage/LICENSE bower_compon
 # xlsx
 install -D --mode=$mode node_modules/xlsx/dist/xlsx.mini.min.js bower_components/xlsx/xlsx.mini.min.js
 install -D --mode=$mode node_modules/xlsx/LICENSE bower_components/xlsx/LICENSE
+# xlsx-populate
+install -D --mode=$mode node_modules/@eyeseetea/xlsx-populate/browser/xlsx-populate-no-encryption.min.js bower_components/xlsx-populate/xlsx-populate-no-encryption.min.js
+install -D --mode=$mode node_modules/@eyeseetea/xlsx-populate/LICENSE bower_components/xlsx-populate/LICENSE
