@@ -83,15 +83,6 @@ datasetsModule.controller("datasetsMainController", [
                 endLoadingState(true);
             });
         }
-        /*else
-{
-    $scope.datasets = datasetsFactory.get({blackList: $scope.blacklist_datasets}, function() {
-        endLoadingState(true);
-    });
-}*/
-
-        console.log($scope.datasetsLink);
-        console.log($scope.datasets);
 
         $scope.datasetDataElements = {};
 
