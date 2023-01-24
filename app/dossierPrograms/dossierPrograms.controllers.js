@@ -1281,6 +1281,27 @@ dossierProgramsModule.controller("dossiersProgramExport", [
             return `${filename}-${$filter("date")(Date.now(), "dd-MM-yy_H-mm")}.xlsx`;
         }
 
+        /*
+        @name downloadExcel
+        @description download workbook blob
+        @scope dossiersProgramExport
+        */
+        async function downloadExcel(workbook) {
+            await workbook
+                .outputAsync()
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.style.display = "none";
+                    a.href = url;
+                    a.download = makeFilename();
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                })
+                .catch(() => alert("Download failed"));
+        }
+
         /* 
         @name exportToExcel
         @description Exports program dossier to xlsx spreadsheet
@@ -1319,6 +1340,9 @@ dossierProgramsModule.controller("dossiersProgramExport", [
                         workbook.deleteSheet("Sheet1");
                         return workbook;
                     });
+
+                    // TEMP DOWNLOAD
+                    await downloadExcel(workbook);
 
                     $scope.button.clicked = false;
                 }
