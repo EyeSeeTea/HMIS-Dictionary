@@ -1003,12 +1003,48 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         }
 
         /* 
-        @name makeStageSectionWorksheet
-        @description Makes a worksheet from Stage Section / Data Elements data
+        @name makeStageSectionSheetName
+        @description Makes a sheet from Stage Section / Data Elements data
         @scope dossiersProgramExport
         */
-        function makeStageSectionWorksheet(dataElements) {
-            var data = dataElements?.map(item => {
+        function makeStageSectionSheetName(stageName, sectionName) {
+            const stageNameSlice = stageName.replace(/[\\/*?:[\]]/g, "").slice(0, 20)
+            const stageNameSliceLen = stageNameSlice.length !== 20 ? 20 - stageNameSlice.length + 10 : 10;
+            const sectionNameSlice = sectionName.replace(/[\\/*?:[\]]/g, "").slice(0, stageNameSliceLen)
+            return `${stageNameSlice}-${sectionNameSlice}`;
+        }
+
+        /*
+        @name writeSheetHeader
+        @description Writes sheet header from data object keys array
+        @scope dossiersProgramExport
+        */
+        function writeSheetHeader(sheet, header) {
+            header.forEach((item, index) => {
+                sheet.cell(1, index + 1).value(item);
+            });
+        }
+
+        /*
+        @name writeSheetData
+        @description Writes data object to sheet
+        @scope dossiersProgramExport
+        */
+        function writeSheetData(sheet, data) {
+            data.forEach((rowData, rowIndex) => {
+                Object.entries(rowData).forEach(([_, value], cellIndex) => {
+                    sheet.cell(rowIndex + 2, cellIndex + 1).value(value);
+                });
+            });
+        }
+
+        /* 
+        @name makeStageSectionSheet
+        @description Makes a sheet from Stage Section / Data Elements data
+        @scope dossiersProgramExport
+        */
+        function makeStageSectionSheet(workbook, dataElements, sheetName) {
+            const data = dataElements?.map(item => {
                 return {
                     [translate("dos_NameElement")]: item?.displayName,
                     [translate("dos_FormNameElement")]: item?.displayFormName,
@@ -1022,34 +1058,35 @@ dossierProgramsModule.controller("dossiersProgramExport", [
                 };
             });
 
-            return XLSX.utils.json_to_sheet(data);
+            const sheet = workbook.addSheet(sheetName);
+            writeSheetHeader(sheet, Object.keys(data[0]));
+            writeSheetData(sheet, data);
         }
 
         /* 
-        @name makeStagesWorksheets
-        @description Makes a worksheet from Stage Section / Data Elements data
+        @name makeStagesSheets
+        @description Makes a sheet from Stage Section / Data Elements data
         @scope dossiersProgramExport
         */
-        function makeStagesWorksheets(stages, workbook) {
+        function makeStagesSheets(workbook, stages) {
             stages.forEach(stage => {
                 stage.programStageSections.forEach(section => {
-                    var worksheet = makeStageSectionWorksheet(section.dataElements);
-                    XLSX.utils.book_append_sheet(
+                    makeStageSectionSheet(
                         workbook,
-                        worksheet,
-                        `${stage.displayName.slice(0, 20).replace(/[\\/*?:[\]]/g, "")}-${section.displayName.slice(0, 10).replace(/[\\/*?:[\]]/g, "")}`
+                        section.dataElements,
+                        makeStageSectionSheetName(stage.displayName, section.displayName)
                     );
                 });
             });
         }
 
         /* 
-        @name makeTEAWorksheet
-        @description Makes a worksheet from Tracked Entity Attributes data
+        @name makeTEASheet
+        @description Makes a sheet from Tracked Entity Attributes data
         @scope dossiersProgramExport
         */
-        function makeTEAWorksheet(trackedEntityAttributes) {
-            var data = trackedEntityAttributes.map(item => {
+        function makeTEASheet(workbook, trackedEntityAttributes) {
+            const data = trackedEntityAttributes.map(item => {
                 return {
                     [translate("dos_NameElement")]: item?.name,
                     [translate("dos_FormNameElement")]: item?.formName,
@@ -1064,16 +1101,18 @@ dossierProgramsModule.controller("dossiersProgramExport", [
                 };
             });
 
-            return XLSX.utils.json_to_sheet(data);
+            const sheet = workbook.addSheet("Tracked Entity Attributes");
+            writeSheetHeader(sheet, Object.keys(data[0]));
+            writeSheetData(sheet, data);
         }
 
         /* 
-        @name makeIndicatorsWorksheet
-        @description Makes a worksheet from Indicators data
+        @name makeIndicatorsSheet
+        @description Makes a sheet from Indicators data
         @scope dossiersProgramExport
         */
-        function makeIndicatorsWorksheet(indicators) {
-            var data = indicators.map(item => {
+        function makeIndicatorsSheet(workbook, indicators) {
+            const data = indicators.map(item => {
                 return {
                     [translate("dos_NameElement")]: item?.displayName,
                     [translate("dos_DescriptionElement")]: item?.displayDescription,
@@ -1086,16 +1125,18 @@ dossierProgramsModule.controller("dossiersProgramExport", [
                 };
             });
 
-            return XLSX.utils.json_to_sheet(data);
+            const sheet = workbook.addSheet("Indicators");
+            writeSheetHeader(sheet, Object.keys(data[0]));
+            writeSheetData(sheet, data);
         }
 
         /* 
-        @name makeProgramIndicatorsWorksheet
-        @description Makes a worksheet from Program Indicators data
+        @name makeProgramIndicatorsSheet
+        @description Makes a sheet from Program Indicators data
         @scope dossiersProgramExport
         */
-        function makeProgramIndicatorsWorksheet(programIndicators) {
-            var data = programIndicators.map(item => {
+        function makeProgramIndicatorsSheet(workbook, programIndicators) {
+            const data = programIndicators.map(item => {
                 return {
                     [translate("dos_NameElement")]: item?.displayName,
                     [translate("dos_DescriptionElement")]: item?.displayDescription,
@@ -1110,16 +1151,18 @@ dossierProgramsModule.controller("dossiersProgramExport", [
                 };
             });
 
-            return XLSX.utils.json_to_sheet(data);
+            const sheet = workbook.addSheet("Program Indicators");
+            writeSheetHeader(sheet, Object.keys(data[0]));
+            writeSheetData(sheet, data);
         }
 
         /* 
-        @name makeRulesActionsWorksheet
-        @description Makes a worksheet from Program Rules Actions data
+        @name makeRulesActionsSheet
+        @description Makes a sheet from Program Rules Actions data
         @scope dossiersProgramExport
         */
-        function makeRulesActionsWorksheet(rules) {
-            var data = rules.flatMap(item => {
+        function makeRulesActionsSheet(workbook, rules) {
+            const data = rules.flatMap(item => {
                 if (!item.programRuleActions) return [];
                 return item.programRuleActions?.map(pra => {
                     let fields = {};
@@ -1179,15 +1222,17 @@ dossierProgramsModule.controller("dossiersProgramExport", [
                 });
             });
 
-            return XLSX.utils.json_to_sheet(data.map(i => _.omit(i, "")));
+            const sheet = workbook.addSheet("Program Rules Actions");
+            writeSheetHeader(sheet, Object.keys(data[0]));
+            writeSheetData(sheet, data);
         }
 
         /* 
-        @name makeRulesWorksheet
-        @description Makes a worksheet from Program Rules data
+        @name makeRulesSheet
+        @description Makes a sheet from Program Rules data
         @scope dossiersProgramExport
         */
-        function makeRulesWorksheet(rules) {
+        function makeRulesSheet(workbook, rules) {
             var data = rules.map(item => {
                 return {
                     [translate("dos_NameElement")]: item?.name,
@@ -1200,16 +1245,18 @@ dossierProgramsModule.controller("dossiersProgramExport", [
                 };
             });
 
-            return XLSX.utils.json_to_sheet(data);
+            const sheet = workbook.addSheet("Program Rules");
+            writeSheetHeader(sheet, Object.keys(data[0]));
+            writeSheetData(sheet, data);
         }
 
         /* 
-        @name makeRuleVariablesWorksheet
-        @description Makes a worksheet from Program Rules Variables data
+        @name makeRuleVariablesSheet
+        @description Makes a sheet from Program Rules Variables data
         @scope dossiersProgramExport
         */
-        function makeRuleVariablesWorksheet(ruleVariables) {
-            var data = ruleVariables.map(item => {
+        function makeRuleVariablesSheet(workbook, ruleVariables) {
+            const data = ruleVariables.map(item => {
                 return {
                     [translate("dos_NameElement")]: item?.name,
                     [translate("dos_SourceType")]: item?.programRuleVariableSourceType,
@@ -1219,7 +1266,9 @@ dossierProgramsModule.controller("dossiersProgramExport", [
                 };
             });
 
-            return XLSX.utils.json_to_sheet(data);
+            const sheet = workbook.addSheet("Program Rules Variables");
+            writeSheetHeader(sheet, Object.keys(data[0]));
+            writeSheetData(sheet, data);
         }
 
         /* 
@@ -1238,44 +1287,39 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         @scope dossiersProgramExport
         */
         $scope.exportToExcel = function () {
-            $scope.$watchGroup(["selectedProgram", "dossiersProgramDataService"], function () {
+            $scope.$watchGroup(["selectedProgram", "dossiersProgramDataService"], async function () {
                 ping();
                 if ($scope.selectedProgram && $scope.button.clicked) {
-                    var workbook = XLSX.utils.book_new();
-
-                    for (const [key, value] of Object.entries(dossiersProgramDataService.data)) {
-                        if (value === undefined) continue;
-                        switch (key) {
-                            case "stages":
-                                makeStagesWorksheets(value, workbook);
-                                break;
-                            case "programIndicators":
-                                var worksheet = makeProgramIndicatorsWorksheet(value);
-                                XLSX.utils.book_append_sheet(workbook, worksheet, "Program Indicators");
-                                break;
-                            case "indicators":
-                                var worksheet = makeIndicatorsWorksheet(value);
-                                XLSX.utils.book_append_sheet(workbook, worksheet, "Indicators");
-                                break;
-                            case "trackedEntityAttributes":
-                                var worksheet = makeTEAWorksheet(value);
-                                XLSX.utils.book_append_sheet(workbook, worksheet, "Tracked Entity Attributes");
-                                break;
-                            case "rules":
-                                var worksheet = makeRulesWorksheet(value);
-                                XLSX.utils.book_append_sheet(workbook, worksheet, "Program Rules");
-                                worksheet = makeRulesActionsWorksheet(value);
-                                XLSX.utils.book_append_sheet(workbook, worksheet, "Program Rules Actions");
-                                break;
-                            case "ruleVariables":
-                                var worksheet = makeRuleVariablesWorksheet(value);
-                                XLSX.utils.book_append_sheet(workbook, worksheet, "Program Rules Variables");
-                                break;
-                            default:
+                    const workbook = await XlsxPopulate.fromBlankAsync().then(workbook => {
+                        for (const [key, value] of Object.entries(dossiersProgramDataService.data)) {
+                            if (value === undefined) continue;
+                            switch (key) {
+                                case "stages":
+                                    makeStagesSheets(workbook, value);
+                                    break;
+                                case "programIndicators":
+                                    makeProgramIndicatorsSheet(workbook, value);
+                                    break;
+                                case "indicators":
+                                    makeIndicatorsSheet(workbook, value);
+                                    break;
+                                case "trackedEntityAttributes":
+                                    makeTEASheet(workbook, value);
+                                    break;
+                                case "rules":
+                                    makeRulesSheet(workbook, value);
+                                    makeRulesActionsSheet(workbook, value);
+                                    break;
+                                case "ruleVariables":
+                                    makeRuleVariablesSheet(workbook, value);
+                                    break;
+                                default:
+                            }
                         }
-                    }
+                        workbook.deleteSheet("Sheet1");
+                        return workbook;
+                    });
 
-                    XLSX.writeFile(workbook, makeFilename());
                     $scope.button.clicked = false;
                 }
             });
