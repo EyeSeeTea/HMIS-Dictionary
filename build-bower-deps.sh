@@ -1,7 +1,10 @@
 #!/bin/sh
 
-# install file perms
+## install file perms
 mode=u=rw,go=r
+
+## DELETE old bower_components
+rm -r bower_components
 
 ## MAKE bower_components
 # jquery
@@ -61,9 +64,6 @@ install -D --mode=$mode node_modules/@bower_components/angular-ui-tinymce/LICENS
 # angular-sessionstorage
 install -D --mode=$mode node_modules/angular-sessionstorage/angular-sessionstorage.js bower_components/angular-sessionstorage/angular-sessionstorage.js
 install -D --mode=$mode node_modules/angular-sessionstorage/LICENSE bower_components/angular-sessionstorage/LICENSE
-# xlsx
-install -D --mode=$mode node_modules/xlsx/dist/xlsx.mini.min.js bower_components/xlsx/xlsx.mini.min.js
-install -D --mode=$mode node_modules/xlsx/LICENSE bower_components/xlsx/LICENSE
 # xlsx-populate
 install -D --mode=$mode node_modules/@eyeseetea/xlsx-populate/browser/xlsx-populate-no-encryption.min.js bower_components/xlsx-populate/xlsx-populate-no-encryption.min.js
 install -D --mode=$mode node_modules/@eyeseetea/xlsx-populate/LICENSE bower_components/xlsx-populate/LICENSE
