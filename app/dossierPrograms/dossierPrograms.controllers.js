@@ -1008,9 +1008,9 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         @scope dossiersProgramExport
         */
         function makeStageSectionSheetName(stageName, sectionName) {
-            const stageNameSlice = stageName.replace(/[\\/*?:[\]]/g, "").slice(0, 20)
+            const stageNameSlice = stageName.replace(/[\\/*?:[\]]/g, "").slice(0, 20);
             const stageNameSliceLen = stageNameSlice.length !== 20 ? 20 - stageNameSlice.length + 10 : 10;
-            const sectionNameSlice = sectionName.replace(/[\\/*?:[\]]/g, "").slice(0, stageNameSliceLen)
+            const sectionNameSlice = sectionName.replace(/[\\/*?:[\]]/g, "").slice(0, stageNameSliceLen);
             return `${stageNameSlice}-${sectionNameSlice}`;
         }
 
@@ -1146,7 +1146,11 @@ dossierProgramsModule.controller("dossiersProgramExport", [
                     [translate("dos_TypeOfProgramIndicator")]: item?.analyticsType,
                     [translate("dos_StagesReferenced")]: item?.stageRef?.join(" | "),
                     [translate("dos_Boundaries")]: joinAndTrim(
-                        item?.analyticsPeriodBoundaries?.map(apb => JSON.stringify(_.omit(apb, "$$hashKey")))
+                        item?.analyticsPeriodBoundaries?.map(apb =>
+                            Object.entries(_.omit(apb, "$$hashKey"))
+                                .map(i => i.join(": "))
+                                .join(", ")
+                        )
                     ),
                 };
             });
@@ -1341,7 +1345,6 @@ dossierProgramsModule.controller("dossiersProgramExport", [
                         return workbook;
                     });
 
-                    // TEMP DOWNLOAD
                     await downloadExcel(workbook);
 
                     $scope.button.clicked = false;
