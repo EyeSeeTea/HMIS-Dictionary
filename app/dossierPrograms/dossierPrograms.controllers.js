@@ -1303,7 +1303,7 @@ dossierProgramsModule.controller("dossiersProgramExport", [
                     a.click();
                     window.URL.revokeObjectURL(url);
                 })
-                .catch(() => alert("Download failed"));
+                .catch(() => console.debug("Download failed"));
         }
 
         /* 
@@ -1345,7 +1345,7 @@ dossierProgramsModule.controller("dossiersProgramExport", [
                         return workbook;
                     });
 
-                    await downloadExcel(workbook);
+                    downloadExcel(workbook);
 
                     $scope.button.clicked = false;
                 }
