@@ -495,3 +495,14 @@ dossierProgramsModule.factory("dossiersProgramsLinkTestFactory", [
         );
     },
 ]);
+
+dossierProgramsModule.service("dossiersProgramDataService", function () {
+    this.data = {
+        stages: undefined,
+        programIndicators: undefined,
+        indicators: undefined,
+        trackedEntityAttributes: undefined,
+        rules: undefined,
+        ruleVariables: undefined,
+    };
+});
