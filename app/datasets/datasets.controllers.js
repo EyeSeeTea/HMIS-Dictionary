@@ -11,9 +11,19 @@ datasetsModule.controller("datasetsMainController", [
     "$scope",
     "$translate",
     "$anchorScroll",
+    "$sessionStorage",
     "datasetsFactory",
+    "datasetsLinkFactory",
     "datasetsDataelementsFactory",
-    function ($scope, $translate, $anchorScroll, datasetsFactory, datasetsDataelementsFactory) {
+    function (
+        $scope,
+        $translate,
+        $sessionStorage,
+        $anchorScroll,
+        datasetsFactory,
+        datasetsLinkFactory,
+        datasetsDataelementsFactory
+    ) {
         $("#datasets").tab("show");
 
         /*
@@ -55,6 +65,24 @@ datasetsModule.controller("datasetsMainController", [
         $scope.datasets = datasetsFactory.get({ blackList: $scope.blacklist_datasets }, function () {
             endLoadingState(true);
         });
+        /*
+         *  @name $scope.dataSets
+         *  @description Gets the list of data sets
+         *  @dependencies datasetsFactory
+         *  @scope datasetsMainController
+         */
+        $scope.datasets = datasetsFactory.get({ blackList: $scope.blacklist_datasets }, function () {
+            endLoadingState(true);
+        });
+
+        if (sessionStorage.getItem("dataSetName") !== null) {
+            $scope.dataSetName = sessionStorage.getItem("dataSetName");
+            sessionStorage.clear();
+
+            $scope.datasets = datasetsLinkFactory.get({ displayName: $scope.dataSetName }, function () {
+                endLoadingState(true);
+            });
+        }
 
         $scope.datasetDataElements = {};
 

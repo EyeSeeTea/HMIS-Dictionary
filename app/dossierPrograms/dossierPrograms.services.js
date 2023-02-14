@@ -473,3 +473,36 @@ searchModule.factory("dossiersProgramVisualizationTableFactory", [
         };
     },
 ]);
+
+var qryTest =
+    dhisUrl +
+    "programs.json?filter=displayName\\:eq\\::displayName&fields=id,displayName,displayDescription,programStages[id]&paging=false";
+
+dossierProgramsModule.factory("dossiersProgramsLinkTestFactory", [
+    "$resource",
+    function ($resource) {
+        return $resource(
+            qryTest,
+            {
+                displayName: "@displayName",
+            },
+            {
+                query: {
+                    method: "GET",
+                    isArray: false,
+                },
+            }
+        );
+    },
+]);
+
+dossierProgramsModule.service("dossiersProgramDataService", function () {
+    this.data = {
+        stages: undefined,
+        programIndicators: undefined,
+        indicators: undefined,
+        trackedEntityAttributes: undefined,
+        rules: undefined,
+        ruleVariables: undefined,
+    };
+});

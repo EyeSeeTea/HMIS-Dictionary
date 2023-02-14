@@ -26,6 +26,7 @@
         <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
         <script src="bower_components/angular-ui-bootstrap/ui-bootstrap-tpls-2.3.0.min.js"></script>
         <script src="bower_components/angular-ui-router/angular-ui-router.min.js"></script>
+        <script src="bower_components/angular-sessionstorage/angular-sessionstorage.js"></script>
 
         <!-- dependencies: graph module # currently not used -->
         <!-- <script src="bower_components/angucomplete-alt/angucomplete-alt.min.js"></script>
@@ -37,6 +38,9 @@
         <!-- dependencies: TinyMCE -->
         <script src="bower_components/tinymce/tinymce.min.js"></script>
         <script src="bower_components/angular-ui-tinymce/tinymce.min.js"></script>
+
+        <!-- dependencies: @eyeseetea/xlsx-populate -->
+        <script src="bower_components/xlsx-populate/xlsx-populate-no-encryption.min.js"></script>
 
         <!-- app: core -->
         <script src="app/app.config.js"></script>
@@ -56,13 +60,17 @@
         <script src="app/dossiersReader/dossiersReader.services.js"></script>
         <script src="app/dossiersReader/dossiersReader.controllers.js"></script>
 
-        <!-- app: module-dossiers-programs -->
+        <!-- app: module-dossiers-datasets -->
         <script src="app/datasets/datasets.services.js"></script>
         <script src="app/datasets/datasets.controllers.js"></script>
 
         <!-- app: module-dossiers-programs -->
         <script src="app/dossierPrograms/dossierPrograms.services.js"></script>
         <script src="app/dossierPrograms/dossierPrograms.controllers.js"></script>
+
+        <!-- app: module-dossiers-indicators -->
+        <script src="app/dossierIndicators/dossierIndicators.services.js"></script>
+        <script src="app/dossierIndicators/dossierIndicators.controllers.js"></script>
 
         <!-- app: module-search -->
         <link href="app/search/search.css.css" type="text/css" rel="stylesheet" media="all" />
@@ -161,6 +169,9 @@
                 </li>
                 <li id="datasets" role="presentation">
                     <a href="#datasets" data-toggle="tab">{{ "Data Sets" | translate }}</a>
+                </li>
+                <li id="dossierIndicators" role="presentation">
+                    <a href="#dossierIndicators" data-toggle="tab">{{ "Indicators" | translate }}</a>
                 </li>
                 <li id="admin" ng-show="show_admin" role="presentation">
                     <a href="#admin" data-toggle="tab">{{ "idx_Admin" | translate }}</a>
