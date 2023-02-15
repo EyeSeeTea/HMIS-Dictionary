@@ -1007,11 +1007,29 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         @description Makes a sheet from Stage Section / Data Elements data
         @scope dossiersProgramExport
         */
-        function makeStageSectionSheetName(stageName, sectionName) {
+        function makeStageSectionSheetName(stageName, sectionName, sheetsNamesCount) {
             const stageNameSlice = stageName.replace(/[\\/*?:[\]]/g, "").slice(0, 20);
             const stageNameSliceLen = stageNameSlice.length !== 20 ? 20 - stageNameSlice.length + 10 : 10;
             const sectionNameSlice = sectionName.replace(/[\\/*?:[\]]/g, "").slice(0, stageNameSliceLen);
-            return `${stageNameSlice}-${sectionNameSlice}`;
+            let name = `${stageNameSlice}-${sectionNameSlice}`;
+
+            if (sheetsNamesCount.hasOwnProperty(name)) {
+                const count = sheetsNamesCount[name];
+                const countStrLen = count.toString().length;
+                const nameLen = name.length;
+
+                sheetsNamesCount[name] += 1;
+
+                if (nameLen < 31 - countStrLen) {
+                    name = name + `-${count}`;
+                } else {
+                    const sliceLen = 30 - nameLen - countStrLen;
+                    name = name.slice(0, sliceLen) + `-${count}`;
+                }
+            } else {
+                sheetsNamesCount[name] = 0;
+            }
+            return name;
         }
 
         /*
@@ -1069,13 +1087,15 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         @scope dossiersProgramExport
         */
         function makeStagesSheets(workbook, stages) {
+            let sheetsNamesCount = {};
             stages.forEach(stage => {
                 stage.programStageSections.forEach(section => {
-                    makeStageSectionSheet(
-                        workbook,
-                        section.dataElements,
-                        makeStageSectionSheetName(stage.displayName, section.displayName)
+                    const sheetsName = makeStageSectionSheetName(
+                        stage.displayName,
+                        section.displayName,
+                        sheetsNamesCount
                     );
+                    makeStageSectionSheet(workbook, section.dataElements, sheetsName);
                 });
             });
         }
