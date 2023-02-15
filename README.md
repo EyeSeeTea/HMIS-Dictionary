@@ -35,7 +35,33 @@ Some elements are still hardcoded:
 - The search panel will not show *dataElements* or *indicators* that are not associated to a *dataSet* or an *indicatorGroup*
 - Only *dataElements* in the aggregated domain are currently taken into account: [app/search/search.services.js#L7](https://github.com/msf-ocba/HMIS_Dictionary/blob/master/app/search/search.services.js#L7), [app/search/search.services.js#L11](https://github.com/msf-ocba/HMIS_Dictionary/blob/master/app/search/search.services.js#L11) and [app/search/search.services.js#L14](https://github.com/msf-ocba/HMIS_Dictionary/blob/master/app/search/search.services.js#L14)
 - The app is currently available in English, French, Spanish and Portuguese and uses the content of DHIS2 in these 4 languages (as available per MSF OCBA configuration): [app/app.config.js#L60](https://github.com/msf-ocba/HMIS_Dictionary/blob/master/app/app.config.js#L60), [app/dossiersEditor/dossiersEditor.controllers.js#L44](https://github.com/msf-ocba/HMIS_Dictionary/blob/master/app/dossiersEditor/dossiersEditor.controllers.js#L44) and [languages/](https://github.com/msf-ocba/HMIS_Dictionary/tree/master/languages).
-  
+
+## Setup and Installation
+
+Build the app running:
+
+```console
+shell:~$ yarn install # first time only
+shell:~$ yarn build
+```
+This will create a `hmis-dictionary.zip` file that can be manually installed in DHIS2 App Management.
+
+## Development
+
+The above mentioned method of deploying the app is not suited for development. To deploy a local instance of the app use:
+```console
+shell:~$ HOST=<address> PORT=<port> REACT_APP_DHIS2_BASE_URL=<dhis2_instance_url> REACT_APP_DHIS2_AUTH=<user:passwd> yarn start
+```
+For example:
+```console
+shell:~$ HOST=localhost PORT=8082 REACT_APP_DHIS2_BASE_URL=http://localhost:8080 REACT_APP_DHIS2_AUTH='admin:district' yarn start
+```
+
+This deploys a [http-server](https://github.com/http-party/http-server) serving the app with a proxy to the DHIS2 instance to serve the DHIS2 API calls.
+The `yarn start` command reads the variables present in `.env.local` to start the local server. Use `.env` as a template to create it.
+
+The app package manager has been migrated from `bower` to `yarn` with [bower-away](https://github.com/sheerun/bower-away). The `build-bower-deps.sh` script is used as a postinstall script to make a copy of the necessary files to the `bower_components` folder to avoid uploading unnecessary files with the app build zip file.
+
 ## Feedback
 
 hmis@barcelona.msf.org
