@@ -1014,11 +1014,11 @@ dossierProgramsModule.controller("dossiersProgramExport", [
             let name = `${stageNameSlice}-${sectionNameSlice}`;
 
             if (sheetsNamesCount.hasOwnProperty(name)) {
+                sheetsNamesCount[name] += 1;
+
                 const count = sheetsNamesCount[name];
                 const countStrLen = count.toString().length;
                 const nameLen = name.length;
-
-                sheetsNamesCount[name] += 1;
 
                 if (nameLen < 31 - countStrLen) {
                     name = name + `-${count}`;
