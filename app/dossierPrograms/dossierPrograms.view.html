@@ -83,6 +83,7 @@
                             <th>{{ "dos_DescriptionElement" | translate }}</th>
                             <th>{{ "dos_ValueType" | translate }}</th>
                             <th>{{ "dos_AggregationType" | translate }}</th>
+                            <th>{{ "dos_Mandatory" | translate }}</th>
                             <th>{{ "dos_OptionSet" | translate }}</th>
                         </tr>
                     </thead>
@@ -94,6 +95,7 @@
                             <td>{{ tea.description }}</td>
                             <td>{{ tea.valueType }}</td>
                             <td>{{ tea.aggregationType }}</td>
+                            <td>{{ tea.mandatory }}</td>
                             <td>
                                 <div ng-if="tea.optionSet.options">
                                     <p>{{ "dos_OptionSetName" | translate }}: {{ tea.optionSet.name }}</p>

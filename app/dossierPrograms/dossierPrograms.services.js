@@ -264,7 +264,7 @@ var qryProgramTrackedEntityAttributes =
     dhisUrl +
     "programs/:programId?fields=" +
     [
-        "programTrackedEntityAttributes[trackedEntityAttribute[name",
+        "programTrackedEntityAttributes[mandatory,trackedEntityAttribute[name",
         "formName",
         "code",
         "description",

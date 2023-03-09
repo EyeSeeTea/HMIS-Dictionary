@@ -739,6 +739,7 @@ dossierProgramsModule.controller("dossiersProgramTEAController", [
                     function (data) {
                         $scope.trackedEntityAttributes = data.programTrackedEntityAttributes.map(teas => ({
                             ...teas.trackedEntityAttribute,
+                            mandatory: teas.mandatory,
                         }));
 
                         if ($scope.trackedEntityAttributes.length > 0) {
