@@ -251,9 +251,7 @@
                             <th>{{ "dos_DescriptionElement" | translate }}</th>
                             <th>{{ "dos_Type" | translate }}</th>
                             <th>{{ "dos_NumeratorIndicator" | translate }}</th>
-                            <th>{{ "dos_NumeratorDescription" | translate }}</th>
                             <th>{{ "dos_DenominatorIndicator" | translate }}</th>
-                            <th>{{ "dos_DenominatorDescription" | translate }}</th>
                             <th>{{ "dos_StagesReferenced" | translate }}</th>
                             <th>{{ "dos_Visualization" | translate }}</th>
                         </tr>
@@ -264,9 +262,7 @@
                             <td>{{ indicator.displayDescription }}</td>
                             <td>{{ indicator.indicatorType.displayName }}</td>
                             <td>{{ indicator.numerator }}</td>
-                            <td>{{ indicator.numeratorDescription }}</td>
                             <td>{{ indicator.denominator }}</td>
-                            <td>{{ indicator.denominatorDescription }}</td>
                             <td>
                                 <ul ng-if="indicator.stageRef">
                                     <li ng-repeat="stageRef in indicator.stageRef">

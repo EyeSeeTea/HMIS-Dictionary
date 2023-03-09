@@ -220,9 +220,7 @@ var qryProgramGlobalIndicators =
         "indicatorType[displayName]",
         "description",
         "numerator",
-        "numeratorDescription",
         "denominator",
-        "denominatorDescription",
     ].join(",") +
     "&paging=false";
 

@@ -1081,9 +1081,7 @@ dossierProgramsModule.controller("dossiersProgramExport", [
                     [translate("dos_DescriptionElement")]: item?.displayDescription,
                     [translate("dos_Type")]: item?.indicatorType?.displayName,
                     [translate("dos_NumeratorIndicator")]: item?.numerator,
-                    [translate("dos_NumeratorDescription")]: item?.numeratorDescription,
                     [translate("dos_DenominatorIndicator")]: item?.denominator,
-                    [translate("dos_DenominatorDescription")]: item?.denominatorDescription,
                     [translate("dos_StagesReferenced")]: joinAndTrim(item?.stageRef),
                 };
             });
