@@ -67,6 +67,48 @@
             </ul>
         </div>
 
+        <div class="col-md-12" id="trackedEntityAttributeContainer" ng-controller="dossiersProgramTEAController">
+            <div ng-if="trackedEntityAttributes.length > 0" col-md-12>
+                <h3 class="section" id="trackedEntityAttributes">{{ "dos_TrackedEntityAttributes" | translate }}</h3>
+                <p>
+                    {{ "dos_TrackedEntityAttributesNumber" | translate }}:
+                    {{ trackedEntityAttributes.length }}
+                </p>
+                <table class="sectionElementsTable table table-striped">
+                    <thead>
+                        <tr>
+                            <th>{{ "dos_NameElement" | translate }}</th>
+                            <th>{{ "dos_FormNameElement" | translate }}</th>
+                            <th>{{ "dos_Code" | translate }}</th>
+                            <th>{{ "dos_DescriptionElement" | translate }}</th>
+                            <th>{{ "dos_ValueType" | translate }}</th>
+                            <th>{{ "dos_AggregationType" | translate }}</th>
+                            <th>{{ "dos_OptionSet" | translate }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="tea in trackedEntityAttributes">
+                            <td>{{ tea.name }}</td>
+                            <td>{{ tea.formName }}</td>
+                            <td>{{ tea.code }}</td>
+                            <td>{{ tea.description }}</td>
+                            <td>{{ tea.valueType }}</td>
+                            <td>{{ tea.aggregationType }}</td>
+                            <td>
+                                <div ng-if="tea.optionSet.options">
+                                    <p>{{ "dos_OptionSetName" | translate }}: {{ tea.optionSet.name }}</p>
+                                    <select class="form-control col-md-2">
+                                        <option selected>{{ "dos_SeeOptions" | translate }}</option>
+                                        <option ng-repeat="option in tea.optionSet.options">{{ option.name }}</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         <div id="DossierTextTitleContainer" ng-if="selectedProgram.displayDescription" class="row headerGroup">
             <br />
             <h1>{{ "dos_Description of Program" | translate }}</h1>
@@ -213,7 +255,7 @@
                             <th>{{ "dos_DenominatorIndicator" | translate }}</th>
                             <th>{{ "dos_DenominatorDescription" | translate }}</th>
                             <th>{{ "dos_StagesReferenced" | translate }}</th>
-                            <th>{{ "dos_Visualization:" | translate }}</th>
+                            <th>{{ "dos_Visualization" | translate }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -243,48 +285,6 @@
                                         )"
                                     ><img src="./assets/img/pivottable.png" alt="View Table" width="15" />
                                 </a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="col-md-12" id="trackedEntityAttributeContainer" ng-controller="dossiersProgramTEAController">
-            <div ng-if="trackedEntityAttributes.length > 0" col-md-12>
-                <h3 class="section" id="trackedEntityAttributes">{{ "dos_TrackedEntityAttributes" | translate }}</h3>
-                <p>
-                    {{ "dos_TrackedEntityAttributesNumber" | translate }}:
-                    {{ trackedEntityAttributes.length }}
-                </p>
-                <table class="sectionElementsTable table table-striped">
-                    <thead>
-                        <tr>
-                            <th>{{ "dos_NameElement" | translate }}</th>
-                            <th>{{ "dos_FormNameElement" | translate }}</th>
-                            <th>{{ "dos_Code" | translate }}</th>
-                            <th>{{ "dos_DescriptionElement" | translate }}</th>
-                            <th>{{ "dos_ValueType" | translate }}</th>
-                            <th>{{ "dos_AggregationType" | translate }}</th>
-                            <th>{{ "dos_OptionSet" | translate }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="tea in trackedEntityAttributes">
-                            <td>{{ tea.name }}</td>
-                            <td>{{ tea.formName }}</td>
-                            <td>{{ tea.code }}</td>
-                            <td>{{ tea.description }}</td>
-                            <td>{{ tea.valueType }}</td>
-                            <td>{{ tea.aggregationType }}</td>
-                            <td>
-                                <div ng-if="tea.optionSet.options">
-                                    <p>{{ "dos_OptionSetName" | translate }}: {{ tea.optionSet.name }}</p>
-                                    <select class="form-control col-md-2">
-                                        <option selected>{{ "dos_SeeOptions" | translate }}</option>
-                                        <option ng-repeat="option in tea.optionSet.options">{{ option.name }}</option>
-                                    </select>
-                                </div>
                             </td>
                         </tr>
                     </tbody>

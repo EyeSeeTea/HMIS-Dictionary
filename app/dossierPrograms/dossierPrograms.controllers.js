@@ -718,7 +718,7 @@ dossierProgramsModule.controller("dossiersProgramTEAController", [
         $scope.trackedEntityAttributes4TOC = {
             displayName: "Tracked Entity Attributes",
             id: "trackedEntityAttributeContainer",
-            index: 99,
+            index: 0,
         };
 
         /*
