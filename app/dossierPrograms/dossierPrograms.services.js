@@ -45,7 +45,7 @@ var qryProgramStageSections =
             "options[displayName]]]]",
         ].join(","),
         [
-            "programStageDataElements[dataElement[id",
+            "programStageDataElements[compulsory,dataElement[id",
             "displayName",
             "displayFormName",
             "displayDescription",

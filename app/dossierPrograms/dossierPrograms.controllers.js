@@ -98,7 +98,10 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
                 {
                     displayName: "Data Elements",
                     dataElements: stage.programStageDataElements.map(function (stageDataElement) {
-                        return stageDataElement.dataElement;
+                        return {
+                            ...stageDataElement.dataElement,
+                            compulsory: stageDataElement.compulsory,
+                        };
                     }),
                 },
             ];

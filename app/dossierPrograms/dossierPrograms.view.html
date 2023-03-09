@@ -131,6 +131,7 @@
                                 <th>{{ "dos_DescriptionElement" | translate }}</th>
                                 <th>{{ "dos_ValueType" | translate }}</th>
                                 <th>{{ "dos_CalculationMode" | translate }}</th>
+                                <th>{{ "dos_Mandatory" | translate }}</th>
                                 <th>{{ "dos_Options" | translate }}</th>
                             </tr>
                         </thead>
@@ -151,6 +152,7 @@
                                         <div ng-switch-default>{{ "dos_DirectDataEntry" | translate }}</div>
                                     </div>
                                 </td>
+                                <td>{{ dataElement.compulsory }}</td>
                                 <td>
                                     <div ng-if="dataElement.optionSet.options">
                                         <p>{{ "dos_OptionSetName" | translate }}: {{ dataElement.optionSet.name }}</p>
