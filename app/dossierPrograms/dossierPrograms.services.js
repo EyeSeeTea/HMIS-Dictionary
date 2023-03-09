@@ -266,7 +266,6 @@ var qryProgramTrackedEntityAttributes =
     [
         "programTrackedEntityAttributes[mandatory,trackedEntityAttribute[name",
         "formName",
-        "code",
         "description",
         "optionSet[name",
         "options[name]]",

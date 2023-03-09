@@ -1057,7 +1057,6 @@ dossierProgramsModule.controller("dossiersProgramExport", [
                 return {
                     [translate("dos_NameElement")]: item?.name,
                     [translate("dos_FormNameElement")]: item?.formName,
-                    [translate("dos_Code")]: item?.code,
                     [translate("dos_DescriptionElement")]: item?.description,
                     [translate("dos_AggregationType")]: item?.aggregationType,
                     [translate("dos_ValueType")]: item?.valueType,
