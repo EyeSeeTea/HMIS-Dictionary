@@ -262,55 +262,6 @@ datasetsModule.factory("dossiersProgramGlobalIndicatorExpressionFactory", [
     },
 ]);
 
-// Only public EventReports and EventCharts
-var qryEventReports =
-    dhisUrl +
-    "eventReports?filter=program.id\\:eq\\::programId&fields=" +
-    ["id", "displayName", "displayDescription"].join(",") +
-    "&paging=false";
-
-dossierProgramsModule.factory("dossiersProgramEventReportFactory", [
-    "$resource",
-    function ($resource) {
-        return $resource(
-            qryEventReports,
-            {
-                programId: "@programId",
-            },
-            {
-                query: {
-                    method: "GET",
-                    isArray: false,
-                },
-            }
-        );
-    },
-]);
-
-var qryEventCharts =
-    dhisUrl +
-    "eventCharts?filter=program.id\\:eq\\::programId&fields=" +
-    ["id", "displayName", "displayDescription"].join(",") +
-    "&paging=false";
-
-dossierProgramsModule.factory("dossiersProgramEventChartFactory", [
-    "$resource",
-    function ($resource) {
-        return $resource(
-            qryEventCharts,
-            {
-                programId: "@programId",
-            },
-            {
-                query: {
-                    method: "GET",
-                    isArray: false,
-                },
-            }
-        );
-    },
-]);
-
 var qryProgramTrackedEntityAttributes =
     dhisUrl +
     "programs/:programId?fields=" +
