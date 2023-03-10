@@ -770,14 +770,12 @@ dossierProgramsModule.controller("dossiersProgramRuleController", [
     "$scope",
     "$translate",
     "dossiersProgramRulesFactory",
-    "dossiersProgramRulesConditionDescription",
     "dossiersProgramRulesActionsTemplateName",
     "dossiersProgramDataService",
     function (
         $scope,
         $translate,
         dossiersProgramRulesFactory,
-        dossiersProgramRulesConditionDescription,
         dossiersProgramRulesActionsTemplateName,
         dossiersProgramDataService
     ) {
@@ -786,23 +784,6 @@ dossierProgramsModule.controller("dossiersProgramRuleController", [
             id: "RuleContainer",
             index: 100,
         };
-
-        /* 
-        @name recursiveAssignConditionDescription
-        @description Gets the "readable" expressions for each program rule condition
-        @scope dossiersProgramRuleController
-        */
-        function recursiveAssignConditionDescription(i) {
-            if (i >= $scope.rules.length || !$scope.rules[i].condition) return;
-            dossiersProgramRulesConditionDescription.save(
-                { programId: $scope.selectedProgram.id },
-                $scope.rules[i].condition,
-                function (data) {
-                    $scope.rules[i].condition = data.description;
-                    recursiveAssignConditionDescription(i + 1);
-                }
-            );
-        }
 
         /* 
         @name assignProgramRulesActionsTemplateName
@@ -830,7 +811,7 @@ dossierProgramsModule.controller("dossiersProgramRuleController", [
         /* 
         @name none
         @description Gets the program rules information, translates it and shows it
-        @dependencies dossiersProgramRulesFactory, dossiersProgramRulesConditionDescription, dossiersProgramRulesActionsTemplateName
+        @dependencies dossiersProgramRulesFactory, dossiersProgramRulesActionsTemplateName
         @scope dossiersProgramRuleController
          */
         $scope.$watch("selectedProgram", function () {
@@ -848,7 +829,6 @@ dossierProgramsModule.controller("dossiersProgramRuleController", [
                         if ($scope.rules.length > 0) {
                             addtoTOC($scope.toc, null, $scope.rules4TOC, "Program Rules");
                             assignProgramRulesActionsTemplateName();
-                            recursiveAssignConditionDescription(0);
                             dossiersProgramDataService.data.rules = $scope.rules;
                         }
 

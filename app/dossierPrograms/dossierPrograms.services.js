@@ -331,30 +331,6 @@ dossierProgramsModule.factory("dossiersProgramRulesFactory", [
     },
 ]);
 
-var qryProgramRulesConditionDescription = dhisUrl + "programRules/condition/description?programId=:programId";
-
-dossierProgramsModule.factory("dossiersProgramRulesConditionDescription", [
-    "$resource",
-    function ($resource) {
-        return $resource(
-            qryProgramRulesConditionDescription,
-            {
-                programId: "@programId",
-            },
-            {
-                save: {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "text/plain",
-                    },
-                    data: "@expression",
-                    isArray: false,
-                },
-            }
-        );
-    },
-]);
-
 var qryProgramRulesActionsTemplateName =
     dhisUrl + "programNotificationTemplates?filter=id\\:in\\:[:templateUid]&fields=id,name&paging=false";
 
