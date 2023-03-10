@@ -949,36 +949,6 @@ dossierProgramsModule.controller("dossiersProgramExport", [
             }
         }
 
-        /* 
-        @name makeStageSectionSheetName
-        @description Makes a sheet from Stage Section / Data Elements data
-        @scope dossiersProgramExport
-        */
-        function makeStageSectionSheetName(stageName, sectionName, sheetsNamesCount) {
-            const stageNameSlice = stageName.replace(/[\\/*?:[\]]/g, "").slice(0, 20);
-            const stageNameSliceLen = stageNameSlice.length !== 20 ? 20 - stageNameSlice.length + 10 : 10;
-            const sectionNameSlice = sectionName.replace(/[\\/*?:[\]]/g, "").slice(0, stageNameSliceLen);
-            let name = `${stageNameSlice}-${sectionNameSlice}`;
-
-            if (sheetsNamesCount.hasOwnProperty(name)) {
-                sheetsNamesCount[name] += 1;
-
-                const count = sheetsNamesCount[name];
-                const countStrLen = count.toString().length;
-                const nameLen = name.length;
-
-                if (nameLen < 31 - countStrLen) {
-                    name = name + `-${count}`;
-                } else {
-                    const sliceLen = 30 - nameLen - countStrLen;
-                    name = name.slice(0, sliceLen) + `-${count}`;
-                }
-            } else {
-                sheetsNamesCount[name] = 0;
-            }
-            return name;
-        }
-
         /*
         @name writeSheetHeader
         @description Writes sheet header from data object keys array
@@ -1004,47 +974,35 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         }
 
         /* 
-        @name makeStageSectionSheet
+        @name makeDataElementsSheets
         @description Makes a sheet from Stage Section / Data Elements data
         @scope dossiersProgramExport
         */
-        function makeStageSectionSheet(workbook, dataElements, sheetName) {
-            const data = dataElements?.map(item => {
-                return {
-                    [translate("dos_NameElement")]: item?.displayName,
-                    [translate("dos_FormNameElement")]: item?.displayFormName,
-                    [translate("dos_DescriptionElement")]: item?.displayDescription,
-                    [translate("dos_ValueType")]: item?.valueType,
-                    [translate("dos_CalculationMode")]: makeCalcMode(item?.calcMode),
-                    [translate("dos_OptionSetName")]: item?.optionSet?.name,
-                    [translate("dos_OptionSetOptions")]: joinAndTrim(
-                        item?.optionSet?.options?.map(opt => opt.displayName)
-                    ),
-                };
-            });
-
-            const sheet = workbook.addSheet(sheetName);
-            writeSheetHeader(sheet, Object.keys(data[0]));
-            writeSheetData(sheet, data);
-        }
-
-        /* 
-        @name makeStagesSheets
-        @description Makes a sheet from Stage Section / Data Elements data
-        @scope dossiersProgramExport
-        */
-        function makeStagesSheets(workbook, stages) {
-            let sheetsNamesCount = {};
-            stages.forEach(stage => {
-                stage.programStageSections.forEach(section => {
-                    const sheetsName = makeStageSectionSheetName(
-                        stage.displayName,
-                        section.displayName,
-                        sheetsNamesCount
-                    );
-                    makeStageSectionSheet(workbook, section.dataElements, sheetsName);
+        function makeDataElementsSheets(workbook, stages) {
+            const data = stages.flatMap(stage => {
+                return stage.programStageSections.flatMap(section => {
+                    return section.dataElements.flatMap(de => {
+                        return {
+                            [translate("dos_Stage")]: stage.displayName,
+                            [translate("dos_Section")]:
+                                section.displayName === "Data Elements" ? "" : section.displayName,
+                            [translate("dos_NameElement")]: de?.displayName,
+                            [translate("dos_FormNameElement")]: de?.displayFormName,
+                            [translate("dos_DescriptionElement")]: de?.displayDescription,
+                            [translate("dos_ValueType")]: de?.valueType,
+                            [translate("dos_CalculationMode")]: makeCalcMode(de?.calcMode),
+                            [translate("dos_OptionSetName")]: de?.optionSet?.name,
+                            [translate("dos_OptionSetOptions")]: joinAndTrim(
+                                de?.optionSet?.options?.map(opt => opt.displayName)
+                            ),
+                        };
+                    });
                 });
             });
+
+            const sheet = workbook.addSheet("Data Elements");
+            writeSheetHeader(sheet, Object.keys(data[0]));
+            writeSheetData(sheet, data);
         }
 
         /* 
@@ -1284,7 +1242,7 @@ dossierProgramsModule.controller("dossiersProgramExport", [
                             if (value === undefined) continue;
                             switch (key) {
                                 case "stages":
-                                    makeStagesSheets(workbook, value);
+                                    makeDataElementsSheets(workbook, value);
                                     break;
                                 case "programIndicators":
                                     makeProgramIndicatorsSheet(workbook, value);
