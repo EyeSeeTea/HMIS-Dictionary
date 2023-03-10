@@ -67,6 +67,13 @@
             </ul>
         </div>
 
+
+        <div id="DossierTextTitleContainer" ng-if="selectedProgram.displayDescription" class="row headerGroup">
+            <br />
+            <h1>{{ "dos_Description of Program" | translate }}</h1>
+            <div ng-bind-html="trustAsHtml(selectedProgram.displayDescription)"></div>
+        </div>
+
         <div class="col-md-12" id="trackedEntityAttributeContainer" ng-controller="dossiersProgramTEAController">
             <div ng-if="trackedEntityAttributes.length > 0" col-md-12>
                 <h3 class="section" id="trackedEntityAttributes">{{ "dos_TrackedEntityAttributes" | translate }}</h3>
@@ -107,12 +114,6 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-
-        <div id="DossierTextTitleContainer" ng-if="selectedProgram.displayDescription" class="row headerGroup">
-            <br />
-            <h1>{{ "dos_Description of Program" | translate }}</h1>
-            <div ng-bind-html="trustAsHtml(selectedProgram.displayDescription)"></div>
         </div>
 
         <div id="stageContainer" ng-controller="dossiersProgramSectionController">
