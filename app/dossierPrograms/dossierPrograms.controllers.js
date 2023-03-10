@@ -97,7 +97,7 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
             stage.programStageSections = [
                 {
                     displayName: "Data Elements",
-                    dataElements: stage.programStageDataElements.map(function (stageDataElement) {
+                    dataElements: stage.programStageDataElements.map((stageDataElement) => {
                         return {
                             ...stageDataElement.dataElement,
                             compulsory: stageDataElement.compulsory,
@@ -116,6 +116,14 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
          *  @scope dossiersProgramSectionController
          */
         function createStageWithSections(stage, toc) {
+            stage.programStageSections.forEach((stageSection) => {
+                stageSection.dataElements.forEach((sectionDataElement) => {
+                    sectionDataElement.compulsory = stage.programStageDataElements.find(psdeToFind => {
+                        return psdeToFind.dataElement.id === sectionDataElement.id
+                    }).compulsory;
+                })
+            })
+
             addtoTOC($scope.toc, stage.programStageSections, toc, "programs");
             return stage;
         }
