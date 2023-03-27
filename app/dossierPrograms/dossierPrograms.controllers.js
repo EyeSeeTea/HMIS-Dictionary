@@ -543,6 +543,16 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
             index: 97,
         };
 
+
+        /*
+         *  @name getStageNameById
+         *  @description Gets the name of a stage matching their Id
+         *  @scope dossiersProgramIndicatorController
+         */
+        function getStageNameById(id) {
+            return dossiersProgramDataService.data.stages.find(stage => (stage.id === id))?.displayName;
+        }
+
         /*
          *  @name getAllCaptureGroups
          *  @description Gets all capture groups from a matchAll
@@ -559,24 +569,28 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
 
         /*
          *  @name getStageRef
-         *  @description Gets the stages referenced by the filter.
+         *  @description Gets the stages referenced by the item.
          *  @scope dossiersProgramIndicatorController
          */
-        function getStageRef(filter) {
+        function getStageRef(item) {
             let psIds = [];
 
-            const psidRegex = /V\{program_stage_id\} *== *'(\w{11})'/g;
-            getAllCaptureGroups(filter, psidRegex, psIds)
+            const psIdRegex = /V\{program_stage_id\} *== *'(\w{11})'/g;
+            getAllCaptureGroups(item, psIdRegex, psIds)
 
-            const psdeRegex = /#{(\w+)\.\w+}/g;
-            getAllCaptureGroups(filter, psdeRegex, psIds)
+            const psDeRegex = /#{(\w+)\.\w+}/g;
+            getAllCaptureGroups(item, psDeRegex, psIds)
 
-            const psedRegex = /PS_EVENTDATE: *(\w{11})/g;
-            getAllCaptureGroups(filter, psedRegex, psIds)
+            const psEdRegex = /PS_EVENTDATE: *(\w{11})/g;
+            getAllCaptureGroups(item, psEdRegex, psIds)
 
             psIds = _.uniq(psIds);
 
-            return psIds.flatMap(id => {
+
+            const psNameRegex = /V\{program_stage_name\} *== *['"](.*?)['"]/g;
+            const namesArray = Array.from(item.matchAll(psNameRegex), (m) => m[1]);
+
+            const idsNamesArray = psIds.flatMap(id => {
                 const psName = getStageNameById(id) ?? undefined;
                 if (psName) {
                     return psName;
@@ -584,6 +598,8 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
                     return [];
                 }
             });
+
+            return _.uniq(idsNamesArray.concat(namesArray))
         }
 
         /*
@@ -593,19 +609,19 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
          */
         function recursiveAssignExpression(i) {
             if (i >= $scope.programIndicators.length) return;
+
+            const stageRef = $scope.programIndicators[i].stageRef;
+            if (stageRef && stageRef.length > 0) {
+                const newRef = getStageRef($scope.programIndicators[i].expression);
+                $scope.programIndicators[i].stageRef = _.uniq($scope.programIndicators[i].stageRef.concat(newRef));
+            } else {
+                $scope.programIndicators[i].stageRef = getStageRef($scope.programIndicators[i].expression);
+            }
+
             dossiersProgramIndicatorExpressionFactory.save({}, $scope.programIndicators[i].expression, function (data) {
                 $scope.programIndicators[i].expression = data.description.replaceAll("\\.", ".");
                 recursiveAssignExpression(i + 1);
             });
-        }
-
-        /*
-         *  @name getStageNameById
-         *  @description Gets the name of a stage matching their Id
-         *  @scope dossiersProgramIndicatorController
-         */
-        function getStageNameById(id) {
-            return dossiersProgramDataService.data.stages.find(stage => (stage.id === id))?.displayName;
         }
 
         /*
@@ -619,7 +635,15 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
                 recursiveAssignFilter(i + 1);
                 return;
             }
-            $scope.programIndicators[i].stageRef = getStageRef($scope.programIndicators[i].filter);
+
+            const stageRef = $scope.programIndicators[i].stageRef;
+            if (stageRef && stageRef.length > 0) {
+                const newRef = getStageRef($scope.programIndicators[i].filter);
+                $scope.programIndicators[i].stageRef = _.uniq($scope.programIndicators[i].stageRef.concat(newRef));
+            } else {
+                $scope.programIndicators[i].stageRef = getStageRef($scope.programIndicators[i].filter);
+            }
+
             dossiersProgramIndicatorFilterFactory.save({}, $scope.programIndicators[i].filter, function (data) {
                 if (data.description.includes("Program stage id")) {
                     const stageIdStr = data.description.split("Program stage id")[1];
