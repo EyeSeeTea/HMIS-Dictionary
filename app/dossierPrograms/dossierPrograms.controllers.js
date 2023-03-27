@@ -571,6 +571,15 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
         }
 
         /*
+         *  @name getStageNameById
+         *  @description Gets the name of a stage matching their Id
+         *  @scope dossiersProgramIndicatorController
+         */
+        function getStageNameById(id) {
+            return dossiersProgramDataService.data.stages.find(stage => (stage.id === id))?.displayName;
+        }
+
+        /*
          *  @name recursiveAssignFilter
          *  @description Gets the "readable" expressions for each indicator filter
          *  @scope dossiersProgramIndicatorController
@@ -583,7 +592,15 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
             }
             $scope.programIndicators[i].stageRef = getStageRef($scope.programIndicators[i].filter);
             dossiersProgramIndicatorFilterFactory.save({}, $scope.programIndicators[i].filter, function (data) {
-                $scope.programIndicators[i].filter = data.description.replaceAll("\\.", ".");
+                if (data.description.includes("Program stage id")) {
+                    const stageIdStr = data.description.split("Program stage id")[1];
+                    const stageId = /\w{11}/.exec(stageIdStr.split("==")[1])[0];
+
+                    const stageName = getStageNameById(stageId) ?? stageId;
+                    $scope.programIndicators[i].filter = `Program stage is ${stageName}`;
+                } else {
+                    $scope.programIndicators[i].filter = data.description.replaceAll("\\.", ".");
+                }
                 recursiveAssignFilter(i + 1);
             });
         }
@@ -616,7 +633,7 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
                                             const btTextArray = bound.boundaryTarget.split(":");
                                             const btId = btTextArray[1];
                                             if (btTextArray[0] === "PS_EVENTDATE" && btId && btId.length == 11) {
-                                                const btStage = dossiersProgramDataService.data.stages.find(stage => (stage.id === btId))
+                                                const btStage = getStageNameById(btId) ?? btId;
                                                 const btIdText = btStage.displayName ?? btId;
                                                 bound.boundaryTarget = `${btTextArray[0]} - ${btIdText}}`
                                             }
