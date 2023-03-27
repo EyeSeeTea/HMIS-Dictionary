@@ -75,7 +75,7 @@
         </div>
 
         <div class="col-md-12" id="trackedEntityAttributeContainer" ng-controller="dossiersProgramTEAController">
-            <div ng-if="trackedEntityAttributes.length > 0" col-md-12>
+            <div ng-if="trackedEntityAttributes.length > 0" class="col-md-12">
                 <h3 class="section" id="trackedEntityAttributes">{{ "dos_TrackedEntityAttributes" | translate }}</h3>
                 <p>
                     {{ "dos_TrackedEntityAttributesNumber" | translate }}:
@@ -90,6 +90,7 @@
                             <th>{{ "dos_ValueType" | translate }}</th>
                             <th>{{ "dos_AggregationType" | translate }}</th>
                             <th>{{ "dos_Mandatory" | translate }}</th>
+                            <th>{{ "dos_Visibility" | translate }}</th>
                             <th>{{ "dos_OptionSet" | translate }}</th>
                         </tr>
                     </thead>
@@ -101,6 +102,13 @@
                             <td>{{ tea.valueType }}</td>
                             <td>{{ tea.aggregationType }}</td>
                             <td>{{ tea.mandatory }}</td>
+                            <td>
+                                <ul ng-if="dataElement.visibility">
+                                    <li ng-repeat="visibility in dataElement.visibility">
+                                        <div>{{ visibility.type }}: {{ visibility.name }}</div>
+                                    </li>
+                                </ul>
+                            </td>
                             <td>
                                 <div ng-if="tea.optionSet.options">
                                     <p>{{ "dos_OptionSetName" | translate }}: {{ tea.optionSet.name }}</p>
@@ -131,6 +139,7 @@
                                 <th>{{ "dos_ValueType" | translate }}</th>
                                 <th>{{ "dos_CalculationMode" | translate }}</th>
                                 <th>{{ "dos_Mandatory" | translate }}</th>
+                                <th>{{ "dos_Visibility" | translate }}</th>
                                 <th>{{ "dos_Options" | translate }}</th>
                             </tr>
                         </thead>
@@ -152,6 +161,13 @@
                                     </div>
                                 </td>
                                 <td>{{ dataElement.compulsory }}</td>
+                                <td>
+                                    <ul ng-if="dataElement.visibility">
+                                        <li ng-repeat="visibility in dataElement.visibility">
+                                            <div>{{ visibility.type }}: {{ visibility.name }}</div>
+                                        </li>
+                                    </ul>
+                                </td>
                                 <td>
                                     <div ng-if="dataElement.optionSet.options">
                                         <p>{{ "dos_OptionSetName" | translate }}: {{ dataElement.optionSet.name }}</p>
@@ -245,7 +261,7 @@
         </div>
 
         <div class="col-md-12" id="indicatorContainer" ng-controller="dossierProgramGlobalIndicatorController">
-            <div ng-if="indicators.length > 0" col-md-12>
+            <div ng-if="indicators.length > 0" class="col-md-12">
                 <h3 class="section" id="indicators">{{ "dos_Indicators" | translate }}</h3>
                 <table class="sectionElementsTable table table-striped">
                     <thead>
@@ -292,7 +308,7 @@
         </div>
 
         <div class="col-md-12" id="RuleContainer" ng-controller="dossiersProgramRuleController">
-            <div ng-if="rules.length > 0" col-md-12>
+            <div ng-if="rules.length > 0" class="col-md-12">
                 <h3 class="section" id="rules">{{ "Program Rules" | translate }}</h3>
                 <p>{{ "Number of Rules in Program" | translate }}: {{ rules.length }}</p>
                 <table class="sectionElementsTable table table-striped">
@@ -510,7 +526,7 @@
         </div>
 
         <div class="col-md-12" id="RuleVariablesContainer" ng-controller="dossiersProgramRuleVariablesController">
-            <div ng-if="ruleVariables.length > 0" col-md-12>
+            <div ng-if="ruleVariables.length > 0" class="col-md-12">
                 <h3 class="section" id="ruleVariables">{{ "dos_ProgramRulesVariables" | translate }}</h3>
                 <p>{{ "dos_ProgramRulesVariablesNumber" | translate }}: {{ ruleVariables.length }}</p>
                 <table class="sectionElementsTable table table-striped">

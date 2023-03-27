@@ -88,11 +88,55 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
         dossiersProgramDataService
     ) {
         /*
+         *  @name makeDEVisibility
+         *  @description Determine if HIDEFIELD actions affecs the stage DEs
+         *  @scope dossiersProgramSectionController
+         */
+        function makeDEVisibility(stageDataElementId, hiddenDEArray, stageId) {
+            if (!hiddenDEArray) return [];
+
+            return hiddenDEArray.flatMap(hiddenDE => {
+                if (hiddenDE.ids.includes(stageDataElementId)) {
+                    if (!hiddenDE.stageId || (stageId === hiddenDE.stageId)) {
+                        return {
+                            type: "HIDEFIELD",
+                            name: hiddenDE.name
+                        };
+                    }
+                }
+
+                return [];
+            })
+        }
+
+        /*
+         *  @name makeStageVisibility
+         *  @description Determine if HIDESECTION actions affecs the section DEs
+         *  @scope dossiersProgramSectionController
+         */
+        function makeSectionVisibility(stageSectionId, hiddenSectionsArray, stageId) {
+            if (!hiddenSectionsArray) return [];
+
+            return hiddenSectionsArray.flatMap(hs => {
+                if (hs.ids.includes(stageSectionId)) {
+                    if (!hs.stageId || (stageId === hs.stageId)) {
+                        return {
+                            type: "HIDESECTION",
+                            name: hs.name
+                        };
+                    }
+                }
+
+                return [];
+            })
+        }
+
+        /*
          *  @name createStageWithoutSections
          *  @description Display stage data elements as a "phantom" stage and add stage to table of contents
          *  @scope dossiersProgramSectionController
          */
-        function createStageWithoutSections(stage, toc) {
+        function createStageWithoutSections(stage, toc, hiddenDEArray) {
             // Line to make it compatible with view
             stage.programStageSections = [
                 {
@@ -101,6 +145,7 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
                         return {
                             ...stageDataElement.dataElement,
                             compulsory: stageDataElement.compulsory,
+                            visibility: makeDEVisibility(stageDataElement.dataElement.id, hiddenDEArray, stage.id),
                         };
                     }),
                 },
@@ -115,12 +160,17 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
          *  @description Display stage sections data elements and add them to the table of contents
          *  @scope dossiersProgramSectionController
          */
-        function createStageWithSections(stage, toc) {
+        function createStageWithSections(stage, toc, hiddenSectionsArray, hiddenDEArray) {
             stage.programStageSections.forEach((stageSection) => {
+
+                const sectionVisibility = makeSectionVisibility(stageSection.id, hiddenSectionsArray, stage.id)
+
                 stageSection.dataElements.forEach((sectionDataElement) => {
                     sectionDataElement.compulsory = stage.programStageDataElements.find(psdeToFind => {
                         return psdeToFind.dataElement.id === sectionDataElement.id
                     }).compulsory;
+
+                    sectionDataElement.visibility = makeDEVisibility(sectionDataElement.id, hiddenDEArray, stage.id).concat(sectionVisibility);
                 })
             })
 
@@ -191,13 +241,20 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
                 ).then(() => {
                     $q.all(stageSectionPromises).then(function (stages) {
                         const hiddenSectionsArray = $scope.programRules.flatMap(pr => {
-                            return pr.programRuleActions.flatMap(pra => {
+                            const idArray = pr.programRuleActions.flatMap(pra => {
                                 if (pra.programRuleActionType === "HIDESECTION") {
-                                    return [pra.programStageSection.id];
+                                    return pra.programStageSection.id;
                                 } else {
                                     return [];
                                 }
                             });
+
+                            return {
+                                name: pr.name,
+                                stageId: pr.programStage?.id,
+                                allwaysHidden: pr.condition === "true",
+                                ids: idArray,
+                            };
                         });
 
                         const assignedDEArray = $scope.programRules.flatMap(pr => {
@@ -211,6 +268,23 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
 
                             return {
                                 name: pr.name,
+                                stageId: pr.programStage?.id,
+                                ids: idArray,
+                            };
+                        });
+
+                        const hiddenDEArray = $scope.programRules.flatMap(pr => {
+                            const idArray = pr.programRuleActions.flatMap(pra => {
+                                if (pra.programRuleActionType === "HIDEFIELD") {
+                                    return pra.dataElement.id;
+                                } else {
+                                    return [];
+                                }
+                            });
+
+                            return {
+                                name: pr.name,
+                                stageId: pr.programStage?.id,
                                 ids: idArray,
                             };
                         });
@@ -219,14 +293,14 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
                             var toc = {
                                 displayName: "Stage: " + stage.displayName + (stage.repeatable ? " (Repeatable)" : ""),
                                 id: stage.id,
-                                index: index,
+                                index: index + 1,
                             };
                             if (stage.programStageSections.length == 0) {
                                 makeStageCalcMode(stage, assignedDEArray);
-                                return createStageWithoutSections(stage, toc);
+                                return createStageWithoutSections(stage, toc, hiddenDEArray);
                             } else {
                                 makeSectionsCalcMode(stage, assignedDEArray, hiddenSectionsArray);
-                                return createStageWithSections(stage, toc);
+                                return createStageWithSections(stage, toc, hiddenSectionsArray, hiddenDEArray);
                             }
                         });
                         dossiersProgramDataService.data.stages = $scope.stages;
@@ -697,9 +771,9 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
                 $scope.indicators = [];
 
                 //Query indicator information
-                $scope.allIndicators = dossiersProgramGlobalIndicatorsFactory.get(function () {
+                dossiersProgramGlobalIndicatorsFactory.get(function (data) {
                     endLoadingState(true);
-                    $scope.allIndicators.indicators.forEach(function (indicator) {
+                    $scope.allIndicators = data.indicators.forEach(function (indicator) {
                         const num = indicator.numerator;
                         const den = indicator.denominator;
                         parseExpression(indicator, num);
@@ -724,8 +798,9 @@ dossierProgramsModule.controller("dossiersProgramTEAController", [
     "$scope",
     "$translate",
     "dossiersProgramTEAsFactory",
+    "dossiersProgramTEAsRulesFactory",
     "dossiersProgramDataService",
-    function ($scope, $translate, dossiersProgramTEAsFactory, dossiersProgramDataService) {
+    function ($scope, $translate, dossiersProgramTEAsFactory, dossiersProgramTEAsRulesFactory, dossiersProgramDataService) {
         $scope.trackedEntityAttributes4TOC = {
             displayName: "Tracked Entity Attributes",
             id: "trackedEntityAttributeContainer",
@@ -733,9 +808,29 @@ dossierProgramsModule.controller("dossiersProgramTEAController", [
         };
 
         /*
+         *  @name makeTEAVisibility
+         *  @description Determine if HIDEFIELD actions affecs the TEA
+         *  @scope dossiersProgramTEAController
+         */
+        function makeTEAVisibility(teaId, hiddenTEAArray) {
+            if (!hiddenTEAArray) return [];
+
+            return hiddenTEAArray.flatMap(hiddenTEA => {
+                if (hiddenTEA.trackedEntityAttribute.id === teaId) {
+                    return {
+                        type: "HIDEFIELD",
+                        name: hiddenTEA.name
+                    };
+                }
+
+                return [];
+            })
+        }
+
+        /*
         @name none
         @description Gets the tracked entity attributes information, translates it and shows it
-        @dependencies dossiersProgramTEAsFactory
+        @dependencies dossiersProgramTEAsFactory, dossiersProgramTEAsRulesFactory
         @scope dossiersProgramTEAController
         */
         $scope.$watch("selectedProgram", function () {
@@ -748,17 +843,26 @@ dossierProgramsModule.controller("dossiersProgramTEAController", [
                         programId: $scope.selectedProgram.id,
                     },
                     function (data) {
-                        $scope.trackedEntityAttributes = data.programTrackedEntityAttributes.map(teas => ({
-                            ...teas.trackedEntityAttribute,
-                            mandatory: teas.mandatory,
-                        }));
+                        const teasIds = data.programTrackedEntityAttributes.map(ptea => (ptea.trackedEntityAttribute.id)).join(",");
+                        dossiersProgramTEAsRulesFactory.get(
+                            {
+                                programId: $scope.selectedProgram.id,
+                                teasIds: teasIds,
+                            },
+                            function (rulesData) {
+                                $scope.trackedEntityAttributes = data.programTrackedEntityAttributes.map(ptea => ({
+                                    ...ptea.trackedEntityAttribute,
+                                    mandatory: ptea.mandatory,
+                                    visibility: makeTEAVisibility(ptea.trackedEntityAttribute.id, rulesData.programRules)
+                                }));
 
-                        if ($scope.trackedEntityAttributes.length > 0) {
-                            addtoTOC($scope.toc, null, $scope.trackedEntityAttributes4TOC, "Tracked Entity Attributes");
-                            dossiersProgramDataService.data.trackedEntityAttributes = $scope.trackedEntityAttributes;
-                        }
+                                if ($scope.trackedEntityAttributes.length > 0) {
+                                    addtoTOC($scope.toc, null, $scope.trackedEntityAttributes4TOC, "Tracked Entity Attributes");
+                                    dossiersProgramDataService.data.trackedEntityAttributes = $scope.trackedEntityAttributes;
+                                }
 
-                        endLoadingState(true);
+                                endLoadingState(true);
+                            });
                     }
                 );
             }

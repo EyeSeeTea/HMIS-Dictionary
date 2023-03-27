@@ -79,16 +79,19 @@ var qryProgramRulesDataElements =
     dhisUrl +
     [
         "programRules?filter=program.id\\:eq\\::programId",
-        "filter=programRuleActions.programRuleActionType\\:in\\:[ASSIGN,HIDESECTION]",
+        "filter=programRuleActions.programRuleActionType\\:in\\:[ASSIGN,HIDESECTION,HIDEFIELD]",
         "fields=",
     ].join("&") +
     [
         "name",
+        "programStage",
+        "condition",
         "programRuleActions[programRuleActionType",
         "dataElement[id",
         "displayName]",
         "programStageSection[id",
         "displayName]",
+        "trackedEntityAttribute",
     ].join(",") +
     "&paging=false";
 
@@ -260,11 +263,44 @@ datasetsModule.factory("dossiersProgramGlobalIndicatorExpressionFactory", [
     },
 ]);
 
+var qryProgramTrackedEntityAttributesRules =
+    dhisUrl +
+    [
+        "programRules?filter=program.id\\:eq\\::programId",
+        "filter=programRuleActions.programRuleActionType\\:in\\:[ASSIGN]",
+        "filter=programRuleActions.trackedEntityAttribute.id\\:in\\:[:teasIds]",
+        "fields=",
+    ].join("&") +
+    [
+        "name",
+        "trackedEntityAttribute",
+    ].join(",") +
+    "&paging=false";
+
+dossierProgramsModule.factory("dossiersProgramTEAsRulesFactory", [
+    "$resource",
+    function ($resource) {
+        return $resource(
+            qryProgramTrackedEntityAttributesRules,
+            {
+                programId: "@programId",
+                teasIds: "@teasIds",
+            },
+            {
+                query: {
+                    method: "GET",
+                    isArray: false,
+                },
+            }
+        );
+    },
+]);
+
 var qryProgramTrackedEntityAttributes =
     dhisUrl +
     "programs/:programId?fields=" +
     [
-        "programTrackedEntityAttributes[mandatory,trackedEntityAttribute[name",
+        "programTrackedEntityAttributes[mandatory,trackedEntityAttribute[id,name",
         "formName",
         "description",
         "optionSet[name",
