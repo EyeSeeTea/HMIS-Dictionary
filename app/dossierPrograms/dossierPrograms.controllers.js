@@ -611,7 +611,20 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
                             function (psData) {
                                 $scope.programStages = psData.programs[0].programStages.map(ps => ps);
                                 if (data.programIndicators.length > 0) {
-                                    $scope.programIndicators = data.programIndicators;
+                                    $scope.programIndicators = data.programIndicators.map(pi => {
+                                        pi.analyticsPeriodBoundaries = pi.analyticsPeriodBoundaries.map(bound => {
+                                            const btTextArray = bound.boundaryTarget.split(":");
+                                            const btId = btTextArray[1];
+                                            if (btTextArray[0] === "PS_EVENTDATE" && btId && btId.length == 11) {
+                                                const btStage = dossiersProgramDataService.data.stages.find(stage => (stage.id === btId))
+                                                const btIdText = btStage.displayName ?? btId;
+                                                bound.boundaryTarget = `${btTextArray[0]} - ${btIdText}}`
+                                            }
+                                            return bound;
+                                        })
+                                        return pi;
+                                    });
+
                                     addtoTOC($scope.toc, null, $scope.programIndicators4TOC, "Indicators");
                                     recursiveAssignExpression(0);
                                     recursiveAssignFilter(0);
