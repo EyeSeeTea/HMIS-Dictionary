@@ -187,18 +187,24 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
             stage.programStageSections.forEach(pss => {
                 pss.dataElements.forEach(pssDE => {
                     assignedDEArray.forEach(adeArray => {
-                        if (adeArray.ids.includes(pssDE.id)) {
-                            pssDE.calcMode = { type: "programRule", name: adeArray.name };
+                        if (adeArray.ids?.includes(pssDE.id)) {
+                            if (!pssDE.calcMode || pssDE.calcMode.type === "default") {
+                                pssDE.calcMode = { type: "programRule", names: [adeArray.name] }
+                            } else {
+                                pssDE.calcMode.names.push(adeArray.name);
+                            }
                         } else if (!pssDE.calcMode) {
                             pssDE.calcMode = { type: "default" };
                         }
                     });
 
-                    if (hiddenSectionsArray.includes(pss.id)) {
-                        if (pssDE.calcMode.type !== "programRule") {
-                            pssDE.calcMode = { type: "other" };
+                    hiddenSectionsArray.forEach(hsArray => {
+                        if (hsArray.ids.includes(pss.id)) {
+                            if (pssDE.calcMode.type !== "programRule" && hsArray.allwaysHidden) {
+                                pssDE.calcMode = { type: "other" };
+                            }
                         }
-                    }
+                    });
                 });
             });
         }
@@ -212,7 +218,13 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
             stage.programStageDataElements.forEach(psde => {
                 assignedDEArray.forEach(adeArray => {
                     if (adeArray.ids.includes(psde.dataElement.id)) {
-                        psde.dataElement.calcMode = { type: "programRule", name: adeArray.name };
+                        if (!psde.dataElement.calcMode) {
+                            if (!psde.dataElement.calcMode || psde.dataElement.calcMode.type === "default") {
+                                psde.dataElement.calcMode = { type: "programRule", names: [adeArray.name] }
+                            } else {
+                                psde.dataElement.calcMode.names.push(adeArray.name);
+                            }
+                        }
                     } else if (!psde.dataElement.calcMode) {
                         psde.dataElement.calcMode = { type: "default" };
                     }

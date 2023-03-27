@@ -152,7 +152,12 @@
                                 <td>
                                     <div ng-switch="dataElement.calcMode.type">
                                         <div ng-switch-when="programRule">
-                                            {{ "dos_ProgramRule" | translate }}: {{ dataElement.calcMode.name }}
+                                            {{ "dos_ProgramRule" | translate }}: 
+                                            <ul ng-if="dataElement.calcMode.names">
+                                                <li ng-repeat="name in dataElement.calcMode.names">
+                                                    <div> {{ name }}</div>
+                                                </li>
+                                            </ul>
                                         </div>
                                         <div ng-switch-when="other">
                                             {{ "dos_Other" | translate }}
