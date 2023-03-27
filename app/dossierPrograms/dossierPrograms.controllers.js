@@ -544,17 +544,46 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
         };
 
         /*
+         *  @name getAllCaptureGroups
+         *  @description Gets all capture groups from a matchAll
+         *  @scope dossiersProgramIndicatorController
+         */
+        function getAllCaptureGroups(filter, regex, array) {
+            const idsArray = Array.from(filter.matchAll(regex), (m) => m[1]);
+            if (idsArray.length > 0) {
+                idsArray.forEach(psId => {
+                    array.push(psId);
+                })
+            }
+        }
+
+        /*
          *  @name getStageRef
          *  @description Gets the stages referenced by the filter.
          *  @scope dossiersProgramIndicatorController
          */
         function getStageRef(filter) {
+            let psIds = [];
+
+            const psidRegex = /V\{program_stage_id\} *== *'(\w{11})'/g;
+            getAllCaptureGroups(filter, psidRegex, psIds)
+
             const psdeRegex = /#{(\w+)\.\w+}/g;
-            let stageRefArray = psdeRegex.exec(filter);
-            if (stageRefArray && stageRefArray.length > 1) {
-                stageRefArray.shift();
-                return _.uniq($scope.programStages.filter(ps => stageRefArray.includes(ps.id)).flatMap(ps => ps.name));
-            }
+            getAllCaptureGroups(filter, psdeRegex, psIds)
+
+            const psedRegex = /PS_EVENTDATE: *(\w{11})/g;
+            getAllCaptureGroups(filter, psedRegex, psIds)
+
+            psIds = _.uniq(psIds);
+
+            return psIds.flatMap(id => {
+                const psName = getStageNameById(id) ?? undefined;
+                if (psName) {
+                    return psName;
+                } else {
+                    return [];
+                }
+            });
         }
 
         /*
