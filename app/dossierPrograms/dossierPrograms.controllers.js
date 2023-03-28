@@ -805,12 +805,6 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
                         if ((pi = $scope.programIndicators.find(pi => pi.id === m[1]))) {
                             if (!indicator.stageRef) indicator.stageRef = [];
                             indicator.stageRef = _.uniq(indicator.stageRef.concat(pi.stageRef));
-                            if ($scope.programStages)
-                                indicator.stageRef = indicator.stageRef.concat(
-                                    $scope.programStages.flatMap(ps =>
-                                        pi.expression.search(ps.id) !== -1 ? ps.name : []
-                                    )
-                                );
                             if ($scope.indicators.indexOf(indicator) == -1) $scope.indicators.push(indicator);
                         }
                     }
