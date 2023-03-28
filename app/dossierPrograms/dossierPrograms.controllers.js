@@ -625,12 +625,24 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
         }
 
         /*
+         *  @name replacer
+         *  @description Function to get stage name from capture group
+         *  @scope dossiersProgramIndicatorController
+         */
+        function replacer(_, p1) {
+            return `Program stage is ${getStageNameById(p1)}`;
+        }
+
+        /*
          *  @name recursiveAssignFilter
          *  @description Gets the "readable" expressions for each indicator filter
          *  @scope dossiersProgramIndicatorController
          */
         function recursiveAssignFilter(i) {
-            if (i >= $scope.programIndicators.length) return;
+            if (i >= $scope.programIndicators.length) {
+                $rootScope.recursiveAssignFilterDone = true;
+                return;
+            };
             if (typeof $scope.programIndicators[i].filter === "undefined") {
                 recursiveAssignFilter(i + 1);
                 return;
@@ -646,14 +658,13 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
 
             dossiersProgramIndicatorFilterFactory.save({}, $scope.programIndicators[i].filter, function (data) {
                 if (data.description.includes("Program stage id")) {
-                    const stageIdStr = data.description.split("Program stage id")[1];
-                    const stageId = /\w{11}/.exec(stageIdStr.split("==")[1])[0];
-
-                    const stageName = getStageNameById(stageId) ?? stageId;
-                    $scope.programIndicators[i].filter = `Program stage is ${stageName}`;
+                    const regex = /Program stage id *== *['"](\w{11})['"]/g;
+                    const newFilter = data.description.replaceAll(regex, replacer);
+                    $scope.programIndicators[i].filter = newFilter;
                 } else {
                     $scope.programIndicators[i].filter = data.description.replaceAll("\\.", ".");
                 }
+
                 recursiveAssignFilter(i + 1);
             });
         }
@@ -668,7 +679,8 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
             ping();
             if ($scope.selectedProgram) {
                 startLoadingState(false);
-                //get indicators, add to TOC
+                $rootScope.recursiveAssignFilterDone = false;
+
                 dossiersProgramIndicatorsFactory.get(
                     {
                         programId: $scope.selectedProgram.id,
@@ -694,17 +706,11 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
                                         })
                                         return pi;
                                     });
+                                    addtoTOC($scope.toc, null, $scope.programIndicators4TOC, "Program Indicators");
 
-                                    addtoTOC($scope.toc, null, $scope.programIndicators4TOC, "Indicators");
                                     recursiveAssignExpression(0);
                                     recursiveAssignFilter(0);
-                                    $rootScope.programIndicators = $scope.programIndicators.flatMap(pi => {
-                                        return {
-                                            id: pi.id,
-                                            name: pi.displayName,
-                                            expression: pi.expression,
-                                        };
-                                    });
+                                    $rootScope.programIndicators = $scope.programIndicators;
                                     $rootScope.programStages = $scope.programStages;
                                     dossiersProgramDataService.data.programIndicators = $scope.programIndicators;
                                 }
@@ -777,7 +783,7 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
          *  @scope dossierProgramGlobalIndicatorController
          */
         function parseExpression(indicator, item) {
-            const regexArray = [/D{(\w+)\.?(\w+)?}/g, /A{(\w+)\.?\w+?}/g, /I{(\w+)}/g];
+            const regexArray = [/D{(\w{11})\.?(\w{11})?}/g, /A{(\w{11})\.?\w{11}?}/g, /I{(\w{11})}/g];
             let m;
             regexArray.forEach((regex, index) => {
                 while ((m = regex.exec(item)) !== null) {
@@ -792,12 +798,13 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
                             }))
                         ) {
                             if (!indicator.stageRef) indicator.stageRef = [];
-                            indicator.stageRef = indicator.stageRef.concat(ps.name);
+                            indicator.stageRef = _.uniq(indicator.stageRef.concat(ps.name));
                         }
                     }
                     if (index === 2) {
                         if ((pi = $scope.programIndicators.find(pi => pi.id === m[1]))) {
                             if (!indicator.stageRef) indicator.stageRef = [];
+                            indicator.stageRef = _.uniq(indicator.stageRef.concat(pi.stageRef));
                             if ($scope.programStages)
                                 indicator.stageRef = indicator.stageRef.concat(
                                     $scope.programStages.flatMap(ps =>
@@ -859,15 +866,15 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
          *  @dependencies dossiersProgramGlobalIndicatorsFactory, dossiersProgramGlobalIndicatorExpressionFactory
          *  @scope dossierProgramGlobalIndicatorController
          */
-        $scope.$watchGroup(["selectedProgram", "programIndicators", "programStages"], function () {
+        $scope.$watchGroup(["selectedProgram", "programIndicators", "programStages", "recursiveAssignFilterDone"], function () {
             ping();
-            if ($scope.selectedProgram && $scope.programIndicators && $scope.programStages) {
+            $scope.programIndicators = $rootScope.programIndicators;
+            if ($scope.selectedProgram && $scope.programIndicators && $scope.programStages && $rootScope.recursiveAssignFilterDone) {
                 startLoadingState(false);
                 $scope.indicators = [];
 
                 //Query indicator information
                 dossiersProgramGlobalIndicatorsFactory.get(function (data) {
-                    endLoadingState(true);
                     $scope.allIndicators = data.indicators.forEach(function (indicator) {
                         const num = indicator.numerator;
                         const den = indicator.denominator;
@@ -876,13 +883,14 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
                         if (indicator.stageRef) indicator.stageRef = _.uniq(indicator.stageRef);
 
                         indicator.rowItems = extractVisItemsFromInd(num, den);
-                    }, this);
+                    });
                     if ($scope.indicators.length > 0) {
                         addtoTOC($scope.toc, null, $scope.indicators4TOC, "Indicators");
                         recursiveAssignNumerator(0);
                         recursiveAssignDenominator(0);
                         dossiersProgramDataService.data.indicators = $scope.indicators;
                     }
+                    endLoadingState(true);
                 });
             }
         });
