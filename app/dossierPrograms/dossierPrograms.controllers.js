@@ -625,12 +625,40 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
         }
 
         /*
+         *  @name stageIdReplacer
+         *  @description Function to get stage name from capture group
+         *  @scope dossiersProgramIndicatorController
+         */
+        function stageIdReplacer(_, p1) {
+            return `Program stage is ${getStageNameById(p1)}`;
+        }
+
+        /*
+         *  @name getOptionNameById
+         *  @description Gets the name of a DE option matching their code
+         *  @scope dossiersProgramIndicatorController
+         */
+        function getOptionNameById(stageId, deId, index) {
+            const stage = dossiersProgramDataService.data.stages.find(stage => (stage.id === stageId));
+
+            const de = stage.programStageSections.flatMap(section => {
+                const de = section.dataElements.find(de => {
+                    return de.id === deId;
+                });
+                return de ? de : [];
+            })[0];
+
+            return de.optionSet?.options?.find(opt => opt.code === index)?.displayName;
+        }
+
+        /*
          *  @name replacer
          *  @description Function to get stage name from capture group
          *  @scope dossiersProgramIndicatorController
          */
-        function replacer(_, p1) {
-            return `Program stage is ${getStageNameById(p1)}`;
+        function optionReplacer(match, p1, p2, p3, p4) {
+            const optionName = getOptionNameById(p1, p2, p4);
+            return optionName ? `#{${p1}.${p2}} ${p3} '${optionName}'` : match;
         }
 
         /*
@@ -656,10 +684,14 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
                 $scope.programIndicators[i].stageRef = getStageRef($scope.programIndicators[i].filter);
             }
 
+            const regex = /#{(\w+)\.(\w+)} +?(!=|==) +?'?((\d\.?)+)'?/g;
+            const newFilter = $scope.programIndicators[i].filter.replaceAll(regex, optionReplacer);
+            $scope.programIndicators[i].filter = newFilter;
+
             dossiersProgramIndicatorFilterFactory.save({}, $scope.programIndicators[i].filter, function (data) {
                 if (data.description.includes("Program stage id")) {
                     const regex = /Program stage id *== *['"](\w{11})['"]/g;
-                    const newFilter = data.description.replaceAll(regex, replacer);
+                    const newFilter = data.description.replaceAll(regex, stageIdReplacer);
                     $scope.programIndicators[i].filter = newFilter;
                 } else {
                     $scope.programIndicators[i].filter = data.description.replaceAll("\\.", ".");

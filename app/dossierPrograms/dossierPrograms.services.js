@@ -42,7 +42,7 @@ var qryProgramStageSections =
             "valueType",
             "optionSetValue",
             "optionSet[name",
-            "options[displayName]]]]",
+            "options[code,displayName]]]]",
         ].join(","),
         [
             "programStageDataElements[compulsory,dataElement[id",
@@ -52,7 +52,7 @@ var qryProgramStageSections =
             "valueType",
             "optionSetValue",
             "optionSet[name",
-            "options[displayName]]]]",
+            "options[code,displayName]]]]",
         ].join(","),
     ].join(",") +
     "&paging=false";
