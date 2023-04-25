@@ -684,7 +684,7 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
                 $scope.programIndicators[i].stageRef = getStageRef($scope.programIndicators[i].filter);
             }
 
-            const regex = /#{(\w+)\.(\w+)} +?(!=|==) +?'?((\d\.?)+)'?/g;
+            const regex = /#{(\w+)\.(\w+)} *?(!=|==) *?'?((\d\.?)+)'?/g;
             const newFilter = $scope.programIndicators[i].filter.replaceAll(regex, optionReplacer);
             $scope.programIndicators[i].filter = newFilter;
 
