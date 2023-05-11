@@ -127,9 +127,17 @@
         <div id="stageContainer" ng-controller="dossiersProgramSectionController">
             <div class="col-md-12" ng-repeat="stage in stages | orderBy:'sortOrder'">
                 <h2 class="stage" id="{{ stage.id }}">{{ stage.displayName }}</h2>
+                <div ng-if="stage.displayDescription" class="stage">
+                    <h4>{{ "dos_DescriptionStage" | translate }}</h4>
+                    <div ng-bind-html="trustAsHtml(stage.displayDescription)"></div>
+                </div>
                 <div class="col-md-12" ng-repeat="section in stage.programStageSections">
                     <h3 class="section" id="{{ section.id }}">{{ section.displayName }}</h3>
                     <p>{{ "dos_NumberElementsSection" | translate }}: {{ section.dataElements.length }}</p>
+                    <div ng-if="section.displayDescription" class="section">
+                        <h4>{{ "dos_DescriptionStage" | translate }}</h4>
+                        <div ng-bind-html="trustAsHtml(section.displayDescription)"></div>
+                    </div>
                     <table class="sectionElementsTable table table-striped">
                         <thead>
                             <tr>

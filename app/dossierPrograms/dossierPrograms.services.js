@@ -30,11 +30,13 @@ var qryProgramStageSections =
     [
         "id",
         "displayName",
+        "displayDescription",
         "repeatable",
         "sortOrder",
         [
             "programStageSections[id",
             "displayName",
+            "displayDescription",
             "dataElements[id",
             "displayName",
             "displayFormName",
@@ -227,7 +229,7 @@ var qryProgramGlobalIndicators =
     ].join(",") +
     "&paging=false";
 
-datasetsModule.factory("dossiersProgramGlobalIndicatorsFactory", [
+dossierProgramsModule.factory("dossiersProgramGlobalIndicatorsFactory", [
     "$resource",
     function ($resource) {
         return $resource(
@@ -245,7 +247,7 @@ datasetsModule.factory("dossiersProgramGlobalIndicatorsFactory", [
 
 var qryProgramGlobalIndicatorExpression = dhisUrl + "expressions/description?expression=:expression";
 
-datasetsModule.factory("dossiersProgramGlobalIndicatorExpressionFactory", [
+dossierProgramsModule.factory("dossiersProgramGlobalIndicatorExpressionFactory", [
     "$resource",
     function ($resource) {
         return $resource(
