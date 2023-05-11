@@ -30,7 +30,9 @@
 
     "dos_BackToTop": "Back to Top",
 
-    "dos_Number of Elements in Section": "Number of Data Elements in Section",
+    "dos_NumberElementsSection": "Number of Data Elements in Section",
+    "dos_DescriptionStage": "Stage Description",
+    "dos_DescriptionSection": "Stage Section Description",
     "dos_NameElement": "Name",
     "dos_FormNameElement": "Form Name",
     "dos_DescriptionElement": "Description",

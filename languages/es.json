@@ -30,7 +30,9 @@
 
     "dos_BackToTop": "Inicio de Pagina",
 
-    "dos_Number of Elements in Section": "Número de Elementos de Datos en la Sección",
+    "dos_NumberElementsSection": "Número de Elementos de Datos en la Sección",
+    "dos_DescriptionStage": "Descripción de la Etapa",
+    "dos_DescriptionSection": "Descripción de la Sección de la Etapa",
     "dos_NameElement": "Nombre",
     "dos_FormNameElement": "Nombre en el Formulario",
     "dos_DescriptionElement": "Descripción",

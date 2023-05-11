@@ -21,7 +21,7 @@
     "dos_Description of Service": "Descrição do Serviço",
     "dos_Data Sets": "Conjuntos de dados> Seções> Elementos de dados (Tabela 1)",
     "dos_Data Set": "Conjunto de Dados",
-    "dos_Section": "Seçõesn",
+    "dos_Section": "Seção",
     "dos_Stage": "Etapa",
     "dos_Indicator Groups": "Grupo de Indicadores> Indicadores (Tabela 2)",
     "dos_Indicator Group": "Grupo Indicador",
@@ -42,7 +42,7 @@
     "dos_Calculation": "Cálculo",
     "dos_AggregationType": "Tipo de agregação",
     "dos_TypeOfProgramIndicator": "Tipo de Indicador do Programa",
-    "dos_StagesReferenced": "Palco(s) referenciado(s)",
+    "dos_StagesReferenced": "Etapa(s) referenciada(s)",
     "dos_Boundaries": "Limites",
     "dos_Visualization": "Visualização",
     "dos_BoundaryTarget": "Alvo limite",
@@ -85,7 +85,9 @@
 
     "dos_BackToTop": "Voltar ao topo",
 
-    "dos_Number of Elements in Section": "Número de Elementos de Dados na Seção",
+    "dos_NumberElementsSection": "Número de Elementos de Dados na Seção",
+    "dos_DescriptionStage": "Descrição da Etapa",
+    "dos_DescriptionSection": "Descrição da Seção do Etapa",
     "dos_NameElement": "Nome",
     "dos_FormNameElement": "Form Name",
     "dos_DescriptionElement": "Descrição",

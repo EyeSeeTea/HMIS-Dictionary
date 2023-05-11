@@ -124,7 +124,7 @@
                     <h3 class="section" id="{{ section.id }}">
                         {{ "dos_Section" | translate }}: {{ section.displayName }}
                     </h3>
-                    <p>{{ "dos_Number of Elements in Section" | translate }}: {{ section.dataElements.length }}</p>
+                    <p>{{ "dos_NumberElementsSection" | translate }}: {{ section.dataElements.length }}</p>
                     <table
                         ng-controller="dossiersElementsTableController"
                         ng-init="getElementsInSection(section)"
