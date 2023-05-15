@@ -43,7 +43,7 @@
                     <big
                         ><b
                             ><a href="" class="pageref" ng-click='scrollTo("DossierTextTitleContainer",22)'>{{
-                                "dos_Description of Program" | translate
+                                "dos_DescriptionOfProgram" | translate
                             }}</a></b
                         ></big
                     >
@@ -70,7 +70,7 @@
 
         <div id="DossierTextTitleContainer" ng-if="selectedProgram.displayDescription" class="row headerGroup">
             <br />
-            <h1>{{ "dos_Description of Program" | translate }}</h1>
+            <h1>{{ "dos_DescriptionOfProgram" | translate }}</h1>
             <div ng-bind-html="trustAsHtml(selectedProgram.displayDescription)"></div>
         </div>
 
@@ -80,6 +80,8 @@
                 <p>
                     {{ "dos_TrackedEntityAttributesNumber" | translate }}:
                     {{ trackedEntityAttributes.length }}
+                    &emsp;
+                    <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" | translate}}</a>
                 </p>
                 <table class="sectionElementsTable table table-striped">
                     <thead>
@@ -133,7 +135,11 @@
                 </div>
                 <div class="col-md-12" ng-repeat="section in stage.programStageSections">
                     <h3 class="section" id="{{ section.id }}">{{ section.displayName }}</h3>
-                    <p>{{ "dos_NumberElementsSection" | translate }}: {{ section.dataElements.length }}</p>
+                    <p>
+                        {{ "dos_NumberElementsSection" | translate }}: {{ section.dataElements.length }}
+                        &emsp;
+                        <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" | translate}}</a>
+                    </p>
                     <div ng-if="section.displayDescription" class="section">
                         <h4>{{ "dos_DescriptionStage" | translate }}</h4>
                         <div ng-bind-html="trustAsHtml(section.displayDescription)"></div>
@@ -207,7 +213,11 @@
         >
             <h2 class="indicatorGroup" id="indicators">{{ "Program indicators" | translate }}</h2>
             <div class="col-md-12">
-                <p>{{ "Number of Indicators" | translate }}: {{ programIndicators.length }}</p>
+                <p>
+                    {{ "dosNumberOfProgramIndicators" | translate }}: {{ programIndicators.length }}
+                    &emsp;
+                    <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" | translate}}</a>
+                </p>
                 <table class="indicatorTable table table-striped">
                     <thead>
                         <tr>
@@ -276,6 +286,11 @@
         <div class="col-md-12" id="indicatorContainer" ng-controller="dossierProgramGlobalIndicatorController">
             <div ng-if="indicators.length > 0" class="col-md-12">
                 <h3 class="section" id="indicators">{{ "dos_Indicators" | translate }}</h3>
+                <p>
+                    {{ "dosNumberOfIndicators" | translate }}: {{ programIndicators.length }}
+                    &emsp;
+                    <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" | translate}}</a>
+                </p>
                 <table class="sectionElementsTable table table-striped">
                     <thead>
                         <tr>
@@ -323,7 +338,11 @@
         <div class="col-md-12" id="RuleContainer" ng-controller="dossiersProgramRuleController">
             <div ng-if="rules.length > 0" class="col-md-12">
                 <h3 class="section" id="rules">{{ "Program Rules" | translate }}</h3>
-                <p>{{ "Number of Rules in Program" | translate }}: {{ rules.length }}</p>
+                <p>
+                    {{ "Number of Rules in Program" | translate }}: {{ rules.length }}
+                    &emsp;
+                    <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" | translate}}</a>
+                </p>
                 <table class="sectionElementsTable table table-striped">
                     <thead>
                         <tr>
@@ -541,7 +560,11 @@
         <div class="col-md-12" id="RuleVariablesContainer" ng-controller="dossiersProgramRuleVariablesController">
             <div ng-if="ruleVariables.length > 0" class="col-md-12">
                 <h3 class="section" id="ruleVariables">{{ "dos_ProgramRulesVariables" | translate }}</h3>
-                <p>{{ "dos_ProgramRulesVariablesNumber" | translate }}: {{ ruleVariables.length }}</p>
+                <p>
+                    {{ "dos_ProgramRulesVariablesNumber" | translate }}: {{ ruleVariables.length }}
+                    &emsp;
+                    <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" | translate}}</a>
+                </p>
                 <table class="sectionElementsTable table table-striped">
                     <thead>
                         <tr>

@@ -143,5 +143,8 @@
     "srch_exportToExcel": "Export this page to Excel",
 
     "MODULE:PROGRAMS": "***************************",
-    "dos_Description of Program": "Program description"
+    "dos_DescriptionOfProgram": "Program description",
+    "dosNumberOfProgramIndicators": "Number of Program Indicators",
+    "dosNumberOfIndicators": "Number of Indicators",
+    "dos_GoToIndex": "Go to Index"
 }
