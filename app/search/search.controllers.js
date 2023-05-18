@@ -687,8 +687,7 @@ searchModule.controller("searchController", [
                         $scope.allObjects = Object.keys(temp).map(function (key) {
                             return temp[key];
                         });
-                        //console.log("temp");
-                        //console.log(temp);
+                        $scope.allObjectsLength = Object.keys($scope.allObjects).length;
                         console.log("searchModule: Indicators loaded");
 
                         return "done";
@@ -701,13 +700,135 @@ searchModule.controller("searchController", [
                 });
         }
 
-        $scope.exportToExcel = function (tableId) {
-            // ex: '#my-table'
-            var exportHref = ExcelFactory.tableToExcel(tableId, "hmis_table");
-            var a = document.createElement("a");
-            a.href = exportHref;
-            a.download = "hmis_table.xls";
-            a.click();
+        // EXPORT TO EXCEL
+        /* 
+        @name translate
+        @description $translate.instant() wrapper
+        @scope searchController
+        */
+        function translate(tag) {
+            return $translate.instant(tag);
+        }
+
+        /*
+        @name writeSheetHeader
+        @description Writes sheet header and applies styling
+        @scope searchController
+        */
+        function writeSheetHeader(sheet, header) {
+            header.forEach((item, index) => {
+                const cell = sheet.cell(1, index + 1);
+                cell.style({
+                    bold: "bold",
+                    horizontalAlignment: "center",
+                    verticalAlignment: "center",
+                });
+                cell.value(item);
+                if (index === 0) {
+                    cell.column().width(12);
+                } else {
+                    cell.column().width(48);
+                }
+            });
+        }
+
+        /*
+        @name writeSheetData
+        @description Writes data object to sheet and wraps cell
+        @scope searchController
+        */
+        function writeSheetData(sheet, data) {
+            data.forEach((rowData, rowIndex) => {
+                rowIndex += 2;
+                sheet.row(rowIndex).height(24);
+                Object.entries(rowData).forEach(([_, value], cellIndex) => {
+                    const cell = sheet.cell(rowIndex, cellIndex + 1);
+                    cell.value(value);
+                    cell.style("wrapText", true);
+                });
+            });
+        }
+
+        /*
+        @name downloadExcel
+        @description download workbook blob
+        @scope searchController
+        */
+        async function downloadExcel(workbook) {
+            await workbook
+                .outputAsync()
+                .then(function (blob) {
+                    var url = window.URL.createObjectURL(blob);
+                    var a = document.createElement("a");
+                    document.body.appendChild(a);
+                    a.href = url;
+                    a.download = "search_export.xlsx";
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+                })
+                .catch(() => console.debug("Download failed"));
+        }
+
+        /* 
+        @name exportSearchDataToExcel
+        @description Exports search dossier data to xlsx spreadsheet
+        @scope searchController
+        */
+        async function exportSearchDataToExcel(header, data) {
+            const workbook = await XlsxPopulate.fromBlankAsync().then(workbook => {
+                const sheet = workbook.addSheet("Search Data");
+                writeSheetHeader(sheet, header);
+                writeSheetData(sheet, data);
+
+                workbook.deleteSheet("Sheet1");
+                return workbook;
+            });
+
+            downloadExcel(workbook);
+        }
+
+        /* 
+        @name exportToExcel
+        @description Get all filtered data from ng-table and export to xlsx
+        @scope searchController
+        */
+        $scope.exportToExcel = async () => {
+            const headers = $scope.table.cols.flatMap(col => {
+                const isShown = col.show();
+                if (isShown) {
+                    return {
+                        code: col.code,
+                        title: col.title(),
+                    };
+                } else {
+                    return [];
+                }
+            });
+
+            const xlsxHeader = headers.map(h => h.title);
+            const rowKeys = headers.map(h => h.code);
+
+            const count = $scope.table.tableParams.count();
+            const page = $scope.table.tableParams.page();
+
+            // Get table without pagination, prepare data and export
+            $scope.table.tableParams.count($scope.allObjectsLength);
+            $scope.table.tableParams.reload().then(d => {
+                const xlsxData = d.map(row => {
+                    // Accumulate as {header_text: value, ...}
+                    return rowKeys.reduce((accumulator, current) => {
+                        accumulator[translate(current)] = row[current];
+                        return accumulator;
+                    }, {});
+                });
+
+                exportSearchDataToExcel(xlsxHeader, xlsxData);
+            });
+
+            $scope.table.tableParams.count(count);
+            $scope.table.tableParams.page(page);
+            await $scope.table.tableParams.reload();
         };
     },
 ]);
