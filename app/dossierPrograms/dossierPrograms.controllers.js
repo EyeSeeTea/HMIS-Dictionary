@@ -275,7 +275,7 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
                         const assignedDEArray = $scope.programRules.flatMap(pr => {
                             const idArray = pr.programRuleActions.flatMap(pra => {
                                 if (pra.programRuleActionType === "ASSIGN") {
-                                    return pra.dataElement.id;
+                                    return pra?.dataElement?.id ? pra.dataElement.id : [];
                                 } else {
                                     return [];
                                 }
@@ -291,7 +291,7 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
                         const hiddenDEArray = $scope.programRules.flatMap(pr => {
                             const idArray = pr.programRuleActions.flatMap(pra => {
                                 if (pra.programRuleActionType === "HIDEFIELD") {
-                                    return pra.dataElement.id;
+                                    return pra?.dataElement?.id ? pra.dataElement.id : [];
                                 } else {
                                     return [];
                                 }
