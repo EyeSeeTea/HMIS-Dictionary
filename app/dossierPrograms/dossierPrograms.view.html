@@ -587,5 +587,37 @@
                 </table>
             </div>
         </div>
+
+        <div class="col-md-12" id="ResourcesContainer" ng-controller="dossiersProgramResourcesController">
+            <div ng-if="resources.length > 0" class="col-md-12">
+                <h3 class="section" id="resources">{{ "dos_Resources" | translate }}</h3>
+                <p>
+                    {{ "dos_ResourcesNumber" | translate }}: {{ resources.length }}
+                    &emsp;
+                    <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" | translate}}</a>
+                </p>
+                <table class="sectionElementsTable table table-striped">
+                    <thead>
+                        <tr>
+                            <th>{{ "dos_NameElement" | translate }}</th>
+                            <th>{{ "dos_DescriptionElement" | translate }}</th>
+                            <th>{{ "dos_ResourceType" | translate }}</th>
+                            <th>{{ "dos_Link" | translate }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="res in resources">
+                            <td>{{res.displayName}}</td>
+                            <td>{{res.displayDescription}}</td>
+                            <td>{{res.type}}</td>
+                            <td><a
+                                href={{res.link}}
+                                ><img src="./assets/img/pivottable.png" alt="View Resource" width="15" />
+                            </a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>

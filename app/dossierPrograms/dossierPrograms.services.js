@@ -273,10 +273,7 @@ var qryProgramTrackedEntityAttributesRules =
         "filter=programRuleActions.trackedEntityAttribute.id\\:in\\:[:teasIds]",
         "fields=",
     ].join("&") +
-    [
-        "name",
-        "trackedEntityAttribute",
-    ].join(",") +
+    ["name", "trackedEntityAttribute"].join(",") +
     "&paging=false";
 
 dossierProgramsModule.factory("dossiersProgramTEAsRulesFactory", [
@@ -447,6 +444,48 @@ dossierProgramsModule.factory("dossiersProgramsLinkTestFactory", [
             qryTest,
             {
                 displayName: "@displayName",
+            },
+            {
+                query: {
+                    method: "GET",
+                    isArray: false,
+                },
+            }
+        );
+    },
+]);
+
+var qryProgramResourcesAttribute =
+    dhisUrl + "programs/:programId?fields=id,name,attributeValues[value,attribute[id,code]]";
+
+dossierProgramsModule.factory("dossiersProgramResourcesAttributeFactory", [
+    "$resource",
+    function ($resource) {
+        return $resource(
+            qryProgramResourcesAttribute,
+            {
+                programId: "@programId",
+            },
+            {
+                query: {
+                    method: "GET",
+                    isArray: false,
+                },
+            }
+        );
+    },
+]);
+
+var qryProgramResourcesElements =
+    dhisUrl + "/metadata?filter=id\\:in\\:[:resourcesIDs]&fields=id,displayName,displayDescription";
+
+dossierProgramsModule.factory("dossiersProgramResourcesElementsFactory", [
+    "$resource",
+    function ($resource) {
+        return $resource(
+            qryProgramResourcesElements,
+            {
+                resourcesIDs: "@resourcesIDs",
             },
             {
                 query: {

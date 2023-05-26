@@ -959,7 +959,7 @@ dossierProgramsModule.controller("dossiersProgramTEAController", [
             if (!hiddenTEAArray) return [];
 
             return hiddenTEAArray.flatMap(hiddenTEA => {
-                if (hiddenTEA.trackedEntityAttribute.id === teaId) {
+                if (hiddenTEA.trackedEntityAttribute?.id === teaId) {
                     return {
                         type: "HIDEFIELD",
                         name: hiddenTEA.name,
@@ -1137,6 +1137,113 @@ dossierProgramsModule.controller("dossiersProgramRuleVariablesController", [
                         endLoadingState(true);
                     }
                 );
+            }
+        });
+    },
+]);
+
+dossierProgramsModule.controller("dossiersProgramResourcesController", [
+    "$scope",
+    "$translate",
+    "dossiersProgramDataService",
+    "dossiersProgramResourcesAttributeFactory",
+    "dossiersProgramResourcesElementsFactory",
+    function (
+        $scope,
+        $translate,
+        dossiersProgramDataService,
+        dossiersProgramResourcesAttributeFactory,
+        dossiersProgramResourcesElementsFactory
+    ) {
+        $scope.resources4TOC = {
+            displayName: "Program Resources",
+            id: "ResourcesContainer",
+            index: 102,
+        };
+
+        /*
+         *  @name makeResourceLink
+         *  @description generate link for resource from its ID
+         *  @scope dossiersProgramResourcesController
+         */
+        function makeResourceLink(type, id) {
+            const dashboards = "dhis-web-dashboard/index.html#/";
+            const visualizations = "dhis-web-data-visualizer/index.html#/";
+            const eventCharts = "dhis-web-event-visualizer/index.html?id=";
+            const eventReports = "dhis-web-event-reports/index.html?id=";
+            let typePath;
+
+            switch (type) {
+                case "dashboards":
+                    typePath = dashboards;
+                    break;
+                case "visualizations":
+                    typePath = visualizations;
+                    break;
+                case "eventCharts":
+                    typePath = eventCharts;
+                    break;
+                case "eventReports":
+                    typePath = eventReports;
+                    break;
+                default:
+                    break;
+            }
+            return dhisroot + typePath + id;
+        }
+
+        /* 
+        @name none
+        @description Gets the program rules variables information, translates it and shows it
+        @dependencies dossiersProgramResourcesAttributeFactory
+        @scope dossiersProgramResourcesController
+         */
+        $scope.$watch("selectedProgram", function () {
+            ping();
+            if ($scope.selectedProgram) {
+                startLoadingState(false);
+
+                dossiersProgramResourcesAttributeFactory.get({ programId: $scope.selectedProgram.id }, function (data) {
+                    const resourcesIDs = data.attributeValues
+                        .find(attr => attr.attribute.code === "HMIS-Dict_Resources")
+                        ?.value.split(";")
+                        .flatMap(val => {
+                            return val ? val.trim() : [];
+                        });
+
+                    dossiersProgramResourcesElementsFactory.get({ resourcesIDs: resourcesIDs }, function (resQryData) {
+                        const resData = _.pick(resQryData, [
+                            "dashboards",
+                            "visualizations",
+                            "eventReports",
+                            "eventCharts",
+                        ]);
+                        const resources = [];
+
+                        for (const [type, values] of Object.entries(resData)) {
+                            if (type === "system") continue;
+                            console.debug(`${type}: ${JSON.stringify(values)}`);
+                            values.map(value => {
+                                const entry = {
+                                    displayName: value.displayName,
+                                    displayDescription: value.displayDescription,
+                                    type: type,
+                                    link: makeResourceLink(type, value.id),
+                                };
+                                resources.push(entry);
+                            });
+                        }
+
+                        $scope.resources = resources;
+
+                        if ($scope.resources.length > 0) {
+                            addtoTOC($scope.toc, null, $scope.resources4TOC, "Resources");
+                            dossiersProgramDataService.data.resources = $scope.resources;
+                        }
+
+                        endLoadingState(true);
+                    });
+                });
             }
         });
     },
