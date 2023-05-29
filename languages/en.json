@@ -104,6 +104,9 @@
     "dos_Comments": "Comments",
     "dos_Mandatory": "Mandatory",
     "dos_Visibility": "Visibility in Data Entry",
+    "dos_Resources": "Resources",
+    "dos_ResourcesNumber": "Number of Resources",
+    "dos_ResourceType": "Resource Type",
 
     "MODULE:SEARCH": "****************************",
 

@@ -1187,9 +1187,29 @@ dossierProgramsModule.controller("dossiersProgramResourcesController", [
                     typePath = eventReports;
                     break;
                 default:
-                    break;
+                    return undefined;
             }
             return dhisroot + typePath + id;
+        }
+
+        /*
+         *  @name getTypeDisplayText
+         *  @description make resource type display text
+         *  @scope dossiersProgramResourcesController
+         */
+        function getTypeDisplayText(type) {
+            switch (type) {
+                case "dashboards":
+                    return "Dashboards";
+                case "visualizations":
+                    return "Visualizations";
+                case "eventCharts":
+                    return "Event Charts";
+                case "eventReports":
+                    return "Event Reports";
+                default:
+                    return undefined;
+            }
         }
 
         /* 
@@ -1227,7 +1247,7 @@ dossierProgramsModule.controller("dossiersProgramResourcesController", [
                                 const entry = {
                                     displayName: value.displayName,
                                     displayDescription: value.displayDescription,
-                                    type: type,
+                                    type: getTypeDisplayText(type),
                                     link: makeResourceLink(type, value.id),
                                 };
                                 resources.push(entry);

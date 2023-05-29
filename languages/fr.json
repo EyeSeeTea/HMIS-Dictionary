@@ -104,6 +104,9 @@
     "dos_Comments": "Commentaires",
     "dos_Mandatory": "Obligatoire",
     "dos_Visibility": "Visibilité de la saisie des données",
+    "dos_Resources": "Ressources",
+    "dos_ResourcesNumber": "Nombre de Ressources",
+    "dos_ResourceType": "Type de Ressource",
 
     "MODULE:SEARCH": "****************************",
 

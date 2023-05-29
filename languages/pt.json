@@ -104,6 +104,9 @@
     "dos_Comments": "Comentários",
     "dos_Mandatory": "Obrigatório",
     "dos_Visibility": "Visibilidade na Introdução de Dados",
+    "dos_Resources": "Recursos",
+    "dos_ResourcesNumber": "Número de Recursos",
+    "dos_ResourceType": "Tipo de Recurso",
 
     "MODULE:SEARCH": "****************************",
 
