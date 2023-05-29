@@ -573,6 +573,7 @@
                             <th>{{ "dos_ProgramStage" | translate }}</th>
                             <th>{{ "dos_DataElement" | translate }}</th>
                             <th>{{ "dos_TrackedEntityAttributes" | translate }}</th>
+                            <th>{{ "dos_AssociatedProgramRules" | translate }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -582,6 +583,13 @@
                             <td>{{var.programStage.name}}</td>
                             <td>{{var.dataElement.name}}</td>
                             <td>{{var.trackedEntityAttribute.name}}</td>
+                            <td>
+                                <ul ng-if="var.associatedProgramRules">
+                                    <li ng-repeat="associatedProgramRule in var.associatedProgramRules">
+                                        {{ associatedProgramRule }}
+                                    </li>
+                                </ul>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
