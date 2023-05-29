@@ -190,7 +190,7 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
             stage.programStageSections.forEach(pss => {
                 pss.dataElements.forEach(pssDE => {
                     assignedDEArray.forEach(adeArray => {
-                        if (adeArray.ids?.includes(pssDE.id)) {
+                        if (adeArray.ids?.includes(pssDE.id) && adeArray.stageId === stage.id) {
                             if (!pssDE.calcMode || pssDE.calcMode.type === "default") {
                                 pssDE.calcMode = { type: "programRule", names: [adeArray.name] };
                             } else {
