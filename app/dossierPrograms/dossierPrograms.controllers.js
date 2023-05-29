@@ -1027,12 +1027,14 @@ dossierProgramsModule.controller("dossiersProgramTEAController", [
 
 dossierProgramsModule.controller("dossiersProgramRuleController", [
     "$scope",
+    "$rootScope",
     "$translate",
     "dossiersProgramRulesFactory",
     "dossiersProgramRulesActionsTemplateName",
     "dossiersProgramDataService",
     function (
         $scope,
+        $rootScope,
         $translate,
         dossiersProgramRulesFactory,
         dossiersProgramRulesActionsTemplateName,
@@ -1077,6 +1079,7 @@ dossierProgramsModule.controller("dossiersProgramRuleController", [
             ping();
             if ($scope.selectedProgram) {
                 startLoadingState(false);
+                $rootScope.programRulesDone = false;
 
                 dossiersProgramRulesFactory.get(
                     {
@@ -1091,6 +1094,7 @@ dossierProgramsModule.controller("dossiersProgramRuleController", [
                             dossiersProgramDataService.data.rules = $scope.rules;
                         }
 
+                        $rootScope.programRulesDone = true;
                         endLoadingState(true);
                     }
                 );
@@ -1101,10 +1105,11 @@ dossierProgramsModule.controller("dossiersProgramRuleController", [
 
 dossierProgramsModule.controller("dossiersProgramRuleVariablesController", [
     "$scope",
+    "$rootScope",
     "$translate",
     "dossiersProgramRuleVariablesFactory",
     "dossiersProgramDataService",
-    function ($scope, $translate, dossiersProgramRuleVariablesFactory, dossiersProgramDataService) {
+    function ($scope, $rootScope, $translate, dossiersProgramRuleVariablesFactory, dossiersProgramDataService) {
         $scope.ruleVariables4TOC = {
             displayName: "Program Rule Variables",
             id: "RuleVariablesContainer",
@@ -1117,9 +1122,9 @@ dossierProgramsModule.controller("dossiersProgramRuleVariablesController", [
         @dependencies dossiersProgramRuleVariablesFactory
         @scope dossiersProgramRuleVariablesController
          */
-        $scope.$watch("selectedProgram", function () {
+        $scope.$watchGroup(["selectedProgram", "programRulesDone"], function () {
             ping();
-            if ($scope.selectedProgram) {
+            if ($scope.selectedProgram && $rootScope.programRulesDone) {
                 startLoadingState(false);
 
                 dossiersProgramRuleVariablesFactory.get(
@@ -1127,7 +1132,19 @@ dossierProgramsModule.controller("dossiersProgramRuleVariablesController", [
                         programId: $scope.selectedProgram.id,
                     },
                     function (data) {
-                        $scope.ruleVariables = data.programRuleVariables.map(rule => ({ ...rule }));
+                        $scope.ruleVariables = data.programRuleVariables.map(ruleVar => {
+                            ruleVar.associatedProgramRules = dossiersProgramDataService.data.rules?.flatMap(rule => {
+                                const actionMatch = rule.programRuleActions.filter(ruleAction => {
+                                    const typeMatch = ruleAction.programRuleActionType === "ASSIGN";
+                                    const varMatch = ruleAction.content === `#{${ruleVar.name}}`;
+                                    return typeMatch && varMatch;
+                                });
+
+                                return actionMatch.length > 0 ? rule.name : [];
+                            });
+
+                            return { ...ruleVar };
+                        });
 
                         if ($scope.ruleVariables.length > 0) {
                             addtoTOC($scope.toc, null, $scope.ruleVariables4TOC, "Program Rules");
@@ -1241,8 +1258,6 @@ dossierProgramsModule.controller("dossiersProgramResourcesController", [
                         const resources = [];
 
                         for (const [type, values] of Object.entries(resData)) {
-                            if (type === "system") continue;
-                            console.debug(`${type}: ${JSON.stringify(values)}`);
                             values.map(value => {
                                 const entry = {
                                     displayName: value.displayName,
