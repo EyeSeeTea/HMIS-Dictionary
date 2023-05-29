@@ -220,7 +220,7 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
         function makeStageCalcMode(stage, assignedDEArray) {
             stage.programStageDataElements.forEach(psde => {
                 assignedDEArray.forEach(adeArray => {
-                    if (adeArray.ids.includes(psde.dataElement.id)) {
+                    if (adeArray.ids.includes(psde.dataElement.id) && adeArray.stageId === stage.id) {
                         if (!psde.dataElement.calcMode) {
                             if (!psde.dataElement.calcMode || psde.dataElement.calcMode.type === "default") {
                                 psde.dataElement.calcMode = { type: "programRule", names: [adeArray.name] };
