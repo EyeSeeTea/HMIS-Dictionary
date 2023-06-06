@@ -1,0 +1,14 @@
+/*------------------------------------------------------------------------------------
+    List of contributors: https://github.com/MSFOCBA
+    Please refer to the LICENSE.md and LICENSES-DEP.md for complete licenses.
+------------------------------------------------------------------------------------*/
+
+#dossierProgramsPanel th {
+    position: sticky;
+    top: 44px;
+    background: white;
+}
+
+#dossierProgramsPanel .ng-scope select {
+    position: static !important;
+}
