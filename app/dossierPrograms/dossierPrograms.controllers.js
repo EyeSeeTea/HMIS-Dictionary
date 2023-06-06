@@ -165,9 +165,10 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
                 const sectionVisibility = makeSectionVisibility(stageSection.id, hiddenSectionsArray, stage.id);
 
                 stageSection.dataElements.forEach(sectionDataElement => {
-                    sectionDataElement.compulsory = stage.programStageDataElements.find(psdeToFind => {
-                        return psdeToFind.dataElement.id === sectionDataElement.id;
-                    }).compulsory;
+                    sectionDataElement.compulsory =
+                        stage.programStageDataElements.find(psdeToFind => {
+                            return psdeToFind.dataElement.id === sectionDataElement.id;
+                        })?.compulsory ?? false;
 
                     sectionDataElement.visibility = makeDEVisibility(
                         sectionDataElement.id,
