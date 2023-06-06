@@ -7,6 +7,7 @@
     "idx_Admin": "Admin",
     "idx_Programs": "Programmes",
     "idx_DataSets": "Ens. données",
+    "idx_Indicators": "Indicateurs",
 
     "MODULE:ALL": "****************************",
     "OPEN": "Ouvrir",
@@ -24,13 +25,15 @@
     "dos_Data Sets": "Ensembles de Données > Sections > Eléments de Données (Table 1)",
     "dos_Data Set": "Ensemble de Données",
     "dos_Section": "Section",
-    "dos_Stage": "Stade",
+    "dos_Stage": "Étape",
     "dos_Indicator Groups": "Groupes d'Indicateurs > Indicateurs (Table 2)",
     "dos_Indicator Group": "Groupe d'Indicateurs",
 
     "dos_BackToTop": "Haut de Page",
 
-    "dos_Number of Elements in Section": "Nombre d'Eléments de Données dans la Section",
+    "dos_NumberElementsSection": "Nombre d'Eléments de Données dans la Section",
+    "dos_DescriptionStage": "Description du Étape",
+    "dos_DescriptionSection": "Description de la Section Étape",
     "dos_NameElement": "Nom",
     "dos_FormNameElement": "Nom dans le Formulaire",
     "dos_DescriptionElement": "Description",
@@ -51,7 +54,7 @@
     "dos_Calculation": "Calcul",
     "dos_AggregationType": "Type d'agrégation",
     "dos_TypeOfProgramIndicator": "Type d'indicateur de programme",
-    "dos_StagesReferenced": "Stade(s) référencé(s)",
+    "dos_StagesReferenced": "Étape(s) référencé(s)",
     "dos_Boundaries": "Limites",
     "dos_Visualization": "Visualisation",
     "dos_BoundaryTarget": "Cible des limites",
@@ -65,7 +68,7 @@
     "dos_TrackedEntityAttributes": "Attributs d'entités suivies",
     "dos_TrackedEntityAttributesNumber": "Nombre d'attributs d'entités suivies dans le programme",
     "dos_Code": "Code",
-    "dos_ProgramStage": "Stade du programme",
+    "dos_ProgramStage": "Étape du programme",
     "dos_Condition": "Condition",
     "dos_ProgramRuleActions": "Actions de la règle du programme",
     "dos_DataElement": "Élément de données",
@@ -101,6 +104,10 @@
     "dos_Comments": "Commentaires",
     "dos_Mandatory": "Obligatoire",
     "dos_Visibility": "Visibilité de la saisie des données",
+    "dos_Resources": "Ressources",
+    "dos_ResourcesNumber": "Nombre de Ressources",
+    "dos_ResourceType": "Type de Ressource",
+    "dos_AssociatedProgramRules": "Règles du Programme Associés",
 
     "MODULE:SEARCH": "****************************",
 
@@ -140,5 +147,8 @@
     "srch_exportToExcel": "Exporter cette page vers Excel",
 
     "MODULE:PROGRAMS": "***************************",
-    "dos_Description of Program": "Description du Programme"
+    "dos_DescriptionOfProgram": "Description du Programme",
+    "dosNumberOfProgramIndicators": "Number of Indicateurs du Programme",
+    "dosNumberOfIndicators": "Nombre d'indicateurs",
+    "dos_GoToIndex": "Retour à l'index"
 }

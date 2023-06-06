@@ -1,19 +1,20 @@
 {
     "INDEX.HTML": "****************************",
 
-    "idx_Dossiers": "Dossiers",
-    "idx_Search": "Busqueda",
+    "idx_Dossiers": "Dossieres",
+    "idx_Search": "Búsqueda",
     "idx_Graph": "Grafico",
     "idx_Admin": "Admin",
     "idx_Programs": "Programas",
     "idx_DataSets": "Set de datos",
+    "idx_Indicators": "Indicadores",
 
     "MODULE:ALL": "****************************",
     "OPEN": "Abrir",
 
     "MODULE:DOSSIERS": "****************************",
 
-    "dos_Dossiers": "Dossiers",
+    "dos_Dossiers": "Dossieres",
     "dos_Number of Services": "Número de Servicios",
     "dos_Number of DataSets in Service": "Número de Sets de Datos en el Servicio",
     "dos_Number of IndicatorGroups in Service": "Número de Grupos de Indicadores en el Servicio",
@@ -30,7 +31,9 @@
 
     "dos_BackToTop": "Inicio de Pagina",
 
-    "dos_Number of Elements in Section": "Número de Elementos de Datos en la Sección",
+    "dos_NumberElementsSection": "Número de Elementos de Datos en la Sección",
+    "dos_DescriptionStage": "Descripción de la Etapa",
+    "dos_DescriptionSection": "Descripción de la Sección de la Etapa",
     "dos_NameElement": "Nombre",
     "dos_FormNameElement": "Nombre en el Formulario",
     "dos_DescriptionElement": "Descripción",
@@ -44,13 +47,13 @@
     "dos_Other": "Otros",
     "dos_DirectDataEntry": "Entrada Directa de Datos",
     "dos_OptionSet": "Conjunto de opciones",
-    "dos_OptionSetName": "Option Set Name",
+    "dos_OptionSetName": "Nombre del Set de Opciones",
     "dos_OptionSetOptions": "Opciones del conjunto de opciones",
     "dos_SeeOptions": "Ver opciones",
     "dos_Filter": "Filtro",
     "dos_Calculation": "Cálculo",
     "dos_AggregationType": "Tipo de Agregación",
-    "dos_TypeOfProgramIndicator": "Tipo de indicador del Programa",
+    "dos_TypeOfProgramIndicator": "Tipo de Indicador de Programa",
     "dos_StagesReferenced": "Etapa(s) referenciada(s)",
     "dos_Boundaries": "Límites",
     "dos_Visualization": "Visualización",
@@ -101,6 +104,10 @@
     "dos_Comments": "Comentarios",
     "dos_Mandatory": "Obligatorio",
     "dos_Visibility": "Visibilidad en Entrada de Datos",
+    "dos_Resources": "Recursos",
+    "dos_ResourcesNumber": "Número de Recursos",
+    "dos_ResourceType": "Tipo de Recurso",
+    "dos_AssociatedProgramRules": "Reglas del Programa Asociadas",
 
     "MODULE:SEARCH": "****************************",
 
@@ -126,7 +133,7 @@
     "object_den_formula": "Fórmula Denominador (solo ind.)",
     "object_num_formula": "Fórmula Numerador (solo ind.)",
 
-    "srch_SelectColumns_grpBasics": "Sets de Datos o Grupos de Indicadores - Basicos",
+    "srch_SelectColumns_grpBasics": "Sets de Datos o Grupos de Indicadores - Básicos",
     "objectGroup_name": "Nombre de Grupo",
     "objectGroup_id": "ID de Grupo",
     "objectGroup_code": "Código de Grupo",
@@ -134,12 +141,15 @@
     "srch_SelectColumns_servBasics": "Servicios - Básicos",
     "service_name": "Nombre de Servicio",
     "service_id": "ID de Servicio",
-    "service_code": "Codigo de Servicio",
+    "service_code": "Código de Servicio",
 
     "srch_Help": "Ayuda",
     "srch_Help_Text": "<p>Ésta interfaz permite simplificar el acceso del usuario a la terminología asociada con la información recopilada con HMIS. <ul> <li> Mediante la pestaña <b>Buscar</b> puede buscar directamente un término en todas las columnas de la tabla. También puede mostrar filtros de columna, lo que le permite buscar información en una columna específica. Utilice 'Reiniciar filtros' para reiniciar todos los filtros. <i>Los usuarios expertos pueden usar la palabra clave '|' (OR) para buscar múltiples objetos.</i> </li> <li> A través de la pestaña <b>Seleccionar columnas</b> puede seleccionar las columnas que se mostrarán en la tabla. <i>Los usuarios expertos pueden utilizar las columnas avanzadas para realizar investigaciones detalladas a través los IDs.</i> </ li> </ ul>Finalmente puede exportar los resultados de su búsqueda a Excel (página por página, y no olvide guardar como .xls).</p>",
     "srch_exportToExcel": "Exportar esta página a Excel",
 
     "MODULE:PROGRAMS": "***************************",
-    "dos_Description of Program": "Descripción del programa"
+    "dos_DescriptionOfProgram": "Description du Programme",
+    "dosNumberOfProgramIndicators": "Nombre d'indicateurs du Programme",
+    "dosNumberOfIndicators": "Número de Indicadores",
+    "dos_GoToIndex": "Volver al Índice"
 }
