@@ -7,6 +7,7 @@
     "idx_Admin": "Admin",
     "idx_Programs": "Programs",
     "idx_DataSets": "Data Sets",
+    "idx_Indicators": "Indicators",
 
     "MODULE:ALL": "****************************",
     "OPEN": "Open",
@@ -30,7 +31,9 @@
 
     "dos_BackToTop": "Back to Top",
 
-    "dos_Number of Elements in Section": "Number of Data Elements in Section",
+    "dos_NumberElementsSection": "Number of Data Elements in Section",
+    "dos_DescriptionStage": "Stage Description",
+    "dos_DescriptionSection": "Stage Section Description",
     "dos_NameElement": "Name",
     "dos_FormNameElement": "Form Name",
     "dos_DescriptionElement": "Description",
@@ -101,6 +104,10 @@
     "dos_Comments": "Comments",
     "dos_Mandatory": "Mandatory",
     "dos_Visibility": "Visibility in Data Entry",
+    "dos_Resources": "Resources",
+    "dos_ResourcesNumber": "Number of Resources",
+    "dos_ResourceType": "Resource Type",
+    "dos_AssociatedProgramRules": "Associated Program Rules",
 
     "MODULE:SEARCH": "****************************",
 
@@ -141,5 +148,8 @@
     "srch_exportToExcel": "Export this page to Excel",
 
     "MODULE:PROGRAMS": "***************************",
-    "dos_Description of Program": "Program description"
+    "dos_DescriptionOfProgram": "Program description",
+    "dosNumberOfProgramIndicators": "Number of Program Indicators",
+    "dosNumberOfIndicators": "Number of Indicators",
+    "dos_GoToIndex": "Go to Index"
 }

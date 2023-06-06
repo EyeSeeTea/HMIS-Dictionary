@@ -4,7 +4,6 @@
 ------------------------------------------------------------------------------------*/
 
 searchModule.controller("searchController", [
-    "ExcelFactory",
     "$window",
     "$timeout",
     "$scope",
@@ -17,7 +16,6 @@ searchModule.controller("searchController", [
     "updateSharing",
     "getServices",
     function (
-        ExcelFactory,
         $window,
         $timeout,
         $scope,
@@ -33,7 +31,7 @@ searchModule.controller("searchController", [
         $("#search").tab("show");
 
         if ($scope.show_dossiers) {
-            console.log("searchModule: Service set defined " + $scope.serviceSetUID);
+            console.debug("searchModule: Service set defined " + $scope.serviceSetUID);
             searchAllFactory.get_organisationUnitGroupSets.query(
                 {
                     ougsUID: $scope.serviceSetUID,
@@ -52,23 +50,12 @@ searchModule.controller("searchController", [
                 }
             );
         } else {
-            console.log("searchModule: Service set is not defined");
+            console.debug("searchModule: Service set is not defined");
             load_table_info();
         }
 
-        var concatObjects = function (tablesList) {
-            var temp = [];
-            tablesList.forEach(function (table) {
-                table.a.forEach(function (elem) {
-                    elem.type = table.t;
-                    temp.push(elem);
-                });
-            });
-            return temp;
-        };
-
-        /*
-     * Filter dataElements and indicators that are not associated to a dataSet or an indicatorGroup
+        /* 
+    Filter dataElements and indicators that are not associated to a dataSet or an indicatorGroup
 
     var blacklist_datasets = [
         'AjwuNAGMSFM', // HIV program
@@ -81,8 +68,8 @@ searchModule.controller("searchController", [
         'vCfO0z5igGT'  // Vaccination 2015
     ];
     */
-        console.log("searchModule: Blacklisted dataSets: " + $scope.blacklist_datasets);
-        console.log("searchModule: Blacklisted indicatorGroups: " + $scope.blacklist_indicatorgroups);
+        console.debug("searchModule: Blacklisted dataSets: " + $scope.blacklist_datasets);
+        console.debug("searchModule: Blacklisted indicatorGroups: " + $scope.blacklist_indicatorgroups);
         var filterObjects = function (obj, type) {
             if (type == "dataElement") {
                 var temp = obj.dataSetElements.length > 0;
@@ -110,11 +97,7 @@ searchModule.controller("searchController", [
 
         self.applyGlobalSearch = function () {
             var x = _.cloneDeep(self.tableParams.data);
-            var x2 = _.cloneDeep(self.tableParams.data);
-            // console.log("Con acentos x");
-            // console.log(x);
             var term = self.globalSearchTerm;
-            //var term_or = self.globalSearchTerm.split('||');
             var filter_content = self.tableParams.filter();
             filter_content.$ = term;
 
@@ -127,21 +110,7 @@ searchModule.controller("searchController", [
                 return item;
             });
 
-            //      console.log("Sin acentos self.tableParams.data");
-            //      console.log(x);
             self.tableParams.filter(filter_content);
-
-            /*
-        self.tableParams.data.map(function(item, index){
-
-            item.object_description=x[index].object_description;
-            item.objectGroup_name= x[index].objectGroup_name;
-            item.object_form=x[index].object_form;
-            item.object_name=x[index].object_name;
-            return item;
-
-        })
-        */
         };
 
         startLoadingState(false);
@@ -191,7 +160,6 @@ searchModule.controller("searchController", [
 
         $scope.allObjects = [];
         $scope.$watch("allObjects", function () {
-            //console.log('$scope.allObjects update', $scope.allObjects);
             var loaded_array = Object.keys($scope.loaded).map(function (key) {
                 return $scope.loaded[key];
             });
@@ -202,7 +170,6 @@ searchModule.controller("searchController", [
                 });
                 if ($scope.table.cols) {
                     $scope.table.cols.forEach(function (col) {
-                        //  console.log(col);
                         col.code = Object.keys(col.filter())[0];
                     });
                 }
@@ -371,7 +338,7 @@ searchModule.controller("searchController", [
                 function (tbl) {
                     if (tbl && tbl.visualizations[0]) {
                         if (tbl.visualizations[0].id) {
-                            console.log("Updating Table");
+                            console.debug("Updating Table");
                             payload.id = tbl.visualizations[0].id;
                             sharing.object.id = tbl.visualizations[0].id;
                             sharing.object.name = tbl.visualizations[0].name;
@@ -385,7 +352,6 @@ searchModule.controller("searchController", [
                                     updateSharing.update({ uid: tbl.visualizations[0].id }, sharing, function (res) {});
 
                                     uid = tbl.visualizations[0].id;
-                                    //console.log(uid)
                                     $window.open(dhisroot + "/dhis-web-data-visualizer/index.html#/" + uid, "_blank");
                                 }
                             );
@@ -393,11 +359,10 @@ searchModule.controller("searchController", [
                     }
 
                     if (tbl.visualizations[0] == undefined) {
-                        console.log("Creating Table");
+                        console.debug("Creating Table");
                         searchTableFactory.set_table.query(payload, function (response) {
                             uid = response.response.uid;
                             updateSharing.update({ uid: uid }, sharing, function (res) {});
-                            // console.log(uid)
                             $window.open(dhisroot + "/dhis-web-data-visualizer/index.html#/" + uid, "_blank");
                         });
                     }
@@ -414,13 +379,6 @@ searchModule.controller("searchController", [
         function extractDefromFormula(formula) {
             formula = formula.replace(/I{/g, "#{");
             var numerators_array = formula.split("#");
-
-            //console.log(numerators_array);
-
-            //var numerators_array2= formula.split("I{");
-
-            //console.log(numerators_array2);
-
             var num_filtered = numerators_array.filter(id => id != "");
             var num_filtered = num_filtered.filter(id => id != " ");
             var num_filtered = num_filtered.filter(id => id != "(");
@@ -530,15 +488,9 @@ searchModule.controller("searchController", [
                                     attributes = grp.dataSet.attributeValues.filter(
                                         at => at.attribute.id == "pG4YeQyynJh"
                                     );
-                                    // grp.dataSet.attributeValues.forEach( function (attrib) {
-                                    // if (attrib.attribute.id=='pG4YeQyynJh') {
-                                    //console.log("ATRIBUTOS: "+attributes )  ;
                                     if (attributes[0] != undefined) {
                                         servicesCode = attributes[0].value.split("_");
                                     }
-                                    //}
-                                    // })
-                                    // console.log("SERVICE CODE" + servicesCode);
                                     servicesCode.shift();
                                     servicesCode.forEach(function (code) {
                                         if ($scope.servicesList[code]) {
@@ -546,7 +498,7 @@ searchModule.controller("searchController", [
                                             temp_arr.service_code.push($scope.servicesList[code].service_code);
                                             temp_arr.service_name.push($scope.servicesList[code].service_name);
                                         } else {
-                                            console.log("searchModule: Cannot find any service with code: " + code);
+                                            console.debug("searchModule: Cannot find any service with code: " + code);
                                         }
                                     });
                                 }
@@ -588,7 +540,7 @@ searchModule.controller("searchController", [
                     $scope.loaded.get_dataElementsDescriptions = true;
                     $scope.loaded.get_dataElementsGroups = true;
 
-                    console.log("searchModule: Data Elements loaded");
+                    console.debug("searchModule: Data Elements loaded");
 
                     return "done";
                 })
@@ -641,7 +593,9 @@ searchModule.controller("searchController", [
                                                 temp_arr.service_code.push($scope.servicesList[code].service_code);
                                                 temp_arr.service_name.push($scope.servicesList[code].service_name);
                                             } else {
-                                                console.log("searchModule: Cannot find any service with code: " + code);
+                                                console.debug(
+                                                    "searchModule: Cannot find any service with code: " + code
+                                                );
                                             }
                                         });
                                     }
@@ -687,27 +641,148 @@ searchModule.controller("searchController", [
                         $scope.allObjects = Object.keys(temp).map(function (key) {
                             return temp[key];
                         });
-                        //console.log("temp");
-                        //console.log(temp);
-                        console.log("searchModule: Indicators loaded");
+                        $scope.allObjectsLength = Object.keys($scope.allObjects).length;
+                        console.debug("searchModule: Indicators loaded");
 
                         return "done";
                     });
                 })
                 .then(function log() {
-                    console.log(
+                    console.debug(
                         "searchModule: Loading time of search table: " + (Date.now() - start) + " milliseconds."
                     );
                 });
         }
 
-        $scope.exportToExcel = function (tableId) {
-            // ex: '#my-table'
-            var exportHref = ExcelFactory.tableToExcel(tableId, "hmis_table");
-            var a = document.createElement("a");
-            a.href = exportHref;
-            a.download = "hmis_table.xls";
-            a.click();
+        // EXPORT TO EXCEL
+        /* 
+        @name translate
+        @description $translate.instant() wrapper
+        @scope searchController
+        */
+        function translate(tag) {
+            return $translate.instant(tag);
+        }
+
+        /*
+        @name writeSheetHeader
+        @description Writes sheet header and applies styling
+        @scope searchController
+        */
+        function writeSheetHeader(sheet, header) {
+            header.forEach((item, index) => {
+                const cell = sheet.cell(1, index + 1);
+                cell.style({
+                    bold: "bold",
+                    horizontalAlignment: "center",
+                    verticalAlignment: "center",
+                });
+                cell.value(item);
+                if (index === 0) {
+                    cell.column().width(12);
+                } else {
+                    cell.column().width(48);
+                }
+            });
+        }
+
+        /*
+        @name writeSheetData
+        @description Writes data object to sheet and wraps cell
+        @scope searchController
+        */
+        function writeSheetData(sheet, data) {
+            data.forEach((rowData, rowIndex) => {
+                rowIndex += 2;
+                sheet.row(rowIndex).height(24);
+                Object.entries(rowData).forEach(([_, value], cellIndex) => {
+                    const cell = sheet.cell(rowIndex, cellIndex + 1);
+                    cell.value(value);
+                    cell.style("wrapText", true);
+                });
+            });
+        }
+
+        /*
+        @name downloadExcel
+        @description download workbook blob
+        @scope searchController
+        */
+        async function downloadExcel(workbook) {
+            await workbook
+                .outputAsync()
+                .then(function (blob) {
+                    var url = window.URL.createObjectURL(blob);
+                    var a = document.createElement("a");
+                    document.body.appendChild(a);
+                    a.href = url;
+                    a.download = "search_export.xlsx";
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+                })
+                .catch(() => console.debug("Download failed"));
+        }
+
+        /* 
+        @name exportSearchDataToExcel
+        @description Exports search dossier data to xlsx spreadsheet
+        @scope searchController
+        */
+        async function exportSearchDataToExcel(header, data) {
+            const workbook = await XlsxPopulate.fromBlankAsync().then(workbook => {
+                const sheet = workbook.addSheet("Search Data");
+                writeSheetHeader(sheet, header);
+                writeSheetData(sheet, data);
+
+                workbook.deleteSheet("Sheet1");
+                return workbook;
+            });
+
+            downloadExcel(workbook);
+        }
+
+        /* 
+        @name exportToExcel
+        @description Get all filtered data from ng-table and export to xlsx
+        @scope searchController
+        */
+        $scope.exportToExcel = async () => {
+            const headers = $scope.table.cols.flatMap(col => {
+                const isShown = col.show();
+                if (isShown) {
+                    return {
+                        code: col.code,
+                        title: col.title(),
+                    };
+                } else {
+                    return [];
+                }
+            });
+
+            const xlsxHeader = headers.map(h => h.title);
+            const rowKeys = headers.map(h => h.code);
+
+            const count = $scope.table.tableParams.count();
+            const page = $scope.table.tableParams.page();
+
+            // Get table without pagination, prepare data and export
+            $scope.table.tableParams.count($scope.allObjectsLength);
+            $scope.table.tableParams.reload().then(d => {
+                const xlsxData = d.map(row => {
+                    // Accumulate as {header_text: value, ...}
+                    return rowKeys.reduce((accumulator, current) => {
+                        accumulator[translate(current)] = row[current];
+                        return accumulator;
+                    }, {});
+                });
+
+                exportSearchDataToExcel(xlsxHeader, xlsxData);
+            });
+
+            $scope.table.tableParams.count(count);
+            $scope.table.tableParams.page(page);
+            await $scope.table.tableParams.reload();
         };
     },
 ]);
