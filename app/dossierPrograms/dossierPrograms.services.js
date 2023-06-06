@@ -42,17 +42,17 @@ var qryProgramStageSections =
             "valueType",
             "optionSetValue",
             "optionSet[name",
-            "options[displayName]]]]",
+            "options[code,displayName]]]]",
         ].join(","),
         [
-            "programStageDataElements[dataElement[id",
+            "programStageDataElements[compulsory,dataElement[id",
             "displayName",
             "displayFormName",
             "displayDescription",
             "valueType",
             "optionSetValue",
             "optionSet[name",
-            "options[displayName]]]]",
+            "options[code,displayName]]]]",
         ].join(","),
     ].join(",") +
     "&paging=false";
@@ -79,16 +79,19 @@ var qryProgramRulesDataElements =
     dhisUrl +
     [
         "programRules?filter=program.id\\:eq\\::programId",
-        "filter=programRuleActions.programRuleActionType\\:in\\:[ASSIGN,HIDESECTION]",
+        "filter=programRuleActions.programRuleActionType\\:in\\:[ASSIGN,HIDESECTION,HIDEFIELD]",
         "fields=",
     ].join("&") +
     [
         "name",
+        "programStage",
+        "condition",
         "programRuleActions[programRuleActionType",
         "dataElement[id",
         "displayName]",
         "programStageSection[id",
         "displayName]",
+        "trackedEntityAttribute",
     ].join(",") +
     "&paging=false";
 
@@ -220,9 +223,7 @@ var qryProgramGlobalIndicators =
         "indicatorType[displayName]",
         "description",
         "numerator",
-        "numeratorDescription",
         "denominator",
-        "denominatorDescription",
     ].join(",") +
     "&paging=false";
 
@@ -262,44 +263,28 @@ datasetsModule.factory("dossiersProgramGlobalIndicatorExpressionFactory", [
     },
 ]);
 
-// Only public EventReports and EventCharts
-var qryEventReports =
+var qryProgramTrackedEntityAttributesRules =
     dhisUrl +
-    "eventReports?filter=program.id\\:eq\\::programId&fields=" +
-    ["id", "displayName", "displayDescription"].join(",") +
+    [
+        "programRules?filter=program.id\\:eq\\::programId",
+        "filter=programRuleActions.programRuleActionType\\:in\\:[ASSIGN]",
+        "filter=programRuleActions.trackedEntityAttribute.id\\:in\\:[:teasIds]",
+        "fields=",
+    ].join("&") +
+    [
+        "name",
+        "trackedEntityAttribute",
+    ].join(",") +
     "&paging=false";
 
-dossierProgramsModule.factory("dossiersProgramEventReportFactory", [
+dossierProgramsModule.factory("dossiersProgramTEAsRulesFactory", [
     "$resource",
     function ($resource) {
         return $resource(
-            qryEventReports,
+            qryProgramTrackedEntityAttributesRules,
             {
                 programId: "@programId",
-            },
-            {
-                query: {
-                    method: "GET",
-                    isArray: false,
-                },
-            }
-        );
-    },
-]);
-
-var qryEventCharts =
-    dhisUrl +
-    "eventCharts?filter=program.id\\:eq\\::programId&fields=" +
-    ["id", "displayName", "displayDescription"].join(",") +
-    "&paging=false";
-
-dossierProgramsModule.factory("dossiersProgramEventChartFactory", [
-    "$resource",
-    function ($resource) {
-        return $resource(
-            qryEventCharts,
-            {
-                programId: "@programId",
+                teasIds: "@teasIds",
             },
             {
                 query: {
@@ -315,9 +300,8 @@ var qryProgramTrackedEntityAttributes =
     dhisUrl +
     "programs/:programId?fields=" +
     [
-        "programTrackedEntityAttributes[trackedEntityAttribute[name",
+        "programTrackedEntityAttributes[mandatory,trackedEntityAttribute[id,name",
         "formName",
-        "code",
         "description",
         "optionSet[name",
         "options[name]]",
@@ -376,30 +360,6 @@ dossierProgramsModule.factory("dossiersProgramRulesFactory", [
             {
                 query: {
                     method: "GET",
-                    isArray: false,
-                },
-            }
-        );
-    },
-]);
-
-var qryProgramRulesConditionDescription = dhisUrl + "programRules/condition/description?programId=:programId";
-
-dossierProgramsModule.factory("dossiersProgramRulesConditionDescription", [
-    "$resource",
-    function ($resource) {
-        return $resource(
-            qryProgramRulesConditionDescription,
-            {
-                programId: "@programId",
-            },
-            {
-                save: {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "text/plain",
-                    },
-                    data: "@expression",
                     isArray: false,
                 },
             }

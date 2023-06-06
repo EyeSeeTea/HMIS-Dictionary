@@ -88,17 +88,65 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
         dossiersProgramDataService
     ) {
         /*
+         *  @name makeDEVisibility
+         *  @description Determine if HIDEFIELD actions affecs the stage DEs
+         *  @scope dossiersProgramSectionController
+         */
+        function makeDEVisibility(stageDataElementId, hiddenDEArray, stageId) {
+            if (!hiddenDEArray) return [];
+
+            return hiddenDEArray.flatMap(hiddenDE => {
+                if (hiddenDE.ids.includes(stageDataElementId)) {
+                    if (!hiddenDE.stageId || (stageId === hiddenDE.stageId)) {
+                        return {
+                            type: "HIDEFIELD",
+                            name: hiddenDE.name
+                        };
+                    }
+                }
+
+                return [];
+            })
+        }
+
+        /*
+         *  @name makeStageVisibility
+         *  @description Determine if HIDESECTION actions affecs the section DEs
+         *  @scope dossiersProgramSectionController
+         */
+        function makeSectionVisibility(stageSectionId, hiddenSectionsArray, stageId) {
+            if (!hiddenSectionsArray) return [];
+
+            return hiddenSectionsArray.flatMap(hs => {
+                if (hs.ids.includes(stageSectionId)) {
+                    if (!hs.stageId || (stageId === hs.stageId)) {
+                        return {
+                            type: "HIDESECTION",
+                            name: hs.name
+                        };
+                    }
+                }
+
+                return [];
+            })
+        }
+
+        /*
          *  @name createStageWithoutSections
          *  @description Display stage data elements as a "phantom" stage and add stage to table of contents
          *  @scope dossiersProgramSectionController
          */
-        function createStageWithoutSections(stage, toc) {
+        function createStageWithoutSections(stage, toc, hiddenDEArray) {
             // Line to make it compatible with view
             stage.programStageSections = [
                 {
                     displayName: "Data Elements",
-                    dataElements: stage.programStageDataElements.map(function (stageDataElement) {
-                        return stageDataElement.dataElement;
+                    dataElements: stage.programStageDataElements.map((stageDataElement) => {
+                        return {
+                            ...stageDataElement.dataElement,
+                            compulsory: stageDataElement.compulsory,
+                            visibility: makeDEVisibility(stageDataElement.dataElement.id, hiddenDEArray, stage.id),
+                        };
                     }),
                 },
             ];
@@ -112,7 +160,20 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
          *  @description Display stage sections data elements and add them to the table of contents
          *  @scope dossiersProgramSectionController
          */
-        function createStageWithSections(stage, toc) {
+        function createStageWithSections(stage, toc, hiddenSectionsArray, hiddenDEArray) {
+            stage.programStageSections.forEach((stageSection) => {
+
+                const sectionVisibility = makeSectionVisibility(stageSection.id, hiddenSectionsArray, stage.id)
+
+                stageSection.dataElements.forEach((sectionDataElement) => {
+                    sectionDataElement.compulsory = stage.programStageDataElements.find(psdeToFind => {
+                        return psdeToFind.dataElement.id === sectionDataElement.id
+                    }).compulsory;
+
+                    sectionDataElement.visibility = makeDEVisibility(sectionDataElement.id, hiddenDEArray, stage.id).concat(sectionVisibility);
+                })
+            })
+
             addtoTOC($scope.toc, stage.programStageSections, toc, "programs");
             return stage;
         }
@@ -126,18 +187,24 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
             stage.programStageSections.forEach(pss => {
                 pss.dataElements.forEach(pssDE => {
                     assignedDEArray.forEach(adeArray => {
-                        if (adeArray.ids.includes(pssDE.id)) {
-                            pssDE.calcMode = { type: "programRule", name: adeArray.name };
+                        if (adeArray.ids?.includes(pssDE.id)) {
+                            if (!pssDE.calcMode || pssDE.calcMode.type === "default") {
+                                pssDE.calcMode = { type: "programRule", names: [adeArray.name] }
+                            } else {
+                                pssDE.calcMode.names.push(adeArray.name);
+                            }
                         } else if (!pssDE.calcMode) {
                             pssDE.calcMode = { type: "default" };
                         }
                     });
 
-                    if (hiddenSectionsArray.includes(pss.id)) {
-                        if (pssDE.calcMode.type !== "programRule") {
-                            pssDE.calcMode = { type: "other" };
+                    hiddenSectionsArray.forEach(hsArray => {
+                        if (hsArray.ids.includes(pss.id)) {
+                            if (pssDE.calcMode.type !== "programRule" && hsArray.allwaysHidden) {
+                                pssDE.calcMode = { type: "other" };
+                            }
                         }
-                    }
+                    });
                 });
             });
         }
@@ -151,7 +218,13 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
             stage.programStageDataElements.forEach(psde => {
                 assignedDEArray.forEach(adeArray => {
                     if (adeArray.ids.includes(psde.dataElement.id)) {
-                        psde.dataElement.calcMode = { type: "programRule", name: adeArray.name };
+                        if (!psde.dataElement.calcMode) {
+                            if (!psde.dataElement.calcMode || psde.dataElement.calcMode.type === "default") {
+                                psde.dataElement.calcMode = { type: "programRule", names: [adeArray.name] }
+                            } else {
+                                psde.dataElement.calcMode.names.push(adeArray.name);
+                            }
+                        }
                     } else if (!psde.dataElement.calcMode) {
                         psde.dataElement.calcMode = { type: "default" };
                     }
@@ -180,13 +253,20 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
                 ).then(() => {
                     $q.all(stageSectionPromises).then(function (stages) {
                         const hiddenSectionsArray = $scope.programRules.flatMap(pr => {
-                            return pr.programRuleActions.flatMap(pra => {
+                            const idArray = pr.programRuleActions.flatMap(pra => {
                                 if (pra.programRuleActionType === "HIDESECTION") {
-                                    return [pra.programStageSection.id];
+                                    return pra.programStageSection.id;
                                 } else {
                                     return [];
                                 }
                             });
+
+                            return {
+                                name: pr.name,
+                                stageId: pr.programStage?.id,
+                                allwaysHidden: pr.condition === "true",
+                                ids: idArray,
+                            };
                         });
 
                         const assignedDEArray = $scope.programRules.flatMap(pr => {
@@ -200,6 +280,23 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
 
                             return {
                                 name: pr.name,
+                                stageId: pr.programStage?.id,
+                                ids: idArray,
+                            };
+                        });
+
+                        const hiddenDEArray = $scope.programRules.flatMap(pr => {
+                            const idArray = pr.programRuleActions.flatMap(pra => {
+                                if (pra.programRuleActionType === "HIDEFIELD") {
+                                    return pra.dataElement.id;
+                                } else {
+                                    return [];
+                                }
+                            });
+
+                            return {
+                                name: pr.name,
+                                stageId: pr.programStage?.id,
                                 ids: idArray,
                             };
                         });
@@ -208,14 +305,14 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
                             var toc = {
                                 displayName: "Stage: " + stage.displayName + (stage.repeatable ? " (Repeatable)" : ""),
                                 id: stage.id,
-                                index: index,
+                                index: index + 1,
                             };
                             if (stage.programStageSections.length == 0) {
                                 makeStageCalcMode(stage, assignedDEArray);
-                                return createStageWithoutSections(stage, toc);
+                                return createStageWithoutSections(stage, toc, hiddenDEArray);
                             } else {
                                 makeSectionsCalcMode(stage, assignedDEArray, hiddenSectionsArray);
-                                return createStageWithSections(stage, toc);
+                                return createStageWithSections(stage, toc, hiddenSectionsArray, hiddenDEArray);
                             }
                         });
                         dossiersProgramDataService.data.stages = $scope.stages;
@@ -446,18 +543,63 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
             index: 97,
         };
 
+
         /*
-         *  @name getStageRef
-         *  @description Gets the stages referenced by the filter.
+         *  @name getStageNameById
+         *  @description Gets the name of a stage matching their Id
          *  @scope dossiersProgramIndicatorController
          */
-        function getStageRef(filter) {
-            const psdeRegex = /#{(\w+)\.\w+}/g;
-            let stageRefArray = psdeRegex.exec(filter);
-            if (stageRefArray && stageRefArray.length > 1) {
-                stageRefArray.shift();
-                return _.uniq($scope.programStages.filter(ps => stageRefArray.includes(ps.id)).flatMap(ps => ps.name));
+        function getStageNameById(id) {
+            return dossiersProgramDataService.data.stages.find(stage => (stage.id === id))?.displayName;
+        }
+
+        /*
+         *  @name getAllCaptureGroups
+         *  @description Gets all capture groups from a matchAll
+         *  @scope dossiersProgramIndicatorController
+         */
+        function getAllCaptureGroups(filter, regex, array) {
+            const idsArray = Array.from(filter.matchAll(regex), (m) => m[1]);
+            if (idsArray.length > 0) {
+                idsArray.forEach(psId => {
+                    array.push(psId);
+                })
             }
+        }
+
+        /*
+         *  @name getStageRef
+         *  @description Gets the stages referenced by the item.
+         *  @scope dossiersProgramIndicatorController
+         */
+        function getStageRef(item) {
+            let psIds = [];
+
+            const psIdRegex = /V\{program_stage_id\} *== *'(\w{11})'/g;
+            getAllCaptureGroups(item, psIdRegex, psIds)
+
+            const psDeRegex = /#{(\w+)\.\w+}/g;
+            getAllCaptureGroups(item, psDeRegex, psIds)
+
+            const psEdRegex = /PS_EVENTDATE: *(\w{11})/g;
+            getAllCaptureGroups(item, psEdRegex, psIds)
+
+            psIds = _.uniq(psIds);
+
+
+            const psNameRegex = /V\{program_stage_name\} *== *['"](.*?)['"]/g;
+            const namesArray = Array.from(item.matchAll(psNameRegex), (m) => m[1]);
+
+            const idsNamesArray = psIds.flatMap(id => {
+                const psName = getStageNameById(id) ?? undefined;
+                if (psName) {
+                    return psName;
+                } else {
+                    return [];
+                }
+            });
+
+            return _.uniq(idsNamesArray.concat(namesArray))
         }
 
         /*
@@ -467,10 +609,56 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
          */
         function recursiveAssignExpression(i) {
             if (i >= $scope.programIndicators.length) return;
+
+            const stageRef = $scope.programIndicators[i].stageRef;
+            if (stageRef && stageRef.length > 0) {
+                const newRef = getStageRef($scope.programIndicators[i].expression);
+                $scope.programIndicators[i].stageRef = _.uniq($scope.programIndicators[i].stageRef.concat(newRef));
+            } else {
+                $scope.programIndicators[i].stageRef = getStageRef($scope.programIndicators[i].expression);
+            }
+
             dossiersProgramIndicatorExpressionFactory.save({}, $scope.programIndicators[i].expression, function (data) {
                 $scope.programIndicators[i].expression = data.description.replaceAll("\\.", ".");
                 recursiveAssignExpression(i + 1);
             });
+        }
+
+        /*
+         *  @name stageIdReplacer
+         *  @description Function to get stage name from capture group
+         *  @scope dossiersProgramIndicatorController
+         */
+        function stageIdReplacer(_, p1) {
+            return `Program stage is ${getStageNameById(p1)}`;
+        }
+
+        /*
+         *  @name getOptionNameById
+         *  @description Gets the name of a DE option matching their code
+         *  @scope dossiersProgramIndicatorController
+         */
+        function getOptionNameById(stageId, deId, index) {
+            const stage = dossiersProgramDataService.data.stages.find(stage => (stage.id === stageId));
+
+            const de = stage.programStageSections.flatMap(section => {
+                const de = section.dataElements.find(de => {
+                    return de.id === deId;
+                });
+                return de ? de : [];
+            })[0];
+
+            return de.optionSet?.options?.find(opt => opt.code === index)?.displayName;
+        }
+
+        /*
+         *  @name replacer
+         *  @description Function to get stage name from capture group
+         *  @scope dossiersProgramIndicatorController
+         */
+        function optionReplacer(match, p1, p2, p3, p4) {
+            const optionName = getOptionNameById(p1, p2, p4);
+            return optionName ? `#{${p1}.${p2}} ${p3} '${optionName}'` : match;
         }
 
         /*
@@ -479,14 +667,36 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
          *  @scope dossiersProgramIndicatorController
          */
         function recursiveAssignFilter(i) {
-            if (i >= $scope.programIndicators.length) return;
+            if (i >= $scope.programIndicators.length) {
+                $rootScope.recursiveAssignFilterDone = true;
+                return;
+            };
             if (typeof $scope.programIndicators[i].filter === "undefined") {
                 recursiveAssignFilter(i + 1);
                 return;
             }
-            $scope.programIndicators[i].stageRef = getStageRef($scope.programIndicators[i].filter);
+
+            const stageRef = $scope.programIndicators[i].stageRef;
+            if (stageRef && stageRef.length > 0) {
+                const newRef = getStageRef($scope.programIndicators[i].filter);
+                $scope.programIndicators[i].stageRef = _.uniq($scope.programIndicators[i].stageRef.concat(newRef));
+            } else {
+                $scope.programIndicators[i].stageRef = getStageRef($scope.programIndicators[i].filter);
+            }
+
+            const regex = /#{(\w+)\.(\w+)} *?(!=|==) *?'(.*?)'/g;
+            const newFilter = $scope.programIndicators[i].filter.replaceAll(regex, optionReplacer);
+            $scope.programIndicators[i].filter = newFilter;
+
             dossiersProgramIndicatorFilterFactory.save({}, $scope.programIndicators[i].filter, function (data) {
-                $scope.programIndicators[i].filter = data.description.replaceAll("\\.", ".");
+                if (data.description.includes("Program stage id")) {
+                    const regex = /Program stage id *== *['"](\w{11})['"]/g;
+                    const newFilter = data.description.replaceAll(regex, stageIdReplacer);
+                    $scope.programIndicators[i].filter = newFilter;
+                } else {
+                    $scope.programIndicators[i].filter = data.description.replaceAll("\\.", ".");
+                }
+
                 recursiveAssignFilter(i + 1);
             });
         }
@@ -501,7 +711,8 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
             ping();
             if ($scope.selectedProgram) {
                 startLoadingState(false);
-                //get indicators, add to TOC
+                $rootScope.recursiveAssignFilterDone = false;
+
                 dossiersProgramIndicatorsFactory.get(
                     {
                         programId: $scope.selectedProgram.id,
@@ -514,17 +725,24 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
                             function (psData) {
                                 $scope.programStages = psData.programs[0].programStages.map(ps => ps);
                                 if (data.programIndicators.length > 0) {
-                                    $scope.programIndicators = data.programIndicators;
-                                    addtoTOC($scope.toc, null, $scope.programIndicators4TOC, "Indicators");
+                                    $scope.programIndicators = data.programIndicators.map(pi => {
+                                        pi.analyticsPeriodBoundaries = pi.analyticsPeriodBoundaries.map(bound => {
+                                            const btTextArray = bound.boundaryTarget.split(":");
+                                            const btId = btTextArray[1];
+                                            if (btTextArray[0] === "PS_EVENTDATE" && btId && btId.length == 11) {
+                                                const btStage = getStageNameById(btId) ?? btId;
+                                                const btIdText = btStage.displayName ?? btId;
+                                                bound.boundaryTarget = `${btTextArray[0]} - ${btIdText}}`
+                                            }
+                                            return bound;
+                                        })
+                                        return pi;
+                                    });
+                                    addtoTOC($scope.toc, null, $scope.programIndicators4TOC, "Program Indicators");
+
                                     recursiveAssignExpression(0);
                                     recursiveAssignFilter(0);
-                                    $rootScope.programIndicators = $scope.programIndicators.flatMap(pi => {
-                                        return {
-                                            id: pi.id,
-                                            name: pi.displayName,
-                                            expression: pi.expression,
-                                        };
-                                    });
+                                    $rootScope.programIndicators = $scope.programIndicators;
                                     $rootScope.programStages = $scope.programStages;
                                     dossiersProgramDataService.data.programIndicators = $scope.programIndicators;
                                 }
@@ -597,7 +815,7 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
          *  @scope dossierProgramGlobalIndicatorController
          */
         function parseExpression(indicator, item) {
-            const regexArray = [/D{(\w+)\.?(\w+)?}/g, /A{(\w+)\.?\w+?}/g, /I{(\w+)}/g];
+            const regexArray = [/D{(\w{11})\.?(\w{11})?}/g, /A{(\w{11})\.?\w{11}?}/g, /I{(\w{11})}/g];
             let m;
             regexArray.forEach((regex, index) => {
                 while ((m = regex.exec(item)) !== null) {
@@ -612,18 +830,13 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
                             }))
                         ) {
                             if (!indicator.stageRef) indicator.stageRef = [];
-                            indicator.stageRef = indicator.stageRef.concat(ps.name);
+                            indicator.stageRef = _.uniq(indicator.stageRef.concat(ps.name));
                         }
                     }
                     if (index === 2) {
                         if ((pi = $scope.programIndicators.find(pi => pi.id === m[1]))) {
                             if (!indicator.stageRef) indicator.stageRef = [];
-                            if ($scope.programStages)
-                                indicator.stageRef = indicator.stageRef.concat(
-                                    $scope.programStages.flatMap(ps =>
-                                        pi.expression.search(ps.id) !== -1 ? ps.name : []
-                                    )
-                                );
+                            indicator.stageRef = _.uniq(indicator.stageRef.concat(pi.stageRef));
                             if ($scope.indicators.indexOf(indicator) == -1) $scope.indicators.push(indicator);
                         }
                     }
@@ -679,16 +892,16 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
          *  @dependencies dossiersProgramGlobalIndicatorsFactory, dossiersProgramGlobalIndicatorExpressionFactory
          *  @scope dossierProgramGlobalIndicatorController
          */
-        $scope.$watchGroup(["selectedProgram", "programIndicators", "programStages"], function () {
+        $scope.$watchGroup(["selectedProgram", "programIndicators", "programStages", "recursiveAssignFilterDone"], function () {
             ping();
-            if ($scope.selectedProgram && $scope.programIndicators && $scope.programStages) {
+            $scope.programIndicators = $rootScope.programIndicators;
+            if ($scope.selectedProgram && $scope.programIndicators && $scope.programStages && $rootScope.recursiveAssignFilterDone) {
                 startLoadingState(false);
                 $scope.indicators = [];
 
                 //Query indicator information
-                $scope.allIndicators = dossiersProgramGlobalIndicatorsFactory.get(function () {
-                    endLoadingState(true);
-                    $scope.allIndicators.indicators.forEach(function (indicator) {
+                dossiersProgramGlobalIndicatorsFactory.get(function (data) {
+                    $scope.allIndicators = data.indicators.forEach(function (indicator) {
                         const num = indicator.numerator;
                         const den = indicator.denominator;
                         parseExpression(indicator, num);
@@ -696,13 +909,14 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
                         if (indicator.stageRef) indicator.stageRef = _.uniq(indicator.stageRef);
 
                         indicator.rowItems = extractVisItemsFromInd(num, den);
-                    }, this);
+                    });
                     if ($scope.indicators.length > 0) {
                         addtoTOC($scope.toc, null, $scope.indicators4TOC, "Indicators");
                         recursiveAssignNumerator(0);
                         recursiveAssignDenominator(0);
                         dossiersProgramDataService.data.indicators = $scope.indicators;
                     }
+                    endLoadingState(true);
                 });
             }
         });
@@ -713,18 +927,39 @@ dossierProgramsModule.controller("dossiersProgramTEAController", [
     "$scope",
     "$translate",
     "dossiersProgramTEAsFactory",
+    "dossiersProgramTEAsRulesFactory",
     "dossiersProgramDataService",
-    function ($scope, $translate, dossiersProgramTEAsFactory, dossiersProgramDataService) {
+    function ($scope, $translate, dossiersProgramTEAsFactory, dossiersProgramTEAsRulesFactory, dossiersProgramDataService) {
         $scope.trackedEntityAttributes4TOC = {
             displayName: "Tracked Entity Attributes",
             id: "trackedEntityAttributeContainer",
-            index: 99,
+            index: 0,
         };
+
+        /*
+         *  @name makeTEAVisibility
+         *  @description Determine if HIDEFIELD actions affecs the TEA
+         *  @scope dossiersProgramTEAController
+         */
+        function makeTEAVisibility(teaId, hiddenTEAArray) {
+            if (!hiddenTEAArray) return [];
+
+            return hiddenTEAArray.flatMap(hiddenTEA => {
+                if (hiddenTEA.trackedEntityAttribute.id === teaId) {
+                    return {
+                        type: "HIDEFIELD",
+                        name: hiddenTEA.name
+                    };
+                }
+
+                return [];
+            })
+        }
 
         /*
         @name none
         @description Gets the tracked entity attributes information, translates it and shows it
-        @dependencies dossiersProgramTEAsFactory
+        @dependencies dossiersProgramTEAsFactory, dossiersProgramTEAsRulesFactory
         @scope dossiersProgramTEAController
         */
         $scope.$watch("selectedProgram", function () {
@@ -737,16 +972,26 @@ dossierProgramsModule.controller("dossiersProgramTEAController", [
                         programId: $scope.selectedProgram.id,
                     },
                     function (data) {
-                        $scope.trackedEntityAttributes = data.programTrackedEntityAttributes.map(teas => ({
-                            ...teas.trackedEntityAttribute,
-                        }));
+                        const teasIds = data.programTrackedEntityAttributes.map(ptea => (ptea.trackedEntityAttribute.id)).join(",");
+                        dossiersProgramTEAsRulesFactory.get(
+                            {
+                                programId: $scope.selectedProgram.id,
+                                teasIds: teasIds,
+                            },
+                            function (rulesData) {
+                                $scope.trackedEntityAttributes = data.programTrackedEntityAttributes.map(ptea => ({
+                                    ...ptea.trackedEntityAttribute,
+                                    mandatory: ptea.mandatory,
+                                    visibility: makeTEAVisibility(ptea.trackedEntityAttribute.id, rulesData.programRules)
+                                }));
 
-                        if ($scope.trackedEntityAttributes.length > 0) {
-                            addtoTOC($scope.toc, null, $scope.trackedEntityAttributes4TOC, "Tracked Entity Attributes");
-                            dossiersProgramDataService.data.trackedEntityAttributes = $scope.trackedEntityAttributes;
-                        }
+                                if ($scope.trackedEntityAttributes.length > 0) {
+                                    addtoTOC($scope.toc, null, $scope.trackedEntityAttributes4TOC, "Tracked Entity Attributes");
+                                    dossiersProgramDataService.data.trackedEntityAttributes = $scope.trackedEntityAttributes;
+                                }
 
-                        endLoadingState(true);
+                                endLoadingState(true);
+                            });
                     }
                 );
             }
@@ -758,14 +1003,12 @@ dossierProgramsModule.controller("dossiersProgramRuleController", [
     "$scope",
     "$translate",
     "dossiersProgramRulesFactory",
-    "dossiersProgramRulesConditionDescription",
     "dossiersProgramRulesActionsTemplateName",
     "dossiersProgramDataService",
     function (
         $scope,
         $translate,
         dossiersProgramRulesFactory,
-        dossiersProgramRulesConditionDescription,
         dossiersProgramRulesActionsTemplateName,
         dossiersProgramDataService
     ) {
@@ -774,23 +1017,6 @@ dossierProgramsModule.controller("dossiersProgramRuleController", [
             id: "RuleContainer",
             index: 100,
         };
-
-        /* 
-        @name recursiveAssignConditionDescription
-        @description Gets the "readable" expressions for each program rule condition
-        @scope dossiersProgramRuleController
-        */
-        function recursiveAssignConditionDescription(i) {
-            if (i >= $scope.rules.length || !$scope.rules[i].condition) return;
-            dossiersProgramRulesConditionDescription.save(
-                { programId: $scope.selectedProgram.id },
-                $scope.rules[i].condition,
-                function (data) {
-                    $scope.rules[i].condition = data.description;
-                    recursiveAssignConditionDescription(i + 1);
-                }
-            );
-        }
 
         /* 
         @name assignProgramRulesActionsTemplateName
@@ -818,7 +1044,7 @@ dossierProgramsModule.controller("dossiersProgramRuleController", [
         /* 
         @name none
         @description Gets the program rules information, translates it and shows it
-        @dependencies dossiersProgramRulesFactory, dossiersProgramRulesConditionDescription, dossiersProgramRulesActionsTemplateName
+        @dependencies dossiersProgramRulesFactory, dossiersProgramRulesActionsTemplateName
         @scope dossiersProgramRuleController
          */
         $scope.$watch("selectedProgram", function () {
@@ -836,7 +1062,6 @@ dossierProgramsModule.controller("dossiersProgramRuleController", [
                         if ($scope.rules.length > 0) {
                             addtoTOC($scope.toc, null, $scope.rules4TOC, "Program Rules");
                             assignProgramRulesActionsTemplateName();
-                            recursiveAssignConditionDescription(0);
                             dossiersProgramDataService.data.rules = $scope.rules;
                         }
 
@@ -886,63 +1111,6 @@ dossierProgramsModule.controller("dossiersProgramRuleVariablesController", [
                         endLoadingState(true);
                     }
                 );
-            }
-        });
-    },
-]);
-
-dossierProgramsModule.controller("dossiersProgramAnalysisController", [
-    "$scope",
-    "$q",
-    "dossiersProgramEventReportFactory",
-    "dossiersProgramEventChartFactory",
-    function ($scope, $q, dossiersProgramEventReportFactory, dossiersProgramEventChartFactory) {
-        $scope.eventReports4TOC = {
-            displayName: "Public Event Reports",
-            id: "EventReportsContainer",
-            index: 102,
-        };
-
-        $scope.eventCharts4TOC = {
-            displayName: "Public Event Charts",
-            id: "EventChartsContainer",
-            index: 103,
-        };
-
-        getEventReportUrl = function (eventReportId) {
-            return dhisroot + "/dhis-web-event-reports/index.html?id=" + eventReportId;
-        };
-
-        getEventChartUrl = function (eventChartId) {
-            return dhisroot + "/dhis-web-event-visualizer/index.html?id=" + eventChartId;
-        };
-
-        $scope.$watch("selectedProgram", function () {
-            ping();
-            if ($scope.selectedProgram) {
-                startLoadingState(false);
-                var analysisElementPromises = [
-                    dossiersProgramEventReportFactory.get({ programId: $scope.selectedProgram.id }).$promise,
-                    dossiersProgramEventChartFactory.get({ programId: $scope.selectedProgram.id }).$promise,
-                ];
-
-                $q.all(analysisElementPromises).then(function (data) {
-                    $scope.eventReports = data[0].eventReports.map(function (eventReport) {
-                        eventReport.url = getEventReportUrl(eventReport.id);
-                        return eventReport;
-                    });
-                    $scope.eventCharts = data[1].eventCharts.map(function (eventChart) {
-                        eventChart.url = getEventChartUrl(eventChart.id);
-                        return eventChart;
-                    });
-
-                    if ($scope.eventReports.length > 0) {
-                        addtoTOC($scope.toc, null, $scope.eventReports4TOC, "Event Reports");
-                    }
-                    if ($scope.eventCharts.length > 0) {
-                        addtoTOC($scope.toc, null, $scope.eventCharts4TOC, "Event Charts");
-                    }
-                });
             }
         });
     },
@@ -1002,18 +1170,6 @@ dossierProgramsModule.controller("dossiersProgramExport", [
             }
         }
 
-        /* 
-        @name makeStageSectionSheetName
-        @description Makes a sheet from Stage Section / Data Elements data
-        @scope dossiersProgramExport
-        */
-        function makeStageSectionSheetName(stageName, sectionName) {
-            const stageNameSlice = stageName.replace(/[\\/*?:[\]]/g, "").slice(0, 20);
-            const stageNameSliceLen = stageNameSlice.length !== 20 ? 20 - stageNameSlice.length + 10 : 10;
-            const sectionNameSlice = sectionName.replace(/[\\/*?:[\]]/g, "").slice(0, stageNameSliceLen);
-            return `${stageNameSlice}-${sectionNameSlice}`;
-        }
-
         /*
         @name writeSheetHeader
         @description Writes sheet header from data object keys array
@@ -1039,45 +1195,35 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         }
 
         /* 
-        @name makeStageSectionSheet
+        @name makeDataElementsSheets
         @description Makes a sheet from Stage Section / Data Elements data
         @scope dossiersProgramExport
         */
-        function makeStageSectionSheet(workbook, dataElements, sheetName) {
-            const data = dataElements?.map(item => {
-                return {
-                    [translate("dos_NameElement")]: item?.displayName,
-                    [translate("dos_FormNameElement")]: item?.displayFormName,
-                    [translate("dos_DescriptionElement")]: item?.displayDescription,
-                    [translate("dos_ValueType")]: item?.valueType,
-                    [translate("dos_CalculationMode")]: makeCalcMode(item?.calcMode),
-                    [translate("dos_OptionSetName")]: item?.optionSet?.name,
-                    [translate("dos_OptionSetOptions")]: joinAndTrim(
-                        item?.optionSet?.options?.map(opt => opt.displayName)
-                    ),
-                };
-            });
-
-            const sheet = workbook.addSheet(sheetName);
-            writeSheetHeader(sheet, Object.keys(data[0]));
-            writeSheetData(sheet, data);
-        }
-
-        /* 
-        @name makeStagesSheets
-        @description Makes a sheet from Stage Section / Data Elements data
-        @scope dossiersProgramExport
-        */
-        function makeStagesSheets(workbook, stages) {
-            stages.forEach(stage => {
-                stage.programStageSections.forEach(section => {
-                    makeStageSectionSheet(
-                        workbook,
-                        section.dataElements,
-                        makeStageSectionSheetName(stage.displayName, section.displayName)
-                    );
+        function makeDataElementsSheets(workbook, stages) {
+            const data = stages.flatMap(stage => {
+                return stage.programStageSections.flatMap(section => {
+                    return section.dataElements.flatMap(de => {
+                        return {
+                            [translate("dos_Stage")]: stage.displayName,
+                            [translate("dos_Section")]:
+                                section.displayName === "Data Elements" ? "" : section.displayName,
+                            [translate("dos_NameElement")]: de?.displayName,
+                            [translate("dos_FormNameElement")]: de?.displayFormName,
+                            [translate("dos_DescriptionElement")]: de?.displayDescription,
+                            [translate("dos_ValueType")]: de?.valueType,
+                            [translate("dos_CalculationMode")]: makeCalcMode(de?.calcMode),
+                            [translate("dos_OptionSetName")]: de?.optionSet?.name,
+                            [translate("dos_OptionSetOptions")]: joinAndTrim(
+                                de?.optionSet?.options?.map(opt => opt.displayName)
+                            ),
+                        };
+                    });
                 });
             });
+
+            const sheet = workbook.addSheet("Data Elements");
+            writeSheetHeader(sheet, Object.keys(data[0]));
+            writeSheetData(sheet, data);
         }
 
         /* 
@@ -1090,7 +1236,6 @@ dossierProgramsModule.controller("dossiersProgramExport", [
                 return {
                     [translate("dos_NameElement")]: item?.name,
                     [translate("dos_FormNameElement")]: item?.formName,
-                    [translate("dos_Code")]: item?.code,
                     [translate("dos_DescriptionElement")]: item?.description,
                     [translate("dos_AggregationType")]: item?.aggregationType,
                     [translate("dos_ValueType")]: item?.valueType,
@@ -1118,9 +1263,7 @@ dossierProgramsModule.controller("dossiersProgramExport", [
                     [translate("dos_DescriptionElement")]: item?.displayDescription,
                     [translate("dos_Type")]: item?.indicatorType?.displayName,
                     [translate("dos_NumeratorIndicator")]: item?.numerator,
-                    [translate("dos_NumeratorDescription")]: item?.numeratorDescription,
                     [translate("dos_DenominatorIndicator")]: item?.denominator,
-                    [translate("dos_DenominatorDescription")]: item?.denominatorDescription,
                     [translate("dos_StagesReferenced")]: joinAndTrim(item?.stageRef),
                 };
             });
@@ -1320,7 +1463,7 @@ dossierProgramsModule.controller("dossiersProgramExport", [
                             if (value === undefined) continue;
                             switch (key) {
                                 case "stages":
-                                    makeStagesSheets(workbook, value);
+                                    makeDataElementsSheets(workbook, value);
                                     break;
                                 case "programIndicators":
                                     makeProgramIndicatorsSheet(workbook, value);

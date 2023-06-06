@@ -22,6 +22,7 @@
     "dos_Data Sets": "Conjuntos de dados> Seções> Elementos de dados (Tabela 1)",
     "dos_Data Set": "Conjunto de Dados",
     "dos_Section": "Seçõesn",
+    "dos_Stage": "Etapa",
     "dos_Indicator Groups": "Grupo de Indicadores> Indicadores (Tabela 2)",
     "dos_Indicator Group": "Grupo Indicador",
     "dos_Programs": "Programas",
@@ -96,6 +97,8 @@
     "dos_DenominatorIndicator": "Denominator",
 
     "dos_Comments": "Comentários",
+    "dos_Mandatory": "Obrigatório",
+    "dos_Visibility": "Visibilidade na Introdução de Dados",
 
     "MÓDULO: PROCURAR": "****************************",
 

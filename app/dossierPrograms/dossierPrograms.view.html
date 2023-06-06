@@ -67,10 +67,61 @@
             </ul>
         </div>
 
+
         <div id="DossierTextTitleContainer" ng-if="selectedProgram.displayDescription" class="row headerGroup">
             <br />
             <h1>{{ "dos_Description of Program" | translate }}</h1>
             <div ng-bind-html="trustAsHtml(selectedProgram.displayDescription)"></div>
+        </div>
+
+        <div class="col-md-12" id="trackedEntityAttributeContainer" ng-controller="dossiersProgramTEAController">
+            <div ng-if="trackedEntityAttributes.length > 0" class="col-md-12">
+                <h3 class="section" id="trackedEntityAttributes">{{ "dos_TrackedEntityAttributes" | translate }}</h3>
+                <p>
+                    {{ "dos_TrackedEntityAttributesNumber" | translate }}:
+                    {{ trackedEntityAttributes.length }}
+                </p>
+                <table class="sectionElementsTable table table-striped">
+                    <thead>
+                        <tr>
+                            <th>{{ "dos_NameElement" | translate }}</th>
+                            <th>{{ "dos_FormNameElement" | translate }}</th>
+                            <th>{{ "dos_DescriptionElement" | translate }}</th>
+                            <th>{{ "dos_ValueType" | translate }}</th>
+                            <th>{{ "dos_AggregationType" | translate }}</th>
+                            <th>{{ "dos_Mandatory" | translate }}</th>
+                            <th>{{ "dos_Visibility" | translate }}</th>
+                            <th>{{ "dos_OptionSet" | translate }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="tea in trackedEntityAttributes">
+                            <td>{{ tea.name }}</td>
+                            <td>{{ tea.formName }}</td>
+                            <td>{{ tea.description }}</td>
+                            <td>{{ tea.valueType }}</td>
+                            <td>{{ tea.aggregationType }}</td>
+                            <td>{{ tea.mandatory }}</td>
+                            <td>
+                                <ul ng-if="dataElement.visibility">
+                                    <li ng-repeat="visibility in dataElement.visibility">
+                                        <div>{{ visibility.type }}: {{ visibility.name }}</div>
+                                    </li>
+                                </ul>
+                            </td>
+                            <td>
+                                <div ng-if="tea.optionSet.options">
+                                    <p>{{ "dos_OptionSetName" | translate }}: {{ tea.optionSet.name }}</p>
+                                    <select class="form-control col-md-2">
+                                        <option selected>{{ "dos_SeeOptions" | translate }}</option>
+                                        <option ng-repeat="option in tea.optionSet.options">{{ option.name }}</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <div id="stageContainer" ng-controller="dossiersProgramSectionController">
@@ -87,6 +138,8 @@
                                 <th>{{ "dos_DescriptionElement" | translate }}</th>
                                 <th>{{ "dos_ValueType" | translate }}</th>
                                 <th>{{ "dos_CalculationMode" | translate }}</th>
+                                <th>{{ "dos_Mandatory" | translate }}</th>
+                                <th>{{ "dos_Visibility" | translate }}</th>
                                 <th>{{ "dos_Options" | translate }}</th>
                             </tr>
                         </thead>
@@ -99,13 +152,26 @@
                                 <td>
                                     <div ng-switch="dataElement.calcMode.type">
                                         <div ng-switch-when="programRule">
-                                            {{ "dos_ProgramRule" | translate }}: {{ dataElement.calcMode.name }}
+                                            {{ "dos_ProgramRule" | translate }}: 
+                                            <ul ng-if="dataElement.calcMode.names">
+                                                <li ng-repeat="name in dataElement.calcMode.names">
+                                                    <div> {{ name }}</div>
+                                                </li>
+                                            </ul>
                                         </div>
                                         <div ng-switch-when="other">
                                             {{ "dos_Other" | translate }}
                                         </div>
                                         <div ng-switch-default>{{ "dos_DirectDataEntry" | translate }}</div>
                                     </div>
+                                </td>
+                                <td>{{ dataElement.compulsory }}</td>
+                                <td>
+                                    <ul ng-if="dataElement.visibility">
+                                        <li ng-repeat="visibility in dataElement.visibility">
+                                            <div>{{ visibility.type }}: {{ visibility.name }}</div>
+                                        </li>
+                                    </ul>
                                 </td>
                                 <td>
                                     <div ng-if="dataElement.optionSet.options">
@@ -200,7 +266,7 @@
         </div>
 
         <div class="col-md-12" id="indicatorContainer" ng-controller="dossierProgramGlobalIndicatorController">
-            <div ng-if="indicators.length > 0" col-md-12>
+            <div ng-if="indicators.length > 0" class="col-md-12">
                 <h3 class="section" id="indicators">{{ "dos_Indicators" | translate }}</h3>
                 <table class="sectionElementsTable table table-striped">
                     <thead>
@@ -209,11 +275,9 @@
                             <th>{{ "dos_DescriptionElement" | translate }}</th>
                             <th>{{ "dos_Type" | translate }}</th>
                             <th>{{ "dos_NumeratorIndicator" | translate }}</th>
-                            <th>{{ "dos_NumeratorDescription" | translate }}</th>
                             <th>{{ "dos_DenominatorIndicator" | translate }}</th>
-                            <th>{{ "dos_DenominatorDescription" | translate }}</th>
                             <th>{{ "dos_StagesReferenced" | translate }}</th>
-                            <th>{{ "dos_Visualization:" | translate }}</th>
+                            <th>{{ "dos_Visualization" | translate }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -222,9 +286,7 @@
                             <td>{{ indicator.displayDescription }}</td>
                             <td>{{ indicator.indicatorType.displayName }}</td>
                             <td>{{ indicator.numerator }}</td>
-                            <td>{{ indicator.numeratorDescription }}</td>
                             <td>{{ indicator.denominator }}</td>
-                            <td>{{ indicator.denominatorDescription }}</td>
                             <td>
                                 <ul ng-if="indicator.stageRef">
                                     <li ng-repeat="stageRef in indicator.stageRef">
@@ -250,50 +312,8 @@
             </div>
         </div>
 
-        <div class="col-md-12" id="trackedEntityAttributeContainer" ng-controller="dossiersProgramTEAController">
-            <div ng-if="trackedEntityAttributes.length > 0" col-md-12>
-                <h3 class="section" id="trackedEntityAttributes">{{ "dos_TrackedEntityAttributes" | translate }}</h3>
-                <p>
-                    {{ "dos_TrackedEntityAttributesNumber" | translate }}:
-                    {{ trackedEntityAttributes.length }}
-                </p>
-                <table class="sectionElementsTable table table-striped">
-                    <thead>
-                        <tr>
-                            <th>{{ "dos_NameElement" | translate }}</th>
-                            <th>{{ "dos_FormNameElement" | translate }}</th>
-                            <th>{{ "dos_Code" | translate }}</th>
-                            <th>{{ "dos_DescriptionElement" | translate }}</th>
-                            <th>{{ "dos_ValueType" | translate }}</th>
-                            <th>{{ "dos_AggregationType" | translate }}</th>
-                            <th>{{ "dos_OptionSet" | translate }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="tea in trackedEntityAttributes">
-                            <td>{{ tea.name }}</td>
-                            <td>{{ tea.formName }}</td>
-                            <td>{{ tea.code }}</td>
-                            <td>{{ tea.description }}</td>
-                            <td>{{ tea.valueType }}</td>
-                            <td>{{ tea.aggregationType }}</td>
-                            <td>
-                                <div ng-if="tea.optionSet.options">
-                                    <p>{{ "dos_OptionSetName" | translate }}: {{ tea.optionSet.name }}</p>
-                                    <select class="form-control col-md-2">
-                                        <option selected>{{ "dos_SeeOptions" | translate }}</option>
-                                        <option ng-repeat="option in tea.optionSet.options">{{ option.name }}</option>
-                                    </select>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
         <div class="col-md-12" id="RuleContainer" ng-controller="dossiersProgramRuleController">
-            <div ng-if="rules.length > 0" col-md-12>
+            <div ng-if="rules.length > 0" class="col-md-12">
                 <h3 class="section" id="rules">{{ "Program Rules" | translate }}</h3>
                 <p>{{ "Number of Rules in Program" | translate }}: {{ rules.length }}</p>
                 <table class="sectionElementsTable table table-striped">
@@ -511,7 +531,7 @@
         </div>
 
         <div class="col-md-12" id="RuleVariablesContainer" ng-controller="dossiersProgramRuleVariablesController">
-            <div ng-if="ruleVariables.length > 0" col-md-12>
+            <div ng-if="ruleVariables.length > 0" class="col-md-12">
                 <h3 class="section" id="ruleVariables">{{ "dos_ProgramRulesVariables" | translate }}</h3>
                 <p>{{ "dos_ProgramRulesVariablesNumber" | translate }}: {{ ruleVariables.length }}</p>
                 <table class="sectionElementsTable table table-striped">
@@ -534,62 +554,6 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>
-        </div>
-
-        <div class="col-md-12" ng-controller="dossiersProgramAnalysisController">
-            <div class="col-md-12" id="EventReportsContainer" ng-show="eventReports.length > 0">
-                <h2 class="EventReportsGroup" id="eventReports">{{ "dos_EventReports" | translate }}</h2>
-                <div class="col-md-12">
-                    <p>{{ "dos_EventReportsNumber" | translate }}: {{ eventReports.length }}</p>
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>{{ "dos_NameElement" | translate }}</th>
-                                <th>{{ "dos_DescriptionElement" | translate }}</th>
-                                <th>{{ "dos_Link" | translate }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="eventReport in  eventReports | orderBy: 'displayName'">
-                                <td>{{ eventReport.displayName }}</td>
-                                <td>{{ eventReport.displayDescription }}</td>
-                                <td>
-                                    <a ng-href="{{ eventReport.url }}" class="btn btn-info" role="button">{{
-                                        "OPEN" | translate
-                                    }}</a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="col-md-12" id="EventChartsContainer" ng-show="eventCharts.length > 0">
-                <h2 class="EventChartsGroup" id="eventCharts">{{ "dos_EventCharts" | translate }}</h2>
-                <div class="col-md-12">
-                    <p>{{ "dos_EventChartsNumber" | translate }}: {{ eventCharts.length }}</p>
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>{{ "dos_NameElement" | translate }}</th>
-                                <th>{{ "dos_DescriptionElement" | translate }}</th>
-                                <th>{{ "dos_Link" | translate }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="eventChart in  eventCharts | orderBy: 'displayName'">
-                                <td>{{ eventChart.displayName }}</td>
-                                <td>{{ eventChart.displayDescription }}</td>
-                                <td>
-                                    <a ng-href="{{ eventChart.url }}" class="btn btn-info" role="button">{{
-                                        "OPEN" | translate
-                                    }}</a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
             </div>
         </div>
     </div>

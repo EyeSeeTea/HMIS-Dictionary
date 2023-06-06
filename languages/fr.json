@@ -24,6 +24,7 @@
     "dos_Data Sets": "Ensembles de Données > Sections > Eléments de Données (Table 1)",
     "dos_Data Set": "Ensemble de Données",
     "dos_Section": "Section",
+    "dos_Stage": "Stade",
     "dos_Indicator Groups": "Groupes d'Indicateurs > Indicateurs (Table 2)",
     "dos_Indicator Group": "Groupe d'Indicateurs",
 
@@ -98,6 +99,8 @@
     "dos_DenominatorIndicator": "Dénominateur",
 
     "dos_Comments": "Commentaires",
+    "dos_Mandatory": "Obligatoire",
+    "dos_Visibility": "Visibilité de la saisie des données",
 
     "MODULE:SEARCH": "****************************",
 
