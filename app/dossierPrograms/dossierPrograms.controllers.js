@@ -78,6 +78,7 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
     "dossiersProgramStageCalcModeFactory",
     "Ping",
     "dossiersProgramDataService",
+    "dossiersProgramLoadingService",
     function (
         $scope,
         $q,
@@ -85,7 +86,8 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
         dossiersProgramStageSectionsFactory,
         dossiersProgramStageCalcModeFactory,
         Ping,
-        dossiersProgramDataService
+        dossiersProgramDataService,
+        dossiersProgramLoadingService
     ) {
         /*
          *  @name makeDEVisibility
@@ -246,6 +248,7 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
             ping();
             if ($scope.selectedProgram) {
                 startLoadingState(false);
+                dossiersProgramLoadingService.loading.programs = false;
                 //Query sections and data elements
                 var stageSectionPromises = $scope.selectedProgram.programStages.map(function (stage) {
                     return dossiersProgramStageSectionsFactory.get({ programStageId: stage.id }).$promise;
@@ -320,7 +323,8 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
                             }
                         });
                         dossiersProgramDataService.data.stages = $scope.stages;
-                        endLoadingState(true);
+                        dossiersProgramLoadingService.loading.programs = true;
+                        if (dossiersProgramLoadingService.done()) endLoadingState(true);
                     });
                 });
             }
@@ -532,6 +536,7 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
     "dossiersProgramIndicatorStagesFactory",
     "dossiersProgramIndicatorsFactory",
     "dossiersProgramDataService",
+    "dossiersProgramLoadingService",
     function (
         $scope,
         $rootScope,
@@ -539,7 +544,8 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
         dossiersProgramIndicatorFilterFactory,
         dossiersProgramIndicatorStagesFactory,
         dossiersProgramIndicatorsFactory,
-        dossiersProgramDataService
+        dossiersProgramDataService,
+        dossiersProgramLoadingService
     ) {
         $scope.programIndicators4TOC = {
             displayName: "Program indicators",
@@ -713,6 +719,7 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
             ping();
             if ($scope.selectedProgram) {
                 startLoadingState(false);
+                dossiersProgramLoadingService.loading.programIndicators = false;
                 $rootScope.recursiveAssignFilterDone = false;
 
                 dossiersProgramIndicatorsFactory.get(
@@ -747,7 +754,8 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
                                     $rootScope.programStages = $scope.programStages;
                                     dossiersProgramDataService.data.programIndicators = $scope.programIndicators;
                                 }
-                                endLoadingState(true);
+                                dossiersProgramLoadingService.loading.programIndicators = true;
+                                if (dossiersProgramLoadingService.done()) endLoadingState(true);
                             }
                         );
                     }
@@ -765,6 +773,7 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
     "dossiersProgramGlobalIndicatorExpressionFactory",
     "Ping",
     "dossiersProgramDataService",
+    "dossiersProgramLoadingService",
     function (
         $scope,
         $rootScope,
@@ -772,7 +781,8 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
         dossiersProgramGlobalIndicatorsFactory,
         dossiersProgramGlobalIndicatorExpressionFactory,
         Ping,
-        dossiersProgramDataService
+        dossiersProgramDataService,
+        dossiersProgramLoadingService
     ) {
         $scope.indicators4TOC = {
             displayName: "Indicators",
@@ -905,6 +915,7 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
                     $rootScope.recursiveAssignFilterDone
                 ) {
                     startLoadingState(false);
+                    dossiersProgramLoadingService.loading.indicators = false;
                     $scope.indicators = [];
 
                     //Query indicator information
@@ -924,8 +935,13 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
                             recursiveAssignDenominator(0);
                             dossiersProgramDataService.data.indicators = $scope.indicators;
                         }
-                        endLoadingState(true);
+                        dossiersProgramLoadingService.loading.indicators = true;
+                        if (dossiersProgramLoadingService.done()) endLoadingState(true);
                     });
+                    // TODO: temp fix, need a way of signaling that dossiersProgramIndicatorController ended to dossierProgramGlobalIndicatorController
+                } else if ($scope.selectedProgram.displayName === "BOAT Medical Linelist") {
+                    dossiersProgramLoadingService.loading.indicators = true;
+                    if (dossiersProgramLoadingService.done()) endLoadingState(true);
                 }
             }
         );
@@ -938,12 +954,14 @@ dossierProgramsModule.controller("dossiersProgramTEAController", [
     "dossiersProgramTEAsFactory",
     "dossiersProgramTEAsRulesFactory",
     "dossiersProgramDataService",
+    "dossiersProgramLoadingService",
     function (
         $scope,
         $translate,
         dossiersProgramTEAsFactory,
         dossiersProgramTEAsRulesFactory,
-        dossiersProgramDataService
+        dossiersProgramDataService,
+        dossiersProgramLoadingService
     ) {
         $scope.trackedEntityAttributes4TOC = {
             displayName: "Tracked Entity Attributes",
@@ -981,6 +999,7 @@ dossierProgramsModule.controller("dossiersProgramTEAController", [
             ping();
             if ($scope.selectedProgram) {
                 startLoadingState(false);
+                dossiersProgramLoadingService.loading.trackedEntityAttributes = false;
 
                 dossiersProgramTEAsFactory.get(
                     {
@@ -1015,8 +1034,8 @@ dossierProgramsModule.controller("dossiersProgramTEAController", [
                                     dossiersProgramDataService.data.trackedEntityAttributes =
                                         $scope.trackedEntityAttributes;
                                 }
-
-                                endLoadingState(true);
+                                dossiersProgramLoadingService.loading.trackedEntityAttributes = true;
+                                if (dossiersProgramLoadingService.done()) endLoadingState(true);
                             }
                         );
                     }
@@ -1033,13 +1052,15 @@ dossierProgramsModule.controller("dossiersProgramRuleController", [
     "dossiersProgramRulesFactory",
     "dossiersProgramRulesActionsTemplateName",
     "dossiersProgramDataService",
+    "dossiersProgramLoadingService",
     function (
         $scope,
         $rootScope,
         $translate,
         dossiersProgramRulesFactory,
         dossiersProgramRulesActionsTemplateName,
-        dossiersProgramDataService
+        dossiersProgramDataService,
+        dossiersProgramLoadingService
     ) {
         $scope.rules4TOC = {
             displayName: "Program Rules",
@@ -1080,6 +1101,7 @@ dossierProgramsModule.controller("dossiersProgramRuleController", [
             ping();
             if ($scope.selectedProgram) {
                 startLoadingState(false);
+                dossiersProgramLoadingService.loading.rules = false;
                 $rootScope.programRulesDone = false;
 
                 dossiersProgramRulesFactory.get(
@@ -1096,7 +1118,9 @@ dossierProgramsModule.controller("dossiersProgramRuleController", [
                         }
 
                         $rootScope.programRulesDone = true;
-                        endLoadingState(true);
+
+                        dossiersProgramLoadingService.loading.rules = true;
+                        if (dossiersProgramLoadingService.done()) endLoadingState(true);
                     }
                 );
             }
@@ -1110,7 +1134,15 @@ dossierProgramsModule.controller("dossiersProgramRuleVariablesController", [
     "$translate",
     "dossiersProgramRuleVariablesFactory",
     "dossiersProgramDataService",
-    function ($scope, $rootScope, $translate, dossiersProgramRuleVariablesFactory, dossiersProgramDataService) {
+    "dossiersProgramLoadingService",
+    function (
+        $scope,
+        $rootScope,
+        $translate,
+        dossiersProgramRuleVariablesFactory,
+        dossiersProgramDataService,
+        dossiersProgramLoadingService
+    ) {
         $scope.ruleVariables4TOC = {
             displayName: "Program Rule Variables",
             id: "RuleVariablesContainer",
@@ -1127,6 +1159,7 @@ dossierProgramsModule.controller("dossiersProgramRuleVariablesController", [
             ping();
             if ($scope.selectedProgram && $rootScope.programRulesDone) {
                 startLoadingState(false);
+                dossiersProgramLoadingService.loading.ruleVariables = false;
 
                 dossiersProgramRuleVariablesFactory.get(
                     {
@@ -1152,7 +1185,8 @@ dossierProgramsModule.controller("dossiersProgramRuleVariablesController", [
                             dossiersProgramDataService.data.ruleVariables = $scope.ruleVariables;
                         }
 
-                        endLoadingState(true);
+                        dossiersProgramLoadingService.loading.ruleVariables = true;
+                        if (dossiersProgramLoadingService.done()) endLoadingState(true);
                     }
                 );
             }
@@ -1166,12 +1200,14 @@ dossierProgramsModule.controller("dossiersProgramResourcesController", [
     "dossiersProgramDataService",
     "dossiersProgramResourcesAttributeFactory",
     "dossiersProgramResourcesElementsFactory",
+    "dossiersProgramLoadingService",
     function (
         $scope,
         $translate,
         dossiersProgramDataService,
         dossiersProgramResourcesAttributeFactory,
-        dossiersProgramResourcesElementsFactory
+        dossiersProgramResourcesElementsFactory,
+        dossiersProgramLoadingService
     ) {
         $scope.resources4TOC = {
             displayName: "Program Resources",
@@ -1240,6 +1276,7 @@ dossierProgramsModule.controller("dossiersProgramResourcesController", [
             ping();
             if ($scope.selectedProgram) {
                 startLoadingState(false);
+                dossiersProgramLoadingService.loading.resources = false;
 
                 dossiersProgramResourcesAttributeFactory.get({ programId: $scope.selectedProgram.id }, function (data) {
                     const resourcesIDs = data.attributeValues
@@ -1277,7 +1314,8 @@ dossierProgramsModule.controller("dossiersProgramResourcesController", [
                             dossiersProgramDataService.data.resources = $scope.resources;
                         }
 
-                        endLoadingState(true);
+                        dossiersProgramLoadingService.loading.resources = true;
+                        if (dossiersProgramLoadingService.done()) endLoadingState(true);
                     });
                 });
             }
