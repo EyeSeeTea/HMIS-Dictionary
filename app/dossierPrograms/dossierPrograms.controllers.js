@@ -721,6 +721,7 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
                 startLoadingState(false);
                 dossiersProgramLoadingService.loading.programIndicators = false;
                 $rootScope.recursiveAssignFilterDone = false;
+                $rootScope.programIndicatorsEmpty = false;
 
                 dossiersProgramIndicatorsFactory.get(
                     {
@@ -753,6 +754,8 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
                                     $rootScope.programIndicators = $scope.programIndicators;
                                     $rootScope.programStages = $scope.programStages;
                                     dossiersProgramDataService.data.programIndicators = $scope.programIndicators;
+                                } else {
+                                    $rootScope.programIndicatorsEmpty = true;
                                 }
                                 dossiersProgramLoadingService.loading.programIndicators = true;
                                 if (dossiersProgramLoadingService.done()) endLoadingState(true);
@@ -904,7 +907,13 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
          *  @scope dossierProgramGlobalIndicatorController
          */
         $scope.$watchGroup(
-            ["selectedProgram", "programIndicators", "programStages", "recursiveAssignFilterDone"],
+            [
+                "selectedProgram",
+                "programIndicators",
+                "programStages",
+                "recursiveAssignFilterDone",
+                "programIndicatorsEmpty",
+            ],
             function () {
                 ping();
                 $scope.programIndicators = $rootScope.programIndicators;
@@ -938,8 +947,7 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
                         dossiersProgramLoadingService.loading.indicators = true;
                         if (dossiersProgramLoadingService.done()) endLoadingState(true);
                     });
-                    // TODO: temp fix, need a way of signaling that dossiersProgramIndicatorController ended to dossierProgramGlobalIndicatorController
-                } else if ($scope.selectedProgram.displayName === "BOAT Medical Linelist") {
+                } else if ($rootScope.programIndicatorsEmpty) {
                     dossiersProgramLoadingService.loading.indicators = true;
                     if (dossiersProgramLoadingService.done()) endLoadingState(true);
                 }
