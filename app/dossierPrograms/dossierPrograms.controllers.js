@@ -286,12 +286,16 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
                     }
                 });
 
-                return {
-                    name: pr.name,
-                    stageId: pr.programStage?.id,
-                    allwaysHidden: hideSectionAction ? pr.condition === "true" : undefined,
-                    ids: idArray,
-                };
+                if (idArray.length > 0) {
+                    return {
+                        name: pr.name,
+                        stageId: pr.programStage?.id,
+                        allwaysHidden: hideSectionAction ? pr.condition === "true" : undefined,
+                        ids: idArray,
+                    };
+                } else {
+                    return [];
+                }
             });
         }
 
