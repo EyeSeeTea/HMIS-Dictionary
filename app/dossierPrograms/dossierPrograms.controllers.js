@@ -249,6 +249,35 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
         }
 
         /*
+         *  @name getDEAffectedByRuleAction
+         *  @description Gets the DEs affected by the actionType with a reference to the rule and its program scope.
+         *  @scope dossiersProgramSectionController
+         */
+        function getDEAffectedByRuleAction(programRules, actionType) {
+            const hideSectionAction = actionType === "HIDESECTION";
+            return programRules.flatMap(pr => {
+                const idArray = pr.programRuleActions.flatMap(pra => {
+                    if (pra.programRuleActionType === actionType) {
+                        if (hideSectionAction) {
+                            return pra.programStageSection.id;
+                        } else {
+                            return pra?.dataElement?.id ? pra.dataElement.id : [];
+                        }
+                    } else {
+                        return [];
+                    }
+                });
+
+                return {
+                    name: pr.name,
+                    stageId: pr.programStage?.id,
+                    allwaysHidden: hideSectionAction ? pr.condition === "true" : undefined,
+                    ids: idArray,
+                };
+            });
+        }
+
+        /*
          *  @name none
          *  @description Gets the program stages information, translates it and shows it
          *  @dependencies dossiersProgramStageSectionsFactory, dossiersProgramStageCalcModeFactory
@@ -269,54 +298,9 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
                     data => ($scope.programRules = data.programRules)
                 ).then(() => {
                     $q.all(stageSectionPromises).then(function (stages) {
-                        const hiddenSectionsArray = $scope.programRules.flatMap(pr => {
-                            const idArray = pr.programRuleActions.flatMap(pra => {
-                                if (pra.programRuleActionType === "HIDESECTION") {
-                                    return pra.programStageSection.id;
-                                } else {
-                                    return [];
-                                }
-                            });
-
-                            return {
-                                name: pr.name,
-                                stageId: pr.programStage?.id,
-                                allwaysHidden: pr.condition === "true",
-                                ids: idArray,
-                            };
-                        });
-
-                        const assignedDEArray = $scope.programRules.flatMap(pr => {
-                            const idArray = pr.programRuleActions.flatMap(pra => {
-                                if (pra.programRuleActionType === "ASSIGN") {
-                                    return pra?.dataElement?.id ? pra.dataElement.id : [];
-                                } else {
-                                    return [];
-                                }
-                            });
-
-                            return {
-                                name: pr.name,
-                                stageId: pr.programStage?.id,
-                                ids: idArray,
-                            };
-                        });
-
-                        const hiddenDEArray = $scope.programRules.flatMap(pr => {
-                            const idArray = pr.programRuleActions.flatMap(pra => {
-                                if (pra.programRuleActionType === "HIDEFIELD") {
-                                    return pra?.dataElement?.id ? pra.dataElement.id : [];
-                                } else {
-                                    return [];
-                                }
-                            });
-
-                            return {
-                                name: pr.name,
-                                stageId: pr.programStage?.id,
-                                ids: idArray,
-                            };
-                        });
+                        const hiddenSectionsArray = getDEAffectedByRuleAction($scope.programRules, "HIDESECTION");
+                        const assignedDEArray = getDEAffectedByRuleAction($scope.programRules, "ASSIGN");
+                        const hiddenDEArray = getDEAffectedByRuleAction($scope.programRules, "HIDEFIELD");
 
                         $scope.stages = stages.map(function (stage, index) {
                             var toc = {
