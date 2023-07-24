@@ -664,6 +664,22 @@ searchModule.controller("searchController", [
             return $translate.instant(tag);
         }
 
+        /* 
+        @name stripHTML
+        @description strip the HTML tags to get the same output as the search dossier table
+        @scope searchController
+        */
+        function stripHTML(value) {
+            const tooltiptextRegex = /<span class=['"]tooltiptext['"]>.*?<\/span>/gi;
+            const htmlRegex = /<[^<>]+>/gi;
+
+            return value
+                .replace(/(\r\n|\n|\r)/gm, "")
+                .replace(tooltiptextRegex, "")
+                .replace(/<br>/gm, "\n")
+                .replace(htmlRegex, "");
+        }
+
         /*
         @name writeSheetHeader
         @description Writes sheet header and applies styling
@@ -695,7 +711,10 @@ searchModule.controller("searchController", [
             data.forEach((rowData, rowIndex) => {
                 rowIndex += 2;
                 sheet.row(rowIndex).height(24);
-                Object.entries(rowData).forEach(([_, value], cellIndex) => {
+                Object.entries(rowData).forEach(([type, value], cellIndex) => {
+                    if (["Numerator Formula (ind. only)", "Denominator Formula (ind. only)"].includes(type)) {
+                        if (value) value = stripHTML(value);
+                    }
                     const cell = sheet.cell(rowIndex, cellIndex + 1);
                     cell.value(value);
                     cell.style("wrapText", true);
