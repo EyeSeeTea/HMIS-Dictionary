@@ -10,7 +10,16 @@ dossierProgramsModule.controller("dossierProgramsMainController", [
     "$sce",
     "dossiersProgramsFactory",
     "dossiersProgramsLinkTestFactory",
-    function ($scope, $translate, $anchorScroll, $sce, dossiersProgramsFactory, dossiersProgramsLinkTestFactory) {
+    "dossiersProgramLoadingService",
+    function (
+        $scope,
+        $translate,
+        $anchorScroll,
+        $sce,
+        dossiersProgramsFactory,
+        dossiersProgramsLinkTestFactory,
+        dossiersProgramLoadingService
+    ) {
         $("#dossiersPrograms").tab("show");
 
         /*
@@ -63,6 +72,7 @@ dossierProgramsModule.controller("dossierProgramsMainController", [
         //Clear the TOC
         $scope.$watch("selectedProgram", function () {
             ping();
+            dossiersProgramLoadingService.resetState();
             $scope.toc = {
                 entries: [],
             };
