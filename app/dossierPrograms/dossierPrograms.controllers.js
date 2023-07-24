@@ -195,6 +195,26 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
         }
 
         /*
+         *  @name isRuleInScope
+         *  @description Determine if the rule applies to the stage/section
+         *  @scope dossiersProgramSectionController
+         */
+        function isRuleInScope(rule, stageId) {
+            let stageScope = false;
+            if (rule.stageId) {
+                stageScope = rule.stageId === stageId;
+            } else {
+                stageScope = true;
+            }
+
+            if (typeof rule.allwaysHidden !== "undefined") {
+                return stageScope && rule.allwaysHidden;
+            } else {
+                return stageScope;
+            }
+        }
+
+        /*
          *  @name makeSectionsCalcMode
          *  @description Determine the "Calculation mode" of the stage sections data elements
          *  @scope dossiersProgramSectionController
@@ -203,10 +223,10 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
             stage.programStageSections.forEach(pss => {
                 pss.dataElements.forEach(pssDE => {
                     assignedDEArray.forEach(adeArray => {
-                        if (adeArray.ids?.includes(pssDE.id) && adeArray.stageId === stage.id) {
+                        if (adeArray.ids?.includes(pssDE.id) && isRuleInScope(adeArray, stage.id)) {
                             if (!pssDE.calcMode || pssDE.calcMode.type === "default") {
                                 pssDE.calcMode = { type: "programRule", names: [adeArray.name] };
-                            } else {
+                            } else if (pssDE.calcMode.type === "programRule") {
                                 pssDE.calcMode.names.push(adeArray.name);
                             }
                         } else if (!pssDE.calcMode) {
@@ -216,7 +236,7 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
 
                     hiddenSectionsArray.forEach(hsArray => {
                         if (hsArray.ids.includes(pss.id)) {
-                            if (pssDE.calcMode.type !== "programRule" && hsArray.allwaysHidden) {
+                            if (pssDE.calcMode.type !== "programRule" && isRuleInScope(hsArray, stage.id)) {
                                 pssDE.calcMode = { type: "other" };
                             }
                         }
@@ -231,18 +251,16 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
          *  @scope dossiersProgramSectionController
          */
         function makeStageCalcMode(stage, assignedDEArray) {
-            stage.programStageDataElements.forEach(psde => {
+            stage.programStageDataElements.forEach(psDE => {
                 assignedDEArray.forEach(adeArray => {
-                    if (adeArray.ids.includes(psde.dataElement.id) && adeArray.stageId === stage.id) {
-                        if (!psde.dataElement.calcMode) {
-                            if (!psde.dataElement.calcMode || psde.dataElement.calcMode.type === "default") {
-                                psde.dataElement.calcMode = { type: "programRule", names: [adeArray.name] };
-                            } else {
-                                psde.dataElement.calcMode.names.push(adeArray.name);
-                            }
+                    if (adeArray.ids.includes(psDE.dataElement.id) && isRuleInScope(adeArray, stage.id)) {
+                        if (!psDE.dataElement.calcMode || psDE.dataElement.calcMode.type === "default") {
+                            psDE.dataElement.calcMode = { type: "programRule", names: [adeArray.name] };
+                        } else if (psDE.dataElement.calcMode.type === "programRule") {
+                            psDE.dataElement.calcMode.names.push(adeArray.name);
                         }
-                    } else if (!psde.dataElement.calcMode) {
-                        psde.dataElement.calcMode = { type: "default" };
+                    } else if (!psDE.dataElement.calcMode) {
+                        psDE.dataElement.calcMode = { type: "default" };
                     }
                 });
             });
