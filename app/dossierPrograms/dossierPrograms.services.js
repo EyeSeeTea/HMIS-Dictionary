@@ -507,3 +507,35 @@ dossierProgramsModule.service("dossiersProgramDataService", function () {
         ruleVariables: undefined,
     };
 });
+
+dossierProgramsModule.service("dossiersProgramLoadingService", function () {
+    this.loading = {
+        programs: undefined,
+        programIndicators: undefined,
+        indicators: undefined,
+        trackedEntityAttributes: undefined,
+        rules: undefined,
+        ruleVariables: undefined,
+        resources: undefined,
+    };
+
+    this.resetState = function () {
+        this.loading = {
+            programs: undefined,
+            programIndicators: undefined,
+            indicators: undefined,
+            trackedEntityAttributes: undefined,
+            rules: undefined,
+            ruleVariables: undefined,
+            resources: undefined,
+        };
+    };
+
+    this.done = function () {
+        if (Object.values(this.loading).every(Boolean)) {
+            this.resetState();
+            return true;
+        }
+        return false;
+    };
+});
