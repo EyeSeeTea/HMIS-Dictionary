@@ -352,8 +352,7 @@ dossierProgramsModule.controller("makeIndicatorVisualizations", [
     "$scope",
     "$window",
     "dossiersProgramVisualizationTableFactory",
-    "dossiersProgramDataService",
-    function ($scope, $window, dossiersProgramVisualizationTableFactory, dossiersProgramDataService) {
+    function ($scope, $window, dossiersProgramVisualizationTableFactory) {
         $scope.getTable = function (name, id, rowItems) {
             const payload = {
                 name: "TEST",

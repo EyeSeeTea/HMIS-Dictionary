@@ -477,7 +477,7 @@ dossierProgramsModule.factory("dossiersProgramResourcesAttributeFactory", [
 ]);
 
 var qryProgramResourcesElements =
-    dhisUrl + "/metadata?filter=id\\:in\\:[:resourcesIDs]&fields=id,displayName,displayDescription";
+    dhisUrl + "metadata?filter=id\\:in\\:[:resourcesIDs]&fields=id,displayName,displayDescription";
 
 dossierProgramsModule.factory("dossiersProgramResourcesElementsFactory", [
     "$resource",
