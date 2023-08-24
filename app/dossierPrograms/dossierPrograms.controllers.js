@@ -226,7 +226,7 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
                         if (adeArray.ids?.includes(pssDE.id) && isRuleInScope(adeArray, stage.id)) {
                             if (!pssDE.calcMode || pssDE.calcMode.type === "default") {
                                 pssDE.calcMode = { type: "programRule", names: [adeArray.name] };
-                            } else if (pssDE.calcMode.type === "programRule") {
+                            } else if (pssDE.calcMode?.type === "programRule") {
                                 pssDE.calcMode.names.push(adeArray.name);
                             }
                         } else if (!pssDE.calcMode) {
@@ -236,7 +236,7 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
 
                     hiddenSectionsArray.forEach(hsArray => {
                         if (hsArray.ids.includes(pss.id)) {
-                            if (pssDE.calcMode.type !== "programRule" && isRuleInScope(hsArray, stage.id)) {
+                            if (pssDE.calcMode?.type !== "programRule" && isRuleInScope(hsArray, stage.id)) {
                                 pssDE.calcMode = { type: "other" };
                             }
                         }
@@ -574,7 +574,7 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
          *  @scope dossiersProgramIndicatorController
          */
         function getStageNameById(id) {
-            return dossiersProgramDataService.data.stages.find(stage => stage.id === id)?.displayName;
+            return dossiersProgramDataService.data.stages?.find(stage => stage.id === id)?.displayName;
         }
 
         /*
@@ -662,16 +662,16 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
          *  @scope dossiersProgramIndicatorController
          */
         function getOptionNameById(stageId, deId, index) {
-            const stage = dossiersProgramDataService.data.stages.find(stage => stage.id === stageId);
+            const stage = dossiersProgramDataService.data.stages?.find(stage => stage.id === stageId);
 
-            const de = stage.programStageSections.flatMap(section => {
+            const de = stage?.programStageSections.flatMap(section => {
                 const de = section.dataElements.find(de => {
                     return de.id === deId;
                 });
                 return de ? de : [];
             })[0];
 
-            return de.optionSet?.options?.find(opt => opt.code === index)?.displayName;
+            return de?.optionSet?.options?.find(opt => opt.code === index)?.displayName;
         }
 
         /*
