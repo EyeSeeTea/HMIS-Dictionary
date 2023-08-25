@@ -521,7 +521,7 @@ dossierProgramsModule.controller("makeIndicatorVisualizations", [
 
                                     const uid = visualizationId;
 
-                                    $window.open(dhisroot + "/dhis-web-data-visualizer/index.html#/" + uid, "_blank");
+                                    $window.open(dhisroot + "dhis-web-data-visualizer/index.html#/" + uid, "_blank");
                                 }
                             );
                         }
@@ -534,7 +534,7 @@ dossierProgramsModule.controller("makeIndicatorVisualizations", [
                                 sharing,
                                 function (res) {}
                             );
-                            $window.open(dhisroot + "/dhis-web-data-visualizer/index.html#/" + uid, "_blank");
+                            $window.open(dhisroot + "dhis-web-data-visualizer/index.html#/" + uid, "_blank");
                         });
                     }
                 }
