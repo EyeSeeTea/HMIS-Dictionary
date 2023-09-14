@@ -100,13 +100,16 @@
                     window.dhis2 = window.dhis2 || {};
                     dhis2.settings = dhis2.settings || {};
 
-                    var dhisroot = window.location.href.replace(/#.*$/, "").split("api/")[0];
-                    var dhisrootArr = dhisroot.split("/");
+                    var index_dhisroot = window.location.href.replace(/\/#.*$/, "").split("/api/")[0];
+                    var dhisrootArr = index_dhisroot.split("/");
+
                     console.log("index.html: Prefix: " + dhisrootArr[3]);
                     if (dhisrootArr.length >= 4) {
                         dhis2.settings.baseUrl = dhisrootArr[3];
                     } else {
-                        dhis2.settings.baseUrl = "";
+                        // NOTE: This hack is added to avoid the origin//api/i18n call made by dhis2.translate.js
+                        // dhis2.translate.js internal getBaseUrl function adds a / when the dhis base url its the same as the origin.
+                        dhis2.settings.baseUrl = ".";
                     }
                 </script>
 

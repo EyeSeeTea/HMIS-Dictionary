@@ -352,7 +352,7 @@ searchModule.controller("searchController", [
                                     updateSharing.update({ uid: tbl.visualizations[0].id }, sharing, function (res) {});
 
                                     uid = tbl.visualizations[0].id;
-                                    $window.open(dhisroot + "/dhis-web-data-visualizer/index.html#/" + uid, "_blank");
+                                    $window.open(dhisroot + "dhis-web-data-visualizer/index.html#/" + uid, "_blank");
                                 }
                             );
                         }
@@ -363,7 +363,7 @@ searchModule.controller("searchController", [
                         searchTableFactory.set_table.query(payload, function (response) {
                             uid = response.response.uid;
                             updateSharing.update({ uid: uid }, sharing, function (res) {});
-                            $window.open(dhisroot + "/dhis-web-data-visualizer/index.html#/" + uid, "_blank");
+                            $window.open(dhisroot + "dhis-web-data-visualizer/index.html#/" + uid, "_blank");
                         });
                     }
                 }
