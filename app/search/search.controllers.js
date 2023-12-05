@@ -93,7 +93,7 @@ searchModule.controller("searchController", [
         };
 
         var self = this;
-        self.isFiltersVisible = false;
+        self.isFiltersVisible = true;
 
         self.applyGlobalSearch = function () {
             var x = _.cloneDeep(self.tableParams.data);
