@@ -9,7 +9,7 @@
 
         <div class="col-md-12">
             <div class="alert alert-info rounded" role="alert">
-                This version of the app has been developped and tested for dhis v2.25 (revision: 8ab22be) with default locale assumed to be <u>English</u> and accepts tranlsations in <u>Spanish</u>, <u>French</u> and <u>Portuguese</u>. The latest version is available at: <a href=https://github.com/msf-ocba/HMIS_Dictionary><font color="blue">https://github.com/msf-ocba/HMIS_Dictionary</font></a>.
+                This version of the app has been tested for dhis v2.37.10 with default locale assumed to be <u>English</u> and accepts tranlsations in <u>Spanish</u>, <u>French</u> and <u>Portuguese</u>. The latest version is available at: <a href=https://github.com/EyeSeeTea/HMIS-Dictionary><font color="blue">https://github.com/EyeSeeTea/HMIS-Dictionary</font></a>.
             </div>
         </div>
 
@@ -87,7 +87,6 @@
                                 <li>the translations form the <strong>organisationUnitGroups</strong> <i>names</i> and <i>descriptions</i> and,</li>
                                 <li>the <i>code</i> should be formatted as follows, for instance: <code>*SomeText*_CD1</code> (<code>CD1</code> would be used to associate to each service <strong>dataSets</strong> and <strong>indicatorGroups</strong>).</li>
                             </ul>
-                            <br><i>NB: As of dhis v2.25, an organisationUnitGroup should not be in more than one organisationUnitGroupSet, otherwise using it as a filter/dimension during the analysis will fail. As a consequence you might have to duplicate some of your organisationUnitGroups.</i>
                         </p>
                     </div>
                 </div>
@@ -144,14 +143,20 @@
             <div class="col-md-12">
                 <h4>About <strong>dataElements</strong> and <strong>indicators</strong>:</h4>
                 <div class="alert rounded" style="background-color:#f9f9f9"role="alert">
-                    <p><ul>
-                        <li><strong>dataElements</strong> have to be associated to a <strong>dataSet</strong> and to a <strong>section</strong> to appear in the 'Dossiers' and the 'Search' panels.<br>
-                            In the 'Search' panel, <strong>dataElements</strong> are displayed only from the 'Aggregated' domain.<br>
-                            In the tables, the principal information used to display in columns is <i>Name</i>, <i>Form Name</i> and <i>Description</i> and their translations.<br><br></li>
-                        <li><strong>indicators</strong> have to be associated to a <strong>indicatorGroup</strong> to appear in the 'Dossiers' and the 'Search' panels.<br>
+                    <p>
+                        <ul>
+                        <li>
+                            <strong>dataElements</strong> are listed unless they belong to a blacklisted data element group. Blacklisted dataset will not be displayed in the results.<br>
+                            In the 'Search' panel, <strong>dataElements</strong> are displayed only from the 'Aggregated' domain.
+                            <br>
+                            In the tables, the principal information used to display in columns is <i>Name</i>, <i>Form Name</i> and <i>Description</i> and their translations.
+                            <br>
+                            <br>
+                        </li>
+                        <li>
+                            <strong>indicators</strong> have to be associated to a <strong>indicatorGroup</strong> (not blacklisted) to appear in the 'Search' and the 'Indicator' panels.<br>
                             In the tables, the principal information used to display in columns is <i>Name</i> and <i>Description</i> and their translations.<br>
-                            The field <i>Description</i> is splited in three parts as follows: <code>*A_general_description* NUM:*A_description_of_the_numerator* DENOM:*A_description_of_the_denominator*</code>. The key words <code>NUM:</code> and <code>DENOM:</code> should be respected to fill the related columns.</li></li>
-
+                        </li>
                     </ul><p>
                 </div>
             </div>
