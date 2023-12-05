@@ -529,9 +529,9 @@ searchModule.controller("searchController", [
                                 objectGroup_id: temp_arr.objectGroup_id.join(", "),
                                 objectGroup_code: temp_arr.objectGroup_code.join(", "),
                                 objectGroup_name: temp_arr.objectGroup_name.join(", "),
-                                service_id: temp_arr.service_id.join(", "),
-                                service_code: temp_arr.service_code.join(", "),
-                                service_name: temp_arr.service_name.join(", "),
+                                service_id: _.uniq(temp_arr.service_id).join(", "),
+                                service_code: _.uniq(temp_arr.service_code).join(", "),
+                                service_name: _.uniq(temp_arr.service_name).join(", "),
                             };
                         }
                     });
@@ -628,9 +628,9 @@ searchModule.controller("searchController", [
                                     objectGroup_id: temp_arr.objectGroup_id.join(", "),
                                     objectGroup_code: temp_arr.objectGroup_code.join(", "),
                                     objectGroup_name: temp_arr.objectGroup_name.join(", "),
-                                    service_id: temp_arr.service_id.join(", "),
-                                    service_code: temp_arr.service_code.join(", "),
-                                    service_name: temp_arr.service_name.join(", "),
+                                    service_id: _.uniq(temp_arr.service_id).join(", "),
+                                    service_code: _.uniq(temp_arr.service_code).join(", "),
+                                    service_name: _.uniq(temp_arr.service_name).join(", "),
                                 };
                             }
                         });
