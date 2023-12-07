@@ -46,7 +46,15 @@ dossierIndicatorsModule.controller("dossierIndicatorsMainController", [
         };
 
         startLoadingState(false);
-        $scope.indicators = dossiersIndicatorsFactory.get(function () {
+        dossiersIndicatorsFactory.get(function (response) {
+            $scope.indicators = {
+                indicators: response.indicators.filter(
+                    ind =>
+                        !ind.indicatorGroups
+                            .map(({ id }) => id)
+                            .some(id => $scope.blacklist_indicatorgroups.includes(id))
+                ),
+            };
             endLoadingState(false);
         });
 
