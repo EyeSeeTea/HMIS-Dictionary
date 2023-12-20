@@ -471,33 +471,37 @@ searchModule.controller("searchController", [
                                 service_name: [],
                             };
 
-                            obj.dataSetElements.forEach(function (grp) {
-                                if (
-                                    $scope.servicesList &&
-                                    grp.dataSet.attributeValues.length > 0 &&
-                                    grp.dataSet.attributeValues[0].value
-                                ) {
-                                    attributes = grp.dataSet.attributeValues.filter(
-                                        at => at.attribute.id == "pG4YeQyynJh"
-                                    );
-                                    if (attributes[0] != undefined) {
-                                        servicesCode = attributes[0].value.split("_");
-                                    }
-                                    servicesCode.shift();
-                                    servicesCode.forEach(function (code) {
-                                        if ($scope.servicesList[code]) {
-                                            temp_arr.service_id.push($scope.servicesList[code].service_id);
-                                            temp_arr.service_code.push($scope.servicesList[code].service_code);
-                                            temp_arr.service_name.push($scope.servicesList[code].service_name);
-                                        } else {
-                                            console.debug("searchModule: Cannot find any service with code: " + code);
+                            obj.dataSetElements
+                                .filter(dse => !$scope.blacklist_datasets.includes(dse.dataSet.id))
+                                .forEach(function (grp) {
+                                    if (
+                                        $scope.servicesList &&
+                                        grp.dataSet.attributeValues.length > 0 &&
+                                        grp.dataSet.attributeValues[0].value
+                                    ) {
+                                        attributes = grp.dataSet.attributeValues.filter(
+                                            at => at.attribute.id == "pG4YeQyynJh"
+                                        );
+                                        if (attributes[0] != undefined) {
+                                            servicesCode = attributes[0].value.split("_");
                                         }
-                                    });
-                                }
-                                temp_arr.objectGroup_id.push(grp.dataSet.id);
-                                temp_arr.objectGroup_code.push(grp.dataSet.code);
-                                temp_arr.objectGroup_name.push(grp.dataSet.displayName);
-                            });
+                                        servicesCode.shift();
+                                        servicesCode.forEach(function (code) {
+                                            if ($scope.servicesList[code]) {
+                                                temp_arr.service_id.push($scope.servicesList[code].service_id);
+                                                temp_arr.service_code.push($scope.servicesList[code].service_code);
+                                                temp_arr.service_name.push($scope.servicesList[code].service_name);
+                                            } else {
+                                                console.debug(
+                                                    "searchModule: Cannot find any service with code: " + code
+                                                );
+                                            }
+                                        });
+                                    }
+                                    temp_arr.objectGroup_id.push(grp.dataSet.id);
+                                    temp_arr.objectGroup_code.push(grp.dataSet.code);
+                                    temp_arr.objectGroup_name.push(grp.dataSet.displayName);
+                                });
 
                             if (obj.attributeValues != undefined) {
                                 obj.attributeValues.forEach(function (att) {
