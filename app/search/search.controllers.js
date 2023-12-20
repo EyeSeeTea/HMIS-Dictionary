@@ -72,23 +72,11 @@ searchModule.controller("searchController", [
         console.debug("searchModule: Blacklisted indicatorGroups: " + $scope.blacklist_indicatorgroups);
         var filterObjects = function (obj, type) {
             if (type == "dataElement") {
-                var temp = obj.dataSetElements.length > 0;
-                if (temp && $scope.blacklist_datasets.length > 0) {
-                    temp = false;
-                    obj.dataSetElements.forEach(function (dse) {
-                        temp = temp || $scope.blacklist_datasets.indexOf(dse.dataSet.id) == -1;
-                    });
-                }
-                return temp;
+                if (obj.dataSetElements.length < 0) return false;
+                return obj.dataSetElements.some(dse => $scope.blacklist_datasets.indexOf(dse.dataSet.id) == -1);
             } else if (type == "indicator") {
-                var temp = obj.indicatorGroups.length > 0;
-                if (temp && $scope.blacklist_indicatorgroups.length > 0) {
-                    temp = false;
-                    obj.indicatorGroups.forEach(function (ig) {
-                        temp = temp || $scope.blacklist_indicatorgroups.indexOf(ig.id) == -1;
-                    });
-                }
-                return temp;
+                if (obj.indicatorGroups.length < 0) return false;
+                return obj.indicatorGroups.some(ig => $scope.blacklist_indicatorgroups.indexOf(ig.id) == -1);
             }
         };
 
@@ -466,8 +454,9 @@ searchModule.controller("searchController", [
             searchAllFactory.qry_dataElementsAll
                 .query()
                 .$promise.then(function (response) {
-                    response.dataElements.forEach(function (obj) {
-                        if (filterObjects(obj, "dataElement")) {
+                    response.dataElements
+                        .filter(obj => filterObjects(obj, "dataElement"))
+                        .forEach(function (obj) {
                             var attribute = "";
                             //objectGroup + service
                             var temp_arr = {
@@ -533,8 +522,7 @@ searchModule.controller("searchController", [
                                 service_code: _.uniq(temp_arr.service_code).join(", "),
                                 service_name: _.uniq(temp_arr.service_name).join(", "),
                             };
-                        }
-                    });
+                        });
 
                     $scope.loaded.get_dataElements = true;
                     $scope.loaded.get_dataElementsDescriptions = true;
@@ -567,8 +555,9 @@ searchModule.controller("searchController", [
                 })
                 .then(function () {
                     return searchAllFactory.get_indicatorsAll.query().$promise.then(function (response) {
-                        response.indicators.forEach(function (obj) {
-                            if (filterObjects(obj, "indicator")) {
+                        response.indicators
+                            .filter(obj => filterObjects(obj, "indicator"))
+                            .forEach(function (obj) {
                                 //objectGroup + service
                                 var temp_arr = {
                                     objectGroup_id: [],
@@ -632,8 +621,7 @@ searchModule.controller("searchController", [
                                     service_code: _.uniq(temp_arr.service_code).join(", "),
                                     service_name: _.uniq(temp_arr.service_name).join(", "),
                                 };
-                            }
-                        });
+                            });
 
                         $scope.loaded.get_indicators = true;
                         $scope.loaded.get_indicatorsDescriptions = true;
