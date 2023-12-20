@@ -112,7 +112,16 @@
             <div class="col-md-12">
                 <div class="col-md-6">
                     <div class="alert alert-warning" role="alert">
-                        <p>[<i>Optional</i>] An array of <strong>dataSets</strong> 'UID's to blacklist form the 'Search' panel.</p>
+                        <p>[<i>Optional</i>] An array of <strong>dataElementGroups</strong> 'UID's to blacklist form the 'Search' panel.</p>
+
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" name="DEG_UIDs" ng-model="selectedDEG"/>
+                        </div>
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-primary" id="submitDEG" ng-click="submitDEG()">Submit</button>
+                        </div>
+
+                        <p><br><br>[<i>Optional</i>] An array of <strong>dataSets</strong> 'UID's to blacklist form the 'Search' panel.</p>
 
                         <div class="col-md-9">
                             <input type="text" class="form-control" name="DS_UIDs" ng-model="selectedDS"/>
