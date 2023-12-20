@@ -21,7 +21,7 @@ var qry_dataElementsGroups =
 var qry_dataElementsAll =
     dhisUrl +
     "dataElements.json?" +
-    "fields=id,code,attributeValues[value, attribute[id]],displayName,displayDescription,displayFormName,dataSetElements[dataSet[displayName,id,code,attributeValues[*]]]" +
+    "fields=id,code,attributeValues[value, attribute[id]],displayName,displayDescription,displayFormName,dataSetElements[dataSet[displayName,id,code,attributeValues[*]]],dataElementGroups[id]" +
     "&paging=false&filter=domainType\\:eq\\:AGGREGATE";
 
 //indicators - 55 KB as of 20/11/2106

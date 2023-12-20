@@ -68,11 +68,14 @@ searchModule.controller("searchController", [
         'vCfO0z5igGT'  // Vaccination 2015
     ];
     */
+        console.debug("searchModule: Blacklisted dataElementGroups: " + $scope.blacklist_dataelementgroups);
         console.debug("searchModule: Blacklisted dataSets: " + $scope.blacklist_datasets);
         console.debug("searchModule: Blacklisted indicatorGroups: " + $scope.blacklist_indicatorgroups);
         var filterObjects = function (obj, type) {
             if (type == "dataElement") {
-                if (obj.dataSetElements.length < 0) return false;
+                if (obj.dataElementGroups.some(deg => $scope.blacklist_dataelementgroups.includes(deg.id)))
+                    return false;
+                if (obj.dataSetElements.length < 1) return true;
                 return obj.dataSetElements.some(dse => $scope.blacklist_datasets.indexOf(dse.dataSet.id) == -1);
             } else if (type == "indicator") {
                 if (obj.indicatorGroups.length < 0) return false;
