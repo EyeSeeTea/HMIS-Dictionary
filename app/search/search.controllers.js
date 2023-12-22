@@ -68,32 +68,23 @@ searchModule.controller("searchController", [
         'vCfO0z5igGT'  // Vaccination 2015
     ];
     */
+        console.debug("searchModule: Blacklisted dataElementGroups: " + $scope.blacklist_dataelementgroups);
         console.debug("searchModule: Blacklisted dataSets: " + $scope.blacklist_datasets);
         console.debug("searchModule: Blacklisted indicatorGroups: " + $scope.blacklist_indicatorgroups);
         var filterObjects = function (obj, type) {
             if (type == "dataElement") {
-                var temp = obj.dataSetElements.length > 0;
-                if (temp && $scope.blacklist_datasets.length > 0) {
-                    temp = false;
-                    obj.dataSetElements.forEach(function (dse) {
-                        temp = temp || $scope.blacklist_datasets.indexOf(dse.dataSet.id) == -1;
-                    });
-                }
-                return temp;
+                if (obj.dataElementGroups.some(deg => $scope.blacklist_dataelementgroups.includes(deg.id)))
+                    return false;
+                if (obj.dataSetElements.length < 1) return true;
+                return obj.dataSetElements.some(dse => $scope.blacklist_datasets.indexOf(dse.dataSet.id) == -1);
             } else if (type == "indicator") {
-                var temp = obj.indicatorGroups.length > 0;
-                if (temp && $scope.blacklist_indicatorgroups.length > 0) {
-                    temp = false;
-                    obj.indicatorGroups.forEach(function (ig) {
-                        temp = temp || $scope.blacklist_indicatorgroups.indexOf(ig.id) == -1;
-                    });
-                }
-                return temp;
+                if (obj.indicatorGroups.length < 0) return false;
+                return obj.indicatorGroups.some(ig => $scope.blacklist_indicatorgroups.indexOf(ig.id) == -1);
             }
         };
 
         var self = this;
-        self.isFiltersVisible = false;
+        self.isFiltersVisible = true;
 
         self.applyGlobalSearch = function () {
             var x = _.cloneDeep(self.tableParams.data);
@@ -205,7 +196,7 @@ searchModule.controller("searchController", [
                 hideEmptyRows: false,
                 subscribed: false,
                 parentGraphMap: {},
-                rowSubTotals: true,
+                rowSubTotals: false,
                 displayDensity: "NORMAL",
                 displayDescription: "Created with HMIS Dictionary",
                 regressionType: "NONE",
@@ -227,7 +218,7 @@ searchModule.controller("searchController", [
                 colSubTotals: true,
                 noSpaceBetweenColumns: false,
                 showHierarchy: false,
-                rowTotals: true,
+                rowTotals: false,
                 seriesKey: {
                     hidden: false,
                 },
@@ -466,8 +457,9 @@ searchModule.controller("searchController", [
             searchAllFactory.qry_dataElementsAll
                 .query()
                 .$promise.then(function (response) {
-                    response.dataElements.forEach(function (obj) {
-                        if (filterObjects(obj, "dataElement")) {
+                    response.dataElements
+                        .filter(obj => filterObjects(obj, "dataElement"))
+                        .forEach(function (obj) {
                             var attribute = "";
                             //objectGroup + service
                             var temp_arr = {
@@ -479,33 +471,37 @@ searchModule.controller("searchController", [
                                 service_name: [],
                             };
 
-                            obj.dataSetElements.forEach(function (grp) {
-                                if (
-                                    $scope.servicesList &&
-                                    grp.dataSet.attributeValues.length > 0 &&
-                                    grp.dataSet.attributeValues[0].value
-                                ) {
-                                    attributes = grp.dataSet.attributeValues.filter(
-                                        at => at.attribute.id == "pG4YeQyynJh"
-                                    );
-                                    if (attributes[0] != undefined) {
-                                        servicesCode = attributes[0].value.split("_");
-                                    }
-                                    servicesCode.shift();
-                                    servicesCode.forEach(function (code) {
-                                        if ($scope.servicesList[code]) {
-                                            temp_arr.service_id.push($scope.servicesList[code].service_id);
-                                            temp_arr.service_code.push($scope.servicesList[code].service_code);
-                                            temp_arr.service_name.push($scope.servicesList[code].service_name);
-                                        } else {
-                                            console.debug("searchModule: Cannot find any service with code: " + code);
+                            obj.dataSetElements
+                                .filter(dse => !$scope.blacklist_datasets.includes(dse.dataSet.id))
+                                .forEach(function (grp) {
+                                    if (
+                                        $scope.servicesList &&
+                                        grp.dataSet.attributeValues.length > 0 &&
+                                        grp.dataSet.attributeValues[0].value
+                                    ) {
+                                        attributes = grp.dataSet.attributeValues.filter(
+                                            at => at.attribute.id == "pG4YeQyynJh"
+                                        );
+                                        if (attributes[0] != undefined) {
+                                            servicesCode = attributes[0].value.split("_");
                                         }
-                                    });
-                                }
-                                temp_arr.objectGroup_id.push(grp.dataSet.id);
-                                temp_arr.objectGroup_code.push(grp.dataSet.code);
-                                temp_arr.objectGroup_name.push(grp.dataSet.displayName);
-                            });
+                                        servicesCode.shift();
+                                        servicesCode.forEach(function (code) {
+                                            if ($scope.servicesList[code]) {
+                                                temp_arr.service_id.push($scope.servicesList[code].service_id);
+                                                temp_arr.service_code.push($scope.servicesList[code].service_code);
+                                                temp_arr.service_name.push($scope.servicesList[code].service_name);
+                                            } else {
+                                                console.debug(
+                                                    "searchModule: Cannot find any service with code: " + code
+                                                );
+                                            }
+                                        });
+                                    }
+                                    temp_arr.objectGroup_id.push(grp.dataSet.id);
+                                    temp_arr.objectGroup_code.push(grp.dataSet.code);
+                                    temp_arr.objectGroup_name.push(grp.dataSet.displayName);
+                                });
 
                             if (obj.attributeValues != undefined) {
                                 obj.attributeValues.forEach(function (att) {
@@ -529,12 +525,11 @@ searchModule.controller("searchController", [
                                 objectGroup_id: temp_arr.objectGroup_id.join(", "),
                                 objectGroup_code: temp_arr.objectGroup_code.join(", "),
                                 objectGroup_name: temp_arr.objectGroup_name.join(", "),
-                                service_id: temp_arr.service_id.join(", "),
-                                service_code: temp_arr.service_code.join(", "),
-                                service_name: temp_arr.service_name.join(", "),
+                                service_id: _.uniq(temp_arr.service_id).join(", "),
+                                service_code: _.uniq(temp_arr.service_code).join(", "),
+                                service_name: _.uniq(temp_arr.service_name).join(", "),
                             };
-                        }
-                    });
+                        });
 
                     $scope.loaded.get_dataElements = true;
                     $scope.loaded.get_dataElementsDescriptions = true;
@@ -567,8 +562,9 @@ searchModule.controller("searchController", [
                 })
                 .then(function () {
                     return searchAllFactory.get_indicatorsAll.query().$promise.then(function (response) {
-                        response.indicators.forEach(function (obj) {
-                            if (filterObjects(obj, "indicator")) {
+                        response.indicators
+                            .filter(obj => filterObjects(obj, "indicator"))
+                            .forEach(function (obj) {
                                 //objectGroup + service
                                 var temp_arr = {
                                     objectGroup_id: [],
@@ -628,12 +624,11 @@ searchModule.controller("searchController", [
                                     objectGroup_id: temp_arr.objectGroup_id.join(", "),
                                     objectGroup_code: temp_arr.objectGroup_code.join(", "),
                                     objectGroup_name: temp_arr.objectGroup_name.join(", "),
-                                    service_id: temp_arr.service_id.join(", "),
-                                    service_code: temp_arr.service_code.join(", "),
-                                    service_name: temp_arr.service_name.join(", "),
+                                    service_id: _.uniq(temp_arr.service_id).join(", "),
+                                    service_code: _.uniq(temp_arr.service_code).join(", "),
+                                    service_name: _.uniq(temp_arr.service_name).join(", "),
                                 };
-                            }
-                        });
+                            });
 
                         $scope.loaded.get_indicators = true;
                         $scope.loaded.get_indicatorsDescriptions = true;

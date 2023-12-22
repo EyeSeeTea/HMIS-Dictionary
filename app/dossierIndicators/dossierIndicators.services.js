@@ -1,6 +1,6 @@
 var qryIndicators =
     dhisUrl +
-    "indicators.json?fields=id,name,numerator,denominator,description,numeratorDescription,denominatorDescription&paging=false";
+    "indicators.json?fields=id,name,numerator,denominator,description,numeratorDescription,denominatorDescription,indicatorGroups[id]&paging=false";
 
 dossierIndicatorsModule.factory("dossiersIndicatorsFactory", [
     "$resource",

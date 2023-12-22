@@ -370,7 +370,7 @@ dossierProgramsModule.controller("makeIndicatorVisualizations", [
                 hideEmptyRows: false,
                 subscribed: false,
                 parentGraphMap: {},
-                rowSubTotals: true,
+                rowSubTotals: false,
                 displayDensity: "NORMAL",
                 displayDescription: "Created with HMIS Dictionary",
                 regressionType: "NONE",
@@ -392,7 +392,7 @@ dossierProgramsModule.controller("makeIndicatorVisualizations", [
                 colSubTotals: true,
                 noSpaceBetweenColumns: false,
                 showHierarchy: false,
-                rowTotals: true,
+                rowTotals: false,
                 seriesKey: {
                     hidden: false,
                 },
