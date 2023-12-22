@@ -1392,7 +1392,8 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         */
         function makeCalcMode(calcMode) {
             if (calcMode?.type === "programRule") {
-                return `${translate("dos_ProgramRule")}: ${calcMode.name}`;
+                const name = calcMode?.names.join(", ");
+                return `${translate("dos_ProgramRule")}: ${name}`;
             } else if (calcMode?.type === "other") {
                 return `${translate("dos_Other")}`;
             } else {
