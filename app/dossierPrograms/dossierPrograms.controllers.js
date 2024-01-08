@@ -370,7 +370,7 @@ dossierProgramsModule.controller("makeIndicatorVisualizations", [
                 hideEmptyRows: false,
                 subscribed: false,
                 parentGraphMap: {},
-                rowSubTotals: true,
+                rowSubTotals: false,
                 displayDensity: "NORMAL",
                 displayDescription: "Created with HMIS Dictionary",
                 regressionType: "NONE",
@@ -392,7 +392,7 @@ dossierProgramsModule.controller("makeIndicatorVisualizations", [
                 colSubTotals: true,
                 noSpaceBetweenColumns: false,
                 showHierarchy: false,
-                rowTotals: true,
+                rowTotals: false,
                 seriesKey: {
                     hidden: false,
                 },
@@ -1392,7 +1392,8 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         */
         function makeCalcMode(calcMode) {
             if (calcMode?.type === "programRule") {
-                return `${translate("dos_ProgramRule")}: ${calcMode.name}`;
+                const name = calcMode?.names.join(", ");
+                return `${translate("dos_ProgramRule")}: ${name}`;
             } else if (calcMode?.type === "other") {
                 return `${translate("dos_Other")}`;
             } else {

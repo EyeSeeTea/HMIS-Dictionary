@@ -33,6 +33,19 @@ adminModule.factory("adminOUGSFactory", [
     },
 ]);
 
+var qry_set_DEG = dhisUrl + "dataStore/HMIS_Dictionary/blacklist_dataElementGroups";
+
+adminModule.factory("adminDEGFactory", [
+    "$resource",
+    function ($resource) {
+        return {
+            get_DEG_set: $resource(qry_set_DEG, {}, { query: { method: "GET", isArray: true } }),
+            set_DEG: $resource(qry_set_DEG, {}, { query: { method: "POST", isArray: false } }),
+            upd_DEG: $resource(qry_set_DEG, {}, { query: { method: "PUT", isArray: false } }),
+        };
+    },
+]);
+
 var qry_set_DS = dhisUrl + "dataStore/HMIS_Dictionary/blacklist_dataSets";
 
 adminModule.factory("adminDSFactory", [

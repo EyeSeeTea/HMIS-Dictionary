@@ -83,6 +83,33 @@ appModule.controller("appSharedController", [
                 );
             });
 
+        /* For DEG blacklist */
+        jQuery
+            .ajax({
+                url: dhisUrl + "dataStore/HMIS_Dictionary/blacklist_dataElementGroups",
+                contentType: "json",
+                method: "GET",
+                dataType: "text",
+                async: false,
+            })
+            .success(function (DEGlist) {
+                DEGlist = JSON.parse(DEGlist);
+                console.log(DEGlist);
+                $scope.blacklist_dataelementgroups = DEGlist;
+                if ($scope.blacklist_dataelementgroups) {
+                    console.log("appModule: List of blacklisted dataElementGroups: " + DEGlist);
+                } else {
+                    console.log(
+                        "appModule: List of blacklisted dataElementGroups has not been defined yet, go to the admin panel!"
+                    );
+                    $scope.blacklist_dataelementgroups = [];
+                }
+            })
+            .fail(function () {
+                console.log("appModule: List of blacklisted dataElementGroups has not been identified.");
+                $scope.blacklist_dataelementgroups = [];
+            });
+
         /* For DS blacklist */
         jQuery
             .ajax({
@@ -97,7 +124,7 @@ appModule.controller("appSharedController", [
                 console.log(DSlist);
                 $scope.blacklist_datasets = DSlist;
                 if ($scope.blacklist_datasets) {
-                    console.log("appModule: List of blacklisted dataSets: " + DSlist.value);
+                    console.log("appModule: List of blacklisted dataSets: " + DSlist);
                 } else {
                     console.log(
                         "appModule: List of blacklisted dataSets has not been defined yet, go to the admin panel!"
@@ -123,7 +150,7 @@ appModule.controller("appSharedController", [
                 IGlist = JSON.parse(IGlist);
                 $scope.blacklist_indicatorgroups = IGlist;
                 if ($scope.blacklist_indicatorgroups) {
-                    console.log("appModule: List of blacklisted indicatorGroups: " + IGlist.value);
+                    console.log("appModule: List of blacklisted indicatorGroups: " + IGlist);
                 } else {
                     console.log(
                         "appModule: List of blacklisted indicatorGroups has not been defined yet, go to the admin panel!"

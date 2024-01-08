@@ -10,6 +10,7 @@ adminModule.controller("adminMainController", [
     "adminUGFactory",
     "adminAFactory",
     "adminOUGFactory",
+    "adminDEGFactory",
     "adminDSFactory",
     "adminIGFactory",
     "adminDossierConfigCompleteFactory",
@@ -20,6 +21,7 @@ adminModule.controller("adminMainController", [
         adminUGFactory,
         adminAFactory,
         adminOUGFactory,
+        adminDEGFactory,
         adminDSFactory,
         adminIGFactory,
         adminDossierConfigCompleteFactory
@@ -206,6 +208,34 @@ adminModule.controller("adminMainController", [
             }
             endLoadingState(false);
         });
+
+        if ($scope.blacklist_dataelementgroups) {
+            $scope.selectedDEG = JSON.stringify($scope.blacklist_dataelementgroups);
+        }
+
+        $scope.submitDEG = function () {
+            adminDEGFactory.get_DEG_set
+                .query($scope.selectedDEG)
+                .$promise.then(
+                    function (response1) {
+                        return adminDEGFactory.upd_DEG.query($scope.selectedDEG, function (response2) {
+                            if (response2) {
+                                $scope.blacklist_dataelementgroups = $scope.selectedDEG;
+                            }
+                        });
+                    },
+                    function () {
+                        return adminDEGFactory.set_DEG.query($scope.selectedDEG, function (response2) {
+                            if (response2) {
+                                $scope.blacklist_dataelementgroups = $scope.selectedDEG;
+                            }
+                        });
+                    }
+                )
+                .then(function () {
+                    window.location.reload(true);
+                });
+        };
 
         if ($scope.blacklist_datasets) {
             $scope.selectedDS = JSON.stringify($scope.blacklist_datasets);
