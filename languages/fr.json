@@ -133,7 +133,7 @@
     "object_num_formula": "Formule du Numérateur (ind. seulement)",
 
     "srch_SelectColumns_grpBasics": "Ensembles de Données ou Groupes Indicateurs - Essentiel",
-    "objectGroup_name": "Nom du Groupe",
+    "objectGroup_name": "Ensemble de Données/Groupe d'Indicateurs",
     "objectGroup_id": "ID du Groupe",
     "objectGroup_code": "Code du Groupe",
 

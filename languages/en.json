@@ -134,7 +134,7 @@
     "object_num_formula": "Numerator Formula (ind. only)",
 
     "srch_SelectColumns_grpBasics": "Data Sets or Indicator Groups - Basics",
-    "objectGroup_name": "Group Name",
+    "objectGroup_name": "Dataset/Indicator Group",
     "objectGroup_id": "Group ID",
     "objectGroup_code": "Group Code",
 
