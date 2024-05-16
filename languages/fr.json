@@ -3,10 +3,10 @@
 
     "idx_Dossiers": "Dossiers",
     "idx_Search": "Recherche",
-    "idx_Graph": "Graph",
+    "idx_Graph": "Graphique",
     "idx_Admin": "Admin",
     "idx_Programs": "Programmes",
-    "idx_DataSets": "Ens. données",
+    "idx_DataSets": "Ens. Données",
     "idx_Indicators": "Indicateurs",
 
     "MODULE:ALL": "****************************",
@@ -18,11 +18,11 @@
     "dos_Number of Services": "Nombre de Services",
     "dos_Number of DataSets in Service": "Nombre d'Ensembles de Données dans le Service",
     "dos_Number of IndicatorGroups in Service": "Nombre de Groupes d'Indicateurs dans le Service",
-    "dos_Select a service": "Selectionner un service",
+    "dos_Select a service": "Sélectionner un service",
 
     "dos_Table of Content": "Table des Matières",
     "dos_Description of Service": "Description du Service",
-    "dos_Data Sets": "Ensembles de Données > Sections > Eléments de Données (Table 1)",
+    "dos_Data Sets": "Ensembles de Données > Sections > Éléments de Données (Table 1)",
     "dos_Data Set": "Ensemble de Données",
     "dos_Section": "Section",
     "dos_Stage": "Étape",
@@ -31,8 +31,8 @@
 
     "dos_BackToTop": "Haut de Page",
 
-    "dos_NumberElementsSection": "Nombre d'Eléments de Données dans la Section",
-    "dos_DescriptionStage": "Description du Étape",
+    "dos_NumberElementsSection": "Nombre d'Éléments de Données dans la Section",
+    "dos_DescriptionStage": "Description de l'Étape",
     "dos_DescriptionSection": "Description de la Section Étape",
     "dos_NameElement": "Nom",
     "dos_FormNameElement": "Nom dans le Formulaire",
@@ -95,7 +95,7 @@
     "dos_EventChartsNumber": "Nombre de diagrammes d'événements",
     "dos_ActionsTypes": "Types d'actions",
 
-    "dos_Number of Indicators in Group": "Nombre d'Indicateurs dans le Group d'Indicateur",
+    "dos_Number of Indicators in Group": "Nombre d'Indicateurs dans le Groupe d'Indicateurs",
     "dos_NameIndicator": "Nom",
     "dos_DescriptionIndicator": "Description",
     "dos_NumeratorIndicator": "Numérateur",
@@ -114,18 +114,18 @@
     "srch_SearchAll": "Recherche",
     "srch_SearchAll_Clear": "Effacer les filtres",
     "srch_SearchAll_Row": "Montrer / Cacher les filtres de colonnes",
-    "srch_SearchAll_Here": "Ecrire ici...",
+    "srch_SearchAll_Here": "Écrivez ici...",
 
-    "srch_SelectColumns": "Selectionner les Colonnes",
+    "srch_SelectColumns": "Sélectionner les Colonnes",
 
-    "srch_SelectColumns_objBasics": "Eléments de Données ou Indicateurs - Essentiel",
+    "srch_SelectColumns_objBasics": "Éléments de Données ou Indicateurs - Essentiel",
     "object_type": "Type",
     "object_name": "Nom",
     "object_form": "Nom dans le Formulaire (datae. seulement)",
     "object_id": "ID",
     "object_code": "Code",
 
-    "srch_SelectColumns_objDescs": "Eléments de Données ou Indicateurs - Descriptions",
+    "srch_SelectColumns_objDescs": "Éléments de Données ou Indicateurs - Descriptions",
     "object_description": "Description",
     "object_den_description": "Description du Dénominateur (ind. seulement)",
     "object_num_description": "Description du Numérateur (ind. seulement)",
@@ -143,7 +143,7 @@
     "service_code": "Code du Service",
 
     "srch_Help": "Aide",
-    "srch_Help_Text": "<p>Cette interface permet de simplifier l'accès des utilisateurs à la terminologie associée aux informations collectées avec HMIS. <ul> <li> Via l'onglet <b>Rechercher</b>, vous pouvez rechercher directement un terme dans toutes les colonnes de la table. Vous pouvez également afficher des filtres de colonne ce qui vous permet de rechercher des informations dans une colonne spécifique. Utilisez 'Effacer les filtres' pour réinitialiser tous les filtres. <i> Les utilisateurs experts peuvent utiliser le mot clé '|' (OR) pour chercher plusieurs objets à la fois. </i> </li> <li> Grâce à l'onglet <b>Sélectionner les Colonnes</b>, vous pouvez sélectionner les colonnes à afficher dans la table. <i>Les utilisateurs expérimentés peuvent utiliser les colonnes avancées pour effectuer des recherches détaillées via les IDs. </i> </li> </ul>Vous pouvez enfin exporter les résultats de votre recherche vers Excel (page par page, et n'oubliez pas d'enregistrer sous .xls).</p>",
+    "srch_Help_Text": "<p>Cette interface permet de simplifier l'accès des utilisateurs à la terminologie associée aux informations collectées avec HMIS. <ul> <li> Via l'onglet <b>Rechercher</b>, vous pouvez rechercher directement un terme dans toutes les colonnes de la table. Vous pouvez également afficher des filtres de colonne, ce qui vous permet de rechercher des informations dans une colonne spécifique. Utilisez 'Effacer les filtres' pour réinitialiser tous les filtres. <i> Les utilisateurs experts peuvent utiliser le mot clé '|' (OR) pour chercher plusieurs objets à la fois. </i> </li> <li> Grâce à l'onglet <b>Sélectionner les Colonnes</b>, vous pouvez sélectionner les colonnes à afficher dans la table. <i>Les utilisateurs expérimentés peuvent utiliser les colonnes avancées pour effectuer des recherches détaillées via les IDs. </i> </li> </ul>Vous pouvez enfin exporter les résultats de votre recherche vers Excel (page par page, et n'oubliez pas d'enregistrer sous .xls).</p>",
     "srch_exportToExcel": "Exporter cette page vers Excel",
 
     "MODULE:PROGRAMS": "***************************",
