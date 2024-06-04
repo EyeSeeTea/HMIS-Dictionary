@@ -196,7 +196,7 @@ searchModule.controller("searchController", [
                 },
                 publicAccess: "--------",
                 type: "PIVOT_TABLE",
-                hideEmptyColumns: false,
+                hideEmptyColumns: true,
                 hideEmptyRows: false,
                 subscribed: false,
                 parentGraphMap: {},
@@ -206,7 +206,7 @@ searchModule.controller("searchController", [
                 regressionType: "NONE",
                 completedOnly: false,
                 cumulativeValues: false,
-                colTotals: true,
+                colTotals: false,
                 showDimensionLabels: true,
                 sortOrder: 0,
                 fontSize: "NORMAL",
@@ -219,7 +219,7 @@ searchModule.controller("searchController", [
                 description: "Created with HMIS Dictionary",
                 fixColumnHeaders: false,
                 percentStackedValues: false,
-                colSubTotals: true,
+                colSubTotals: false,
                 noSpaceBetweenColumns: false,
                 showHierarchy: false,
                 rowTotals: false,
@@ -269,14 +269,6 @@ searchModule.controller("searchController", [
                         items: [
                             {
                                 id: "THIS_YEAR",
-                            },
-                        ],
-                    },
-                    {
-                        dimension: "BtFXTpKRl6n",
-                        items: [
-                            {
-                                id: "ALL_ITEMS",
                             },
                         ],
                     },
