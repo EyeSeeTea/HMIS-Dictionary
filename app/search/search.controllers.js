@@ -68,15 +68,19 @@ searchModule.controller("searchController", [
         'vCfO0z5igGT'  // Vaccination 2015
     ];
     */
+
+        /**  
+    In case to hide dataElements that are associated to a blacklist_dataset
+    if (obj.dataSetElements.length < 1) return true;
+    return obj.dataSetElements.some(dse => $scope.blacklist_datasets.indexOf(dse.dataSet.id) == -1);
+    */
+
         console.debug("searchModule: Blacklisted dataElementGroups: " + $scope.blacklist_dataelementgroups);
         console.debug("searchModule: Blacklisted dataSets: " + $scope.blacklist_datasets);
         console.debug("searchModule: Blacklisted indicatorGroups: " + $scope.blacklist_indicatorgroups);
         var filterObjects = function (obj, type) {
             if (type == "dataElement") {
-                if (obj.dataElementGroups.some(deg => $scope.blacklist_dataelementgroups.includes(deg.id)))
-                    return false;
-                if (obj.dataSetElements.length < 1) return true;
-                return obj.dataSetElements.some(dse => $scope.blacklist_datasets.indexOf(dse.dataSet.id) == -1);
+                return !obj.dataElementGroups.some(deg => $scope.blacklist_dataelementgroups.includes(deg.id));
             } else if (type == "indicator") {
                 if (obj.indicatorGroups.length < 0) return false;
                 return obj.indicatorGroups.some(ig => $scope.blacklist_indicatorgroups.indexOf(ig.id) == -1);
@@ -192,7 +196,7 @@ searchModule.controller("searchController", [
                 },
                 publicAccess: "--------",
                 type: "PIVOT_TABLE",
-                hideEmptyColumns: false,
+                hideEmptyColumns: true,
                 hideEmptyRows: false,
                 subscribed: false,
                 parentGraphMap: {},
@@ -202,7 +206,7 @@ searchModule.controller("searchController", [
                 regressionType: "NONE",
                 completedOnly: false,
                 cumulativeValues: false,
-                colTotals: true,
+                colTotals: false,
                 showDimensionLabels: true,
                 sortOrder: 0,
                 fontSize: "NORMAL",
@@ -215,7 +219,7 @@ searchModule.controller("searchController", [
                 description: "Created with HMIS Dictionary",
                 fixColumnHeaders: false,
                 percentStackedValues: false,
-                colSubTotals: true,
+                colSubTotals: false,
                 noSpaceBetweenColumns: false,
                 showHierarchy: false,
                 rowTotals: false,
@@ -265,14 +269,6 @@ searchModule.controller("searchController", [
                         items: [
                             {
                                 id: "THIS_YEAR",
-                            },
-                        ],
-                    },
-                    {
-                        dimension: "BtFXTpKRl6n",
-                        items: [
-                            {
-                                id: "ALL_ITEMS",
                             },
                         ],
                     },
