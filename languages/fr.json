@@ -118,26 +118,26 @@
 
   "srch_SelectColumns": "Sélectionner les Colonnes",
 
-  "srch_SelectColumns_objBasics": "Éléments de Données ou Indicateurs - Essentiel",
+  "srch_SelectColumns_objBasics": "Éléments de données ou indicateurs - Principes de base",
   "object_type": "Type",
   "object_name": "Nom",
   "object_form": "Nom dans le Formulaire (datae. seulement)",
   "object_id": "ID",
   "object_code": "Code",
 
-  "srch_SelectColumns_objDescs": "Éléments de Données ou Indicateurs - Descriptions",
+  "srch_SelectColumns_objDescs": "Éléments de données ou indicateurs - Descriptions",
   "object_description": "Description",
   "object_den_description": "Description du Dénominateur (ind. seulement)",
   "object_num_description": "Description du Numérateur (ind. seulement)",
   "object_den_formula": "Formule du Dénominateur (ind. seulement)",
   "object_num_formula": "Formule du Numérateur (ind. seulement)",
 
-  "srch_SelectColumns_grpBasics": "Ensembles de Données ou Groupes Indicateurs - Essentiel",
+  "srch_SelectColumns_grpBasics": "Groupes d'éléments de données ou d'indicateurs - Principes de base",
   "objectGroup_name": "Ensemble de Données/Groupe d'Indicateurs",
   "objectGroup_id": "ID du Groupe",
   "objectGroup_code": "Code du Groupe",
 
-  "srch_SelectColumns_servBasics": "Services - Essentiel",
+  "srch_SelectColumns_servBasics": "Services - Principes de base",
   "service_name": "Nom du Service",
   "service_id": "ID du Service",
   "service_code": "Code du Service",

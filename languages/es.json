@@ -118,7 +118,7 @@
 
   "srch_SelectColumns": "Elegir Columnas",
 
-  "srch_SelectColumns_objBasics": "Elementos de Datos o Indicadores - Básicos",
+  "srch_SelectColumns_objBasics": "Elementos de datos o indicadores - Conceptos básicos",
   "object_type": "Tipo",
   "object_name": "Nombre",
   "object_form": "Nombre en el Formulario (solo datae.)",
@@ -126,19 +126,19 @@
   "object_code": "Código",
   "object_ICD10": "ICD10",
 
-  "srch_SelectColumns_objDescs": "Elementos de Datos o Indicadores - Descripciones",
+  "srch_SelectColumns_objDescs": "Elementos de datos o indicadores - Descripciones",
   "object_description": "Descripción",
   "object_den_description": "Descripción de Denominador (solo ind.)",
   "object_num_description": "Descripción de Numerador (solo ind.)",
   "object_den_formula": "Fórmula Denominador (solo ind.)",
   "object_num_formula": "Fórmula Numerador (solo ind.)",
 
-  "srch_SelectColumns_grpBasics": "Sets de Datos o Grupos de Indicadores - Básicos",
+  "srch_SelectColumns_grpBasics": "Grupos de elementos de datos o indicadores - Conceptos básicos",
   "objectGroup_name": "Conjunto de Datos/Grupo de Indicadores",
   "objectGroup_id": "ID de Grupo",
   "objectGroup_code": "Código de Grupo",
 
-  "srch_SelectColumns_servBasics": "Servicios - Básicos",
+  "srch_SelectColumns_servBasics": "Servicios - Conceptos básicos",
   "service_name": "Nombre de Servicio",
   "service_id": "ID de Servicio",
   "service_code": "Código de Servicio",
