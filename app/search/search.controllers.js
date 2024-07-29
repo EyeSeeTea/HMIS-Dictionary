@@ -495,7 +495,7 @@ searchModule.controller("searchController", [
                                         });
                                     }
                                     temp_arr.objectGroup_id.push(grp.dataSet.id);
-                                    temp_arr.objectGroup_code.push(grp.dataSet.code);
+                                    if(grp.dataSet.code) temp_arr.objectGroup_code.push(grp.dataSet.code);
                                     temp_arr.objectGroup_name.push(grp.dataSet.displayName);
                                 });
 
