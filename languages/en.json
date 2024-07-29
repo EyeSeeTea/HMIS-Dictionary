@@ -133,7 +133,7 @@
   "object_den_formula": "Denominator Formula (ind. only)",
   "object_num_formula": "Numerator Formula (ind. only)",
 
-  "srch_SelectColumns_grpBasics": "Data Sets or Indicator Groups - Basics",
+  "srch_SelectColumns_grpBasics": "Data Elements or Indicators Groups - Basics",
   "objectGroup_name": "Group Name",
   "objectGroup_id": "Group ID",
   "objectGroup_code": "Group Code",
