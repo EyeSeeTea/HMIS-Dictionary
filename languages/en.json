@@ -151,5 +151,21 @@
   "dos_DescriptionOfProgram": "Program description",
   "dosNumberOfProgramIndicators": "Number of Program Indicators",
   "dosNumberOfIndicators": "Number of Indicators",
-  "dos_GoToIndex": "Go to Index"
+  "dos_GoToIndex": "Go to Index",
+  
+  "object_type_help": "Defines the data type of the specific data element  or indicator used in the form.",
+  "object_name_help": "Defines the name of the data element or indicator assigned/used in a dataset.",
+  "object_form_help": "Defines the form name in the section form.(Applicable to Data Elements only).",
+  "object_id_help": "Defines the unique ID of the data element or indicator used in the form.",
+  "object_code_help": "Defines the unique code assigned to the data element or indicator in the form.",
+  "object_ICD10_help": "Defines the unique ICD10 Code assigned to the specified data element or indicator in the form.",
+  "object_description_help": "Defines the description of the Data Element or Indicator used in a form.",
+  "object_num_formula_help": "Defines a description of the numerator formula used in an Indicator. Applicable for Indicators.",
+  "object_den_formula_help": "Defines a description of the denominator formula used in an Indicator. Applicable for Indicators.",
+  "objectGroup_name_help": "Defines the name of the data element or indicator groups assigned or used in a dataset.",
+  "objectGroup_id_help": "Defines the unique ID of the data element or indicator group used in a dataset.",
+  "objectGroup_code_help": "Defines the unique code assigned to the data element or indicator group used in a dataset.",
+  "service_name_help": "Defines the name of the Service assigned to the dataset.",
+  "service_id_help": "Defines the unique service ID of the data element or indicator used in a dataset.",
+  "service_code_help": "Defines the unique service code assigned to the data element or indicator group used in a dataset."
 }
