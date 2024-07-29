@@ -103,6 +103,7 @@
                                             class="checkbox"
                                             ng-repeat="col in table.cols"
                                             ng-if="cols_object[col.code]"
+                                            title="{{ col.headerTitle() }}"
                                         >
                                             <input
                                                 type="checkbox"
@@ -123,6 +124,7 @@
                                             class="checkbox"
                                             ng-repeat="col in table.cols"
                                             ng-if="cols_object_desc[col.code]"
+                                            title="{{ col.headerTitle() }}"
                                         >
                                             <input
                                                 type="checkbox"
@@ -143,6 +145,7 @@
                                             class="checkbox"
                                             ng-repeat="col in table.cols"
                                             ng-if="cols_objectGroup[col.code]"
+                                            title="{{ col.headerTitle() }}"
                                         >
                                             <input
                                                 type="checkbox"
@@ -163,6 +166,7 @@
                                             class="checkbox"
                                             ng-repeat="col in table.cols"
                                             ng-if="cols_service[col.code]"
+                                            title="{{ col.headerTitle() }}"
                                         >
                                             <input
                                                 type="checkbox"
@@ -182,6 +186,7 @@
                                             class="checkbox"
                                             ng-repeat="col in table.cols"
                                             ng-if="cols_object_advanced[col.code]"
+                                            title="{{ col.headerTitle() }}"
                                         >
                                             <input
                                                 type="checkbox"
@@ -200,6 +205,7 @@
                                             class="checkbox"
                                             ng-repeat="col in table.cols"
                                             ng-if="cols_objectGroup_advanced[col.code]"
+                                            title="{{ col.headerTitle() }}"
                                         >
                                             <input
                                                 type="checkbox"
@@ -217,6 +223,7 @@
                                             class="checkbox"
                                             ng-repeat="col in table.cols"
                                             ng-if="cols_service_advanced[col.code]"
+                                            title="{{ col.headerTitle() }}"
                                         >
                                             <input
                                                 type="checkbox"
@@ -287,6 +294,7 @@
                 filter="{object_type:'./app/search/search.table.html'}"
                 ng-if="true"
                 data-title="'object_type' | translate"
+                data-header-title="'object_type_help' | translate"
             >
                 <span
                     ng-bind-html='object.object_type | highlight: table.globalSearchTerm:params.filter():"object_type"'
@@ -297,6 +305,7 @@
                 filter="{object_id:'./app/search/search.table.html'}"
                 ng-if="false"
                 data-title="'object_id' | translate"
+                data-header-title="'object_id_help' | translate"
             >
                 <span
                     ng-bind-html='object.object_id | highlight: table.globalSearchTerm:params.filter():"object_id"'
@@ -307,6 +316,7 @@
                 filter="{object_code:'./app/search/search.table.html'}"
                 ng-if="false"
                 data-title="'object_code' | translate"
+                data-header-title="'object_code_help' | translate"
             >
                 <span
                     ng-bind-html='object.object_code | highlight: table.globalSearchTerm:params.filter():"object_code"'
@@ -318,6 +328,7 @@
                 filter="{object_ICD10:'./app/search/search.table.html'}"
                 ng-if="false"
                 data-title="'object_ICD10' | translate"
+                data-header-title="'object_ICD10_help' | translate"
             >
                 <span
                     ng-bind-html='object.object_ICD10 | highlight: table.globalSearchTerm:params.filter():"object_ICD10"'
@@ -329,6 +340,7 @@
                 filter="{object_name:'./app/search/search.table.html'}"
                 ng-if="true"
                 data-title="'object_name' | translate"
+                data-header-title="'object_name_help' | translate"
             >
                 <span
                     ng-bind-html='object.object_name | highlight: table.globalSearchTerm:params.filter():"object_name"'
@@ -346,6 +358,7 @@
                 filter="{object_form:'./app/search/search.table.html'}"
                 ng-if="false"
                 data-title="'object_form' | translate"
+                data-header-title="'object_form_help' | translate"
             >
                 <span
                     ng-bind-html='object.object_form | highlight: table.globalSearchTerm:params.filter():"object_form"'
@@ -357,6 +370,7 @@
                 filter="{object_description:'./app/search/search.table.html'}"
                 ng-if="true"
                 data-title="'object_description' | translate"
+                data-header-title="'object_description_help' | translate"
             >
                 <span
                     ng-bind-html='object.object_description | highlight: table.globalSearchTerm:params.filter():"object_description"'
@@ -367,6 +381,7 @@
                 filter="{object_num_formula:'./app/search/search.table.html'}"
                 ng-if="false"
                 data-title="'object_num_formula' | translate"
+                data-header-title="'object_num_formula_help' | translate"
             >
                 <span
                     ng-bind-html='object.object_num_formula | highlight: table.globalSearchTerm:params.filter():"object_num_formula"'
@@ -377,6 +392,7 @@
                 filter="{object_den_formula:'./app/search/search.table.html'}"
                 ng-if="false"
                 data-title="'object_den_formula' | translate"
+                data-header-title="'object_den_formula_help' | translate"
             >
                 <span
                     ng-bind-html='object.object_den_formula | highlight: table.globalSearchTerm:params.filter():"object_den_formula"'
@@ -388,6 +404,7 @@
                 filter="{objectGroup_id:'./app/search/search.table.html'}"
                 ng-if="false"
                 data-title="'objectGroup_id' | translate"
+                data-header-title="'objectGroup_id_help' | translate"
             >
                 <span
                     ng-bind-html='object.objectGroup_id | highlight: table.globalSearchTerm:params.filter():"objectGroup_id"'
@@ -398,6 +415,7 @@
                 filter="{objectGroup_code:'./app/search/search.table.html'}"
                 ng-if="false"
                 data-title="'objectGroup_code' | translate"
+                data-header-title="'objectGroup_code_help' | translate"
             >
                 <span
                     ng-bind-html='object.objectGroup_code | highlight: table.globalSearchTerm:params.filter():"objectGroup_code"'
@@ -408,6 +426,7 @@
                 filter="{objectGroup_name:'./app/search/search.table.html'}"
                 ng-if="true"
                 data-title="'objectGroup_name' | translate"
+                data-header-title="'objectGroup_name_help' | translate"
             >
                 <span
                     ng-bind-html='object.objectGroup_name | highlight: table.globalSearchTerm:params.filter():"objectGroup_name"'
@@ -419,6 +438,7 @@
                 filter="{service_id:'./app/search/search.table.html'}"
                 ng-if="false"
                 data-title="'service_id' | translate"
+                data-header-title="'service_id_help' | translate"
             >
                 <span
                     ng-bind-html='object.service_id | highlight: table.globalSearchTerm:params.filter():"service_id"'
@@ -429,6 +449,7 @@
                 filter="{service_code:'./app/search/search.table.html'}"
                 ng-if="false"
                 data-title="'service_code' | translate"
+                data-header-title="'service_code_help' | translate"
             >
                 <span
                     ng-bind-html='object.service_code | highlight: table.globalSearchTerm:params.filter():"service_code"'
@@ -439,6 +460,7 @@
                 filter="{service_name:'./app/search/search.table.html'}"
                 ng-if="show_dossiers"
                 data-title="'service_name' | translate"
+                data-header-title="'service_name_help' | translate"
             >
                 <span
                     ng-bind-html='object.service_name | highlight: table.globalSearchTerm:params.filter():"service_name"'
