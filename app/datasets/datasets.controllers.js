@@ -86,6 +86,13 @@ datasetsModule.controller("datasetsMainController", [
 
         $scope.datasetDataElements = {};
 
+        $scope.sharingSettings = {
+            advancedUserGroups:[],
+            metadata: {
+                
+            }
+        };
+
         /*
          * @name none
          * @description Clear the table of content, get the dataset sections and data elements

@@ -167,5 +167,7 @@
   "objectGroup_code_help": "Defines the unique code assigned to the data element or indicator group used in a dataset.",
   "service_name_help": "Defines the name of the Service assigned to the dataset.",
   "service_id_help": "Defines the unique service ID of the data element or indicator used in a dataset.",
-  "service_code_help": "Defines the unique service code assigned to the data element or indicator group used in a dataset."
+  "service_code_help": "Defines the unique service code assigned to the data element or indicator group used in a dataset.",
+
+  "sharing_settings": "Sharing Settings"
 }
