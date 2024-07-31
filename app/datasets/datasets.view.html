@@ -3,7 +3,7 @@
     Please refer to the LICENSE.md and LICENSES-DEP.md for complete licenses.
  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-<div ng-controller="datasetsMainController as parentCtrl" id="DossierPanel" class="row">
+<div ng-controller="datasetsMainController" id="DossierPanel" class="row">
     <div id="headerDossierPanel" class="col-md-12 headerPanel row">
         <sharing-settings metadata="sharingSettings"></sharing-settings>
 
@@ -34,13 +34,11 @@
             <h3 ng-if="selectedDataset" style="text-decoration: underline">{{ "dos_Table of Content" | translate }}</h3>
             <ul ng-repeat="i in toc.entries | orderBy:'parent.index'">
                 <li>
-                    <big
-                        ><b
-                            ><a href="" class="pageref" ng-click="scrollTo(i.parent.id)" target="_self">{{
-                                i.parent.displayName
-                            }}</a></b
-                        ></big
-                    >
+                    <big>
+                        <b>
+                            <a href="" class="pageref" ng-click="scrollTo(i.parent.id)" target="_self">{{ i.parent.displayName }}</a>
+                        </b>
+                    </big>
                     <ul ng-repeat="j in i.children">
                         <li>
                             <a href="" class="pageref" ng-click="scrollTo(j.id)">{{ j.displayName }}</a>
