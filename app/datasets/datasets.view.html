@@ -5,7 +5,7 @@
 
 <div ng-controller="datasetsMainController" id="DossierPanel" class="row">
     <div id="headerDossierPanel" class="col-md-12 headerPanel row">
-        <sharing-settings metadata="sharingSettings"></sharing-settings>
+        <sharing-settings metadata="sharingSettings" ng-if="is_admin"></sharing-settings>
 
         <h1>{{ "idx_DataSets" | translate }}</h1>
         <p>{{ "Number of Data Sets" | translate }}: {{ datasets.dataSets.length }}</p>
@@ -49,47 +49,61 @@
         </div>
 
         <div class="col-md-12" id="sectionContainer" ng-controller="datasetSectionController">
-            <div ng-repeat="section in datasetDataElements.sections">
+            <!-- Request if userHaveAcces after controller, because category combo section is dependent of this controller -->
+            <div ng-repeat="section in datasetDataElements.sections" ng-if="accesses.sections">
                 <h3 class="section" id="{{ section.id }}">{{ section.displayName }}</h3>
                 <p>{{ "Number of Elements in Section" | translate }}: {{ section.dataElements.length }}</p>
                 <table class="sectionElementsTable table table-striped">
                     <thead>
                         <tr>
-                            <th>{{ "dos_NameElement" | translate }}</th>
-                            <th>{{ "dos_FormNameElement" | translate }}</th>
-                            <th>{{ "dos_DescriptionElement" | translate }}</th>
-                            <th>{{ "DataTypeElement" | translate }}</th>
-                            <th>{{ "Options" | translate }}</th>
-                            <th>{{ "Category combination" | translate }}</th>
+                            <th ng-if="accesses.sections_name">{{ "dos_NameElement" | translate }}</th>
+                            <th ng-if="accesses.sections_formName">{{ "dos_FormNameElement" | translate }}</th>
+                            <th ng-if="accesses.sections_description">{{ "dos_DescriptionElement" | translate }}</th>
+                            <th ng-if="accesses.sections_dataTypeElement">{{ "dos_DataTypeElement" | translate }}</th>
+                            <th ng-if="accesses.sections_options">{{ "dos_Options" | translate }}</th>
+                            <th ng-if="accesses.sections_categoryCombination">
+                                {{ "dos_CategoryCombination" | translate }}
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="dataElement in section.dataElements">
-                            <td>{{ dataElement.displayName || dataElement.dataElement.displayName }}</td>
-                            <td>{{ dataElement.displayFormName || dataElement.dataElement.displayFormName }}</td>
-                            <td>{{ dataElement.displayDescription || dataElement.dataElement.displayDescription }}</td>
-                            <td>{{ dataElement.valueType || dataElement.dataElement.valueType }}</td>
+                            <td ng-if="accesses.sections_name">
+                                {{ dataElement.displayName || dataElement.dataElement.displayName }}
+                            </td>
+                            <td ng-if="accesses.sections_formName">
+                                {{ dataElement.displayFormName || dataElement.dataElement.displayFormName }}
+                            </td>
+                            <td ng-if="accesses.sections_description">
+                                {{ dataElement.displayDescription || dataElement.dataElement.displayDescription }}
+                            </td>
+                            <td ng-if="accesses.sections_dataTypeElement">
+                                {{ dataElement.valueType || dataElement.dataElement.valueType }}
+                            </td>
                             <!--choose between having or not having section-->
-                            <td ng-if="dataElement.displayName">
+                            <td ng-if="dataElement.displayName && accesses.sections_options">
                                 <ul>
                                     <li ng-repeat="option in dataElement.optionSet.options">
                                         <div>{{ option.displayName || "-" }}</div>
                                     </li>
                                 </ul>
                             </td>
-                            <td ng-if="!dataElement.displayName">
+                            <td ng-if="!dataElement.displayName && accesses.sections_options">
                                 <ul>
                                     <li ng-repeat="option in dataElement.dataElement.optionSet.options">
                                         <div>{{ option.displayName || "-" }}</div>
                                     </li>
                                 </ul>
                             </td>
-                            <td
-                                ng-init="categoryCombo=getCategoryCombination(dataElement.id || dataElement.dataElement.id, $parent.$index, $index)"
-                            >
-                                <a href="" class="pageref" ng-click="scrollTo(categoryCombo.id)" target="_self">{{
-                                    categoryCombo.displayName
-                                }}</a>
+                            <td ng-if="accesses.sections_categoryCombination">
+                                <a
+                                    href=""
+                                    class="pageref"
+                                    ng-click="scrollTo(categoryCombo[$parent.$index][$index].id)"
+                                    target="_self"
+                                >
+                                    {{ categoryCombo[$parent.$index][$index].displayName }}
+                                </a>
                             </td>
                         </tr>
                     </tbody>
@@ -98,23 +112,31 @@
         </div>
 
         <div class="col-md-12" id="categoryComboContainer" ng-controller="datasetCategoryComboController">
-            <div ng-if="selectedDataset" class="col-md-12">
-                <h3 class="section" id="categoryCombinations">Category combinations</h3>
+            <div ng-if="selectedDataset && accesses.categoryCombinations" class="col-md-12">
+                <h3 class="section" id="categoryCombinations">{{ "dos_CategoryCombinations" | translate }}</h3>
                 <table class="sectionElementsTable table table-striped">
                     <thead>
                         <tr>
-                            <th>{{ "Category combination" | translate }}</th>
-                            <th>{{ "Categories" | translate }}</th>
-                            <th>{{ "Items" | translate }}</th>
+                            <th ng-if="accesses.categoryCombinations_categoryCombination">
+                                {{ "dos_CategoryCombination" | translate }}
+                            </th>
+                            <th ng-if="accesses.categoryCombinations_categories">{{ "dos_Categories" | translate }}</th>
+                            <th ng-if="accesses.categoryCombinations_items">{{ "dos_Items" | translate }}</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat-start="categoryCombo in categoryCombos.categoryCombos">
-                            <td id="{{ categoryCombo.id }}" rowspan="{{ categoryCombo.categories.length }}">
+                            <td
+                                id="{{ categoryCombo.id }}"
+                                rowspan="{{ categoryCombo.categories.length }}"
+                                ng-if="accesses.categoryCombinations_categoryCombination"
+                            >
                                 {{ categoryCombo.displayName }}
                             </td>
-                            <td>{{ categoryCombo.categories[0].displayName }}</td>
-                            <td>
+                            <td ng-if="accesses.categoryCombinations_categories">
+                                {{ categoryCombo.categories[0].displayName }}
+                            </td>
+                            <td ng-if="accesses.categoryCombinations_items">
                                 <ul>
                                     <li ng-repeat="item in categoryCombo.categories[0].items">
                                         {{ item.displayName }}
@@ -123,8 +145,8 @@
                             </td>
                         </tr>
                         <tr ng-repeat-end ng-repeat="category in categoryCombo.categories.slice(1)">
-                            <td>{{ category.displayName }}</td>
-                            <td>
+                            <td ng-if="accesses.categoryCombinations_categories">{{ category.displayName }}</td>
+                            <td ng-if="accesses.categoryCombinations_items">
                                 <ul>
                                     <li ng-repeat="item in category.items">{{ item.displayName }}</li>
                                 </ul>
@@ -136,27 +158,37 @@
         </div>
 
         <div class="col-md-12" id="indicatorContainer" ng-controller="datasetsIndicatorsController">
-            <div ng-if="indicators.length > 0" col-md-12>
-                <h3 class="section" id="indicators">Indicators</h3>
+            <div ng-if="indicators.length > 0 && accesses.indicators" col-md-12>
+                <h3 class="section" id="indicators">{{ "dos_Indicators" | translate }}</h3>
                 <table class="sectionElementsTable table table-striped">
                     <thead>
                         <tr>
-                            <th>{{ "Name" | translate }}</th>
-                            <th>{{ "Type" | translate }}</th>
-                            <th>{{ "Numerator" | translate }}</th>
-                            <th>{{ "Numerator description" | translate }}</th>
-                            <th>{{ "Denominator" | translate }}</th>
-                            <th>{{ "Denominator description" | translate }}</th>
+                            <th ng-if="accesses.indicators_name">{{ "dos_NameIndicator" | translate }}</th>
+                            <th ng-if="accesses.indicators_type">{{ "dos_Type" | translate }}</th>
+                            <th ng-if="accesses.indicators_numerator">{{ "dos_NumeratorIndicator" | translate }}</th>
+                            <th ng-if="accesses.indicators_numeratorDescription">
+                                {{ "dos_NumeratorIndicatorDescription" | translate }}
+                            </th>
+                            <th ng-if="accesses.indicators_denominator">
+                                {{ "dos_DenominatorIndicator" | translate }}
+                            </th>
+                            <th ng-if="accesses.indicators_denominatorDescription">
+                                {{ "dos_DenominatorIndicatorDescription" | translate }}
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="indicator in indicators |  orderBy: 'displayName'">
-                            <td>{{ indicator.displayName }}</td>
-                            <td>{{ indicator.indicatorType.displayName }}</td>
-                            <td>{{ indicator.numerator }}</td>
-                            <td>{{ indicator.numeratorDescription }}</td>
-                            <td>{{ indicator.denominator }}</td>
-                            <td>{{ indicator.denominatorDescription }}</td>
+                            <td ng-if="accesses.indicators_name">{{ indicator.displayName }}</td>
+                            <td ng-if="accesses.indicators_type">{{ indicator.indicatorType.displayName }}</td>
+                            <td ng-if="accesses.indicators_numerator">{{ indicator.numerator }}</td>
+                            <td ng-if="accesses.indicators_numeratorDescription">
+                                {{ indicator.numeratorDescription }}
+                            </td>
+                            <td ng-if="accesses.indicators_denominator">{{ indicator.denominator }}</td>
+                            <td ng-if="accesses.indicators_denominatorDescription">
+                                {{ indicator.denominatorDescription }}
+                            </td>
                         </tr>
                     </tbody>
                 </table>

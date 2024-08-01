@@ -15,6 +15,8 @@ datasetsModule.controller("datasetsMainController", [
     "datasetsFactory",
     "datasetsLinkFactory",
     "datasetsDataelementsFactory",
+    "adminUGFactory",
+    "advancedUsersFactory",
     function (
         $scope,
         $translate,
@@ -22,9 +24,17 @@ datasetsModule.controller("datasetsMainController", [
         $anchorScroll,
         datasetsFactory,
         datasetsLinkFactory,
-        datasetsDataelementsFactory
+        datasetsDataelementsFactory,
+        dossiersReaderMeFactory,
+        advancedUsersFactory
     ) {
         $("#datasets").tab("show");
+
+        $scope.isAdvancedUser = false;
+
+        advancedUsersFactory.isAdvancedUser(["LjRqO9XzQPs"]).query({}, function (data) {
+            $scope.isAdvancedUser = data.isAdvancedUser;
+        });
 
         /*
          *  @name addtoTOC
@@ -87,10 +97,43 @@ datasetsModule.controller("datasetsMainController", [
         $scope.datasetDataElements = {};
 
         $scope.sharingSettings = {
-            advancedUserGroups:[],
-            metadata: {
-                
-            }
+            name: "datasets",
+            advancedUserGroups: [],
+            accesses: {
+                sections: {
+                    translationKey: "dos_Sections",
+                    access: 2,
+                    columns: {
+                        name: { translationKey: "dos_NameElement", access: 2 },
+                        formName: { translationKey: "dos_FormNameElement", access: 2 },
+                        description: { translationKey: "dos_DescriptionElement", access: 2 },
+                        dataTypeElement: { translationKey: "dos_DataTypeElement", access: 0 },
+                        options: { translationKey: "dos_Options", access: 0 },
+                        categoryCombination: { translationKey: "dos_CategoryCombination", access: 0 },
+                    },
+                },
+                categoryCombinations: {
+                    translation: "dos_CategoryCombinations",
+                    access: 0,
+                    columns: {
+                        categoryCombination: { translationKey: "dos_CategoryCombination", access: 0 },
+                        categories: { translationKey: "dos_Categories", access: 0 },
+                        items: { translationKey: "dos_Items", access: 0 },
+                    },
+                },
+                indicators: {
+                    translation: "dos_Indicators",
+                    access: 2,
+                    columns: {
+                        name: { translationKey: "dos_NameIndicator", access: 2 },
+                        type: { translationKey: "dos_Type", access: 2 },
+                        numerator: { translationKey: "dos_NumeratorIndicator", access: 2 },
+                        numeratorDescription: { translationKey: "dos_NumeratorIndicatorDescription", access: 2 },
+                        denominator: { translationKey: "dos_DenominatorIndicator", access: 2 },
+                        denominatorDescription: { translationKey: "dos_DenominatorIndicatorDescription", access: 2 },
+                    },
+                },
+            },
         };
 
         /*
@@ -121,6 +164,12 @@ datasetsModule.controller("datasetsMainController", [
                 );
             }
         });
+
+        $scope.accesses = userAccesses($scope.sharingSettings.accesses, $scope.isAdvancedUser);
+
+        $scope.$watch("accesses", function () {
+            console.log($scope.accesses);
+        });
     },
 ]);
 
@@ -140,6 +189,8 @@ datasetsModule.controller("datasetSectionController", [
             index: "0",
         };
 
+        $scope.categoryCombo = [];
+
         /*
          * @name none
          * @description add the sections to the TOC, show them
@@ -148,6 +199,19 @@ datasetsModule.controller("datasetSectionController", [
         $scope.$watch("datasetDataElements", function () {
             ping();
             if (typeof $scope.datasetDataElements.dataSetElements != "undefined") {
+                //initialize categoryCombo for datasetCategoryComboController
+                $scope.datasetDataElements.sections.forEach((section, sectionIndex) => {
+                    $scope.categoryCombo[sectionIndex] = [];
+                    section.dataElements.forEach((dataElement, dataElementIndex) => {
+                        const id = dataElement.id || dataElement.dataElement.id;
+                        $scope.categoryCombo[sectionIndex][dataElementIndex] = $scope.getCategoryCombination(
+                            id,
+                            sectionIndex,
+                            dataElementIndex
+                        );
+                    });
+                });
+
                 //if there are no sections rearrange/change TOC name
                 if ($scope.datasetDataElements.sections.length == 0) $scope.showWithoutSections();
                 else $scope.showWithSections();

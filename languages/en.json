@@ -11,6 +11,8 @@
 
   "MODULE:ALL": "****************************",
   "OPEN": "Open",
+  "CLOSE": "Close",
+  "APPLY_CHANGES": "Apply changes",
 
   "MODULE:DOSSIERS": "****************************",
 
@@ -25,6 +27,7 @@
   "dos_Data Sets": "Data Sets > Sections > Data Elements (Table 1)",
   "dos_Data Set": "Data Set",
   "dos_Section": "Section",
+  "dos_Sections": "Sections",
   "dos_Stage": "Stage",
   "dos_Indicator Groups": "Indicator Groups > Indicators (Table 2)",
   "dos_Indicator Group": "Indicator Group",
@@ -95,11 +98,19 @@
   "dos_EventChartsNumber": "Number of Event Charts",
   "dos_ActionsTypes": "Actions Types",
 
+  "dos_CategoryCombinations": "Category Combinations",
+  "dos_CategoryCombination": "Category combination",
+  "dos_DataTypeElement": "DataTypeElement",
+  "dos_Categories": "Categories",
+  "dos_Items": "Items",
+
   "dos_Number of Indicators in Group": "Number of Indicators in Indicator Group",
   "dos_NameIndicator": "Name",
   "dos_DescriptionIndicator": "Description",
   "dos_NumeratorIndicator": "Numerator",
+  "dos_NumeratorIndicatorDescription": "Numerator description",
   "dos_DenominatorIndicator": "Denominator",
+  "dos_DenominatorIndicatorDescription": "Denominator description",
 
   "dos_Comments": "Comments",
   "dos_Mandatory": "Mandatory",
@@ -143,16 +154,6 @@
   "service_id": "Service ID",
   "service_code": "Service Code",
 
-  "srch_Help": "Help",
-  "srch_Help_Text": "<p>This interface is made to simplify user access the terminology associated with information collected with HMIS.<br><ul><li>Via the <b>Search</b> tab, you can directly search for a term in all the columns of the table. You can display column filters as well, which allow you to search for information in one specific column. Use 'Clear filters' to reset all the filters. <i>Expert users can use the key word '|' (OR) to search multiple objects.</i></li><li>Via the <b>Select Columns</b> tab, you can select columns to be displayed in the table. <i>Expert users can use the advanced columns to perform detailed researches via IDs.</i></li></ul>You can finally export the results of your search to Excel (page by page, and do not forget to save as .xls).</p>",
-  "srch_exportToExcel": "Export this page to Excel",
-
-  "MODULE:PROGRAMS": "***************************",
-  "dos_DescriptionOfProgram": "Program description",
-  "dosNumberOfProgramIndicators": "Number of Program Indicators",
-  "dosNumberOfIndicators": "Number of Indicators",
-  "dos_GoToIndex": "Go to Index",
-  
   "object_type_help": "Defines the data type of the specific data element  or indicator used in the form.",
   "object_name_help": "Defines the name of the data element or indicator assigned/used in a dataset.",
   "object_form_help": "Defines the form name in the section form.(Applicable to Data Elements only).",
@@ -169,5 +170,19 @@
   "service_id_help": "Defines the unique service ID of the data element or indicator used in a dataset.",
   "service_code_help": "Defines the unique service code assigned to the data element or indicator group used in a dataset.",
 
-  "sharing_settings": "Sharing Settings"
+  "srch_Help": "Help",
+  "srch_Help_Text": "<p>This interface is made to simplify user access the terminology associated with information collected with HMIS.<br><ul><li>Via the <b>Search</b> tab, you can directly search for a term in all the columns of the table. You can display column filters as well, which allow you to search for information in one specific column. Use 'Clear filters' to reset all the filters. <i>Expert users can use the key word '|' (OR) to search multiple objects.</i></li><li>Via the <b>Select Columns</b> tab, you can select columns to be displayed in the table. <i>Expert users can use the advanced columns to perform detailed researches via IDs.</i></li></ul>You can finally export the results of your search to Excel (page by page, and do not forget to save as .xls).</p>",
+  "srch_exportToExcel": "Export this page to Excel",
+
+  "MODULE:PROGRAMS": "***************************",
+  "dos_DescriptionOfProgram": "Program description",
+  "dosNumberOfProgramIndicators": "Number of Program Indicators",
+  "dosNumberOfIndicators": "Number of Indicators",
+  "dos_GoToIndex": "Go to Index",
+
+  "MODULE:SHARING_SETTINGS": "***************************",
+  "sharing_settings": "Sharing Settings",
+  "admin": "Admin",
+  "advanced_user": "Advanced User",
+  "normal_user": "Normal User"
 }
