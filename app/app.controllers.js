@@ -180,6 +180,7 @@ appModule.controller("appSharedController", [
                 if (authUser) {
                     console.log("appModule: User authorised to administrate: " + authUser);
                     $scope.show_admin = true;
+                    $scope.is_admin = true;
                 }
             })
             .fail(function () {
@@ -281,6 +282,23 @@ appModule.controller("appSharedController", [
                 }, 1000);
             }
             $(".loading").hide();
+        };
+
+        userHaveAccess = function (section, isAdvancedUser) {
+            // 0: admin, 1: advanced, 2: everyone
+            return $scope.is_admin || (isAdvancedUser && section.access >= 1) || section.access === 2;
+        };
+
+        userAccesses = function (sharingSettings, isAdvancedUser) {
+            return _(sharingSettings)
+                .mapValues((v, k) => {
+                    const columns = _.mapValues(v.columns, (v, _k) => userHaveAccess(v, isAdvancedUser));
+                    return {
+                        [k]: userHaveAccess(v, isAdvancedUser),
+                        ..._.mapKeys(columns, (_v, column_key) => `${k}_${column_key}`),
+                    };
+                })
+                .reduce((acc,v)=>({...acc, ...v}), {});
         };
     },
 ]);
