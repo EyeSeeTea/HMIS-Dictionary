@@ -17,6 +17,7 @@ datasetsModule.controller("datasetsMainController", [
     "datasetsDataelementsFactory",
     "adminUGFactory",
     "advancedUsersFactory",
+    "sharingSettingsFactory",
     function (
         $scope,
         $translate,
@@ -26,7 +27,8 @@ datasetsModule.controller("datasetsMainController", [
         datasetsLinkFactory,
         datasetsDataelementsFactory,
         dossiersReaderMeFactory,
-        advancedUsersFactory
+        advancedUsersFactory,
+        sharingSettingsFactory
     ) {
         $("#datasets").tab("show");
 
@@ -35,45 +37,75 @@ datasetsModule.controller("datasetsMainController", [
             advancedUserGroups: ["LjRqO9XzQPs"],
             accesses: {
                 sections: {
+                    index: 0,
                     translationKey: "dos_Sections",
                     access: 2,
                     columns: {
-                        name: { translationKey: "dos_NameElement", access: 2 },
-                        formName: { translationKey: "dos_FormNameElement", access: 2 },
-                        description: { translationKey: "dos_DescriptionElement", access: 2 },
-                        dataTypeElement: { translationKey: "dos_DataTypeElement", access: 0 },
-                        options: { translationKey: "dos_Options", access: 0 },
-                        categoryCombination: { translationKey: "dos_CategoryCombination", access: 0 },
+                        name: { index: 0, translationKey: "dos_NameElement", access: 2 },
+                        formName: { index: 1, translationKey: "dos_FormNameElement", access: 2 },
+                        description: { index: 2, translationKey: "dos_DescriptionElement", access: 2 },
+                        dataTypeElement: { index: 3, translationKey: "dos_DataTypeElement", access: 0 },
+                        options: { index: 4, translationKey: "dos_Options", access: 0 },
+                        categoryCombination: { index: 5, translationKey: "dos_CategoryCombination", access: 0 },
                     },
                 },
                 categoryCombinations: {
+                    index: 1,
                     translationKey: "dos_CategoryCombinations",
                     access: 0,
                     columns: {
-                        categoryCombination: { translationKey: "dos_CategoryCombination", access: 0 },
-                        categories: { translationKey: "dos_Categories", access: 0 },
-                        items: { translationKey: "dos_Items", access: 0 },
+                        categoryCombination: { index: 0, translationKey: "dos_CategoryCombination", access: 0 },
+                        categories: { index: 1, translationKey: "dos_Categories", access: 0 },
+                        items: { index: 2, translationKey: "dos_Items", access: 0 },
                     },
                 },
                 indicators: {
+                    index: 2,
                     translationKey: "dos_Indicators",
                     access: 2,
                     columns: {
-                        name: { translationKey: "dos_NameIndicator", access: 2 },
-                        type: { translationKey: "dos_Type", access: 2 },
-                        numerator: { translationKey: "dos_NumeratorIndicator", access: 2 },
-                        numeratorDescription: { translationKey: "dos_NumeratorIndicatorDescription", access: 2 },
-                        denominator: { translationKey: "dos_DenominatorIndicator", access: 2 },
-                        denominatorDescription: { translationKey: "dos_DenominatorIndicatorDescription", access: 2 },
+                        name: { index: 0, translationKey: "dos_NameIndicator", access: 2 },
+                        type: { index: 1, translationKey: "dos_Type", access: 2 },
+                        numerator: { index: 2, translationKey: "dos_NumeratorIndicator", access: 2 },
+                        numeratorDescription: { index: 3, translationKey: "dos_NumeratorIndicatorDescription", access: 2 },
+                        denominator: { index: 4, translationKey: "dos_DenominatorIndicator", access: 2 },
+                        denominatorDescription: { index: 5, translationKey: "dos_DenominatorIndicatorDescription", access: 2 },
                     },
                 },
             },
         };
 
+        sharingSettingsFactory.get
+            .query({ view: "datasets" })
+            .$promise.then(data => {
+                $scope.sharingSettings = data.toJSON();
+            })
+            .catch(error => {
+                /* If no sharing settings are found, create them */
+                if (error.status === 404) {
+                    sharingSettingsFactory.set.query(
+                        { view: "datasets" },
+                        JSON.stringify($scope.sharingSettings),
+                        response => {
+                            if (response.status === "OK") {
+                                console.log("datasetsModule: Sharing Settings created");
+                            } else {
+                                console.log("datasetsModule: Error creating Sharing Settings");
+                            }
+                        }
+                    );
+                } else {
+                    console.log("datasetsModule: Error getting Sharing Settings");
+                }
+            });
+
         $scope.isAdvancedUser = false;
 
-        advancedUsersFactory.isAdvancedUser($scope.sharingSettings.advancedUserGroups).query({}, function (data) {
-            $scope.isAdvancedUser = data.isAdvancedUser;
+        $scope.$watch("sharingSettings", function () {
+            advancedUsersFactory.isAdvancedUser($scope.sharingSettings.advancedUserGroups).query({}, function (data) {
+                $scope.isAdvancedUser = data.isAdvancedUser;
+                $scope.accesses = userAccesses($scope.sharingSettings.accesses, $scope.isAdvancedUser);
+            });
         });
 
         /*
@@ -82,6 +114,10 @@ datasetsModule.controller("datasetsMainController", [
          *  @scope datasetsMainController
          */
         addtoTOC = function (toc, items, parent, type) {
+            if (type == "Data Set" && !$scope.accesses.sections) return;
+            if (type == "Category combination" && !$scope.accesses.categoryCombinations) return;
+            if (type == "Indicators" && !$scope.accesses.indicators) return;
+
             var index = toc.entries.push({
                 parent: parent,
                 children: items,
@@ -163,12 +199,6 @@ datasetsModule.controller("datasetsMainController", [
                     }
                 );
             }
-        });
-
-        $scope.accesses = userAccesses($scope.sharingSettings.accesses, $scope.isAdvancedUser);
-
-        $scope.$watch("accesses", function () {
-            console.log($scope.accesses);
         });
     },
 ]);

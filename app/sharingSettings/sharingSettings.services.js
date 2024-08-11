@@ -1,10 +1,10 @@
 var qrySharingSettings = dhisUrl + "dataStore/HMIS_Dictionary/sharingSettings_:view";
 
-adminModule.factory("sharingSettingsFactory", [
+sharingSettingsModule.factory("sharingSettingsFactory", [
     "$resource",
     function ($resource) {
         return {
-            get: $resource(qrySharingSettings, {}, { query: { method: "GET", isArray: true } }),
+            get: $resource(qrySharingSettings, {}, { query: { method: "GET", isArray: false } }),
             set: $resource(qrySharingSettings, {}, { query: { method: "POST", isArray: false } }),
             update: $resource(qrySharingSettings, {}, { query: { method: "PUT", isArray: false } }),
         };

@@ -53,10 +53,13 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
                     {{ "CLOSE" | translate }}
                 </button>
-                <button type="button" class="btn btn-primary" ng-click="test()">
+                <button type="button" class="btn btn-danger" ng-click="restoreRows()" ng-disabled="!hasChanges()">
+                    {{ "RESTORE_CHANGES" | translate }}
+                </button>
+                <button type="button" class="btn btn-primary" ng-click="applyChanges()">
                     {{ "APPLY_CHANGES" | translate}}
                 </button>
             </div>
