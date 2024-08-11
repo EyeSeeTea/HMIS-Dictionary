@@ -2,10 +2,9 @@ sharingSettingsModule.directive('sharingSettings', function() {
     return {
         restrict: 'E',
         scope: {
-            metadata: '=',
+            state: '=',
         },
         templateUrl: 'app/sharingSettings/sharingSettings.template.html',
         controller: 'SharingSettingsController',
-        controllerAs: 'sharingSettingsCtrl',
     };
 });

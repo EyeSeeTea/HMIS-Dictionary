@@ -5,7 +5,7 @@
 
 <div ng-controller="datasetsMainController" id="DossierPanel" class="row">
     <div id="headerDossierPanel" class="col-md-12 headerPanel row">
-        <sharing-settings metadata="sharingSettings" ng-if="is_admin"></sharing-settings>
+        <sharing-settings state="sharingSettings" ng-if="is_admin"></sharing-settings>
 
         <h1>{{ "idx_DataSets" | translate }}</h1>
         <p>{{ "Number of Data Sets" | translate }}: {{ datasets.dataSets.length }}</p>

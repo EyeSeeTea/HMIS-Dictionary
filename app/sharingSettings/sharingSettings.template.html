@@ -3,23 +3,30 @@
         <span class="svg-icon icon-md icon-btn left" aria-hidden="true">
             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
                 <path
-                    d="M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.5 2.5 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5" />
+                    d="M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.5 2.5 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5"
+                />
             </svg>
-        </span> {{ "sharing_settings" | translate }}
+        </span>
+        {{ "sharing_settings" | translate }}
     </button>
 </div>
 
-<div class="sharingSettings modal fade" id="sharingSettingsModal" tabindex="-1" role="dialog"
-    aria-labelledby="sharingSettingsModalLabel">
+<div
+    class="sharingSettings modal fade"
+    id="sharingSettingsModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="sharingSettingsModalLabel"
+>
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label='{{ "CLOSE" | translate }}''>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
                 <h4 class="modal-title" id="sharingSettingsModalLabel">{{ "sharing_settings" | translate }}</h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body pre-scrollable">
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -30,30 +37,28 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Sections</td>
-                            <td><input type="checkbox" checked disabled></td>
-                            <td><input type="checkbox"></td>
-                            <td><input type="checkbox"></td>
+                        <tr ng-repeat-start="row in rows">
+                            <td>{{ row.label | translate }}</td>
+                            <td><input type="checkbox" ng-model="row.admin" disabled /></td>
+                            <td><input type="checkbox" ng-model="row.advancedUsers" /></td>
+                            <td><input type="checkbox" ng-model="row.everyone" /></td>
                         </tr>
-                        <tr>
-                            <td class="child">Name</td>
-                            <td><input type="checkbox" checked disabled></td>
-                            <td><input type="checkbox"></td>
-                            <td><input type="checkbox"></td>
-                        </tr>
-                        <tr>
-                            <td class="child">Form Name</td>
-                            <td><input type="checkbox" checked disabled></td>
-                            <td><input type="checkbox"></td>
-                            <td><input type="checkbox"></td>
+                        <tr class="child" ng-repeat="child in row.children" ng-repeat-end>
+                            <td>{{ child.label | translate }}</td>
+                            <td><input type="checkbox" ng-model="child.admin" disabled /></td>
+                            <td><input type="checkbox" ng-model="child.advancedUsers" /></td>
+                            <td><input type="checkbox" ng-model="child.everyone" /></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">{{ "CLOSE" | translate }}</button>
-                <button type="button" class="btn btn-primary" ng-click="test()">{{ "APPLY_CHANGES" | translate}}</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="">
+                    {{ "CLOSE" | translate }}
+                </button>
+                <button type="button" class="btn btn-primary" ng-click="test()">
+                    {{ "APPLY_CHANGES" | translate}}
+                </button>
             </div>
         </div>
     </div>

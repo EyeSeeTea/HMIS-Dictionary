@@ -30,9 +30,49 @@ datasetsModule.controller("datasetsMainController", [
     ) {
         $("#datasets").tab("show");
 
+        $scope.sharingSettings = {
+            name: "datasets",
+            advancedUserGroups: ["LjRqO9XzQPs"],
+            accesses: {
+                sections: {
+                    translationKey: "dos_Sections",
+                    access: 2,
+                    columns: {
+                        name: { translationKey: "dos_NameElement", access: 2 },
+                        formName: { translationKey: "dos_FormNameElement", access: 2 },
+                        description: { translationKey: "dos_DescriptionElement", access: 2 },
+                        dataTypeElement: { translationKey: "dos_DataTypeElement", access: 0 },
+                        options: { translationKey: "dos_Options", access: 0 },
+                        categoryCombination: { translationKey: "dos_CategoryCombination", access: 0 },
+                    },
+                },
+                categoryCombinations: {
+                    translationKey: "dos_CategoryCombinations",
+                    access: 0,
+                    columns: {
+                        categoryCombination: { translationKey: "dos_CategoryCombination", access: 0 },
+                        categories: { translationKey: "dos_Categories", access: 0 },
+                        items: { translationKey: "dos_Items", access: 0 },
+                    },
+                },
+                indicators: {
+                    translationKey: "dos_Indicators",
+                    access: 2,
+                    columns: {
+                        name: { translationKey: "dos_NameIndicator", access: 2 },
+                        type: { translationKey: "dos_Type", access: 2 },
+                        numerator: { translationKey: "dos_NumeratorIndicator", access: 2 },
+                        numeratorDescription: { translationKey: "dos_NumeratorIndicatorDescription", access: 2 },
+                        denominator: { translationKey: "dos_DenominatorIndicator", access: 2 },
+                        denominatorDescription: { translationKey: "dos_DenominatorIndicatorDescription", access: 2 },
+                    },
+                },
+            },
+        };
+
         $scope.isAdvancedUser = false;
 
-        advancedUsersFactory.isAdvancedUser(["LjRqO9XzQPs"]).query({}, function (data) {
+        advancedUsersFactory.isAdvancedUser($scope.sharingSettings.advancedUserGroups).query({}, function (data) {
             $scope.isAdvancedUser = data.isAdvancedUser;
         });
 
@@ -95,46 +135,6 @@ datasetsModule.controller("datasetsMainController", [
         }
 
         $scope.datasetDataElements = {};
-
-        $scope.sharingSettings = {
-            name: "datasets",
-            advancedUserGroups: [],
-            accesses: {
-                sections: {
-                    translationKey: "dos_Sections",
-                    access: 2,
-                    columns: {
-                        name: { translationKey: "dos_NameElement", access: 2 },
-                        formName: { translationKey: "dos_FormNameElement", access: 2 },
-                        description: { translationKey: "dos_DescriptionElement", access: 2 },
-                        dataTypeElement: { translationKey: "dos_DataTypeElement", access: 0 },
-                        options: { translationKey: "dos_Options", access: 0 },
-                        categoryCombination: { translationKey: "dos_CategoryCombination", access: 0 },
-                    },
-                },
-                categoryCombinations: {
-                    translation: "dos_CategoryCombinations",
-                    access: 0,
-                    columns: {
-                        categoryCombination: { translationKey: "dos_CategoryCombination", access: 0 },
-                        categories: { translationKey: "dos_Categories", access: 0 },
-                        items: { translationKey: "dos_Items", access: 0 },
-                    },
-                },
-                indicators: {
-                    translation: "dos_Indicators",
-                    access: 2,
-                    columns: {
-                        name: { translationKey: "dos_NameIndicator", access: 2 },
-                        type: { translationKey: "dos_Type", access: 2 },
-                        numerator: { translationKey: "dos_NumeratorIndicator", access: 2 },
-                        numeratorDescription: { translationKey: "dos_NumeratorIndicatorDescription", access: 2 },
-                        denominator: { translationKey: "dos_DenominatorIndicator", access: 2 },
-                        denominatorDescription: { translationKey: "dos_DenominatorIndicatorDescription", access: 2 },
-                    },
-                },
-            },
-        };
 
         /*
          * @name none

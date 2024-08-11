@@ -10,13 +10,22 @@
 
 .modal td {
     height: unset;
+    vertical-align: middle;
 }
 
-.sharingSettings .table > tbody > tr > td.child {
-    padding-left: 2em;
+.modal-header .close {
+    font-size: 2.5rem;
 }
 
-.sharingSettings .table > tbody > tr > td:not(.child):first-of-type {
+.modal .pre-scrollable {
+    max-height: 500px;
+}
+
+.sharingSettings .table > tbody > tr.child > td:first-of-type {
+    padding-left: 2.5em;
+}
+
+.sharingSettings .table > tbody > tr:not(.child) > td:first-of-type {
     font-weight: bold;
     padding-left: 1em;
 }

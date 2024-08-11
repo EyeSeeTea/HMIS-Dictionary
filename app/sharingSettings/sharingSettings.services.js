@@ -1,12 +1,12 @@
-var qry_get_UG = dhisUrl + "userGroups.json?fields=name,id&paging=false";
-var qry_set_UG = dhisUrl + "dataStore/HMIS_Dictionary/setup_userGroup";
+var qrySharingSettings = dhisUrl + "dataStore/HMIS_Dictionary/sharingSettings_:view";
 
-sharingSettingsModule.factory("userGroupsFactory", [
+adminModule.factory("sharingSettingsFactory", [
     "$resource",
     function ($resource) {
         return {
-            get_UG: $resource(qry_get_UG, {}, { query: { method: "GET", isArray: false } }),
-            get_UG_set: $resource(qry_set_UG, {}, { query: { method: "GET", isArray: false } }),
+            get: $resource(qrySharingSettings, {}, { query: { method: "GET", isArray: true } }),
+            set: $resource(qrySharingSettings, {}, { query: { method: "POST", isArray: false } }),
+            update: $resource(qrySharingSettings, {}, { query: { method: "PUT", isArray: false } }),
         };
     },
 ]);
