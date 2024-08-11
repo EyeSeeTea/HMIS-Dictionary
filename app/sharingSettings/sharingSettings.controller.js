@@ -55,6 +55,7 @@ sharingSettingsModule.controller("SharingSettingsController", [
 
             if (_.isEqual(accesses, $scope.state.accesses)) {
                 console.log("sharingSettingsModule: No changes to apply");
+                window.location.reload(true); //fake apply UI feeling
                 return;
             } else {
                 const updatedSettings = Object.assign({}, $scope.state, { accesses });
