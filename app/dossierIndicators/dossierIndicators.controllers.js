@@ -1,32 +1,9 @@
 dossierIndicatorsModule.controller("dossierIndicatorsMainController", [
     "$scope",
-    "$translate",
     "$anchorScroll",
-    "$sessionStorage",
     "$sce",
     "dossiersIndicatorsFactory",
-    "dossierIndicatorsDataElementsFactory",
-    "dossierIndicatorsDataSetsFactory",
-    "dossierIndicatorsCategoryOptionComboFactory",
-    "dossierIndicatorsProgramIndicatorsFactory",
-    "dossierIndicatorsOrganisationUnitGroupsFactory",
-    "dossierIndicatorsProgramsFactory",
-    "dossierIndicatorsLink",
-    function (
-        $scope,
-        $translate,
-        $anchorScroll,
-        $sessionStorage,
-        $sce,
-        dossiersIndicatorsFactory,
-        dossierIndicatorsDataElementsFactory,
-        dossierIndicatorsDataSetsFactory,
-        dossierIndicatorsCategoryOptionComboFactory,
-        dossierIndicatorsProgramIndicatorsFactory,
-        dossierIndicatorsOrganisationUnitGroupsFactory,
-        dossierIndicatorsProgramsFactory,
-        dossierIndicatorsLink
-    ) {
+    function ($scope, $anchorScroll, $sce, dossiersIndicatorsFactory) {
         $("#dossierIndicator").tab("show");
 
         addtoTOC = function (toc, items, parent, type) {
@@ -75,9 +52,6 @@ dossierIndicatorsModule.controller("dossierIndicatorsTitle", [
     "dossierIndicatorsProgramIndicatorsFactory",
     "dossierIndicatorsOrganisationUnitGroupsFactory",
     "dossierIndicatorsProgramsFactory",
-    "dossierIndicatorsDataSetsFactory",
-    "dossierIndicatorsLink",
-    "Ping",
     function (
         $scope,
         $q,
@@ -85,10 +59,7 @@ dossierIndicatorsModule.controller("dossierIndicatorsTitle", [
         dossierIndicatorsCategoryOptionComboFactory,
         dossierIndicatorsProgramIndicatorsFactory,
         dossierIndicatorsOrganisationUnitGroupsFactory,
-        dossierIndicatorsProgramsFactory,
-        dossierIndicatorsDataSetsFactory,
-        dossierIndicatorsLink,
-        Ping
+        dossierIndicatorsProgramsFactory
     ) {
         function getElement(value) {
             var i = 0,
@@ -329,25 +300,19 @@ dossierIndicatorsModule.controller("dossierNumeratorTable", [
     "$q",
     "$sessionStorage",
     "dossierIndicatorsDataElementsFactory",
-    "dossierIndicatorsCategoryOptionComboFactory",
     "dossierIndicatorsProgramIndicatorsFactory",
     "dossierIndicatorsOrganisationUnitGroupsFactory",
     "dossierIndicatorsProgramsFactory",
     "dossierIndicatorsDataSetsFactory",
-    "dossierIndicatorsLink",
-    "Ping",
     function (
         $scope,
         $q,
         $sessionStorage,
         dossierIndicatorsDataElementsFactory,
-        dossierIndicatorsCategoryOptionComboFactory,
         dossierIndicatorsProgramIndicatorsFactory,
         dossierIndicatorsOrganisationUnitGroupsFactory,
         dossierIndicatorsProgramsFactory,
-        dossierIndicatorsDataSetsFactory,
-        dossierIndicatorsLink,
-        Ping
+        dossierIndicatorsDataSetsFactory
     ) {
         function getElement(value) {
             var i = 0,
@@ -635,7 +600,6 @@ dossierIndicatorsModule.controller("dossierDenominatorTable", [
     "$q",
     "$sessionStorage",
     "dossierIndicatorsDataElementsFactory",
-    "dossierIndicatorsCategoryOptionComboFactory",
     "dossierIndicatorsProgramIndicatorsFactory",
     "dossierIndicatorsOrganisationUnitGroupsFactory",
     "dossierIndicatorsProgramsFactory",
@@ -647,13 +611,10 @@ dossierIndicatorsModule.controller("dossierDenominatorTable", [
         $q,
         $sessionStorage,
         dossierIndicatorsDataElementsFactory,
-        dossierIndicatorsCategoryOptionComboFactory,
         dossierIndicatorsProgramIndicatorsFactory,
         dossierIndicatorsOrganisationUnitGroupsFactory,
         dossierIndicatorsProgramsFactory,
-        dossierIndicatorsDataSetsFactory,
-        dossierIndicatorsLink,
-        Ping
+        dossierIndicatorsDataSetsFactory
     ) {
         function getElement(value) {
             var i = 0,
