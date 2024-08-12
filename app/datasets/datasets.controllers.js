@@ -68,8 +68,10 @@ datasetsModule.controller("datasetsMainController", [
             },
         };
 
+        const namespace = "datasets";
+
         sharingSettingsFactory.get
-            .query({ view: "datasets" })
+            .query({ view: namespace })
             .$promise.then(data => {
                 $scope.sharingSettings = data.toJSON();
             })
@@ -77,7 +79,7 @@ datasetsModule.controller("datasetsMainController", [
                 /* If no sharing settings are found, create them */
                 if (error.status === 404) {
                     sharingSettingsFactory.set.query(
-                        { view: "datasets" },
+                        { view: namespace },
                         JSON.stringify($scope.sharingSettings),
                         response => {
                             if (response.status === "OK") {
