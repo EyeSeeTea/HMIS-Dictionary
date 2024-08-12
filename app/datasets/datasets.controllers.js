@@ -9,9 +9,7 @@
  */
 datasetsModule.controller("datasetsMainController", [
     "$scope",
-    "$translate",
     "$anchorScroll",
-    "$sessionStorage",
     "datasetsFactory",
     "datasetsLinkFactory",
     "datasetsDataelementsFactory",
@@ -19,9 +17,7 @@ datasetsModule.controller("datasetsMainController", [
     "sharingSettingsFactory",
     function (
         $scope,
-        $translate,
         $anchorScroll,
-        $sessionStorage,
         datasetsFactory,
         datasetsLinkFactory,
         datasetsDataelementsFactory,
@@ -206,10 +202,7 @@ datasetsModule.controller("datasetsMainController", [
  */
 datasetsModule.controller("datasetSectionController", [
     "$scope",
-    "$translate",
-    "datasetsDataelementsFactory",
-    "Ping",
-    function ($scope, $translate, datasetsDataelementsFactory, Ping) {
+    function ($scope) {
         $scope.stages4TOC = {
             displayName: "",
             id: "sectionContainer",
@@ -310,10 +303,8 @@ datasetsModule.controller("datasetSectionController", [
  */
 datasetsModule.controller("datasetCategoryComboController", [
     "$scope",
-    "$translate",
     "datasetsCategoryCombosFactory",
-    "Ping",
-    function ($scope, $translate, datasetsCategoryCombosFactory, Ping) {
+    function ($scope, datasetsCategoryCombosFactory) {
         $scope.categoryCombos4TOC = {
             displayName: "Category combinations",
             id: "categoryComboContainer",
@@ -348,11 +339,9 @@ datasetsModule.controller("datasetCategoryComboController", [
 
 datasetsModule.controller("datasetsIndicatorsController", [
     "$scope",
-    "$translate",
     "datasetsIndicatorsFactory",
     "datasetsIndicatorExpressionFactory",
-    "Ping",
-    function ($scope, $translate, datasetsIndicatorsFactory, datasetsIndicatorExpressionFactory, Ping) {
+    function ($scope, datasetsIndicatorsFactory, datasetsIndicatorExpressionFactory) {
         $scope.indicators4TOC = {
             displayName: "Indicators",
             id: "indicatorContainer",
