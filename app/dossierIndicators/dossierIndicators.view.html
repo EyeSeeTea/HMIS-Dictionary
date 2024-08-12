@@ -16,7 +16,7 @@
                 id="drpBoxServices"
                 ng-model="selectedIndicator"
             >
-                <option value="" disabled selected>Select an Indicator</option>
+                <option value="" disabled selected>{{ "Select an Indicator" | translate }}</option>
             </select>
         </div>
     </div>
@@ -50,7 +50,7 @@
             </ul>
         </div>
         <div class="col-md-12" ng-controller="dossierIndicatorsTitle">
-            <div class="col-md-12" ng-show="numerator.value != ''">
+            <div class="col-md-12" ng-show="numerator.value != ''" ng-if="accesses.formula">
                 <h2 id="formulaIndicator">{{ "dos_FormulaOfIndicator" | translate }}</h2>
                 <div class="col-md-12">
                     <table class="table table-striped">
@@ -85,31 +85,31 @@
             </div>
         </div>
         <div class="col-md-12" ng-controller="dossierNumeratorTable">
-            <div class="col-md-12" ng-show="tabNumeratorRegroups.length > 0">
+            <div class="col-md-12" ng-show="tabNumeratorRegroups.length > 0" ng-if="accesses.numerator">
                 <h2 id="numerator">{{ "dos_NumeratorIndicator" | translate }}</h2>
                 <p>{{ selectedIndicator.numeratorDescription }}</p>
                 <div class="col-md-12">
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>{{ "dos_Type" | translate }}</th>
-                                <th>{{ "dos_NameIndicator" | translate }}</th>
-                                <th>{{ "DataSets" | translate }}</th>
-                                <th>{{ "dos_Program" | translate }}</th>
+                                <th ng-if="accesses.numerator_type">{{ "dos_Type" | translate }}</th>
+                                <th ng-if="accesses.numerator_name">{{ "dos_NameIndicator" | translate }}</th>
+                                <th ng-if="accesses.numerator_datasets">{{ "DataSets" | translate }}</th>
+                                <th ng-if="accesses.numerator_program">{{ "dos_Program" | translate }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="tabNumeratorRegroup in tabNumeratorRegroups | orderBy: 'name'">
-                                <td>{{ tabNumeratorRegroup.type }}</td>
-                                <td>{{ tabNumeratorRegroup.name }}</td>
-                                <td>
+                                <td ng-if="accesses.numerator_type">{{ tabNumeratorRegroup.type }}</td>
+                                <td ng-if="accesses.numerator_name">{{ tabNumeratorRegroup.name }}</td>
+                                <td ng-if="accesses.numerator_datasets">
                                     <ul ng-repeat="dataSets in tabNumeratorRegroup.dataSets">
                                         <a href="#/datasets"
                                             ><input type="button" value="{{ dataSets }}" ng-click="save(dataSets)"
                                         /></a>
                                     </ul>
                                 </td>
-                                <td>
+                                <td ng-if="accesses.numerator_program">
                                     <ul ng-repeat="program in tabNumeratorRegroup.program">
                                         <a href="#/dossierPrograms"
                                             ><input type="button" value="{{ program }}" ng-click="saveProgram(program)"
@@ -123,31 +123,31 @@
             </div>
         </div>
         <div class="col-md-12" ng-controller="dossierDenominatorTable">
-            <div class="col-md-12" ng-show="tabDenominatorRegroups.length > 0">
+            <div class="col-md-12" ng-show="tabDenominatorRegroups.length > 0" ng-if="accesses.denominator">
                 <h2 id="denominator">{{ "dos_DenominatorIndicator" | translate }}</h2>
                 <p>{{ selectedIndicator.denominatorDescription }}</p>
                 <div class="col-md-12">
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>{{ "dos_Type" | translate }}</th>
-                                <th>{{ "dos_NameIndicator" | translate }}</th>
-                                <th>{{ "dos_DataSets" | translate }}</th>
-                                <th>{{ "dos_Program" | translate }}</th>
+                                <th ng-if="accesses.denominator_type">{{ "dos_Type" | translate }}</th>
+                                <th ng-if="accesses.denominator_name">{{ "dos_NameIndicator" | translate }}</th>
+                                <th ng-if="accesses.denominator_datasets">{{ "dos_DataSets" | translate }}</th>
+                                <th ng-if="accesses.denominator_program">{{ "dos_Program" | translate }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="tabDenominatorRegroup in tabDenominatorRegroups | orderBy: 'name'">
-                                <td>{{ tabDenominatorRegroup.typeDenominator }}</td>
-                                <td>{{ tabDenominatorRegroup.nameDenominator }}</td>
-                                <td>
+                                <td ng-if="accesses.denominator_type">{{ tabDenominatorRegroup.typeDenominator }}</td>
+                                <td ng-if="accesses.denominator_name">{{ tabDenominatorRegroup.nameDenominator }}</td>
+                                <td ng-if="accesses.denominator_datasets">
                                     <ul ng-repeat="dataSets in tabDenominatorRegroup.dataSetsDenominator">
                                         <a href="#/datasets"
                                             ><input type="button" value="{{ dataSets }}" ng-click="save(dataSets)"
                                         /></a>
                                     </ul>
                                 </td>
-                                <td>
+                                <td ng-if="accesses.denominator_program">
                                     <ul ng-repeat="program in tabDenominatorRegroup.programDenominator">
                                         <a href="#/dossierPrograms"
                                             ><input type="button" value="{{ program }}" ng-click="saveProgram(program)"

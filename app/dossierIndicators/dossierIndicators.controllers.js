@@ -77,7 +77,8 @@ dossierIndicatorsModule.controller("dossierIndicatorsMainController", [
         });
 
         addtoTOC = function (toc, items, parent, type) {
-            if (type == "Formula of Indicator" && !$scope.accesses.formula) return;
+            console.log(type);
+            if (type == "Formule of Indicator" && !$scope.accesses.formula) return;
             if (type == "Numerator" && !$scope.accesses.numerator) return;
             if (type == "Denominator" && !$scope.accesses.denominator) return;
 
