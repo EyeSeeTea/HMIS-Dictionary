@@ -18,7 +18,7 @@
 }
 
 .modal .pre-scrollable {
-    max-height: 500px;
+    max-height: 600px;
 }
 
 .sharingSettings .table > tbody > tr.child > td:first-of-type {
@@ -35,4 +35,8 @@
     text-align: center;
     width: 1%;
     white-space: nowrap;
+}
+
+.sharingSettings .table {
+    margin-top: 1em;
 }

@@ -183,6 +183,8 @@
 
   "MODULE:SHARING_SETTINGS": "***************************",
   "sharing_settings": "Sharing Settings",
+  "invalid_array_format": "Invalid array format",
+  "invalid_user_group": "All UID's must be a valid userGroup",
   "admin": "Admin",
   "advanced_user": "Advanced User",
   "normal_user": "Normal User"
