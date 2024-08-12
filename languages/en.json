@@ -177,8 +177,8 @@
 
   "MODULE:PROGRAMS": "***************************",
   "dos_DescriptionOfProgram": "Program description",
-  "dosNumberOfProgramIndicators": "Number of Program Indicators",
-  "dosNumberOfIndicators": "Number of Indicators",
+  "dos_NumberOfProgramIndicators": "Number of Program Indicators",
+  "dos_NumberOfIndicators": "Number of Indicators",
   "dos_GoToIndex": "Go to Index",
 
   "MODULE:SHARING_SETTINGS": "***************************",

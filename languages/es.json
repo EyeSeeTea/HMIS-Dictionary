@@ -149,8 +149,8 @@
 
   "MODULE:PROGRAMS": "***************************",
   "dos_DescriptionOfProgram": "Descripción del Programa",
-  "dosNumberOfProgramIndicators": "Número de Indicadores del Programa",
-  "dosNumberOfIndicators": "Número de Indicadores",
+  "dos_NumberOfProgramIndicators": "Número de Indicadores del Programa",
+  "dos_NumberOfIndicators": "Número de Indicadores",
   "dos_GoToIndex": "Volver al Índice",
   
   "object_type_help": "Define el tipo de dato del elemento de datos o indicador específico utilizado en el formulario.",
