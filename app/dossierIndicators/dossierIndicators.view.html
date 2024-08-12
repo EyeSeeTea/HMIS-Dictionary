@@ -4,7 +4,9 @@
  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <div ng-controller="dossierIndicatorsMainController" id="DossierPanel" class="row">
     <div id="headerDossierPanel" class="col-md-12 headerPanel row">
-        <h1>{{ "Indicators" | translate }}</h1>
+        <sharing-settings state="sharingSettings" namespace="indicators" ng-if="is_admin"></sharing-settings>
+
+        <h1>{{ "dos_Indicators" | translate }}</h1>
         <p>{{ "Number of Indicators" | translate }}: {{ indicators.indicators.length }}</p>
         <div class="col-md-2">
             <select
@@ -49,12 +51,12 @@
         </div>
         <div class="col-md-12" ng-controller="dossierIndicatorsTitle">
             <div class="col-md-12" ng-show="numerator.value != ''">
-                <h2 id="formulaIndicator">{{ "Formula of Indicator" | translate }}</h2>
+                <h2 id="formulaIndicator">{{ "dos_FormulaOfIndicator" | translate }}</h2>
                 <div class="col-md-12">
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>{{ "Numerator" | translate }}</th>
+                                <th>{{ "dos_NumeratorIndicator" | translate }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -69,7 +71,7 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>{{ "Denominator" | translate }}</th>
+                                <th>{{ "dos_DenominatorIndicator" | translate }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -84,16 +86,16 @@
         </div>
         <div class="col-md-12" ng-controller="dossierNumeratorTable">
             <div class="col-md-12" ng-show="tabNumeratorRegroups.length > 0">
-                <h2 id="numerator">{{ "Numerator" | translate }}</h2>
+                <h2 id="numerator">{{ "dos_NumeratorIndicator" | translate }}</h2>
                 <p>{{ selectedIndicator.numeratorDescription }}</p>
                 <div class="col-md-12">
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>{{ "Type" | translate }}</th>
-                                <th>{{ "Name" | translate }}</th>
+                                <th>{{ "dos_Type" | translate }}</th>
+                                <th>{{ "dos_NameIndicator" | translate }}</th>
                                 <th>{{ "DataSets" | translate }}</th>
-                                <th>{{ "Program" | translate }}</th>
+                                <th>{{ "dos_Program" | translate }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -122,16 +124,16 @@
         </div>
         <div class="col-md-12" ng-controller="dossierDenominatorTable">
             <div class="col-md-12" ng-show="tabDenominatorRegroups.length > 0">
-                <h2 id="denominator">{{ "Denominator" | translate }}</h2>
+                <h2 id="denominator">{{ "dos_DenominatorIndicator" | translate }}</h2>
                 <p>{{ selectedIndicator.denominatorDescription }}</p>
                 <div class="col-md-12">
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>{{ "Type" | translate }}</th>
-                                <th>{{ "Name" | translate }}</th>
-                                <th>{{ "DataSets" | translate }}</th>
-                                <th>{{ "Program" | translate }}</th>
+                                <th>{{ "dos_Type" | translate }}</th>
+                                <th>{{ "dos_NameIndicator" | translate }}</th>
+                                <th>{{ "dos_DataSets" | translate }}</th>
+                                <th>{{ "dos_Program" | translate }}</th>
                             </tr>
                         </thead>
                         <tbody>

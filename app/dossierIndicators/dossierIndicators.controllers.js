@@ -3,10 +3,84 @@ dossierIndicatorsModule.controller("dossierIndicatorsMainController", [
     "$anchorScroll",
     "$sce",
     "dossiersIndicatorsFactory",
-    function ($scope, $anchorScroll, $sce, dossiersIndicatorsFactory) {
+    "advancedUsersFactory",
+    "sharingSettingsFactory",
+    function ($scope, $anchorScroll, $sce, dossiersIndicatorsFactory, advancedUsersFactory, sharingSettingsFactory) {
         $("#dossierIndicator").tab("show");
 
+        $scope.sharingSettings = {
+            advancedUserGroups: ["LjRqO9XzQPs"],
+            accesses: {
+                formula: {
+                    index: 0,
+                    translationKey: "dos_FormulaOfIndicator",
+                    access: 2,
+                },
+                numerator: {
+                    index: 1,
+                    translationKey: "dos_NumeratorIndicator",
+                    access: 2,
+                    columns: {
+                        type: { index: 0, translationKey: "dos_Type", access: 0 },
+                        name: { index: 1, translationKey: "dos_NameIndicator", access: 0 },
+                        datasets: { index: 2, translationKey: "dos_DataSets", access: 0 },
+                        program: { index: 3, translationKey: "dos_Program", access: 0 },
+                    },
+                },
+                denominator: {
+                    index: 2,
+                    translationKey: "dos_DenominatorIndicator",
+                    access: 2,
+                    columns: {
+                        type: { index: 0, translationKey: "dos_Type", access: 0 },
+                        name: { index: 1, translationKey: "dos_NameIndicator", access: 0 },
+                        datasets: { index: 2, translationKey: "dos_DataSets", access: 0 },
+                        program: { index: 3, translationKey: "dos_Program", access: 0 },
+                    },
+                },
+            },
+        };
+
+        const namespace = "indicators";
+
+        sharingSettingsFactory.get
+            .query({ view: namespace })
+            .$promise.then(data => {
+                $scope.sharingSettings = data.toJSON();
+            })
+            .catch(error => {
+                /* If no sharing settings are found, create them */
+                if (error.status === 404) {
+                    sharingSettingsFactory.set.query(
+                        { view: namespace },
+                        JSON.stringify($scope.sharingSettings),
+                        response => {
+                            if (response.status === "OK") {
+                                console.log("datasetsModule: Sharing Settings created");
+                            } else {
+                                console.log("datasetsModule: Error creating Sharing Settings");
+                            }
+                        }
+                    );
+                } else {
+                    console.log("datasetsModule: Error getting Sharing Settings");
+                }
+            });
+
+        $scope.isAdvancedUser = false;
+
+        $scope.$watch("sharingSettings", function () {
+            advancedUsersFactory.isAdvancedUser($scope.sharingSettings.advancedUserGroups).query({}, function (data) {
+                $scope.isAdvancedUser = data.isAdvancedUser;
+                $scope.accesses = userAccesses($scope.sharingSettings.accesses, $scope.isAdvancedUser);
+            });
+        });
+
         addtoTOC = function (toc, items, parent, type) {
+            if (type == "Formula of Indicator" && !$scope.accesses.formula) return;
+            if (type == "Numerator" && !$scope.accesses.numerator) return;
+            if (type == "Denominator" && !$scope.accesses.denominator) return;
+
             var index = toc.entries.push({
                 parent: parent,
                 children: items,

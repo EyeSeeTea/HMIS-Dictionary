@@ -181,6 +181,11 @@
   "dos_NumberOfIndicators": "Number of Indicators",
   "dos_GoToIndex": "Go to Index",
 
+  "MODULE:INDICATORS": "***************************",
+  "dos_FormulaOfIndicator": "Formula of Indicator",
+  "dos_DataSets": "DataSets",
+  "dos_Program": "Program",
+
   "MODULE:SHARING_SETTINGS": "***************************",
   "sharing_settings": "Sharing Settings",
   "invalid_array_format": "Invalid array format",
