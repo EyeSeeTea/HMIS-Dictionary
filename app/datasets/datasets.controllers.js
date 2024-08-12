@@ -15,18 +15,16 @@ datasetsModule.controller("datasetsMainController", [
     "datasetsFactory",
     "datasetsLinkFactory",
     "datasetsDataelementsFactory",
-    "adminUGFactory",
     "advancedUsersFactory",
     "sharingSettingsFactory",
     function (
         $scope,
         $translate,
-        $sessionStorage,
         $anchorScroll,
+        $sessionStorage,
         datasetsFactory,
         datasetsLinkFactory,
         datasetsDataelementsFactory,
-        dossiersReaderMeFactory,
         advancedUsersFactory,
         sharingSettingsFactory
     ) {
