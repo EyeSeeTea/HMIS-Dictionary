@@ -5,7 +5,6 @@
 
 dossierProgramsModule.controller("dossierProgramsMainController", [
     "$scope",
-    "$translate",
     "$anchorScroll",
     "$sce",
     "dossiersProgramsFactory",
@@ -13,7 +12,6 @@ dossierProgramsModule.controller("dossierProgramsMainController", [
     "dossiersProgramLoadingService",
     function (
         $scope,
-        $translate,
         $anchorScroll,
         $sce,
         dossiersProgramsFactory,
@@ -83,19 +81,15 @@ dossierProgramsModule.controller("dossierProgramsMainController", [
 dossierProgramsModule.controller("dossiersProgramSectionController", [
     "$scope",
     "$q",
-    "$translate",
     "dossiersProgramStageSectionsFactory",
     "dossiersProgramStageCalcModeFactory",
-    "Ping",
     "dossiersProgramDataService",
     "dossiersProgramLoadingService",
     function (
         $scope,
         $q,
-        $translate,
         dossiersProgramStageSectionsFactory,
         dossiersProgramStageCalcModeFactory,
-        Ping,
         dossiersProgramDataService,
         dossiersProgramLoadingService
     ) {
@@ -778,7 +772,6 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
 dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
     "$scope",
     "$rootScope",
-    "$translate",
     "dossiersProgramGlobalIndicatorsFactory",
     "dossiersProgramGlobalIndicatorExpressionFactory",
     "Ping",
@@ -787,10 +780,8 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
     function (
         $scope,
         $rootScope,
-        $translate,
         dossiersProgramGlobalIndicatorsFactory,
         dossiersProgramGlobalIndicatorExpressionFactory,
-        Ping,
         dossiersProgramDataService,
         dossiersProgramLoadingService
     ) {
@@ -965,14 +956,12 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
 
 dossierProgramsModule.controller("dossiersProgramTEAController", [
     "$scope",
-    "$translate",
     "dossiersProgramTEAsFactory",
     "dossiersProgramTEAsRulesFactory",
     "dossiersProgramDataService",
     "dossiersProgramLoadingService",
     function (
         $scope,
-        $translate,
         dossiersProgramTEAsFactory,
         dossiersProgramTEAsRulesFactory,
         dossiersProgramDataService,
@@ -1063,7 +1052,6 @@ dossierProgramsModule.controller("dossiersProgramTEAController", [
 dossierProgramsModule.controller("dossiersProgramRuleController", [
     "$scope",
     "$rootScope",
-    "$translate",
     "dossiersProgramRulesFactory",
     "dossiersProgramRulesActionsTemplateName",
     "dossiersProgramDataService",
@@ -1071,7 +1059,6 @@ dossierProgramsModule.controller("dossiersProgramRuleController", [
     function (
         $scope,
         $rootScope,
-        $translate,
         dossiersProgramRulesFactory,
         dossiersProgramRulesActionsTemplateName,
         dossiersProgramDataService,
@@ -1146,14 +1133,12 @@ dossierProgramsModule.controller("dossiersProgramRuleController", [
 dossierProgramsModule.controller("dossiersProgramRuleVariablesController", [
     "$scope",
     "$rootScope",
-    "$translate",
     "dossiersProgramRuleVariablesFactory",
     "dossiersProgramDataService",
     "dossiersProgramLoadingService",
     function (
         $scope,
         $rootScope,
-        $translate,
         dossiersProgramRuleVariablesFactory,
         dossiersProgramDataService,
         dossiersProgramLoadingService
@@ -1211,14 +1196,12 @@ dossierProgramsModule.controller("dossiersProgramRuleVariablesController", [
 
 dossierProgramsModule.controller("dossiersProgramResourcesController", [
     "$scope",
-    "$translate",
     "dossiersProgramDataService",
     "dossiersProgramResourcesAttributeFactory",
     "dossiersProgramResourcesElementsFactory",
     "dossiersProgramLoadingService",
     function (
         $scope,
-        $translate,
         dossiersProgramDataService,
         dossiersProgramResourcesAttributeFactory,
         dossiersProgramResourcesElementsFactory,
