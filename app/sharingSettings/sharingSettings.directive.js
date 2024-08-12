@@ -3,6 +3,7 @@ sharingSettingsModule.directive('sharingSettings', function() {
         restrict: 'E',
         scope: {
             state: '=',
+            namespace: '@',
         },
         templateUrl: 'app/sharingSettings/sharingSettings.template.html',
         controller: 'SharingSettingsController',

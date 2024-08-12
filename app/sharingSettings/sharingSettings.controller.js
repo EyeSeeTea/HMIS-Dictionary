@@ -100,7 +100,7 @@ sharingSettingsModule.controller("SharingSettingsController", [
                     });
 
                     sharingSettingsFactory.update
-                        .query({ view: $scope.state.name }, JSON.stringify(updatedSettings))
+                        .query({ view: $scope.namespace }, JSON.stringify(updatedSettings))
                         .$promise.then(res => {
                             if (res.status === "OK") console.log("sharingSettingsModule: Sharing settings updated");
                             window.location.reload(true);

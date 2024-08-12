@@ -31,7 +31,6 @@ datasetsModule.controller("datasetsMainController", [
         $("#datasets").tab("show");
 
         $scope.sharingSettings = {
-            name: "datasets",
             advancedUserGroups: ["LjRqO9XzQPs"],
             accesses: {
                 sections: {
