@@ -40,3 +40,7 @@
 .sharingSettings .table {
     margin-top: 1em;
 }
+
+#dossierProgramsPanel .sharingSettings .table th {
+    position: static;
+}

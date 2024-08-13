@@ -10,16 +10,151 @@ dossierProgramsModule.controller("dossierProgramsMainController", [
     "dossiersProgramsFactory",
     "dossiersProgramsLinkTestFactory",
     "dossiersProgramLoadingService",
+    "advancedUsersFactory",
+    "sharingSettingsFactory",
     function (
         $scope,
         $anchorScroll,
         $sce,
         dossiersProgramsFactory,
         dossiersProgramsLinkTestFactory,
-        dossiersProgramLoadingService
+        dossiersProgramLoadingService,
+        advancedUsersFactory,
+        sharingSettingsFactory
     ) {
         $("#dossiersPrograms").tab("show");
 
+        $scope.sharingSettings = {
+            advancedUserGroups: ["LjRqO9XzQPs"],
+            accesses: {
+                programDescription: {
+                    index: 0,
+                    translationKey: "dos_DescriptionOfProgram",
+                    access: 2,
+                },
+                trackedEntityAttributes: {
+                    index: 1,
+                    translationKey: "dos_TrackedEntityAttributes",
+                    access: 2,
+                    columns: {
+                        name: { index: 0, translationKey: "dos_NameElement", access: 2 },
+                        formName: { index: 1, translationKey: "dos_FormNameElement", access: 2 },
+                        description: { index: 2, translationKey: "dos_DescriptionElement", access: 2 },
+                        valueType: { index: 3, translationKey: "dos_ValueType", access: 1 },
+                        aggregationType: { index: 4, translationKey: "dos_AggregationType", access: 1 },
+                        mandatory: { index: 5, translationKey: "dos_Mandatory", access: 1 },
+                        visibilityInDataEntry: { index: 6, translationKey: "dos_Visibility", access: 1 },
+                        optionSet: { index: 7, translationKey: "dos_OptionSet", access: 1 },
+                    },
+                },
+                programStages: {
+                    index: 2,
+                    translationKey: "dos_ProgramStages",
+                    access: 2,
+                    columns: {
+                        name: { index: 0, translationKey: "dos_NameElement", access: 2 },
+                        formName: { index: 1, translationKey: "dos_FormNameElement", access: 2 },
+                        description: { index: 2, translationKey: "dos_DescriptionElement", access: 2 },
+                        valueType: { index: 3, translationKey: "dos_ValueType", access: 1 },
+                        calculationMode: { index: 4, translationKey: "dos_CalculationMode", access: 1 },
+                        mandatory: { index: 5, translationKey: "dos_Mandatory", access: 1 },
+                        visibilityInDataEntry: { index: 6, translationKey: "dos_Visibility", access: 1 },
+                        optionSet: { index: 7, translationKey: "dos_Options", access: 1 },
+                    },
+                },
+                programIndicators: {
+                    index: 3,
+                    translationKey: "dos_ProgramIndicators",
+                    access: 2,
+                    columns: {
+                        name: { index: 0, translationKey: "dos_NameElement", access: 2 },
+                        description: { index: 1, translationKey: "dos_DescriptionElement", access: 2 },
+                        filter: { index: 2, translationKey: "dos_Filter", access: 1 },
+                        calculation: { index: 3, translationKey: "dos_Calculation", access: 1 },
+                        aggregationType: { index: 4, translationKey: "dos_AggregationType", access: 1 },
+                        typeOfProgramIndicator: { index: 5, translationKey: "dos_TypeOfProgramIndicator", access: 1 },
+                        stagesReferenced: { index: 6, translationKey: "dos_StagesReferenced", access: 1 },
+                        boundaries: { index: 7, translationKey: "dos_Boundaries", access: 1 },
+                        visualization: { index: 8, translationKey: "dos_Visualization", access: 2 },
+                    },
+                },
+                indicators: {
+                    index: 4,
+                    translationKey: "dos_Indicators",
+                    access: 2,
+                    columns: {
+                        name: { index: 0, translationKey: "dos_NameElement", access: 2 },
+                        description: { index: 1, translationKey: "dos_DescriptionElement", access: 2 },
+                        type: { index: 2, translationKey: "dos_Type", access: 2 },
+                        numerator: { index: 3, translationKey: "dos_NumeratorIndicator", access: 2 },
+                        denominator: { index: 4, translationKey: "dos_DenominatorIndicator", access: 2 },
+                        stagesReferenced: { index: 5, translationKey: "dos_StagesReferenced", access: 2 },
+                        visualization: { index: 6, translationKey: "dos_Visualization", access: 2 },
+                    },
+                },
+                programRules: {
+                    index: 5,
+                    translationKey: "dos_ProgramRules",
+                    access: 1,
+                    columns: {
+                        name: { index: 0, translationKey: "dos_NameElement", access: 1 },
+                        description: { index: 1, translationKey: "dos_DescriptionElement", access: 1 },
+                        programStage: { index: 2, translationKey: "dos_ProgramStage", access: 1 },
+                        condition: { index: 3, translationKey: "dos_Condition", access: 1 },
+                        programRuleActions: { index: 4, translationKey: "dos_ProgramRuleActions", access: 1 },
+                    },
+                },
+                programRuleVariables: {
+                    index: 6,
+                    translationKey: "dos_ProgramRuleVariables",
+                    access: 1,
+                    columns: {
+                        name: { index: 0, translationKey: "dos_NameElement", access: 1 },
+                        sourceType: { index: 1, translationKey: "dos_SourceType", access: 1 },
+                        programStage: { index: 2, translationKey: "dos_ProgramStage", access: 1 },
+                        dataElement: { index: 3, translationKey: "dos_DataElement", access: 1 },
+                        trackedEntityAttributes: { index: 4, translationKey: "dos_TrackedEntityAttributes", access: 1 },
+                        associatedProgramRules: { index: 5, translationKey: "dos_AssociatedProgramRules", access: 1 },
+                    },
+                },
+            },
+        };
+
+        const namespace = "programs";
+
+        sharingSettingsFactory.get
+            .query({ view: namespace })
+            .$promise.then(data => {
+                $scope.sharingSettings = data.toJSON();
+            })
+            .catch(error => {
+                /* If no sharing settings are found, create them */
+                if (error.status === 404) {
+                    sharingSettingsFactory.set.query(
+                        { view: namespace },
+                        JSON.stringify($scope.sharingSettings),
+                        response => {
+                            if (response.status === "OK") {
+                                console.log("dossierProgramsModule: Sharing Settings created");
+                            } else {
+                                console.log("dossierProgramsModule: Error creating Sharing Settings");
+                            }
+                        }
+                    );
+                } else {
+                    console.log("dossierProgramsModule: Error getting Sharing Settings");
+                }
+            });
+
+        $scope.isAdvancedUser = false;
+
+        $scope.$watch("sharingSettings", function () {
+            advancedUsersFactory.isAdvancedUser($scope.sharingSettings.advancedUserGroups).query({}, function (data) {
+                $scope.isAdvancedUser = data.isAdvancedUser;
+                $scope.accesses = userAccesses($scope.sharingSettings.accesses, $scope.isAdvancedUser);
+            });
+        });
+        
         /*
          *  @alias appModule.controller~addtoTOC
          *  @type {Function}
@@ -27,6 +162,13 @@ dossierProgramsModule.controller("dossierProgramsMainController", [
          *  @todo Move to dossier controller
          */
         addtoTOC = function (toc, items, parent, type) {
+            if (type == "Program Rules" && !$scope.accesses.programRules) return;
+            if (type == "Program Rules Variables" && !$scope.accesses.programRulesVariables) return;
+            if (type == "programs" && !$scope.accesses.programStages) return;
+            if (type == "Tracked Entity Attributes" && !$scope.accesses.trackedEntityAttributes) return;
+            if (type == "Program Indicators" && !$scope.accesses.programIndicators) return;
+            if (type == "Indicators" && !$scope.accesses.indicators) return;
+
             var index = toc.entries.push({
                 parent: parent,
                 children: items,
@@ -774,7 +916,6 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
     "$rootScope",
     "dossiersProgramGlobalIndicatorsFactory",
     "dossiersProgramGlobalIndicatorExpressionFactory",
-    "Ping",
     "dossiersProgramDataService",
     "dossiersProgramLoadingService",
     function (
@@ -1181,7 +1322,7 @@ dossierProgramsModule.controller("dossiersProgramRuleVariablesController", [
                         });
 
                         if ($scope.ruleVariables.length > 0) {
-                            addtoTOC($scope.toc, null, $scope.ruleVariables4TOC, "Program Rules");
+                            addtoTOC($scope.toc, null, $scope.ruleVariables4TOC, "Program Rules Variables");
                             dossiersProgramDataService.data.ruleVariables = $scope.ruleVariables;
                         }
 

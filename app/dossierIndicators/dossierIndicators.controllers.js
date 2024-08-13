@@ -56,14 +56,14 @@ dossierIndicatorsModule.controller("dossierIndicatorsMainController", [
                         JSON.stringify($scope.sharingSettings),
                         response => {
                             if (response.status === "OK") {
-                                console.log("datasetsModule: Sharing Settings created");
+                                console.log("dossierIndicatorsModule: Sharing Settings created");
                             } else {
-                                console.log("datasetsModule: Error creating Sharing Settings");
+                                console.log("dossierIndicatorsModule: Error creating Sharing Settings");
                             }
                         }
                     );
                 } else {
-                    console.log("datasetsModule: Error getting Sharing Settings");
+                    console.log("dossierIndicatorsModule: Error getting Sharing Settings");
                 }
             });
 
@@ -77,7 +77,6 @@ dossierIndicatorsModule.controller("dossierIndicatorsMainController", [
         });
 
         addtoTOC = function (toc, items, parent, type) {
-            console.log(type);
             if (type == "Formule of Indicator" && !$scope.accesses.formula) return;
             if (type == "Numerator" && !$scope.accesses.numerator) return;
             if (type == "Denominator" && !$scope.accesses.denominator) return;
