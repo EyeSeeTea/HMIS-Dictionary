@@ -58,7 +58,7 @@
         <div id="DossierTextTitleContainer" ng-if="selectedProgram.displayDescription && accesses.programDescription"
             class="row headerGroup">
             <br />
-            <h1>{{ "dos_DescriptionOfProgram" | translate }}</h1>
+            <h1 title='{{ "program_description_help" | translate }}'>{{ "dos_DescriptionOfProgram" | translate }}</h1>
             <div ng-bind-html="trustAsHtml(selectedProgram.displayDescription)"></div>
         </div>
 
@@ -75,20 +75,28 @@
                 <table class="sectionElementsTable table table-striped">
                     <thead>
                         <tr>
-                            <th ng-if="accesses.trackedEntityAttributes_name">{{ "dos_NameElement" | translate }}</th>
-                            <th ng-if="accesses.trackedEntityAttributes_formName">{{ "dos_FormNameElement" | translate
+                            <th title='{{ "programs_tei_name_help" | translate }}'
+                                ng-if="accesses.trackedEntityAttributes_name">{{ "dos_NameElement" | translate }}</th>
+                            <th title='{{ "programs_tei_formName_help" | translate }}'
+                                ng-if="accesses.trackedEntityAttributes_formName">{{ "dos_FormNameElement" | translate
                                 }}</th>
-                            <th ng-if="accesses.trackedEntityAttributes_description">{{ "dos_DescriptionElement" |
+                            <th title='{{ "programs_tei_description_help" | translate }}'
+                                ng-if="accesses.trackedEntityAttributes_description">{{ "dos_DescriptionElement" |
                                 translate }}</th>
-                            <th ng-if="accesses.trackedEntityAttributes_valueType">{{ "dos_ValueType" | translate }}
+                            <th title='{{ "programs_tei_valueType_help" | translate }}'
+                                ng-if="accesses.trackedEntityAttributes_valueType">{{ "dos_ValueType" | translate }}
                             </th>
-                            <th ng-if="accesses.trackedEntityAttributes_aggregationType">{{ "dos_AggregationType" |
+                            <th title='{{ "programs_tei_aggregationType_help" | translate }}'
+                                ng-if="accesses.trackedEntityAttributes_aggregationType">{{ "dos_AggregationType" |
                                 translate }}</th>
-                            <th ng-if="accesses.trackedEntityAttributes_mandatory">{{ "dos_Mandatory" | translate }}
+                            <th title='{{ "programs_tei_mandatory_help" | translate }}'
+                                ng-if="accesses.trackedEntityAttributes_mandatory">{{ "dos_Mandatory" | translate }}
                             </th>
-                            <th ng-if="accesses.trackedEntityAttributes_visibilityInDataEntry">{{ "dos_Visibility" |
+                            <th title='{{ "programs_tei_visbility_help" | translate }}'
+                                ng-if="accesses.trackedEntityAttributes_visibilityInDataEntry">{{ "dos_Visibility" |
                                 translate }}</th>
-                            <th ng-if="accesses.trackedEntityAttributes_optionSet">{{ "dos_OptionSet" | translate }}
+                            <th title='{{ "programs_tei_optionSet_help" | translate }}'
+                                ng-if="accesses.trackedEntityAttributes_optionSet">{{ "dos_OptionSet" | translate }}
                             </th>
                         </tr>
                     </thead>
@@ -144,17 +152,25 @@
                     <table class="sectionElementsTable table table-striped">
                         <thead>
                             <tr>
-                                <th ng-if="accesses.programStages_name">{{ "dos_NameElement" | translate }}</th>
-                                <th ng-if="accesses.programStages_formName">{{ "dos_FormNameElement" | translate }}</th>
-                                <th ng-if="accesses.programStages_description">{{ "dos_DescriptionElement" | translate
+                                <th title='{{ "programs_ps_name_help" | translate }}'
+                                    ng-if="accesses.programStages_name">{{ "dos_NameElement" | translate }}</th>
+                                <th title='{{ "programs_ps_formName_help" | translate }}'
+                                    ng-if="accesses.programStages_formName">{{ "dos_FormNameElement" | translate }}</th>
+                                <th title='{{ "programs_ps_description_help" | translate }}'
+                                    ng-if="accesses.programStages_description">{{ "dos_DescriptionElement" | translate
                                     }}</th>
-                                <th ng-if="accesses.programStages_valueType">{{ "dos_ValueType" | translate }}</th>
-                                <th ng-if="accesses.programStages_calculationMode">{{ "dos_CalculationMode" | translate
+                                <th title='{{ "programs_ps_valueType_help" | translate }}'
+                                    ng-if="accesses.programStages_valueType">{{ "dos_ValueType" | translate }}</th>
+                                <th title='{{ "programs_ps_calculationMode_help" | translate }}'
+                                    ng-if="accesses.programStages_calculationMode">{{ "dos_CalculationMode" | translate
                                     }}</th>
-                                <th ng-if="accesses.programStages_mandatory">{{ "dos_Mandatory" | translate }}</th>
-                                <th ng-if="accesses.programStages_visibilityInDataEntry">{{ "dos_Visibility" | translate
+                                <th title='{{ "programs_ps_mandatory_help" | translate }}'
+                                    ng-if="accesses.programStages_mandatory">{{ "dos_Mandatory" | translate }}</th>
+                                <th title='{{ "programs_ps_visbility_help" | translate }}'
+                                    ng-if="accesses.programStages_visibilityInDataEntry">{{ "dos_Visibility" | translate
                                     }}</th>
-                                <th ng-if="accesses.programStages_optionSet">{{ "dos_OptionSet" | translate }}</th>
+                                <th title='{{ "programs_ps_optionSet_help" | translate }}'
+                                    ng-if="accesses.programStages_optionSet">{{ "dos_OptionSet" | translate }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -219,21 +235,31 @@
                     <table class="indicatorTable table table-striped">
                         <thead>
                             <tr>
-                                <th ng-if="accesses.programIndicators_name">{{ "dos_NameElement" | translate }}</th>
-                                <th ng-if="accesses.programIndicators_description">{{ "dos_DescriptionElement" |
+                                <th title='{{ "programs_pi_name_help" | translate }}'
+                                    ng-if="accesses.programIndicators_name">{{ "dos_NameElement" | translate }}</th>
+                                <th title='{{ "programs_pi_description_help" | translate }}'
+                                    ng-if="accesses.programIndicators_description">{{ "dos_DescriptionElement" |
                                     translate }}</th>
-                                <th ng-if="accesses.programIndicators_filter">{{ "dos_Filter" | translate }}</th>
-                                <th ng-if="accesses.programIndicators_calculation">{{ "dos_Calculation" | translate }}
+                                <th title='{{ "programs_pi_filter_help" | translate }}'
+                                    ng-if="accesses.programIndicators_filter">{{ "dos_Filter" | translate }}</th>
+                                <th title='{{ "programs_title=' {{ "" | translate}}' pi_calculation_help" | translate
+                                    }}' ng-if="accesses.programIndicators_calculation">{{ "dos_Calculation" | translate
+                                    }}
                                 </th>
-                                <th ng-if="accesses.programIndicators_aggregationType">{{ "dos_AggregationType" |
+                                <th title='{{ "programs_pi_aggregationType_help" | translate }}'
+                                    ng-if="accesses.programIndicators_aggregationType">{{ "dos_AggregationType" |
                                     translate }}</th>
-                                <th ng-if="accesses.programIndicators_typeOfProgramIndicator">{{
+                                <th title='{{ "programs_pi_type_help" | translate }}'
+                                    ng-if="accesses.programIndicators_typeOfProgramIndicator">{{
                                     "dos_TypeOfProgramIndicator" | translate }}</th>
-                                <th ng-if="accesses.programIndicators_stagesReferenced">{{ "dos_StagesReferenced" |
+                                <th title='{{ "programs_pi_stagesReferenced_help" | translate }}'
+                                    ng-if="accesses.programIndicators_stagesReferenced">{{ "dos_StagesReferenced" |
                                     translate }}</th>
-                                <th ng-if="accesses.programIndicators_boundaries">{{ "dos_Boundaries" | translate }}
+                                <th title='{{ "programs_pi_boundaries_help" | translate }}'
+                                    ng-if="accesses.programIndicators_boundaries">{{ "dos_Boundaries" | translate }}
                                 </th>
-                                <th ng-if="accesses.programIndicators_visualization">{{ "dos_Visualization" | translate
+                                <th title='{{ "programs_pi_visualization_help" | translate }}'
+                                    ng-if="accesses.programIndicators_visualization">{{ "dos_Visualization" | translate
                                     }}</th>
                             </tr>
                         </thead>
@@ -301,15 +327,22 @@
                 <table class="sectionElementsTable table table-striped">
                     <thead>
                         <tr>
-                            <th ng-if="accesses.indicators_name">{{ "dos_NameElement" | translate }}</th>
-                            <th ng-if="accesses.indicators_description">{{ "dos_DescriptionElement" | translate }}</th>
-                            <th ng-if="accesses.indicators_type">{{ "dos_Type" | translate }}</th>
-                            <th ng-if="accesses.indicators_numerator">{{ "dos_NumeratorIndicator" | translate }}</th>
-                            <th ng-if="accesses.indicators_denominator">{{ "dos_DenominatorIndicator" | translate }}
+                            <th title='{{ "programs_i_name_help" | translate }}' ng-if="accesses.indicators_name">{{
+                                "dos_NameElement" | translate }}</th>
+                            <th title='{{ "programs_i_description_help" | translate }}'
+                                ng-if="accesses.indicators_description">{{ "dos_DescriptionElement" | translate }}</th>
+                            <th title='{{ "programs_i_type_help" | translate }}' ng-if="accesses.indicators_type">{{
+                                "dos_Type" | translate }}</th>
+                            <th title='{{ "programs_i_numerator_help" | translate }}'
+                                ng-if="accesses.indicators_numerator">{{ "dos_NumeratorIndicator" | translate }}</th>
+                            <th title='{{ "programs_i_denominator_help" | translate }}'
+                                ng-if="accesses.indicators_denominator">{{ "dos_DenominatorIndicator" | translate }}
                             </th>
-                            <th ng-if="accesses.indicators_stagesReferenced">{{ "dos_StagesReferenced" | translate }}
+                            <th title='{{ "programs_i_stagesReferenced_help" | translate }}'
+                                ng-if="accesses.indicators_stagesReferenced">{{ "dos_StagesReferenced" | translate }}
                             </th>
-                            <th ng-if="accesses.indicators_visualization">{{ "dos_Visualization" | translate }}</th>
+                            <th title='{{ "programs_i_visualization_help" | translate }}'
+                                ng-if="accesses.indicators_visualization">{{ "dos_Visualization" | translate }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -352,12 +385,17 @@
                 <table class="sectionElementsTable table table-striped">
                     <thead>
                         <tr>
-                            <th ng-if="accesses.programRules_name">{{ "dos_NameElement" | translate }}</th>
-                            <th ng-if="accesses.programRules_description">{{ "dos_DescriptionElement" | translate }}
+                            <th title='{{ "programs_pr_name_help" | translate }}' ng-if="accesses.programRules_name">{{
+                                "dos_NameElement" | translate }}</th>
+                            <th title='{{ "programs_pr_description_help" | translate }}'
+                                ng-if="accesses.programRules_description">{{ "dos_DescriptionElement" | translate }}
                             </th>
-                            <th ng-if="accesses.programRules_programStage">{{ "dos_ProgramStage" | translate }}</th>
-                            <th ng-if="accesses.programRules_condition">{{ "dos_Condition" | translate }}</th>
-                            <th ng-if="accesses.programRules_programRuleActions">{{ "dos_ProgramRuleActions" | translate
+                            <th title='{{ "programs_pr_type_help" | translate }}'
+                                ng-if="accesses.programRules_programStage">{{ "dos_ProgramStage" | translate }}</th>
+                            <th title='{{ "programs_pr_numerator_help" | translate }}'
+                                ng-if="accesses.programRules_condition">{{ "dos_Condition" | translate }}</th>
+                            <th title='{{ "programs_pr_denominator_help" | translate }}'
+                                ng-if="accesses.programRules_programRuleActions">{{ "dos_ProgramRuleActions" | translate
                                 }}</th>
                         </tr>
                     </thead>
@@ -578,15 +616,21 @@
                 <table class="sectionElementsTable table table-striped">
                     <thead>
                         <tr>
-                            <th ng-if="accesses.programRuleVariables_name">{{ "dos_NameElement" | translate }}</th>
-                            <th ng-if="accesses.programRuleVariables_sourceType">{{ "dos_SourceType" | translate }}</th>
-                            <th ng-if="accesses.programRuleVariables_programStage">{{ "dos_ProgramStage" | translate }}
+                            <th title='{{ "programs_prv_name_help" | translate }}'
+                                ng-if="accesses.programRuleVariables_name">{{ "dos_NameElement" | translate }}</th>
+                            <th title='{{ "programs_prv_sourceType_help" | translate }}'
+                                ng-if="accesses.programRuleVariables_sourceType">{{ "dos_SourceType" | translate }}</th>
+                            <th title='{{ "programs_prv_programStage_help" | translate }}'
+                                ng-if="accesses.programRuleVariables_programStage">{{ "dos_ProgramStage" | translate }}
                             </th>
-                            <th ng-if="accesses.programRuleVariables_dataElement">{{ "dos_DataElement" | translate }}
+                            <th title='{{ "programs_prv_dataElement_help" | translate }}'
+                                ng-if="accesses.programRuleVariables_dataElement">{{ "dos_DataElement" | translate }}
                             </th>
-                            <th ng-if="accesses.programRuleVariables_trackedEntityAttributes">{{
+                            <th title='{{ "programs_prv_trackedEntityAttributes_help" | translate }}'
+                                ng-if="accesses.programRuleVariables_trackedEntityAttributes">{{
                                 "dos_TrackedEntityAttributes" | translate }}</th>
-                            <th ng-if="accesses.programRuleVariables_associatedProgramRules">{{
+                            <th title='{{ "programs_prv_associatedProgramRules_help" | translate }}'
+                                ng-if="accesses.programRuleVariables_associatedProgramRules">{{
                                 "dos_AssociatedProgramRules" | translate }}</th>
                         </tr>
                     </thead>

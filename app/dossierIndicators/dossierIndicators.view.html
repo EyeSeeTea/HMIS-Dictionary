@@ -43,7 +43,8 @@
         </div>
         <div class="col-md-12" ng-controller="dossierIndicatorsTitle">
             <div class="col-md-12" ng-show="numerator.value != ''" ng-if="accesses.formula">
-                <h2 id="formulaIndicator">{{ "dos_FormulaOfIndicator" | translate }}</h2>
+                <h2 id="formulaIndicator" title='{{ "indicators_description_help" | translate }}'>{{
+                    "dos_FormulaOfIndicator" | translate }}</h2>
                 <div class="col-md-12">
                     <table class="table table-striped">
                         <thead>
@@ -84,10 +85,14 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th ng-if="accesses.numerator_type">{{ "dos_Type" | translate }}</th>
-                                <th ng-if="accesses.numerator_name">{{ "dos_NameIndicator" | translate }}</th>
-                                <th ng-if="accesses.numerator_datasets">{{ "DataSets" | translate }}</th>
-                                <th ng-if="accesses.numerator_program">{{ "dos_Program" | translate }}</th>
+                                <th title='{{ "indicators_num_type_help" | translate }}'
+                                    ng-if="accesses.numerator_type">{{ "dos_Type" | translate }}</th>
+                                <th title='{{ "indicators_num_name_help" | translate }}'
+                                    ng-if="accesses.numerator_name">{{ "dos_NameIndicator" | translate }}</th>
+                                <th title='{{ "indicators_num_dataSets_help" | translate }}'
+                                    ng-if="accesses.numerator_datasets">{{ "DataSets" | translate }}</th>
+                                <th title='{{ "indicators_num_program_help" | translate }}'
+                                    ng-if="accesses.numerator_program">{{ "dos_Program" | translate }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -120,10 +125,14 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th ng-if="accesses.denominator_type">{{ "dos_Type" | translate }}</th>
-                                <th ng-if="accesses.denominator_name">{{ "dos_NameIndicator" | translate }}</th>
-                                <th ng-if="accesses.denominator_datasets">{{ "dos_DataSets" | translate }}</th>
-                                <th ng-if="accesses.denominator_program">{{ "dos_Program" | translate }}</th>
+                                <th title='{{ "indicators_den_type_help" | translate }}'
+                                    ng-if="accesses.denominator_type">{{ "dos_Type" | translate }}</th>
+                                <th title='{{ "indicators_den_name_help" | translate }}'
+                                    ng-if="accesses.denominator_name">{{ "dos_NameIndicator" | translate }}</th>
+                                <th title='{{ "indicators_den_dataSets_help" | translate }}'
+                                    ng-if="accesses.denominator_datasets">{{ "dos_DataSets" | translate }}</th>
+                                <th title='{{ "indicators_den_program_help" | translate }}'
+                                    ng-if="accesses.denominator_program">{{ "dos_Program" | translate }}</th>
                             </tr>
                         </thead>
                         <tbody>

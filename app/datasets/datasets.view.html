@@ -53,12 +53,18 @@
                 <table class="sectionElementsTable table table-striped">
                     <thead>
                         <tr>
-                            <th ng-if="accesses.sections_name">{{ "dos_NameElement" | translate }}</th>
-                            <th ng-if="accesses.sections_formName">{{ "dos_FormNameElement" | translate }}</th>
-                            <th ng-if="accesses.sections_description">{{ "dos_DescriptionElement" | translate }}</th>
-                            <th ng-if="accesses.sections_dataTypeElement">{{ "dos_DataTypeElement" | translate }}</th>
-                            <th ng-if="accesses.sections_options">{{ "dos_Options" | translate }}</th>
-                            <th ng-if="accesses.sections_categoryCombination">
+                            <th title='{{ "datasets_sec_name_help" | translate }}' ng-if="accesses.sections_name">{{
+                                "dos_NameElement" | translate }}</th>
+                            <th title='{{ "datasets_sec_formName_help" | translate }}'
+                                ng-if="accesses.sections_formName">{{ "dos_FormNameElement" | translate }}</th>
+                            <th title='{{ "datasets_sec_description_help" | translate }}'
+                                ng-if="accesses.sections_description">{{ "dos_DescriptionElement" | translate }}</th>
+                            <th title='{{ "datasets_sec_dataTypeElement_help" | translate }}'
+                                ng-if="accesses.sections_dataTypeElement">{{ "dos_DataTypeElement" | translate }}</th>
+                            <th title='{{ "datasets_sec_options_help" | translate }}' ng-if="accesses.sections_options">
+                                {{ "dos_Options" | translate }}</th>
+                            <th title='{{ "datasets_sec_categoryCombination_help" | translate }}'
+                                ng-if="accesses.sections_categoryCombination">
                                 {{ "dos_CategoryCombination" | translate }}
                             </th>
                         </tr>
@@ -110,11 +116,14 @@
                 <table class="sectionElementsTable table table-striped">
                     <thead>
                         <tr>
-                            <th ng-if="accesses.categoryCombinations_categoryCombination">
+                            <th title='{{ "datasets_cc_categoryCombination_help" | translate }}'
+                                ng-if="accesses.categoryCombinations_categoryCombination">
                                 {{ "dos_CategoryCombination" | translate }}
                             </th>
-                            <th ng-if="accesses.categoryCombinations_categories">{{ "dos_Categories" | translate }}</th>
-                            <th ng-if="accesses.categoryCombinations_items">{{ "dos_Items" | translate }}</th>
+                            <th title='{{ "datasets_cc_categories_help" | translate }}'
+                                ng-if="accesses.categoryCombinations_categories">{{ "dos_Categories" | translate }}</th>
+                            <th title='{{ "datasets_cc_items_help" | translate }}'
+                                ng-if="accesses.categoryCombinations_items">{{ "dos_Items" | translate }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -153,16 +162,22 @@
                 <table class="sectionElementsTable table table-striped">
                     <thead>
                         <tr>
-                            <th ng-if="accesses.indicators_name">{{ "dos_NameIndicator" | translate }}</th>
-                            <th ng-if="accesses.indicators_type">{{ "dos_Type" | translate }}</th>
-                            <th ng-if="accesses.indicators_numerator">{{ "dos_NumeratorIndicator" | translate }}</th>
-                            <th ng-if="accesses.indicators_numeratorDescription">
+                            <th title='{{ "datasets_ind_name_help" | translate }}' ng-if="accesses.indicators_name">{{
+                                "dos_NameIndicator" | translate }}</th>
+                            <th title='{{ "datasets_ind_type_help" | translate }}' ng-if="accesses.indicators_type">{{
+                                "dos_Type" | translate }}</th>
+                            <th title='{{ "datasets_ind_numerator_help" | translate }}'
+                                ng-if="accesses.indicators_numerator">{{ "dos_NumeratorIndicator" | translate }}</th>
+                            <th title='{{ "datasets_ind_numeratorDescription_help" | translate }}'
+                                ng-if="accesses.indicators_numeratorDescription">
                                 {{ "dos_NumeratorIndicatorDescription" | translate }}
                             </th>
-                            <th ng-if="accesses.indicators_denominator">
+                            <th title='{{ "datasets_ind_denominator_help" | translate }}'
+                                ng-if="accesses.indicators_denominator">
                                 {{ "dos_DenominatorIndicator" | translate }}
                             </th>
-                            <th ng-if="accesses.indicators_denominatorDescription">
+                            <th title='{{ "datasets_ind_denominatorDescription_help" | translate }}'
+                                ng-if="accesses.indicators_denominatorDescription">
                                 {{ "dos_DenominatorIndicatorDescription" | translate }}
                             </th>
                         </tr>
