@@ -10,14 +10,14 @@ layoutSettingsModule.directive("layoutSettings", function () {
     };
 });
 
-layoutSettingsModule.directive("searchSharingSettings", function () {
+layoutSettingsModule.directive("searchLayoutSettings", function () {
     return {
         restrict: "E",
         scope: {
             state: "=",
             namespace: "@",
         },
-        templateUrl: "app/layoutSettings/shareSharingSettings.template.html",
+        templateUrl: "app/layoutSettings/searchLayoutSettings.template.html",
         controller: "SharingSettingsController",
     };
 });
