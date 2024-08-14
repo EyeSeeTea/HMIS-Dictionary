@@ -65,7 +65,7 @@
   "dos_Type": "Type",
   "dos_NumeratorDescription": "Description du numérateur",
   "dos_DenominatorDescription": "Description du dénominateur",
-  "dos_TrackedEntityAttributes": "Attributs d'entités suivies",
+  "dos_TrackedEntityAttributes": "Attributs des entités suivies",
   "dos_TrackedEntityAttributesNumber": "Nombre d'attributs d'entités suivies dans le programme",
   "dos_Code": "Code",
   "dos_ProgramStage": "Étape du programme",
@@ -147,11 +147,10 @@
   "srch_exportToExcel": "Exporter cette page vers Excel",
 
   "MODULE:PROGRAMS": "***************************",
-  "dos_DescriptionOfProgram": "Description du Programme",
+  "dos_DescriptionOfProgram": "Description du programme",
   "dos_NumberOfProgramIndicators": "Number of Indicateurs du Programme",
   "dos_NumberOfIndicators": "Nombre d'indicateurs",
   "dos_GoToIndex": "Retour à l'index",
-  
   "object_type_help": "Définit le type de données de l'élément de données ou de l'indicateur spécifique utilisé dans le formulaire.",
   "object_name_help": "Définit le nom de l'élément de données ou de l'indicateur attribué/utilisé dans un ensemble de données.",
   "object_form_help": "Définit le nom de l'élément de données dans le formulaire (dans la section du formulaire). Applicable uniquement aux éléments de données.",
@@ -166,5 +165,8 @@
   "objectGroup_code_help": "Définit le code unique attribué à l'élément de données ou au groupe d'indicateurs utilisés dans un ensemble de données.",
   "service_name_help": "Définit le nom du service attribué au jeu de données.",
   "service_id_help": "Définit l'identifiant de service unique de l'élément de données ou de l'indicateur utilisé dans un ensemble de données.",
-  "service_code_help": "Définit le code de service unique attribué à l'élément de données ou au groupe d'indicateurs utilisés dans un ensemble de données."
+  "service_code_help": "Définit le code de service unique attribué à l'élément de données ou au groupe d'indicateurs utilisés dans un ensemble de données.",
+  "dos_ProgramStages": "Étapes du programme",
+  "dos_ProgramIndicators": "Indicateurs de programme",
+  "dos_ProgramRules": "Règles du programme"
 }

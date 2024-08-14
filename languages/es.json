@@ -65,7 +65,7 @@
   "dos_Type": "Tipo",
   "dos_NumeratorDescription": "Descripción del numerador",
   "dos_DenominatorDescription": "Descripción del denominador",
-  "dos_TrackedEntityAttributes": "Atributos de entidad rastreados",
+  "dos_TrackedEntityAttributes": "Atributos de la entidad de seguimiento",
   "dos_TrackedEntityAttributesNumber": "Número de atributos de entidad rastreados en el programa",
   "dos_Code": "Código",
   "dos_ProgramStage": "Etapa del programa",
@@ -148,11 +148,10 @@
   "srch_exportToExcel": "Exportar esta página a Excel",
 
   "MODULE:PROGRAMS": "***************************",
-  "dos_DescriptionOfProgram": "Descripción del Programa",
+  "dos_DescriptionOfProgram": "Descripción del programa",
   "dos_NumberOfProgramIndicators": "Número de Indicadores del Programa",
   "dos_NumberOfIndicators": "Número de Indicadores",
   "dos_GoToIndex": "Volver al Índice",
-  
   "object_type_help": "Define el tipo de dato del elemento de datos o indicador específico utilizado en el formulario.",
   "object_name_help": "Define el nombre del elemento de datos o indicador asignado/utilizado en un conjunto de datos.",
   "object_form_help": "Define el nombre del elemento de datos en el formulario (en la sección del formulario). Aplicable sólo a elementos de datos.",
@@ -167,5 +166,8 @@
   "objectGroup_code_help": "Define el código único asignado al elemento de datos o grupo de indicadores utilizado en un conjunto de datos.",
   "service_name_help": "Define el nombre del Servicio asignado al conjunto de datos.",
   "service_id_help": "Define el identificador único de servicio del elemento de datos o indicador utilizado en un conjunto de datos.",
-  "service_code_help": "Define el código de servicio único asignado al elemento de datos o grupo de indicadores utilizado en un conjunto de datos."
+  "service_code_help": "Define el código de servicio único asignado al elemento de datos o grupo de indicadores utilizado en un conjunto de datos.",
+  "dos_ProgramStages": "Etapas del programa",
+  "dos_ProgramIndicators": "Indicadores del programa",
+  "dos_ProgramRules": "Reglas del programa"
 }

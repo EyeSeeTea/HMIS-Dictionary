@@ -56,7 +56,7 @@
   "dos_Type": "Tipo",
   "dos_NumeratorDescription": "Descrição do numerador",
   "dos_DenominatorDescription": "Descrição do Denominador",
-  "dos_TrackedEntityAttributes": "Atributos de Entidade Rastreada",
+  "dos_TrackedEntityAttributes": "Atributos da entidade controlada",
   "dos_TrackedEntityAttributesNumber": "Número de Atributos de Entidade Rastreada no Programa",
   "dos_Code": "Código",
   "dos_ProgramStage": "Etapa do Programa",
@@ -151,7 +151,6 @@
   "dos_NumberOfProgramIndicators": "Número de indicadores do programa",
   "dos_NumberOfIndicators": "Número de Indicadores",
   "dos_GoToTop": "Voltar ao Índice",
-  
   "object_type_help": "Define o tipo de dados do elemento de dados ou indicador específico utilizado no formulário.",
   "object_name_help": "Define o nome do elemento de dados ou indicador atribuído/utilizado num conjunto de dados.",
   "object_form_help": "Define o nome do elemento de dados no formulário (na secção do formulário). Aplicável apenas a elementos de dados.",
@@ -166,5 +165,8 @@
   "objectGroup_code_help": "Define o código único atribuído ao elemento de dados ou grupo de indicadores utilizados num conjunto de dados.",
   "service_name_help": "Define o nome do Serviço atribuído ao conjunto de dados.",
   "service_id_help": "Define o identificador de serviço único do elemento de dados ou indicador utilizado num conjunto de dados.",
-  "service_code_help": "Define o código de serviço único atribuído ao elemento de dados ou grupo de indicadores utilizados num conjunto de dados."
+  "service_code_help": "Define o código de serviço único atribuído ao elemento de dados ou grupo de indicadores utilizados num conjunto de dados.",
+  "dos_ProgramStages": "Fases do programa",
+  "dos_ProgramIndicators": "Indicadores do programa",
+  "dos_ProgramRules": "Regras do programa"
 }
