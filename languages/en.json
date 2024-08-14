@@ -233,7 +233,7 @@
   "datasets_ind_numeratorDescription_help": "Defines a description of the indicator numerator based on what result the indicator calculates.",
   "datasets_ind_denominator_help": "Defines the title of the indicator denominator based on what result the indicator calculates.",
   "datasets_ind_denominatorDescription_help": "Defines a description of the indicator numerator based on what result the indicator calculates.",
-  "indicators_description_help": "A set of mathematical operations that is used to calculate rates",
+  "indicators_description_help": "A set of mathematical operations that is used to calculate rates, incidences and other values that are a result of data element values that have been entered into the system.",
   "indicators_num_type_help": "Indicator types define the factor that is applied during aggregation.",
   "indicators_num_name_help": "Defines the title of the indicator numerator based on what the indicator calculates",
   "indicators_num_dataSets_help": "Denotes the respective dataset with which the indicator belongs to.",
