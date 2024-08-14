@@ -15,7 +15,7 @@ searchModule.controller("searchController", [
     "updateSharing",
     "getServices",
     "advancedUsersFactory",
-    "sharingSettingsFactory",
+    "layoutSettingsFactory",
     function (
         $window,
         $scope,
@@ -28,11 +28,11 @@ searchModule.controller("searchController", [
         updateSharing,
         getServices,
         advancedUsersFactory,
-        sharingSettingsFactory
+        layoutSettingsFactory
     ) {
         $("#search").tab("show");
 
-        $scope.sharingSettings = {
+        $scope.layoutSettings = {
             advancedUserGroups: ["LjRqO9XzQPs"],
             accesses: {
                 objectsBasics: {
@@ -83,36 +83,36 @@ searchModule.controller("searchController", [
 
         const namespace = "search";
 
-        sharingSettingsFactory.get
+        layoutSettingsFactory.get
             .query({ view: namespace })
             .$promise.then(data => {
-                $scope.sharingSettings = data.toJSON();
+                $scope.layoutSettings = data.toJSON();
             })
             .catch(error => {
                 /* If no sharing settings are found, create them */
                 if (error.status === 404) {
-                    sharingSettingsFactory.set.query(
+                    layoutSettingsFactory.set.query(
                         { view: namespace },
-                        JSON.stringify($scope.sharingSettings),
+                        JSON.stringify($scope.layoutSettings),
                         response => {
                             if (response.status === "OK") {
-                                console.log("searchModule: Sharing Settings created");
+                                console.log("searchModule: Layout Settings created");
                             } else {
-                                console.log("searchModule: Error creating Sharing Settings");
+                                console.log("searchModule: Error creating Layout Settings");
                             }
                         }
                     );
                 } else {
-                    console.log("searchModule: Error getting Sharing Settings");
+                    console.log("searchModule: Error getting Layout Settings");
                 }
             });
 
         $scope.isAdvancedUser = false;
 
-        $scope.$watch("sharingSettings", function () {
-            advancedUsersFactory.isAdvancedUser($scope.sharingSettings.advancedUserGroups).query({}, function (data) {
+        $scope.$watch("layoutSettings", function () {
+            advancedUsersFactory.isAdvancedUser($scope.layoutSettings.advancedUserGroups).query({}, function (data) {
                 $scope.isAdvancedUser = data.isAdvancedUser;
-                $scope.accesses = userAccesses($scope.sharingSettings.accesses, $scope.isAdvancedUser);
+                $scope.accesses = userAccesses($scope.layoutSettings.accesses, $scope.isAdvancedUser);
             });
         });
 

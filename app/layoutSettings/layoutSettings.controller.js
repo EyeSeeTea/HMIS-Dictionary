@@ -1,8 +1,8 @@
-sharingSettingsModule.controller("SharingSettingsController", [
+layoutSettingsModule.controller("SharingSettingsController", [
     "$scope",
-    "sharingSettingsFactory",
+    "layoutSettingsFactory",
     "adminUGFactory",
-    function ($scope, sharingSettingsFactory, adminUGFactory) {
+    function ($scope, layoutSettingsFactory, adminUGFactory) {
         function assignRows(accesses) {
             if (accesses === undefined) return [];
             return _(accesses)
@@ -74,12 +74,12 @@ sharingSettingsModule.controller("SharingSettingsController", [
             const accesses = mapAccesses($scope.rows);
 
             if (_.isEqual(accesses, $scope.state.accesses) && _.isEqual($scope.advancedUsers, previousAdvancedUsers)) {
-                console.log("sharingSettingsModule: No changes to apply");
+                console.log("layoutSettingsModule: No changes to apply");
                 window.location.reload(true); //fake apply UI feeling
                 return;
             } else {
                 if (!isValidUserGroupsFormat($scope.advancedUsers)) {
-                    console.error("sharingSettingsModule: Invalid advancedUsers JSON array");
+                    console.error("layoutSettingsModule: Invalid advancedUsers JSON array");
                     $scope.showInvalidFormat = true;
                     return;
                 }
@@ -89,7 +89,7 @@ sharingSettingsModule.controller("SharingSettingsController", [
                     const advancedUserGroups = JSON.parse($scope.advancedUsers);
 
                     if (!advancedUserGroups.every(group => userGroups.includes(group))) {
-                        console.error("sharingSettingsModule: Invalid advancedUsers user groups");
+                        console.error("layoutSettingsModule: Invalid advancedUsers user groups");
                         $scope.showInvalidUserGroup = true;
                         return;
                     }
@@ -99,14 +99,14 @@ sharingSettingsModule.controller("SharingSettingsController", [
                         advancedUserGroups: JSON.parse($scope.advancedUsers),
                     });
 
-                    sharingSettingsFactory.update
+                    layoutSettingsFactory.update
                         .query({ view: $scope.namespace }, JSON.stringify(updatedSettings))
                         .$promise.then(res => {
-                            if (res.status === "OK") console.log("sharingSettingsModule: Sharing settings updated");
+                            if (res.status === "OK") console.log("layoutSettingsModule: Sharing settings updated");
                             window.location.reload(true);
                         })
                         .catch(error => {
-                            console.error("sharingSettingsModule: Error updating sharing settings", error);
+                            console.error("layoutSettingsModule: Error updating sharing settings", error);
                         });
                 });
             }

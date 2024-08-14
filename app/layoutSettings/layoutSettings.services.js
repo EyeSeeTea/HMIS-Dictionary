@@ -1,6 +1,6 @@
-var qrySharingSettings = dhisUrl + "dataStore/HMIS_Dictionary/sharingSettings_:view";
+var qrySharingSettings = dhisUrl + "dataStore/HMIS_Dictionary/layoutSettings_:view";
 
-sharingSettingsModule.factory("sharingSettingsFactory", [
+layoutSettingsModule.factory("layoutSettingsFactory", [
     "$resource",
     function ($resource) {
         return {
@@ -13,7 +13,7 @@ sharingSettingsModule.factory("sharingSettingsFactory", [
 
 var qryMe = dhisUrl + "me?fields=userGroups[id]";
 
-sharingSettingsModule.factory("advancedUsersFactory", [
+layoutSettingsModule.factory("advancedUsersFactory", [
     "$resource",
     function ($resource) {
         return {

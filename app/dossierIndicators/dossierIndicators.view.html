@@ -4,18 +4,14 @@
  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <div ng-controller="dossierIndicatorsMainController" id="DossierPanel" class="row">
     <div id="headerDossierPanel" class="col-md-12 headerPanel row">
-        <sharing-settings state="sharingSettings" namespace="indicators" ng-if="is_admin"></sharing-settings>
+        <layout-settings state="layoutSettings" namespace="indicators" ng-if="is_admin"></layout-settings>
 
         <h1>{{ "dos_Indicators" | translate }}</h1>
         <p>{{ "Number of Indicators" | translate }}: {{ indicators.indicators.length }}</p>
         <div class="col-md-2">
-            <select
-                class="form-control col-md-2"
+            <select class="form-control col-md-2"
                 ng-options="indicators.name for indicators in indicators.indicators | orderBy: 'name'"
-                name="selectProgram"
-                id="drpBoxServices"
-                ng-model="selectedIndicator"
-            >
+                name="selectProgram" id="drpBoxServices" ng-model="selectedIndicator">
                 <option value="" disabled selected>{{ "Select an Indicator" | translate }}</option>
             </select>
         </div>
@@ -34,13 +30,9 @@
             </h3>
             <ul ng-repeat="i in toc.entries | orderBy:'parent.index'">
                 <li>
-                    <big
-                        ><b
-                            ><a href="" class="pageref" ng-click="scrollTo(i.parent.id)" target="_self">{{
+                    <big><b><a href="" class="pageref" ng-click="scrollTo(i.parent.id)" target="_self">{{
                                 i.parent.displayName
-                            }}</a></b
-                        ></big
-                    >
+                                }}</a></b></big>
                     <ul ng-repeat="j in i.children">
                         <li>
                             <a href="" class="pageref" ng-click="scrollTo(j.id)">{{ j.displayName }}</a>
@@ -104,16 +96,14 @@
                                 <td ng-if="accesses.numerator_name">{{ tabNumeratorRegroup.name }}</td>
                                 <td ng-if="accesses.numerator_datasets">
                                     <ul ng-repeat="dataSets in tabNumeratorRegroup.dataSets">
-                                        <a href="#/datasets"
-                                            ><input type="button" value="{{ dataSets }}" ng-click="save(dataSets)"
-                                        /></a>
+                                        <a href="#/datasets"><input type="button" value="{{ dataSets }}"
+                                                ng-click="save(dataSets)" /></a>
                                     </ul>
                                 </td>
                                 <td ng-if="accesses.numerator_program">
                                     <ul ng-repeat="program in tabNumeratorRegroup.program">
-                                        <a href="#/dossierPrograms"
-                                            ><input type="button" value="{{ program }}" ng-click="saveProgram(program)"
-                                        /></a>
+                                        <a href="#/dossierPrograms"><input type="button" value="{{ program }}"
+                                                ng-click="saveProgram(program)" /></a>
                                     </ul>
                                 </td>
                             </tr>
@@ -142,16 +132,14 @@
                                 <td ng-if="accesses.denominator_name">{{ tabDenominatorRegroup.nameDenominator }}</td>
                                 <td ng-if="accesses.denominator_datasets">
                                     <ul ng-repeat="dataSets in tabDenominatorRegroup.dataSetsDenominator">
-                                        <a href="#/datasets"
-                                            ><input type="button" value="{{ dataSets }}" ng-click="save(dataSets)"
-                                        /></a>
+                                        <a href="#/datasets"><input type="button" value="{{ dataSets }}"
+                                                ng-click="save(dataSets)" /></a>
                                     </ul>
                                 </td>
                                 <td ng-if="accesses.denominator_program">
                                     <ul ng-repeat="program in tabDenominatorRegroup.programDenominator">
-                                        <a href="#/dossierPrograms"
-                                            ><input type="button" value="{{ program }}" ng-click="saveProgram(program)"
-                                        /></a>
+                                        <a href="#/dossierPrograms"><input type="button" value="{{ program }}"
+                                                ng-click="saveProgram(program)" /></a>
                                     </ul>
                                 </td>
                             </tr>

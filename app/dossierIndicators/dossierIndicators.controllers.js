@@ -4,11 +4,11 @@ dossierIndicatorsModule.controller("dossierIndicatorsMainController", [
     "$sce",
     "dossiersIndicatorsFactory",
     "advancedUsersFactory",
-    "sharingSettingsFactory",
-    function ($scope, $anchorScroll, $sce, dossiersIndicatorsFactory, advancedUsersFactory, sharingSettingsFactory) {
+    "layoutSettingsFactory",
+    function ($scope, $anchorScroll, $sce, dossiersIndicatorsFactory, advancedUsersFactory, layoutSettingsFactory) {
         $("#dossierIndicator").tab("show");
 
-        $scope.sharingSettings = {
+        $scope.layoutSettings = {
             advancedUserGroups: ["LjRqO9XzQPs"],
             accesses: {
                 formula: {
@@ -43,36 +43,36 @@ dossierIndicatorsModule.controller("dossierIndicatorsMainController", [
 
         const namespace = "indicators";
 
-        sharingSettingsFactory.get
+        layoutSettingsFactory.get
             .query({ view: namespace })
             .$promise.then(data => {
-                $scope.sharingSettings = data.toJSON();
+                $scope.layoutSettings = data.toJSON();
             })
             .catch(error => {
                 /* If no sharing settings are found, create them */
                 if (error.status === 404) {
-                    sharingSettingsFactory.set.query(
+                    layoutSettingsFactory.set.query(
                         { view: namespace },
-                        JSON.stringify($scope.sharingSettings),
+                        JSON.stringify($scope.layoutSettings),
                         response => {
                             if (response.status === "OK") {
-                                console.log("dossierIndicatorsModule: Sharing Settings created");
+                                console.log("dossierIndicatorsModule: Layout Settings created");
                             } else {
-                                console.log("dossierIndicatorsModule: Error creating Sharing Settings");
+                                console.log("dossierIndicatorsModule: Error creating Layout Settings");
                             }
                         }
                     );
                 } else {
-                    console.log("dossierIndicatorsModule: Error getting Sharing Settings");
+                    console.log("dossierIndicatorsModule: Error getting Layout Settings");
                 }
             });
 
         $scope.isAdvancedUser = false;
 
-        $scope.$watch("sharingSettings", function () {
-            advancedUsersFactory.isAdvancedUser($scope.sharingSettings.advancedUserGroups).query({}, function (data) {
+        $scope.$watch("layoutSettings", function () {
+            advancedUsersFactory.isAdvancedUser($scope.layoutSettings.advancedUserGroups).query({}, function (data) {
                 $scope.isAdvancedUser = data.isAdvancedUser;
-                $scope.accesses = userAccesses($scope.sharingSettings.accesses, $scope.isAdvancedUser);
+                $scope.accesses = userAccesses($scope.layoutSettings.accesses, $scope.isAdvancedUser);
             });
         });
 

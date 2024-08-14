@@ -5,19 +5,15 @@
 
 <div ng-controller="datasetsMainController" id="DossierPanel" class="row">
     <div id="headerDossierPanel" class="col-md-12 headerPanel row">
-        <sharing-settings state="sharingSettings" namespace="datasets" ng-if="is_admin"></sharing-settings>
+        <layout-settings state="layoutSettings" namespace="datasets" ng-if="is_admin"></layout-settings>
 
         <h1>{{ "idx_DataSets" | translate }}</h1>
         <p>{{ "Number of Data Sets" | translate }}: {{ datasets.dataSets.length }}</p>
 
         <div class="col-md-2">
-            <select
-                class="form-control col-md-2"
+            <select class="form-control col-md-2"
                 ng-options="dataset.displayName for dataset in datasets.dataSets | orderBy: 'displayName'"
-                name="selectedDataset"
-                id="drpBoxServices"
-                ng-model="selectedDataset"
-            >
+                name="selectedDataset" id="drpBoxServices" ng-model="selectedDataset">
                 <option value="" disabled selected>{{ "Select a Data Set" | translate }}</option>
             </select>
         </div>
@@ -36,7 +32,8 @@
                 <li>
                     <big>
                         <b>
-                            <a href="" class="pageref" ng-click="scrollTo(i.parent.id)" target="_self">{{ i.parent.displayName }}</a>
+                            <a href="" class="pageref" ng-click="scrollTo(i.parent.id)" target="_self">{{
+                                i.parent.displayName }}</a>
                         </b>
                     </big>
                     <ul ng-repeat="j in i.children">
@@ -96,12 +93,8 @@
                                 </ul>
                             </td>
                             <td ng-if="accesses.sections_categoryCombination">
-                                <a
-                                    href=""
-                                    class="pageref"
-                                    ng-click="scrollTo(categoryCombo[$parent.$index][$index].id)"
-                                    target="_self"
-                                >
+                                <a href="" class="pageref" ng-click="scrollTo(categoryCombo[$parent.$index][$index].id)"
+                                    target="_self">
                                     {{ categoryCombo[$parent.$index][$index].displayName }}
                                 </a>
                             </td>
@@ -126,11 +119,8 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat-start="categoryCombo in categoryCombos.categoryCombos">
-                            <td
-                                id="{{ categoryCombo.id }}"
-                                rowspan="{{ categoryCombo.categories.length }}"
-                                ng-if="accesses.categoryCombinations_categoryCombination"
-                            >
+                            <td id="{{ categoryCombo.id }}" rowspan="{{ categoryCombo.categories.length }}"
+                                ng-if="accesses.categoryCombinations_categoryCombination">
                                 {{ categoryCombo.displayName }}
                             </td>
                             <td ng-if="accesses.categoryCombinations_categories">

@@ -287,8 +287,8 @@ appModule.controller("appSharedController", [
             return $scope.is_admin || (isAdvancedUser && section.access >= 1) || section.access === 2;
         };
 
-        userAccesses = function (sharingSettings, isAdvancedUser) {
-            return _(sharingSettings)
+        userAccesses = function (layoutSettings, isAdvancedUser) {
+            return _(layoutSettings)
                 .mapValues((v, k) => {
                     const columns = _.mapValues(v.columns, (v, _k) => userHaveAccess(v, isAdvancedUser));
                     return {

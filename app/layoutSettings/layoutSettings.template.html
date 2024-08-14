@@ -1,30 +1,24 @@
 <div class="pull-right h1">
-    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#sharingSettingsModal">
+    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#layoutSettingsModal">
         <span class="svg-icon icon-md icon-btn left" aria-hidden="true">
             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
                 <path
-                    d="M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.5 2.5 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5"
-                />
+                    d="M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.5 2.5 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5" />
             </svg>
         </span>
-        {{ "sharing_settings" | translate }}
+        {{ "layout_settings" | translate }}
     </button>
 </div>
 
-<div
-    class="sharingSettings modal fade"
-    id="sharingSettingsModal"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="sharingSettingsModalLabel"
->
+<div class="layoutSettings modal fade" id="layoutSettingsModal" tabindex="-1" role="dialog"
+    aria-labelledby="layoutSettingsModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title" id="sharingSettingsModalLabel">{{ "sharing_settings" | translate }}</h4>
+                <h4 class="modal-title" id="layoutSettingsModalLabel">{{ "layout_settings" | translate }}</h4>
             </div>
             <div class="modal-body pre-scrollable">
                 <div class="help-block">
@@ -32,16 +26,10 @@
                         An array of <strong>userGroups</strong> 'UID's which users will be
                         <strong>Advanced User</strong>.
                     </label>
-                    <input
-                        type="text"
-                        class="form-control"
-                        ng-class="{'alert-danger': showInvalidInput()}"
-                        name="advancedUserGroups"
-                        ng-model="advancedUsers"
-                        required
+                    <input type="text" class="form-control" ng-class="{'alert-danger': showInvalidInput()}"
+                        name="advancedUserGroups" ng-model="advancedUsers" required
                         aria-labelledby="advancedUserGroups-label"
-                        ng-focus="showInvalidFormat = false; showInvalidUserGroup = false"
-                    />
+                        ng-focus="showInvalidFormat = false; showInvalidUserGroup = false" />
                     <p class="text-danger h5" ng-show="showInvalidUserGroup">
                         {{ "invalid_user_group" | translate }}
                     </p>

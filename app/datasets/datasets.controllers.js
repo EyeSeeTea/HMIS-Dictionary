@@ -14,7 +14,7 @@ datasetsModule.controller("datasetsMainController", [
     "datasetsLinkFactory",
     "datasetsDataelementsFactory",
     "advancedUsersFactory",
-    "sharingSettingsFactory",
+    "layoutSettingsFactory",
     function (
         $scope,
         $anchorScroll,
@@ -22,11 +22,11 @@ datasetsModule.controller("datasetsMainController", [
         datasetsLinkFactory,
         datasetsDataelementsFactory,
         advancedUsersFactory,
-        sharingSettingsFactory
+        layoutSettingsFactory
     ) {
         $("#datasets").tab("show");
 
-        $scope.sharingSettings = {
+        $scope.layoutSettings = {
             advancedUserGroups: ["LjRqO9XzQPs"],
             accesses: {
                 sections: {
@@ -60,9 +60,17 @@ datasetsModule.controller("datasetsMainController", [
                         name: { index: 0, translationKey: "dos_NameIndicator", access: 2 },
                         type: { index: 1, translationKey: "dos_Type", access: 2 },
                         numerator: { index: 2, translationKey: "dos_NumeratorIndicator", access: 2 },
-                        numeratorDescription: { index: 3, translationKey: "dos_NumeratorIndicatorDescription", access: 2 },
+                        numeratorDescription: {
+                            index: 3,
+                            translationKey: "dos_NumeratorIndicatorDescription",
+                            access: 2,
+                        },
                         denominator: { index: 4, translationKey: "dos_DenominatorIndicator", access: 2 },
-                        denominatorDescription: { index: 5, translationKey: "dos_DenominatorIndicatorDescription", access: 2 },
+                        denominatorDescription: {
+                            index: 5,
+                            translationKey: "dos_DenominatorIndicatorDescription",
+                            access: 2,
+                        },
                     },
                 },
             },
@@ -70,36 +78,36 @@ datasetsModule.controller("datasetsMainController", [
 
         const namespace = "datasets";
 
-        sharingSettingsFactory.get
+        layoutSettingsFactory.get
             .query({ view: namespace })
             .$promise.then(data => {
-                $scope.sharingSettings = data.toJSON();
+                $scope.layoutSettings = data.toJSON();
             })
             .catch(error => {
                 /* If no sharing settings are found, create them */
                 if (error.status === 404) {
-                    sharingSettingsFactory.set.query(
+                    layoutSettingsFactory.set.query(
                         { view: namespace },
-                        JSON.stringify($scope.sharingSettings),
+                        JSON.stringify($scope.layoutSettings),
                         response => {
                             if (response.status === "OK") {
-                                console.log("datasetsModule: Sharing Settings created");
+                                console.log("datasetsModule: Layout Settings created");
                             } else {
-                                console.log("datasetsModule: Error creating Sharing Settings");
+                                console.log("datasetsModule: Error creating Layout Settings");
                             }
                         }
                     );
                 } else {
-                    console.log("datasetsModule: Error getting Sharing Settings");
+                    console.log("datasetsModule: Error getting Layout Settings");
                 }
             });
 
         $scope.isAdvancedUser = false;
 
-        $scope.$watch("sharingSettings", function () {
-            advancedUsersFactory.isAdvancedUser($scope.sharingSettings.advancedUserGroups).query({}, function (data) {
+        $scope.$watch("layoutSettings", function () {
+            advancedUsersFactory.isAdvancedUser($scope.layoutSettings.advancedUserGroups).query({}, function (data) {
                 $scope.isAdvancedUser = data.isAdvancedUser;
-                $scope.accesses = userAccesses($scope.sharingSettings.accesses, $scope.isAdvancedUser);
+                $scope.accesses = userAccesses($scope.layoutSettings.accesses, $scope.isAdvancedUser);
             });
         });
 

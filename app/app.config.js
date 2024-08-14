@@ -13,7 +13,7 @@ var dossiersModule = angular.module("dossiersModule", ["dossiersEditorModule", "
 var dossierProgramsModule = angular.module("dossierProgramsModule", []);
 var datasetsModule = angular.module("datasetsModule", []);
 var dossierIndicatorsModule = angular.module("dossierIndicatorsModule", []);
-var sharingSettingsModule = angular.module("sharingSettingsModule", []);
+var layoutSettingsModule = angular.module("layoutSettingsModule", []);
 
 var appModule = angular.module("appModule", [
     "ui.router",
@@ -26,7 +26,7 @@ var appModule = angular.module("appModule", [
     "dossierProgramsModule",
     "datasetsModule",
     "dossierIndicatorsModule",
-    "sharingSettingsModule",
+    "layoutSettingsModule",
     "searchModule",
     "adminModule",
     /* "graphModule", */
