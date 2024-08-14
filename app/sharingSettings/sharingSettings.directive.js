@@ -9,3 +9,15 @@ sharingSettingsModule.directive('sharingSettings', function() {
         controller: 'SharingSettingsController',
     };
 });
+
+sharingSettingsModule.directive('searchSharingSettings', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            state: '=',
+            namespace: '@',
+        },
+        templateUrl: 'app/sharingSettings/shareSharingSettings.template.html',
+        controller: 'SharingSettingsController',
+    };
+});

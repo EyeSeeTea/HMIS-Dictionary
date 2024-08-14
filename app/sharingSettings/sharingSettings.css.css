@@ -21,6 +21,10 @@
     max-height: 600px;
 }
 
+.sharingSettings {
+    font-size: 14px;
+}
+
 .sharingSettings .table > tbody > tr.child > td:first-of-type {
     padding-left: 2.5em;
 }
@@ -43,4 +47,8 @@
 
 #dossierProgramsPanel .sharingSettings .table th {
     position: static;
+}
+
+#searchSharingSettings {
+    margin-left: 1em;
 }

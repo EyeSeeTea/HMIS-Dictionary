@@ -5,7 +5,6 @@
 
 searchModule.controller("searchController", [
     "$window",
-    "$timeout",
     "$scope",
     "$translate",
     "NgTableParams",
@@ -15,9 +14,10 @@ searchModule.controller("searchController", [
     "updateTable",
     "updateSharing",
     "getServices",
+    "advancedUsersFactory",
+    "sharingSettingsFactory",
     function (
         $window,
-        $timeout,
         $scope,
         $translate,
         NgTableParams,
@@ -26,9 +26,95 @@ searchModule.controller("searchController", [
         getTableFactory,
         updateTable,
         updateSharing,
-        getServices
+        getServices,
+        advancedUsersFactory,
+        sharingSettingsFactory
     ) {
         $("#search").tab("show");
+
+        $scope.sharingSettings = {
+            advancedUserGroups: ["LjRqO9XzQPs"],
+            accesses: {
+                objectsBasics: {
+                    index: 0,
+                    translationKey: "srch_SelectColumns_objBasics",
+                    access: 2,
+                    columns: {
+                        type: { index: 0, translationKey: "object_type", access: 2 },
+                        name: { index: 1, translationKey: "object_name", access: 2 },
+                        form: { index: 2, translationKey: "object_form", access: 2 },
+                        id: { index: 3, translationKey: "object_id", access: 0 },
+                        code: { index: 4, translationKey: "object_code", access: 0 },
+                        icd10: { index: 5, translationKey: "object_ICD10", access: 0 },
+                    },
+                },
+                objectsDescriptions: {
+                    index: 1,
+                    translationKey: "srch_SelectColumns_objDescs",
+                    access: 2,
+                    columns: {
+                        description: { index: 0, translationKey: "object_description", access: 2 },
+                        numFormula: { index: 1, translationKey: "object_num_formula", access: 2 },
+                        denFormula: { index: 2, translationKey: "object_den_formula", access: 2 },
+                    },
+                },
+                groupsBasics: {
+                    index: 2,
+                    translationKey: "srch_SelectColumns_grpBasics",
+                    access: 2,
+                    columns: {
+                        name: { index: 0, translationKey: "objectGroup_name", access: 0 },
+                        id: { index: 1, translationKey: "objectGroup_id", access: 0 },
+                        code: { index: 2, translationKey: "objectGroup_code", access: 0 },
+                    },
+                },
+                servicesBasics: {
+                    index: 3,
+                    translationKey: "srch_SelectColumns_servBasics",
+                    access: 2,
+                    columns: {
+                        name: { index: 0, translationKey: "service_name", access: 2 },
+                        id: { index: 1, translationKey: "service_id", access: 0 },
+                        code: { index: 2, translationKey: "service_code", access: 0 },
+                    },
+                },
+            },
+        };
+
+        const namespace = "search";
+
+        sharingSettingsFactory.get
+            .query({ view: namespace })
+            .$promise.then(data => {
+                $scope.sharingSettings = data.toJSON();
+            })
+            .catch(error => {
+                /* If no sharing settings are found, create them */
+                if (error.status === 404) {
+                    sharingSettingsFactory.set.query(
+                        { view: namespace },
+                        JSON.stringify($scope.sharingSettings),
+                        response => {
+                            if (response.status === "OK") {
+                                console.log("searchModule: Sharing Settings created");
+                            } else {
+                                console.log("searchModule: Error creating Sharing Settings");
+                            }
+                        }
+                    );
+                } else {
+                    console.log("searchModule: Error getting Sharing Settings");
+                }
+            });
+
+        $scope.isAdvancedUser = false;
+
+        $scope.$watch("sharingSettings", function () {
+            advancedUsersFactory.isAdvancedUser($scope.sharingSettings.advancedUserGroups).query({}, function (data) {
+                $scope.isAdvancedUser = data.isAdvancedUser;
+                $scope.accesses = userAccesses($scope.sharingSettings.accesses, $scope.isAdvancedUser);
+            });
+        });
 
         if ($scope.show_dossiers) {
             console.debug("searchModule: Service set defined " + $scope.serviceSetUID);
@@ -66,11 +152,11 @@ searchModule.controller("searchController", [
         'rD7MJ3LaakW', // Individual Indicators
         'vnoUusJDY1Z', // Vaccination
         'vCfO0z5igGT'  // Vaccination 2015
-    ];
-    */
+        ];
+        */
 
         /**  
-    In case to hide dataElements that are associated to a blacklist_dataset
+         In case to hide dataElements that are associated to a blacklist_dataset
     if (obj.dataSetElements.length < 1) return true;
     return obj.dataSetElements.some(dse => $scope.blacklist_datasets.indexOf(dse.dataSet.id) == -1);
     */
@@ -110,34 +196,62 @@ searchModule.controller("searchController", [
 
         startLoadingState(false);
 
-        $scope.cols_object = {
-            object_type: true,
-            object_name: true,
-            object_form: true,
-        };
-        $scope.cols_object_advanced = {
-            object_id: true,
-            object_code: true,
-            object_ICD10: false,
-        };
-        $scope.cols_object_desc = {
-            object_description: true,
-            object_den_formula: true,
-            object_num_formula: true,
-        };
-        $scope.cols_objectGroup = {
-            objectGroup_name: true,
-        };
-        $scope.cols_objectGroup_advanced = {
-            objectGroup_id: true,
-            objectGroup_code: true,
-        };
-        $scope.cols_service = {
-            service_name: true,
-        };
-        $scope.cols_service_advanced = {
-            service_id: true,
-            service_code: true,
+        function setCols() {
+            $scope.cols_object = {
+                object_type: $scope.accesses?.objectsBasics_type ?? true,
+                object_name: $scope.accesses?.objectsBasics_name ?? true,
+                object_form: $scope.accesses?.objectsBasics_form ?? true,
+            };
+            $scope.cols_object_advanced = {
+                object_id: $scope.accesses?.objectsBasics_id ?? true,
+                object_code: $scope.accesses?.objectsBasics_code ?? true,
+                object_ICD10: $scope.accesses?.objectsBasics_icd10 ?? false,
+            };
+            $scope.cols_object_desc = {
+                object_description: $scope.accesses?.objectsDescriptions_description ?? true,
+                object_den_formula: $scope.accesses?.objectsDescriptions_denFormula ?? true,
+                object_num_formula: $scope.accesses?.objectsDescriptions_numFormula ?? true,
+            };
+            $scope.cols_objectGroup = {
+                objectGroup_name: $scope.accesses?.groupsBasics_name ?? true,
+            };
+            $scope.cols_objectGroup_advanced = {
+                objectGroup_id: $scope.accesses?.groupsBasics_id ?? true,
+                objectGroup_code: $scope.accesses?.groupsBasics_code ?? true,
+            };
+            $scope.cols_service = {
+                service_name: $scope.accesses?.servicesBasics_name ?? true,
+            };
+            $scope.cols_service_advanced = {
+                service_id: $scope.accesses?.servicesBasics_id ?? true,
+                service_code: $scope.accesses?.servicesBasics_code ?? true,
+            };
+        }
+
+        function getCols() {
+            return Object.assign(
+                {},
+                $scope.cols_object,
+                $scope.cols_object_advanced,
+                $scope.cols_object_desc,
+                $scope.cols_objectGroup,
+                $scope.cols_objectGroup_advanced,
+                $scope.cols_service,
+                $scope.cols_service_advanced
+            );
+        }
+
+        setCols();
+
+        $scope.$watch("accesses", () => setCols());
+
+        $scope.canAdvanced = () => {
+            return [
+                ...Object.values($scope.cols_object_advanced),
+                ...Object.values($scope.cols_objectGroup_advanced),
+                ...Object.values($scope.cols_objectGroup_advanced),
+                ...Object.values($scope.cols_service_advanced),
+            ].some(v => v);
         };
 
         self.tableParams = new NgTableParams();
@@ -166,6 +280,16 @@ searchModule.controller("searchController", [
                 if ($scope.table.cols) {
                     $scope.table.cols.forEach(function (col) {
                         col.code = Object.keys(col.filter())[0];
+
+                        // Show service name column if show_dossiers
+                        if (col.code === "service_name") {
+                            col.show.assign($scope.table, $scope.show_dossiers);
+                        }
+
+                        // In case it was previously shown, hdie if user shouldn't have access
+                        if (col.show() && !getCols()[col.code]) {
+                            col.show.assign($scope.table, false);
+                        }
                     });
                 }
                 endLoadingState();
@@ -495,7 +619,7 @@ searchModule.controller("searchController", [
                                         });
                                     }
                                     temp_arr.objectGroup_id.push(grp.dataSet.id);
-                                    if(grp.dataSet.code) temp_arr.objectGroup_code.push(grp.dataSet.code);
+                                    if (grp.dataSet.code) temp_arr.objectGroup_code.push(grp.dataSet.code);
                                     temp_arr.objectGroup_name.push(grp.dataSet.displayName);
                                 });
 
@@ -503,7 +627,7 @@ searchModule.controller("searchController", [
                                 obj.attributeValues.forEach(function (att) {
                                     if (att.attribute.id == "zC3TBJnSxar") {
                                         attribute = att.value;
-                                        $scope.cols_object_advanced.object_ICD10 = true;
+                                        $scope.cols_object_advanced.object_ICD10 = $scope.accesses?.objectsBasics_icd10;
                                     } else {
                                         attribute = "";
                                     }

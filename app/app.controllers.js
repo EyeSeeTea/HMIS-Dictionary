@@ -94,7 +94,6 @@ appModule.controller("appSharedController", [
             })
             .success(function (DEGlist) {
                 DEGlist = JSON.parse(DEGlist);
-                console.log(DEGlist);
                 $scope.blacklist_dataelementgroups = DEGlist;
                 if ($scope.blacklist_dataelementgroups) {
                     console.log("appModule: List of blacklisted dataElementGroups: " + DEGlist);
@@ -121,7 +120,6 @@ appModule.controller("appSharedController", [
             })
             .success(function (DSlist) {
                 DSlist = JSON.parse(DSlist);
-                console.log(DSlist);
                 $scope.blacklist_datasets = DSlist;
                 if ($scope.blacklist_datasets) {
                     console.log("appModule: List of blacklisted dataSets: " + DSlist);
@@ -298,7 +296,7 @@ appModule.controller("appSharedController", [
                         ..._.mapKeys(columns, (_v, column_key) => `${k}_${column_key}`),
                     };
                 })
-                .reduce((acc,v)=>({...acc, ...v}), {});
+                .reduce((acc, v) => ({ ...acc, ...v }), {});
         };
     },
 ]);

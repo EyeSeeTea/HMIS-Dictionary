@@ -85,15 +85,14 @@
                                 data-target="#collapseTwo"
                                 aria-expanded="false"
                                 aria-controls="collapseTwo"
-                            >
-                                {{ "srch_SelectColumns" | translate }}
-                            </a>
+                            >{{ "srch_SelectColumns" | translate }}</a>
+                            <search-sharing-settings state="sharingSettings" namespace="search" ng-if="is_admin"></search-sharing-settings>
                         </h4>
                     </div>
                     <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                         <div class="panel-body">
                             <div class="row">
-                                <div class="col-xs-3">
+                                <div class="col-xs-3" ng-if="accesses.objectsBasics">
                                     <p>
                                         <b>{{ "srch_SelectColumns_objBasics" | translate }}</b>
                                     </p>
@@ -114,7 +113,7 @@
                                         </label>
                                     </div>
                                 </div>
-                                <div class="col-xs-3">
+                                <div class="col-xs-3" ng-if="accesses.objectsDescriptions">
                                     <p>
                                         <b>{{ "srch_SelectColumns_objDescs" | translate }}</b>
                                     </p>
@@ -135,7 +134,7 @@
                                         </label>
                                     </div>
                                 </div>
-                                <div class="col-xs-3">
+                                <div class="col-xs-3" ng-if="accesses.groupsBasics">
                                     <p>
                                         <b>{{ "srch_SelectColumns_grpBasics" | translate }}</b>
                                     </p>
@@ -156,7 +155,7 @@
                                         </label>
                                     </div>
                                 </div>
-                                <div class="col-xs-3" ng-show="show_dossiers">
+                                <div class="col-xs-3" ng-show="show_dossiers" ng-if="accesses.servicesBasics">
                                     <p>
                                         <b>{{ "srch_SelectColumns_servBasics" | translate }}</b>
                                     </p>
@@ -179,7 +178,7 @@
                                 </div>
                             </div>
                             <div class="row" ng-show="advanced">
-                                <div class="col-xs-3">
+                                <div class="col-xs-3" ng-if="accesses.objectsBasics">
                                     <div class="col-xs-1"></div>
                                     <div class="col-xs-11">
                                         <label
@@ -197,8 +196,8 @@
                                         </label>
                                     </div>
                                 </div>
-                                <div class="col-xs-3"></div>
-                                <div class="col-xs-3">
+                                <div class="col-xs-3" ng-if="accesses.objectsDescriptions"></div>
+                                <div class="col-xs-3" ng-if="accesses.groupsBasics">
                                     <div class="col-xs-1"></div>
                                     <div class="col-xs-11">
                                         <label
@@ -216,7 +215,7 @@
                                         </label>
                                     </div>
                                 </div>
-                                <div class="col-xs-3" ng-show="show_dossiers">
+                                <div class="col-xs-3" ng-show="show_dossiers" ng-if="accesses.servicesBasics">
                                     <div class="col-xs-1"></div>
                                     <div class="col-xs-11">
                                         <label
@@ -235,7 +234,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row" ng-show="canAdvanced()">
                                 <div class="col-xs-12">
                                     <a href ng-click="advanced = !advanced">{{
                                         "Show / Hide advanced columns" | translate
@@ -424,7 +423,7 @@
             <td
                 sortable="'objectGroup_name'"
                 filter="{objectGroup_name:'./app/search/search.table.html'}"
-                ng-if="true"
+                ng-if="false"
                 data-title="'objectGroup_name' | translate"
                 data-header-title="'objectGroup_name_help' | translate"
             >
@@ -458,7 +457,7 @@
             <td
                 sortable="'service_name'"
                 filter="{service_name:'./app/search/search.table.html'}"
-                ng-if="show_dossiers"
+                ng-if="false"
                 data-title="'service_name' | translate"
                 data-header-title="'service_name_help' | translate"
             >
