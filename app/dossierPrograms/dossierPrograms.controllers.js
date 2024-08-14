@@ -487,7 +487,6 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
                             }
                         });
 
-                        console.log($scope.stages);
                         dossiersProgramDataService.data.stages = $scope.stages;
                         dossiersProgramLoadingService.loading.programs = true;
                         if (dossiersProgramLoadingService.done()) endLoadingState(true);
