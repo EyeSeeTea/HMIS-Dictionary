@@ -225,6 +225,7 @@ var qryProgramGlobalIndicators =
         "displayName",
         "displayDescription",
         "indicatorType[displayName]",
+        "indicatorGroups[id]",
         "description",
         "numerator",
         "denominator",

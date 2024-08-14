@@ -168,8 +168,7 @@ searchModule.controller("searchController", [
             if (type == "dataElement") {
                 return !obj.dataElementGroups.some(deg => $scope.blacklist_dataelementgroups.includes(deg.id));
             } else if (type == "indicator") {
-                if (obj.indicatorGroups.length < 0) return false;
-                return obj.indicatorGroups.some(ig => $scope.blacklist_indicatorgroups.indexOf(ig.id) == -1);
+                return !obj.indicatorGroups.some(ig => $scope.blacklist_indicatorgroups.includes(ig.id));
             }
         };
 

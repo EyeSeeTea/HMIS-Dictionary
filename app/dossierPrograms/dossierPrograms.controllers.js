@@ -1082,15 +1082,22 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
 
                     //Query indicator information
                     dossiersProgramGlobalIndicatorsFactory.get(function (data) {
-                        $scope.allIndicators = data.indicators.forEach(function (indicator) {
-                            const num = indicator.numerator;
-                            const den = indicator.denominator;
-                            parseExpression(indicator, num);
-                            parseExpression(indicator, den);
-                            if (indicator.stageRef) indicator.stageRef = _.uniq(indicator.stageRef);
+                        $scope.allIndicators = data.indicators
+                            .filter(
+                                indicator =>
+                                    !indicator.indicatorGroups.some(ig =>
+                                        $scope.blacklist_indicatorgroups.includes(ig.id)
+                                    )
+                            )
+                            .forEach(function (indicator) {
+                                const num = indicator.numerator;
+                                const den = indicator.denominator;
+                                parseExpression(indicator, num);
+                                parseExpression(indicator, den);
+                                if (indicator.stageRef) indicator.stageRef = _.uniq(indicator.stageRef);
 
-                            indicator.rowItems = extractVisItemsFromInd(num, den);
-                        });
+                                indicator.rowItems = extractVisItemsFromInd(num, den);
+                            });
                         if ($scope.indicators.length > 0) {
                             addtoTOC($scope.toc, null, $scope.indicators4TOC, "Indicators");
                             recursiveAssignNumerator(0);
