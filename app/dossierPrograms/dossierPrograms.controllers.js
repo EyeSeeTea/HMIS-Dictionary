@@ -279,6 +279,10 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
             });
         }
 
+        function filterDataElement(dataElement) {
+            return !dataElement.dataElementGroups.some(deg => $scope.blacklist_dataelementgroups.includes(deg.id));
+        }
+
         /*
          *  @name createStageWithoutSections
          *  @description Display stage data elements as a "phantom" stage and add stage to table of contents
@@ -289,13 +293,15 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
             stage.programStageSections = [
                 {
                     displayName: "Data Elements",
-                    dataElements: stage.programStageDataElements.map(stageDataElement => {
-                        return {
-                            ...stageDataElement.dataElement,
-                            compulsory: stageDataElement.compulsory,
-                            visibility: makeDEVisibility(stageDataElement.dataElement.id, hiddenDEArray, stage.id),
-                        };
-                    }),
+                    dataElements: stage.programStageDataElements
+                        .filter(stageDataElement => filterDataElement(stageDataElement.dataElement))
+                        .map(stageDataElement => {
+                            return {
+                                ...stageDataElement.dataElement,
+                                compulsory: stageDataElement.compulsory,
+                                visibility: makeDEVisibility(stageDataElement.dataElement.id, hiddenDEArray, stage.id),
+                            };
+                        }),
                 },
             ];
 
@@ -327,7 +333,13 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
             });
 
             addtoTOC($scope.toc, stage.programStageSections, toc, "programs");
-            return stage;
+            return {
+                ...stage,
+                programStageSections: stage.programStageSections.map(section => ({
+                    ...section,
+                    dataElements: section.dataElements.filter(filterDataElement),
+                })),
+            };
         }
 
         /*
@@ -474,6 +486,8 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
                                 return createStageWithSections(stage, toc, hiddenSectionsArray, hiddenDEArray);
                             }
                         });
+
+                        console.log($scope.stages);
                         dossiersProgramDataService.data.stages = $scope.stages;
                         dossiersProgramLoadingService.loading.programs = true;
                         if (dossiersProgramLoadingService.done()) endLoadingState(true);
