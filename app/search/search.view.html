@@ -60,11 +60,13 @@
                             <a class="accordion-toggle" class="collapsed" role="button" data-toggle="collapse"
                                 data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">{{
                                 "srch_SelectColumns" | translate }}</a>
-                            <search-layout-settings state="layoutSettings" namespace="search"
-                                ng-if="is_admin"></search-layout-settings>
                         </h4>
                     </div>
                     <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                        <div class="panel-body">
+                            <search-layout-settings state="layoutSettings" namespace="search"
+                                ng-if="is_admin"></search-layout-settings>
+                        </div>
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-xs-3" ng-if="accesses.objectsBasics">
