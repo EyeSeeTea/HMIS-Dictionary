@@ -63,7 +63,7 @@
                         </h4>
                     </div>
                     <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                        <div class="panel-body">
+                        <div class="panel-body" ng-if="is_admin">
                             <search-layout-settings state="layoutSettings" namespace="search"
                                 ng-if="is_admin"></search-layout-settings>
                         </div>
