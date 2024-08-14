@@ -168,5 +168,7 @@
   "service_code_help": "Définit le code de service unique attribué à l'élément de données ou au groupe d'indicateurs utilisés dans un ensemble de données.",
   "dos_ProgramStages": "Étapes du programme",
   "dos_ProgramIndicators": "Indicateurs de programme",
-  "dos_ProgramRules": "Règles du programme"
+  "dos_ProgramRules": "Règles du programme",
+  "dos_Sections": "Sections",
+  "dos_CategoryCombinations": "Combinaisons de catégories"
 }
