@@ -59,7 +59,7 @@ dossierProgramsModule.controller("dossierProgramsMainController", [
                         calculationMode: { index: 4, translationKey: "dos_CalculationMode", access: 1 },
                         mandatory: { index: 5, translationKey: "dos_Mandatory", access: 1 },
                         visibilityInDataEntry: { index: 6, translationKey: "dos_Visibility", access: 1 },
-                        optionSet: { index: 7, translationKey: "dos_Options", access: 1 },
+                        optionSet: { index: 7, translationKey: "dos_OptionSet", access: 1 },
                     },
                 },
                 programIndicators: {
