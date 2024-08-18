@@ -1,35 +1,86 @@
 dossierIndicatorsModule.controller("dossierIndicatorsMainController", [
     "$scope",
-    "$translate",
     "$anchorScroll",
-    "$sessionStorage",
     "$sce",
     "dossiersIndicatorsFactory",
-    "dossierIndicatorsDataElementsFactory",
-    "dossierIndicatorsDataSetsFactory",
-    "dossierIndicatorsCategoryOptionComboFactory",
-    "dossierIndicatorsProgramIndicatorsFactory",
-    "dossierIndicatorsOrganisationUnitGroupsFactory",
-    "dossierIndicatorsProgramsFactory",
-    "dossierIndicatorsLink",
-    function (
-        $scope,
-        $translate,
-        $anchorScroll,
-        $sessionStorage,
-        $sce,
-        dossiersIndicatorsFactory,
-        dossierIndicatorsDataElementsFactory,
-        dossierIndicatorsDataSetsFactory,
-        dossierIndicatorsCategoryOptionComboFactory,
-        dossierIndicatorsProgramIndicatorsFactory,
-        dossierIndicatorsOrganisationUnitGroupsFactory,
-        dossierIndicatorsProgramsFactory,
-        dossierIndicatorsLink
-    ) {
+    "advancedUsersFactory",
+    "layoutSettingsFactory",
+    function ($scope, $anchorScroll, $sce, dossiersIndicatorsFactory, advancedUsersFactory, layoutSettingsFactory) {
         $("#dossierIndicator").tab("show");
 
+        $scope.layoutSettings = {
+            advancedUserGroups: ["LjRqO9XzQPs"],
+            accesses: {
+                formula: {
+                    index: 0,
+                    translationKey: "dos_FormulaOfIndicator",
+                    access: 2,
+                },
+                numerator: {
+                    index: 1,
+                    translationKey: "dos_NumeratorIndicator",
+                    access: 2,
+                    columns: {
+                        type: { index: 0, translationKey: "dos_Type", access: 0 },
+                        name: { index: 1, translationKey: "dos_NameIndicator", access: 0 },
+                        datasets: { index: 2, translationKey: "dos_DataSets", access: 0 },
+                        program: { index: 3, translationKey: "dos_Program", access: 0 },
+                    },
+                },
+                denominator: {
+                    index: 2,
+                    translationKey: "dos_DenominatorIndicator",
+                    access: 2,
+                    columns: {
+                        type: { index: 0, translationKey: "dos_Type", access: 0 },
+                        name: { index: 1, translationKey: "dos_NameIndicator", access: 0 },
+                        datasets: { index: 2, translationKey: "dos_DataSets", access: 0 },
+                        program: { index: 3, translationKey: "dos_Program", access: 0 },
+                    },
+                },
+            },
+        };
+
+        const namespace = "indicators";
+
+        layoutSettingsFactory.get
+            .query({ view: namespace })
+            .$promise.then(data => {
+                $scope.layoutSettings = data.toJSON();
+            })
+            .catch(error => {
+                /* If no sharing settings are found, create them */
+                if (error.status === 404) {
+                    layoutSettingsFactory.set.query(
+                        { view: namespace },
+                        JSON.stringify($scope.layoutSettings),
+                        response => {
+                            if (response.status === "OK") {
+                                console.log("dossierIndicatorsModule: Layout Settings created");
+                            } else {
+                                console.log("dossierIndicatorsModule: Error creating Layout Settings");
+                            }
+                        }
+                    );
+                } else {
+                    console.log("dossierIndicatorsModule: Error getting Layout Settings");
+                }
+            });
+
+        $scope.isAdvancedUser = false;
+
+        $scope.$watch("layoutSettings", function () {
+            advancedUsersFactory.isAdvancedUser($scope.layoutSettings.advancedUserGroups).query({}, function (data) {
+                $scope.isAdvancedUser = data.isAdvancedUser;
+                $scope.accesses = userAccesses($scope.layoutSettings.accesses, $scope.isAdvancedUser);
+            });
+        });
+
         addtoTOC = function (toc, items, parent, type) {
+            if (type == "Formule of Indicator" && !$scope.accesses.formula) return;
+            if (type == "Numerator" && !$scope.accesses.numerator) return;
+            if (type == "Denominator" && !$scope.accesses.denominator) return;
+
             var index = toc.entries.push({
                 parent: parent,
                 children: items,
@@ -75,9 +126,6 @@ dossierIndicatorsModule.controller("dossierIndicatorsTitle", [
     "dossierIndicatorsProgramIndicatorsFactory",
     "dossierIndicatorsOrganisationUnitGroupsFactory",
     "dossierIndicatorsProgramsFactory",
-    "dossierIndicatorsDataSetsFactory",
-    "dossierIndicatorsLink",
-    "Ping",
     function (
         $scope,
         $q,
@@ -85,10 +133,7 @@ dossierIndicatorsModule.controller("dossierIndicatorsTitle", [
         dossierIndicatorsCategoryOptionComboFactory,
         dossierIndicatorsProgramIndicatorsFactory,
         dossierIndicatorsOrganisationUnitGroupsFactory,
-        dossierIndicatorsProgramsFactory,
-        dossierIndicatorsDataSetsFactory,
-        dossierIndicatorsLink,
-        Ping
+        dossierIndicatorsProgramsFactory
     ) {
         function getElement(value) {
             var i = 0,
@@ -329,25 +374,19 @@ dossierIndicatorsModule.controller("dossierNumeratorTable", [
     "$q",
     "$sessionStorage",
     "dossierIndicatorsDataElementsFactory",
-    "dossierIndicatorsCategoryOptionComboFactory",
     "dossierIndicatorsProgramIndicatorsFactory",
     "dossierIndicatorsOrganisationUnitGroupsFactory",
     "dossierIndicatorsProgramsFactory",
     "dossierIndicatorsDataSetsFactory",
-    "dossierIndicatorsLink",
-    "Ping",
     function (
         $scope,
         $q,
         $sessionStorage,
         dossierIndicatorsDataElementsFactory,
-        dossierIndicatorsCategoryOptionComboFactory,
         dossierIndicatorsProgramIndicatorsFactory,
         dossierIndicatorsOrganisationUnitGroupsFactory,
         dossierIndicatorsProgramsFactory,
-        dossierIndicatorsDataSetsFactory,
-        dossierIndicatorsLink,
-        Ping
+        dossierIndicatorsDataSetsFactory
     ) {
         function getElement(value) {
             var i = 0,
@@ -635,7 +674,6 @@ dossierIndicatorsModule.controller("dossierDenominatorTable", [
     "$q",
     "$sessionStorage",
     "dossierIndicatorsDataElementsFactory",
-    "dossierIndicatorsCategoryOptionComboFactory",
     "dossierIndicatorsProgramIndicatorsFactory",
     "dossierIndicatorsOrganisationUnitGroupsFactory",
     "dossierIndicatorsProgramsFactory",
@@ -647,13 +685,10 @@ dossierIndicatorsModule.controller("dossierDenominatorTable", [
         $q,
         $sessionStorage,
         dossierIndicatorsDataElementsFactory,
-        dossierIndicatorsCategoryOptionComboFactory,
         dossierIndicatorsProgramIndicatorsFactory,
         dossierIndicatorsOrganisationUnitGroupsFactory,
         dossierIndicatorsProgramsFactory,
-        dossierIndicatorsDataSetsFactory,
-        dossierIndicatorsLink,
-        Ping
+        dossierIndicatorsDataSetsFactory
     ) {
         function getElement(value) {
             var i = 0,

@@ -33,21 +33,6 @@ appModule.factory("Ping", [
     },
 ]);
 
-var qryMe = dhisUrl + "me?fields=userGroups[name]";
-
-appModule.factory("meFactory", [
-    "$resource",
-    function ($resource) {
-        return $resource(
-            qryMe,
-            {},
-            {
-                get: { method: "GET" },
-            }
-        );
-    },
-]);
-
 appModule.factory("csv_to_json", [
     function (csv) {
         var lines = csv.split("\n");
