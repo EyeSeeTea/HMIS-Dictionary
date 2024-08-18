@@ -1,9 +1,9 @@
 {
     "INDEX.HTML": "****************************",
 
-    "idx_Dossiers": "Dossiers",
+    "idx_Dossiers": "Dossiês",
     "idx_Search": "Pesquisar",
-    "idx_Graph": "Graph",
+    "idx_Graph": "Gráfico",
     "idx_Admin": "Admin",
     "idx_Programs": "Programas",
     "idx_DataSets": "Conjunto de Dados",
@@ -14,7 +14,7 @@
 
     "MODULE: DOSSIERS": "****************************",
 
-    "dos_Dossiers": "Dossiers",
+    "dos_Dossiers": "Dossiês",
     "dos_Number of Services": "Número de Serviços",
     "dos_Number of DataSets in Service": "Número de conjuntos de dados no serviço",
     "dos_Number of IndicatorGroups in Service": "Número de grupos de indicadores em serviço",
@@ -36,7 +36,7 @@
     "dos_Options": "Opções",
     "dos_ProgramRule": "Regra do Programa",
     "dos_Other": "Outros",
-    "dos_DirectDataEntry": "Introdução directa de dados",
+    "dos_DirectDataEntry": "Introdução direta de dados",
     "dos_OptionSet": "Conjunto de opções",
     "dos_OptionSetName": "Opção Nome do conjunto",
     "dos_OptionSetOptions": "Opções de Conjunto de Opções",
@@ -61,18 +61,18 @@
     "dos_Code": "Código",
     "dos_ProgramStage": "Etapa do Programa",
     "dos_Condition": "Condição",
-    "dos_ProgramRuleActions": "Acções de Regra do Programa",
+    "dos_ProgramRuleActions": "Ações de Regra do Programa",
     "dos_DataElement": "Elemento de dados",
     "dos_ProgramRuleVariableAssign": "Regra do Programa Variável a Atribuir",
     "dos_Expression": "Expressão",
-    "dos_DisplayWidget": "Exibir Widget",
+    "dos_DisplayWidget": "Exibir Ferramenta",
     "dos_KeyLabel": "Rótulo chave",
     "dos_StaticText": "Texto estático",
     "dos_CustomMessageBlankedField": "Mensagem personalizada para Campo Blanked",
     "dos_OptionToHide": "Opção de Esconder",
     "dos_OptionGroupToHide": "Grupo de Opções para Esconder",
     "dos_OptionstageToHide": "Opção Etapa para Esconder",
-    "dos_OptionstageSectionToHide": "Opção Secção de Estágio para Esconder",
+    "dos_OptionstageSectionToHide": "Opção Seção de Estágio para Esconder",
     "dos_MessageTemplate": "Modelo de mensagem",
     "dos_DateToSendMessage": "Data para enviar a mensagem",
     "dos_OptionGroupToShow": "Grupo de Opções a Mostrar",
@@ -84,7 +84,7 @@
     "dos_Link": "Ligação",
     "dos_EventCharts": "Gráficos de eventos",
     "dos_EventChartsNumber": "Número de Gráficos de Eventos",
-    "dos_ActionsTypes": "Tipos de acções",
+    "dos_ActionsTypes": "Tipos de ações",
 
     "dos_BackToTop": "Voltar ao topo",
 
@@ -98,8 +98,8 @@
     "dos_Number of Indicators in Group": "Número de Indicadores no Grupo de Indicadores",
     "dos_NameIndicator": "Nome",
     "dos_DescriptionIndicator": "Descrição",
-    "dos_NumeratorIndicator": "Numerator",
-    "dos_DenominatorIndicator": "Denominator",
+    "dos_NumeratorIndicator": "Numerador",
+    "dos_DenominatorIndicator": "Denominador",
 
     "dos_Comments": "Comentários",
     "dos_Mandatory": "Obrigatório",
@@ -114,14 +114,14 @@
     "srch_SearchAll": "Pesquisar",
     "srch_SearchAll_Clear": "Limpar filtros",
     "srch_SearchAll_Row": "Mostrar / Ocultar filtros de coluna",
-    "srch_SearchAll_Here": "Escreva aqui ...",
+    "srch_SearchAll_Here": "Escreva aqui...",
 
     "srch_SelectColumns": "Selecione Colunas",
 
     "srch_SelectColumns_objBasics": "Elementos de Dados ou Indicadores - Noções Básicas",
     "object_type": "Tipo",
     "object_name": "Nome",
-    "object_form": "Nome do formulário (somente datae)",
+    "object_form": "Nome do formulário (somente el. de dados)",
     "object_id": "ID",
     "object_code": "Código",
 
@@ -133,7 +133,7 @@
     "object_num_formula": "Fórmula Numerador (ind. Somente)",
 
     "srch_SelectColumns_grpBasics": "Conjuntos de Dados ou Grupos de Indicadores - Noções Básicas",
-    "objectGroup_name": "Nome do Grupo",
+    "objectGroup_name": "Conjunto de Dados/Grupo de Indicadores",
     "objectGroup_id": "ID de grupo",
     "objectGroup_code": "Código de grupo",
 
@@ -143,7 +143,7 @@
     "service_code": "Código de Serviço",
 
     "srch_Help": "Ajuda",
-    "srch_Help_Text": "<p>Esta interface é feita para simplificar o acesso do usuário à terminologia associada às informações coletadas com o HMIS.<br><ul><li>Através da guia <b>Pesquisar</b> você pode diretamente Procure um termo em todas as colunas da tabela. Você também pode exibir os filtros de coluna, que permitem pesquisar informações em uma coluna específica. Utilize 'Limpar filtros' para redefinir todos os filtros.<i>Os usuários experientes podem usar palavra-chave '|' (OR) para pesquisar vários objetos.</i></li><li>Através da guia <b>Selecionar colunas</b> você pode selecionar colunas a serem exibidas na tabela. <i>Os usuários experientes podem usar as colunas avançadas para realizar pesquisas detalhadas através de IDs.</i></li></ul>Você pode finalmente exportar os resultados da sua pesquisa para o Excel (página por página, e não se esqueça de salvar como .xls).</p>",
+    "srch_Help_Text": "<p>Esta 'interface' é feita para simplificar o acesso do usuário à terminologia associada às informações coletadas com o HMIS.<br><ul><li>Através da guia <b>Pesquisar</b> você pode diretamente Procure um termo em todas as colunas da tabela. Você também pode exibir os filtros de coluna, que permitem pesquisar informações em uma coluna específica. Utilize 'Limpar filtros' para redefinir todos os filtros.<i>Os usuários experientes podem usar palavra-chave '|' (OR) para pesquisar vários objetos.</i></li><li>Através da guia <b>Selecionar colunas</b> você pode selecionar colunas a serem exibidas na tabela. <i>Os usuários experientes podem usar as colunas avançadas para realizar pesquisas detalhadas através de IDs.</i></li></ul>Você pode finalmente exportar os resultados da sua pesquisa para o Excel (página por página, e não se esqueça de salvar como .xls).</p>",
     "srch_exportToExcel": "Exportar esta página para o Excel",
 
     "MODULE:PROGRAMS": "***************************",
