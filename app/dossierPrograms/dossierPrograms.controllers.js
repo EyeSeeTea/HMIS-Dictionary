@@ -5,22 +5,155 @@
 
 dossierProgramsModule.controller("dossierProgramsMainController", [
     "$scope",
-    "$translate",
     "$anchorScroll",
     "$sce",
     "dossiersProgramsFactory",
     "dossiersProgramsLinkTestFactory",
     "dossiersProgramLoadingService",
+    "advancedUsersFactory",
+    "layoutSettingsFactory",
     function (
         $scope,
-        $translate,
         $anchorScroll,
         $sce,
         dossiersProgramsFactory,
         dossiersProgramsLinkTestFactory,
-        dossiersProgramLoadingService
+        dossiersProgramLoadingService,
+        advancedUsersFactory,
+        layoutSettingsFactory
     ) {
         $("#dossiersPrograms").tab("show");
+
+        $scope.layoutSettings = {
+            advancedUserGroups: ["LjRqO9XzQPs"],
+            accesses: {
+                programDescription: {
+                    index: 0,
+                    translationKey: "dos_DescriptionOfProgram",
+                    access: 2,
+                },
+                trackedEntityAttributes: {
+                    index: 1,
+                    translationKey: "dos_TrackedEntityAttributes",
+                    access: 2,
+                    columns: {
+                        name: { index: 0, translationKey: "dos_NameElement", access: 2 },
+                        formName: { index: 1, translationKey: "dos_FormNameElement", access: 2 },
+                        description: { index: 2, translationKey: "dos_DescriptionElement", access: 2 },
+                        valueType: { index: 3, translationKey: "dos_ValueType", access: 1 },
+                        aggregationType: { index: 4, translationKey: "dos_AggregationType", access: 1 },
+                        mandatory: { index: 5, translationKey: "dos_Mandatory", access: 1 },
+                        visibilityInDataEntry: { index: 6, translationKey: "dos_Visibility", access: 1 },
+                        optionSet: { index: 7, translationKey: "dos_OptionSet", access: 1 },
+                    },
+                },
+                programStages: {
+                    index: 2,
+                    translationKey: "dos_ProgramStages",
+                    access: 2,
+                    columns: {
+                        name: { index: 0, translationKey: "dos_NameElement", access: 2 },
+                        formName: { index: 1, translationKey: "dos_FormNameElement", access: 2 },
+                        description: { index: 2, translationKey: "dos_DescriptionElement", access: 2 },
+                        valueType: { index: 3, translationKey: "dos_ValueType", access: 1 },
+                        calculationMode: { index: 4, translationKey: "dos_CalculationMode", access: 1 },
+                        mandatory: { index: 5, translationKey: "dos_Mandatory", access: 1 },
+                        visibilityInDataEntry: { index: 6, translationKey: "dos_Visibility", access: 1 },
+                        optionSet: { index: 7, translationKey: "dos_OptionSet", access: 1 },
+                    },
+                },
+                programIndicators: {
+                    index: 3,
+                    translationKey: "dos_ProgramIndicators",
+                    access: 2,
+                    columns: {
+                        name: { index: 0, translationKey: "dos_NameElement", access: 2 },
+                        description: { index: 1, translationKey: "dos_DescriptionElement", access: 2 },
+                        filter: { index: 2, translationKey: "dos_Filter", access: 1 },
+                        calculation: { index: 3, translationKey: "dos_Calculation", access: 1 },
+                        aggregationType: { index: 4, translationKey: "dos_AggregationType", access: 1 },
+                        typeOfProgramIndicator: { index: 5, translationKey: "dos_TypeOfProgramIndicator", access: 1 },
+                        stagesReferenced: { index: 6, translationKey: "dos_StagesReferenced", access: 1 },
+                        boundaries: { index: 7, translationKey: "dos_Boundaries", access: 1 },
+                        visualization: { index: 8, translationKey: "dos_Visualization", access: 2 },
+                    },
+                },
+                indicators: {
+                    index: 4,
+                    translationKey: "dos_Indicators",
+                    access: 2,
+                    columns: {
+                        name: { index: 0, translationKey: "dos_NameElement", access: 2 },
+                        description: { index: 1, translationKey: "dos_DescriptionElement", access: 2 },
+                        type: { index: 2, translationKey: "dos_Type", access: 2 },
+                        numerator: { index: 3, translationKey: "dos_NumeratorIndicator", access: 2 },
+                        denominator: { index: 4, translationKey: "dos_DenominatorIndicator", access: 2 },
+                        stagesReferenced: { index: 5, translationKey: "dos_StagesReferenced", access: 2 },
+                        visualization: { index: 6, translationKey: "dos_Visualization", access: 2 },
+                    },
+                },
+                programRules: {
+                    index: 5,
+                    translationKey: "dos_ProgramRules",
+                    access: 1,
+                    columns: {
+                        name: { index: 0, translationKey: "dos_NameElement", access: 1 },
+                        description: { index: 1, translationKey: "dos_DescriptionElement", access: 1 },
+                        programStage: { index: 2, translationKey: "dos_ProgramStage", access: 1 },
+                        condition: { index: 3, translationKey: "dos_Condition", access: 1 },
+                        programRuleActions: { index: 4, translationKey: "dos_ProgramRuleActions", access: 1 },
+                    },
+                },
+                programRuleVariables: {
+                    index: 6,
+                    translationKey: "dos_ProgramRuleVariables",
+                    access: 1,
+                    columns: {
+                        name: { index: 0, translationKey: "dos_NameElement", access: 1 },
+                        sourceType: { index: 1, translationKey: "dos_SourceType", access: 1 },
+                        programStage: { index: 2, translationKey: "dos_ProgramStage", access: 1 },
+                        dataElement: { index: 3, translationKey: "dos_DataElement", access: 1 },
+                        trackedEntityAttributes: { index: 4, translationKey: "dos_TrackedEntityAttributes", access: 1 },
+                        associatedProgramRules: { index: 5, translationKey: "dos_AssociatedProgramRules", access: 1 },
+                    },
+                },
+            },
+        };
+
+        const namespace = "programs";
+
+        layoutSettingsFactory.get
+            .query({ view: namespace })
+            .$promise.then(data => {
+                $scope.layoutSettings = data.toJSON();
+            })
+            .catch(error => {
+                /* If no sharing settings are found, create them */
+                if (error.status === 404) {
+                    layoutSettingsFactory.set.query(
+                        { view: namespace },
+                        JSON.stringify($scope.layoutSettings),
+                        response => {
+                            if (response.status === "OK") {
+                                console.log("dossierProgramsModule: Layout Settings created");
+                            } else {
+                                console.log("dossierProgramsModule: Error creating Layout Settings");
+                            }
+                        }
+                    );
+                } else {
+                    console.log("dossierProgramsModule: Error getting Layout Settings");
+                }
+            });
+
+        $scope.isAdvancedUser = false;
+
+        $scope.$watch("layoutSettings", function () {
+            advancedUsersFactory.isAdvancedUser($scope.layoutSettings.advancedUserGroups).query({}, function (data) {
+                $scope.isAdvancedUser = data.isAdvancedUser;
+                $scope.accesses = userAccesses($scope.layoutSettings.accesses, $scope.isAdvancedUser);
+            });
+        });
 
         /*
          *  @alias appModule.controller~addtoTOC
@@ -29,6 +162,13 @@ dossierProgramsModule.controller("dossierProgramsMainController", [
          *  @todo Move to dossier controller
          */
         addtoTOC = function (toc, items, parent, type) {
+            if (type == "Program Rules" && !$scope.accesses.programRules) return;
+            if (type == "Program Rules Variables" && !$scope.accesses.programRulesVariables) return;
+            if (type == "programs" && !$scope.accesses.programStages) return;
+            if (type == "Tracked Entity Attributes" && !$scope.accesses.trackedEntityAttributes) return;
+            if (type == "Program Indicators" && !$scope.accesses.programIndicators) return;
+            if (type == "Indicators" && !$scope.accesses.indicators) return;
+
             var index = toc.entries.push({
                 parent: parent,
                 children: items,
@@ -83,19 +223,15 @@ dossierProgramsModule.controller("dossierProgramsMainController", [
 dossierProgramsModule.controller("dossiersProgramSectionController", [
     "$scope",
     "$q",
-    "$translate",
     "dossiersProgramStageSectionsFactory",
     "dossiersProgramStageCalcModeFactory",
-    "Ping",
     "dossiersProgramDataService",
     "dossiersProgramLoadingService",
     function (
         $scope,
         $q,
-        $translate,
         dossiersProgramStageSectionsFactory,
         dossiersProgramStageCalcModeFactory,
-        Ping,
         dossiersProgramDataService,
         dossiersProgramLoadingService
     ) {
@@ -143,6 +279,10 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
             });
         }
 
+        function filterDataElement(dataElement) {
+            return !dataElement.dataElementGroups.some(deg => $scope.blacklist_dataelementgroups.includes(deg.id));
+        }
+
         /*
          *  @name createStageWithoutSections
          *  @description Display stage data elements as a "phantom" stage and add stage to table of contents
@@ -153,13 +293,15 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
             stage.programStageSections = [
                 {
                     displayName: "Data Elements",
-                    dataElements: stage.programStageDataElements.map(stageDataElement => {
-                        return {
-                            ...stageDataElement.dataElement,
-                            compulsory: stageDataElement.compulsory,
-                            visibility: makeDEVisibility(stageDataElement.dataElement.id, hiddenDEArray, stage.id),
-                        };
-                    }),
+                    dataElements: stage.programStageDataElements
+                        .filter(stageDataElement => filterDataElement(stageDataElement.dataElement))
+                        .map(stageDataElement => {
+                            return {
+                                ...stageDataElement.dataElement,
+                                compulsory: stageDataElement.compulsory,
+                                visibility: makeDEVisibility(stageDataElement.dataElement.id, hiddenDEArray, stage.id),
+                            };
+                        }),
                 },
             ];
 
@@ -191,7 +333,13 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
             });
 
             addtoTOC($scope.toc, stage.programStageSections, toc, "programs");
-            return stage;
+            return {
+                ...stage,
+                programStageSections: stage.programStageSections.map(section => ({
+                    ...section,
+                    dataElements: section.dataElements.filter(filterDataElement),
+                })),
+            };
         }
 
         /*
@@ -338,6 +486,7 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
                                 return createStageWithSections(stage, toc, hiddenSectionsArray, hiddenDEArray);
                             }
                         });
+
                         dossiersProgramDataService.data.stages = $scope.stages;
                         dossiersProgramLoadingService.loading.programs = true;
                         if (dossiersProgramLoadingService.done()) endLoadingState(true);
@@ -778,19 +927,15 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
 dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
     "$scope",
     "$rootScope",
-    "$translate",
     "dossiersProgramGlobalIndicatorsFactory",
     "dossiersProgramGlobalIndicatorExpressionFactory",
-    "Ping",
     "dossiersProgramDataService",
     "dossiersProgramLoadingService",
     function (
         $scope,
         $rootScope,
-        $translate,
         dossiersProgramGlobalIndicatorsFactory,
         dossiersProgramGlobalIndicatorExpressionFactory,
-        Ping,
         dossiersProgramDataService,
         dossiersProgramLoadingService
     ) {
@@ -936,15 +1081,22 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
 
                     //Query indicator information
                     dossiersProgramGlobalIndicatorsFactory.get(function (data) {
-                        $scope.allIndicators = data.indicators.forEach(function (indicator) {
-                            const num = indicator.numerator;
-                            const den = indicator.denominator;
-                            parseExpression(indicator, num);
-                            parseExpression(indicator, den);
-                            if (indicator.stageRef) indicator.stageRef = _.uniq(indicator.stageRef);
+                        $scope.allIndicators = data.indicators
+                            .filter(
+                                indicator =>
+                                    !indicator.indicatorGroups.some(ig =>
+                                        $scope.blacklist_indicatorgroups.includes(ig.id)
+                                    )
+                            )
+                            .forEach(function (indicator) {
+                                const num = indicator.numerator;
+                                const den = indicator.denominator;
+                                parseExpression(indicator, num);
+                                parseExpression(indicator, den);
+                                if (indicator.stageRef) indicator.stageRef = _.uniq(indicator.stageRef);
 
-                            indicator.rowItems = extractVisItemsFromInd(num, den);
-                        });
+                                indicator.rowItems = extractVisItemsFromInd(num, den);
+                            });
                         if ($scope.indicators.length > 0) {
                             addtoTOC($scope.toc, null, $scope.indicators4TOC, "Indicators");
                             recursiveAssignNumerator(0);
@@ -965,14 +1117,12 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
 
 dossierProgramsModule.controller("dossiersProgramTEAController", [
     "$scope",
-    "$translate",
     "dossiersProgramTEAsFactory",
     "dossiersProgramTEAsRulesFactory",
     "dossiersProgramDataService",
     "dossiersProgramLoadingService",
     function (
         $scope,
-        $translate,
         dossiersProgramTEAsFactory,
         dossiersProgramTEAsRulesFactory,
         dossiersProgramDataService,
@@ -1063,7 +1213,6 @@ dossierProgramsModule.controller("dossiersProgramTEAController", [
 dossierProgramsModule.controller("dossiersProgramRuleController", [
     "$scope",
     "$rootScope",
-    "$translate",
     "dossiersProgramRulesFactory",
     "dossiersProgramRulesActionsTemplateName",
     "dossiersProgramDataService",
@@ -1071,7 +1220,6 @@ dossierProgramsModule.controller("dossiersProgramRuleController", [
     function (
         $scope,
         $rootScope,
-        $translate,
         dossiersProgramRulesFactory,
         dossiersProgramRulesActionsTemplateName,
         dossiersProgramDataService,
@@ -1146,14 +1294,12 @@ dossierProgramsModule.controller("dossiersProgramRuleController", [
 dossierProgramsModule.controller("dossiersProgramRuleVariablesController", [
     "$scope",
     "$rootScope",
-    "$translate",
     "dossiersProgramRuleVariablesFactory",
     "dossiersProgramDataService",
     "dossiersProgramLoadingService",
     function (
         $scope,
         $rootScope,
-        $translate,
         dossiersProgramRuleVariablesFactory,
         dossiersProgramDataService,
         dossiersProgramLoadingService
@@ -1196,7 +1342,7 @@ dossierProgramsModule.controller("dossiersProgramRuleVariablesController", [
                         });
 
                         if ($scope.ruleVariables.length > 0) {
-                            addtoTOC($scope.toc, null, $scope.ruleVariables4TOC, "Program Rules");
+                            addtoTOC($scope.toc, null, $scope.ruleVariables4TOC, "Program Rules Variables");
                             dossiersProgramDataService.data.ruleVariables = $scope.ruleVariables;
                         }
 
@@ -1211,14 +1357,12 @@ dossierProgramsModule.controller("dossiersProgramRuleVariablesController", [
 
 dossierProgramsModule.controller("dossiersProgramResourcesController", [
     "$scope",
-    "$translate",
     "dossiersProgramDataService",
     "dossiersProgramResourcesAttributeFactory",
     "dossiersProgramResourcesElementsFactory",
     "dossiersProgramLoadingService",
     function (
         $scope,
-        $translate,
         dossiersProgramDataService,
         dossiersProgramResourcesAttributeFactory,
         dossiersProgramResourcesElementsFactory,

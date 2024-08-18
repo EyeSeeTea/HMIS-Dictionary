@@ -9,22 +9,107 @@
  */
 datasetsModule.controller("datasetsMainController", [
     "$scope",
-    "$translate",
     "$anchorScroll",
-    "$sessionStorage",
     "datasetsFactory",
     "datasetsLinkFactory",
     "datasetsDataelementsFactory",
+    "advancedUsersFactory",
+    "layoutSettingsFactory",
     function (
         $scope,
-        $translate,
-        $sessionStorage,
         $anchorScroll,
         datasetsFactory,
         datasetsLinkFactory,
-        datasetsDataelementsFactory
+        datasetsDataelementsFactory,
+        advancedUsersFactory,
+        layoutSettingsFactory
     ) {
         $("#datasets").tab("show");
+
+        $scope.layoutSettings = {
+            advancedUserGroups: ["LjRqO9XzQPs"],
+            accesses: {
+                sections: {
+                    index: 0,
+                    translationKey: "dos_Sections",
+                    access: 2,
+                    columns: {
+                        name: { index: 0, translationKey: "dos_NameElement", access: 2 },
+                        formName: { index: 1, translationKey: "dos_FormNameElement", access: 2 },
+                        description: { index: 2, translationKey: "dos_DescriptionElement", access: 2 },
+                        dataTypeElement: { index: 3, translationKey: "dos_DataTypeElement", access: 0 },
+                        options: { index: 4, translationKey: "dos_Options", access: 0 },
+                        categoryCombination: { index: 5, translationKey: "dos_CategoryCombination", access: 0 },
+                    },
+                },
+                categoryCombinations: {
+                    index: 1,
+                    translationKey: "dos_CategoryCombinations",
+                    access: 0,
+                    columns: {
+                        categoryCombination: { index: 0, translationKey: "dos_CategoryCombination", access: 0 },
+                        categories: { index: 1, translationKey: "dos_Categories", access: 0 },
+                        items: { index: 2, translationKey: "dos_Items", access: 0 },
+                    },
+                },
+                indicators: {
+                    index: 2,
+                    translationKey: "dos_Indicators",
+                    access: 2,
+                    columns: {
+                        name: { index: 0, translationKey: "dos_NameIndicator", access: 2 },
+                        type: { index: 1, translationKey: "dos_Type", access: 2 },
+                        numerator: { index: 2, translationKey: "dos_NumeratorIndicator", access: 2 },
+                        numeratorDescription: {
+                            index: 3,
+                            translationKey: "dos_NumeratorIndicatorDescription",
+                            access: 2,
+                        },
+                        denominator: { index: 4, translationKey: "dos_DenominatorIndicator", access: 2 },
+                        denominatorDescription: {
+                            index: 5,
+                            translationKey: "dos_DenominatorIndicatorDescription",
+                            access: 2,
+                        },
+                    },
+                },
+            },
+        };
+
+        const namespace = "datasets";
+
+        layoutSettingsFactory.get
+            .query({ view: namespace })
+            .$promise.then(data => {
+                $scope.layoutSettings = data.toJSON();
+            })
+            .catch(error => {
+                /* If no sharing settings are found, create them */
+                if (error.status === 404) {
+                    layoutSettingsFactory.set.query(
+                        { view: namespace },
+                        JSON.stringify($scope.layoutSettings),
+                        response => {
+                            if (response.status === "OK") {
+                                console.log("datasetsModule: Layout Settings created");
+                            } else {
+                                console.log("datasetsModule: Error creating Layout Settings");
+                            }
+                        }
+                    );
+                } else {
+                    console.log("datasetsModule: Error getting Layout Settings");
+                }
+            });
+
+        $scope.isAdvancedUser = false;
+
+        $scope.$watch("layoutSettings", function () {
+            advancedUsersFactory.isAdvancedUser($scope.layoutSettings.advancedUserGroups).query({}, function (data) {
+                $scope.isAdvancedUser = data.isAdvancedUser;
+                $scope.accesses = userAccesses($scope.layoutSettings.accesses, $scope.isAdvancedUser);
+            });
+        });
 
         /*
          *  @name addtoTOC
@@ -32,6 +117,10 @@ datasetsModule.controller("datasetsMainController", [
          *  @scope datasetsMainController
          */
         addtoTOC = function (toc, items, parent, type) {
+            if (type == "Data Set" && !$scope.accesses.sections) return;
+            if (type == "Category combination" && !$scope.accesses.categoryCombinations) return;
+            if (type == "Indicators" && !$scope.accesses.indicators) return;
+
             var index = toc.entries.push({
                 parent: parent,
                 children: items,
@@ -123,15 +212,14 @@ datasetsModule.controller("datasetsMainController", [
  */
 datasetsModule.controller("datasetSectionController", [
     "$scope",
-    "$translate",
-    "datasetsDataelementsFactory",
-    "Ping",
-    function ($scope, $translate, datasetsDataelementsFactory, Ping) {
+    function ($scope) {
         $scope.stages4TOC = {
             displayName: "",
             id: "sectionContainer",
             index: "0",
         };
+
+        $scope.categoryCombo = [];
 
         /*
          * @name none
@@ -141,6 +229,19 @@ datasetsModule.controller("datasetSectionController", [
         $scope.$watch("datasetDataElements", function () {
             ping();
             if (typeof $scope.datasetDataElements.dataSetElements != "undefined") {
+                //initialize categoryCombo for datasetCategoryComboController
+                $scope.datasetDataElements.sections.forEach((section, sectionIndex) => {
+                    $scope.categoryCombo[sectionIndex] = [];
+                    section.dataElements.forEach((dataElement, dataElementIndex) => {
+                        const id = dataElement.id || dataElement.dataElement.id;
+                        $scope.categoryCombo[sectionIndex][dataElementIndex] = $scope.getCategoryCombination(
+                            id,
+                            sectionIndex,
+                            dataElementIndex
+                        );
+                    });
+                });
+
                 //if there are no sections rearrange/change TOC name
                 if ($scope.datasetDataElements.sections.length == 0) $scope.showWithoutSections();
                 else $scope.showWithSections();
@@ -212,10 +313,8 @@ datasetsModule.controller("datasetSectionController", [
  */
 datasetsModule.controller("datasetCategoryComboController", [
     "$scope",
-    "$translate",
     "datasetsCategoryCombosFactory",
-    "Ping",
-    function ($scope, $translate, datasetsCategoryCombosFactory, Ping) {
+    function ($scope, datasetsCategoryCombosFactory) {
         $scope.categoryCombos4TOC = {
             displayName: "Category combinations",
             id: "categoryComboContainer",
@@ -250,11 +349,9 @@ datasetsModule.controller("datasetCategoryComboController", [
 
 datasetsModule.controller("datasetsIndicatorsController", [
     "$scope",
-    "$translate",
     "datasetsIndicatorsFactory",
     "datasetsIndicatorExpressionFactory",
-    "Ping",
-    function ($scope, $translate, datasetsIndicatorsFactory, datasetsIndicatorExpressionFactory, Ping) {
+    function ($scope, datasetsIndicatorsFactory, datasetsIndicatorExpressionFactory) {
         $scope.indicators4TOC = {
             displayName: "Indicators",
             id: "indicatorContainer",
