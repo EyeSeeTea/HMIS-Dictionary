@@ -1,6 +1,5 @@
 {
   "INDEX.HTML": "****************************",
-
   "idx_Dossiers": "Dosieres",
   "idx_Search": "Búsqueda",
   "idx_Graph": "Gráfico",
@@ -8,18 +7,14 @@
   "idx_Programs": "Programas",
   "idx_DataSets": "Set de datos",
   "idx_Indicators": "Indicadores",
-
   "MODULE:ALL": "****************************",
   "OPEN": "Abrir",
-
   "MODULE:DOSSIERS": "****************************",
-
   "dos_Dossiers": "Dosieres",
   "dos_Number of Services": "Número de Servicios",
   "dos_Number of DataSets in Service": "Número de Sets de Datos en el Servicio",
   "dos_Number of IndicatorGroups in Service": "Número de Grupos de Indicadores en el Servicio",
   "dos_Select a service": "Seleccionar un servicio",
-
   "dos_Table of Content": "Tabla de Contenidos",
   "dos_Description of Service": "Descripción del Servicio",
   "dos_Data Sets": "Sets de Datos > Sección > Elementos de Datos (Tabla 1)",
@@ -28,9 +23,7 @@
   "dos_Stage": "Etapa",
   "dos_Indicator Groups": "Grupo de Indicadores > Indicadores (Tabla 2)",
   "dos_Indicator Group": "Grupo de Indicadores",
-
   "dos_BackToTop": "Inicio de Página",
-
   "dos_NumberElementsSection": "Número de Elementos de Datos en la Sección",
   "dos_DescriptionStage": "Descripción de la Etapa",
   "dos_DescriptionSection": "Descripción de la Sección de la Etapa",
@@ -94,13 +87,11 @@
   "dos_EventCharts": "Gráficos de Eventos",
   "dos_EventChartsNumber": "Número de gráficos de sucesos",
   "dos_ActionsTypes": "Tipos de acciones",
-
   "dos_Number of Indicators in Group": "Número de Indicadores en el Grupo de Indicadores",
   "dos_NameIndicator": "Nombre",
   "dos_DescriptionIndicator": "Descripción",
   "dos_NumeratorIndicator": "Numerador",
   "dos_DenominatorIndicator": "Denominador",
-
   "dos_Comments": "Comentarios",
   "dos_Mandatory": "Obligatorio",
   "dos_Visibility": "Visibilidad en Entrada de Datos",
@@ -108,16 +99,12 @@
   "dos_ResourcesNumber": "Número de Recursos",
   "dos_ResourceType": "Tipo de Recurso",
   "dos_AssociatedProgramRules": "Reglas del Programa Asociadas",
-
   "MODULE:SEARCH": "****************************",
-
   "srch_SearchAll": "Búsqueda",
   "srch_SearchAll_Clear": "Reiniciar filtros",
   "srch_SearchAll_Row": "Mostrar / Esconder filtros de columnas",
   "srch_SearchAll_Here": "Escriba aquí...",
-
   "srch_SelectColumns": "Elegir Columnas",
-
   "srch_SelectColumns_objBasics": "Elementos de datos o indicadores - Conceptos básicos",
   "object_type": "Tipo",
   "object_name": "Nombre",
@@ -125,28 +112,23 @@
   "object_id": "ID",
   "object_code": "Código",
   "object_ICD10": "ICD10",
-
   "srch_SelectColumns_objDescs": "Elementos de datos o indicadores - Descripciones",
   "object_description": "Descripción",
   "object_den_description": "Descripción de Denominador (solo ind.)",
   "object_num_description": "Descripción de Numerador (solo ind.)",
   "object_den_formula": "Fórmula Denominador (solo ind.)",
   "object_num_formula": "Fórmula Numerador (solo ind.)",
-
   "srch_SelectColumns_grpBasics": "Grupos de elementos de datos o indicadores - Conceptos básicos",
   "objectGroup_name": "Conjunto de Datos/Grupo de Indicadores",
   "objectGroup_id": "ID de Grupo",
   "objectGroup_code": "Código de Grupo",
-
   "srch_SelectColumns_servBasics": "Servicios - Conceptos básicos",
   "service_name": "Nombre de Servicio",
   "service_id": "ID de Servicio",
   "service_code": "Código de Servicio",
-
   "srch_Help": "Ayuda",
   "srch_Help_Text": "<p>Esta interfaz permite simplificar el acceso del usuario a la terminología asociada con la información recopilada con HMIS. <ul> <li> Mediante la pestaña <b>Buscar</b> puede buscar directamente un término en todas las columnas de la tabla. También puede mostrar filtros de columna, lo que le permite buscar información en una columna específica. Utilice 'Reiniciar filtros' para reiniciar todos los filtros. <i>Los usuarios expertos pueden usar la palabra clave '|' (OR) para buscar múltiples objetos.</i> </li> <li> A través de la pestaña <b>Seleccionar columnas</b> puede seleccionar las columnas que se mostrarán en la tabla. <i>Los usuarios expertos pueden utilizar las columnas avanzadas para realizar investigaciones detalladas a través los IDs.</i> </ li> </ ul>Finalmente puede exportar los resultados de su búsqueda a Excel (página por página, y no olvide guardar como .xls).</p>",
   "srch_exportToExcel": "Exportar esta página a Excel",
-
   "MODULE:PROGRAMS": "***************************",
   "dos_DescriptionOfProgram": "Descripción del programa",
   "dos_NumberOfProgramIndicators": "Número de Indicadores del Programa",
@@ -182,11 +164,11 @@
   "programs_tei_mandatory_help": "Define una expresión booleana de si el atributo de la entidad rastreada debe ser visible o no utilizado en un formulario de entrada.",
   "programs_tei_visbility_help": "Define una expresión booleana que indica si el atributo debe utilizarse obligatoriamente o no en un formulario de entrada.",
   "programs_tei_optionSet_help": "Define el conjunto de opciones de los datos de atributo de la entidad rastreada asignados utilizados en un formulario de entrada.",
-  "programs_ps_name_help": "Define el nombre del formulario utilizado en una etapa del programa en HMIS.",
-  "programs_ps_formName_help": "Define la descripción de la etapa de un programa en HMIS.",
-  "programs_ps_description_help": "Define el nombre de la etapa de un programa en HMIS.",
-  "programs_ps_valueType_help": "Define el modo de cálculo de los valores de los datos a recoger en una etapa de un programa en HMIS.",
-  "programs_ps_calculationMode_help": "Define el tipo de datos a recoger en una etapa de un programa en HMIS.",
+  "programs_ps_name_help": "Define el nombre de la etapa de un programa en HMIS.",
+  "programs_ps_formName_help": "Define el nombre del formulario utilizado en una etapa del programa en HMIS.",
+  "programs_ps_description_help": "Define la descripción de la etapa de un programa en HMIS.",
+  "programs_ps_valueType_help": "Define el tipo de datos a recoger en una etapa de un programa en HMIS.",
+  "programs_ps_calculationMode_help": "Define el modo de cálculo de los valores de los datos a recoger en una etapa de un programa en HMIS.",
   "programs_ps_mandatory_help": "Define una expresión booleana de si la etapa del programa debe ser obligatoria en un formulario de entrada.",
   "programs_ps_visbility_help": "Define una expresión booleana que indica si el atributo debe utilizarse obligatoriamente o no en un formulario de entrada.",
   "programs_ps_optionSet_help": "Define el conjunto de opciones de los datos de atributo de la entidad rastreada asignados utilizados en un formulario de entrada.",
