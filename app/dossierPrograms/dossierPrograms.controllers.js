@@ -1566,24 +1566,35 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         @description Makes a sheet from Stage Section / Data Elements data
         @scope dossiersProgramExport
         */
-        function makeDataElementsSheets(workbook, stages) {
+        function makeDataElementsSheets(workbook, stages, accesses) {
             const data = stages.flatMap(stage => {
                 return stage.programStageSections.flatMap(section => {
                     return section.dataElements.flatMap(de => {
-                        return {
-                            [translate("dos_Stage")]: stage.displayName,
-                            [translate("dos_Section")]:
+                        const row = [
+                            [translate("dos_Stage"), stage.displayName],
+                            [
+                                translate("dos_Section"),
                                 section.displayName === "Data Elements" ? "" : section.displayName,
-                            [translate("dos_NameElement")]: de?.displayName,
-                            [translate("dos_FormNameElement")]: de?.displayFormName,
-                            [translate("dos_DescriptionElement")]: de?.displayDescription,
-                            [translate("dos_ValueType")]: de?.valueType,
-                            [translate("dos_CalculationMode")]: makeCalcMode(de?.calcMode),
-                            [translate("dos_OptionSetName")]: de?.optionSet?.name,
-                            [translate("dos_OptionSetOptions")]: joinAndTrim(
-                                de?.optionSet?.options?.map(opt => opt.displayName)
-                            ),
-                        };
+                            ],
+                            accesses.programStages_name && [translate("dos_NameElement"), de?.displayName],
+                            accesses.programStages_formName && [translate("dos_FormNameElement"), de?.displayFormName],
+                            accesses.programStages_description && [
+                                translate("dos_DescriptionElement"),
+                                de?.displayDescription,
+                            ],
+                            accesses.programStages_valueType && [translate("dos_ValueType"), de?.valueType],
+                            accesses.programStages_calculationMode && [
+                                translate("dos_CalculationMode"),
+                                makeCalcMode(de?.calcMode),
+                            ],
+                            accesses.programStages_optionSet && [translate("dos_OptionSetName"), de?.optionSet?.name],
+                            accesses.programStages_optionSet && [
+                                translate("dos_OptionSetOptions"),
+                                joinAndTrim(de?.optionSet?.options?.map(opt => opt.displayName)),
+                            ],
+                        ];
+
+                        return _(row).compact().fromPairs().value();
                     });
                 });
             });
@@ -1598,19 +1609,31 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         @description Makes a sheet from Tracked Entity Attributes data
         @scope dossiersProgramExport
         */
-        function makeTEASheet(workbook, trackedEntityAttributes) {
+        function makeTEASheet(workbook, trackedEntityAttributes, accesses) {
             const data = trackedEntityAttributes.map(item => {
-                return {
-                    [translate("dos_NameElement")]: item?.name,
-                    [translate("dos_FormNameElement")]: item?.formName,
-                    [translate("dos_DescriptionElement")]: item?.description,
-                    [translate("dos_AggregationType")]: item?.aggregationType,
-                    [translate("dos_ValueType")]: item?.valueType,
-                    [translate("dos_OptionSetName")]: item?.optionSet?.name,
-                    [translate("dos_OptionSetOptions")]: joinAndTrim(
-                        item?.optionSet?.options.map(option => option.name)
-                    ),
-                };
+                const row = [
+                    accesses.trackedEntityAttributes_name && [translate("dos_NameElement"), item?.name],
+                    accesses.trackedEntityAttributes_formName && [translate("dos_FormNameElement"), item?.formName],
+                    accesses.trackedEntityAttributes_description && [
+                        translate("dos_DescriptionElement"),
+                        item?.description,
+                    ],
+                    accesses.trackedEntityAttributes_aggregationType && [
+                        translate("dos_AggregationType"),
+                        item?.aggregationType,
+                    ],
+                    accesses.trackedEntityAttributes_valueType && [translate("dos_ValueType"), item?.valueType],
+                    accesses.trackedEntityAttributes_optionSet && [
+                        translate("dos_OptionSetName"),
+                        item?.optionSet?.name,
+                    ],
+                    accesses.trackedEntityAttributes_optionSet && [
+                        translate("dos_OptionSetOptions"),
+                        joinAndTrim(item?.optionSet?.options.map(option => option.name)),
+                    ],
+                ];
+
+                return _(row).compact().fromPairs().value();
             });
 
             const sheet = workbook.addSheet("Tracked Entity Attributes");
@@ -1623,16 +1646,21 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         @description Makes a sheet from Indicators data
         @scope dossiersProgramExport
         */
-        function makeIndicatorsSheet(workbook, indicators) {
+        function makeIndicatorsSheet(workbook, indicators, accesses) {
             const data = indicators.map(item => {
-                return {
-                    [translate("dos_NameElement")]: item?.displayName,
-                    [translate("dos_DescriptionElement")]: item?.displayDescription,
-                    [translate("dos_Type")]: item?.indicatorType?.displayName,
-                    [translate("dos_NumeratorIndicator")]: item?.numerator,
-                    [translate("dos_DenominatorIndicator")]: item?.denominator,
-                    [translate("dos_StagesReferenced")]: joinAndTrim(item?.stageRef),
-                };
+                const row = [
+                    accesses.indicators_name && [translate("dos_NameElement"), item?.displayName],
+                    accesses.indicators_description && [translate("dos_DescriptionElement"), item?.displayDescription],
+                    accesses.indicators_type && [translate("dos_Type"), item?.indicatorType?.displayName],
+                    accesses.indicators_numerator && [translate("dos_NumeratorIndicator"), item?.numerator],
+                    accesses.indicators_denominator && [translate("dos_DenominatorIndicator"), item?.denominator],
+                    accesses.indicators_stagesReferenced && [
+                        translate("dos_StagesReferenced"),
+                        joinAndTrim(item?.stageRef),
+                    ],
+                ];
+
+                return _(row).compact().fromPairs().value();
             });
 
             const sheet = workbook.addSheet("Indicators");
@@ -1645,24 +1673,41 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         @description Makes a sheet from Program Indicators data
         @scope dossiersProgramExport
         */
-        function makeProgramIndicatorsSheet(workbook, programIndicators) {
+        function makeProgramIndicatorsSheet(workbook, programIndicators, accesses) {
             const data = programIndicators.map(item => {
-                return {
-                    [translate("dos_NameElement")]: item?.displayName,
-                    [translate("dos_DescriptionElement")]: item?.displayDescription,
-                    [translate("dos_Filter")]: item?.filter,
-                    [translate("dos_Calculation")]: item?.expression,
-                    [translate("dos_AggregationType")]: item?.aggregationType,
-                    [translate("dos_TypeOfProgramIndicator")]: item?.analyticsType,
-                    [translate("dos_StagesReferenced")]: item?.stageRef?.join(" | "),
-                    [translate("dos_Boundaries")]: joinAndTrim(
-                        item?.analyticsPeriodBoundaries?.map(apb =>
-                            Object.entries(_.omit(apb, "$$hashKey"))
-                                .map(i => i.join(": "))
-                                .join(", ")
-                        )
-                    ),
-                };
+                const row = [
+                    accesses.programIndicators_name && [translate("dos_NameElement"), item?.displayName],
+                    accesses.programIndicators_description && [
+                        translate("dos_DescriptionElement"),
+                        item?.displayDescription,
+                    ],
+                    accesses.programIndicators_filter && [translate("dos_Filter"), item?.filter],
+                    accesses.programIndicators_calculation && [translate("dos_Calculation"), item?.expression],
+                    accesses.programIndicators_aggregationType && [
+                        translate("dos_AggregationType"),
+                        item?.aggregationType,
+                    ],
+                    accesses.programIndicators_typeOfProgramIndicator && [
+                        translate("dos_TypeOfProgramIndicator"),
+                        item?.analyticsType,
+                    ],
+                    accesses.programIndicators_stagesReferenced && [
+                        translate("dos_StagesReferenced"),
+                        item?.stageRef?.join(" | "),
+                    ],
+                    accesses.programIndicators_boundaries && [
+                        translate("dos_Boundaries"),
+                        joinAndTrim(
+                            item?.analyticsPeriodBoundaries?.map(apb =>
+                                Object.entries(_.omit(apb, "$$hashKey"))
+                                    .map(i => i.join(": "))
+                                    .join(", ")
+                            )
+                        ),
+                    ],
+                ];
+
+                return _(row).compact().fromPairs().value();
             });
 
             const sheet = workbook.addSheet("Program Indicators");
@@ -1748,15 +1793,18 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         */
         function makeRulesSheet(workbook, rules) {
             var data = rules.map(item => {
-                return {
-                    [translate("dos_NameElement")]: item?.name,
-                    [translate("dos_DescriptionElement")]: item?.description,
-                    [translate("dos_ProgramStage")]: item?.programStage?.name,
-                    [translate("dos_Condition")]: item?.condition,
-                    [translate("dos_ActionsTypes")]: joinAndTrim(
-                        item?.programRuleActions?.map(pra => pra.programRuleActionType)
-                    ),
-                };
+                const row = [
+                    accesses.programRules_name && [translate("dos_NameElement"), item?.name],
+                    accesses.programRules_description && [translate("dos_DescriptionElement"), item?.description],
+                    accesses.programRules_programStage && [translate("dos_ProgramStage"), item?.programStage?.name],
+                    accesses.programRules_condition && [translate("dos_Condition"), item?.condition],
+                    accesses.programRules_programRuleActions && [
+                        translate("dos_ActionsTypes"),
+                        joinAndTrim(item?.programRuleActions?.map(pra => pra.programRuleActionType)),
+                    ],
+                ];
+
+                return _(row).compact().fromPairs().value();
             });
 
             const sheet = workbook.addSheet("Program Rules");
@@ -1771,13 +1819,27 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         */
         function makeRuleVariablesSheet(workbook, ruleVariables) {
             const data = ruleVariables.map(item => {
-                return {
-                    [translate("dos_NameElement")]: item?.name,
-                    [translate("dos_SourceType")]: item?.programRuleVariableSourceType,
-                    [translate("dos_ProgramStage")]: item?.programStage?.name,
-                    [translate("dos_DataElement")]: item?.dataElement?.name,
-                    [translate("dos_TrackedEntityAttributes")]: item?.trackedEntityAttribute?.name,
-                };
+                const row = [
+                    accesses.programRuleVariables_name && [translate("dos_NameElement"), item?.name],
+                    accesses.programRuleVariables_sourceType && [
+                        translate("dos_SourceType"),
+                        item?.programRuleVariableSourceType,
+                    ],
+                    accesses.programRuleVariables_programStage && [
+                        translate("dos_ProgramStage"),
+                        item?.programStage?.name,
+                    ],
+                    accesses.programRuleVariables_dataElement && [
+                        translate("dos_DataElement"),
+                        item?.dataElement?.name,
+                    ],
+                    accesses.programRuleVariables_trackedEntityAttributes && [
+                        translate("dos_TrackedEntityAttributes"),
+                        item?.trackedEntityAttribute?.name,
+                    ],
+                ];
+
+                return _(row).compact().fromPairs().value();
             });
 
             const sheet = workbook.addSheet("Program Rules Variables");
@@ -1821,32 +1883,35 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         @description Exports program dossier to xlsx spreadsheet
         @scope dossiersProgramExport
         */
-        $scope.exportToExcel = function () {
+        $scope.exportToExcel = function (accesses) {
             $scope.$watchGroup(["selectedProgram", "dossiersProgramDataService"], async function () {
                 ping();
                 if ($scope.selectedProgram && $scope.button.clicked) {
                     const workbook = await XlsxPopulate.fromBlankAsync().then(workbook => {
                         for (const [key, value] of Object.entries(dossiersProgramDataService.data)) {
                             if (value === undefined) continue;
+                            console.log(accesses);
                             switch (key) {
                                 case "stages":
-                                    makeDataElementsSheets(workbook, value);
+                                    accesses.programStages && makeDataElementsSheets(workbook, value, accesses);
                                     break;
                                 case "programIndicators":
-                                    makeProgramIndicatorsSheet(workbook, value);
+                                    accesses.programIndicators && makeProgramIndicatorsSheet(workbook, value, accesses);
                                     break;
                                 case "indicators":
-                                    makeIndicatorsSheet(workbook, value);
+                                    accesses.indicators && makeIndicatorsSheet(workbook, value, accesses);
                                     break;
                                 case "trackedEntityAttributes":
-                                    makeTEASheet(workbook, value);
+                                    accesses.trackedEntityAttributes && makeTEASheet(workbook, value, accesses);
                                     break;
                                 case "rules":
-                                    makeRulesSheet(workbook, value);
-                                    makeRulesActionsSheet(workbook, value);
+                                    accesses.programRules && makeRulesSheet(workbook, value, accesses);
+                                    accesses.programRules &&
+                                        accesses.programRules_programRuleActions &&
+                                        makeRulesActionsSheet(workbook, value);
                                     break;
                                 case "ruleVariables":
-                                    makeRuleVariablesSheet(workbook, value);
+                                    accesses.programRuleVariables && makeRuleVariablesSheet(workbook, value, accesses);
                                     break;
                                 default:
                             }
