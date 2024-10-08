@@ -4,18 +4,16 @@
  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
 <div ng-controller="dossierProgramsMainController" id="dossierProgramsPanel" class="row">
-    <div id="headerDossierPanel" class="col-md-12 headerPanel">
+    <div id="headerDossierPanel" class="col-md-12 headerPanel row">
+        <layout-settings state="layoutSettings" namespace="programs" ng-if="is_admin"></layout-settings>
+
         <h1>{{ "dos_Programs" | translate }}</h1>
         <p>{{ "dos_NumberOfPrograms" | translate }}: {{ programs.programs.length }}</p>
         <div class="col-md-2">
-            <select
-                class="form-control col-md-2"
+            <select class="form-control col-md-2"
                 ng-options="program.displayName for program in programs.programs | orderBy: 'displayName'"
-                name="selectProgram"
-                id="drpBoxServices"
-                ng-model="selectedProgram"
-            >
-                <option value="" disabled selected>Select a program</option>
+                name="selectProgram" id="drpBoxServices" ng-model="selectedProgram">
+                <option value="" disabled selected>{{ "Select a program" | translate }}</option>
             </select>
         </div>
     </div>
@@ -26,11 +24,8 @@
             <h1>{{ selectedProgram.displayName }}</h1>
         </div>
         <div>
-            <button
-                class="btn btn-link"
-                ng-controller="dossiersProgramExport"
-                ng-click="button.clicked = true; exportToExcel();"
-            >
+            <button class="btn btn-link" ng-controller="dossiersProgramExport"
+                ng-click="button.clicked = true; exportToExcel(accesses);">
                 <span class="glyphicon glyphicon-share"></span> {{ "dos_exportToExcel" | translate }}
             </button>
         </div>
@@ -38,26 +33,18 @@
 
         <div id="tocContainer" class="row">
             <h3 style="text-decoration: underline">{{ "dos_Table of Content" | translate }}</h3>
-            <ul ng-if="selectedProgram.displayDescription">
+            <ul ng-if="selectedProgram.displayDescription && accesses.programDescription">
                 <li>
-                    <big
-                        ><b
-                            ><a href="" class="pageref" ng-click='scrollTo("DossierTextTitleContainer",22)'>{{
+                    <big><b><a href="" class="pageref" ng-click='scrollTo("DossierTextTitleContainer",22)'>{{
                                 "dos_DescriptionOfProgram" | translate
-                            }}</a></b
-                        ></big
-                    >
+                                }}</a></b></big>
                 </li>
             </ul>
             <ul ng-repeat="i in toc.entries | orderBy:'parent.index'">
                 <li>
-                    <big
-                        ><b
-                            ><a href="" class="pageref" ng-click="scrollTo(i.parent.id)" target="_self">{{
+                    <big><b><a href="" class="pageref" ng-click="scrollTo(i.parent.id)" target="_self">{{
                                 i.parent.displayName
-                            }}</a></b
-                        ></big
-                    >
+                                }}</a></b></big>
                     <ul ng-repeat="j in i.children">
                         <li>
                             <a href="" class="pageref" ng-click="scrollTo(j.id)">{{ j.displayName }}</a>
@@ -68,50 +55,67 @@
         </div>
 
 
-        <div id="DossierTextTitleContainer" ng-if="selectedProgram.displayDescription" class="row headerGroup">
+        <div id="DossierTextTitleContainer" ng-if="selectedProgram.displayDescription && accesses.programDescription"
+            class="row headerGroup">
             <br />
-            <h1>{{ "dos_DescriptionOfProgram" | translate }}</h1>
+            <h1 title='{{ "program_description_help" | translate }}'>{{ "dos_DescriptionOfProgram" | translate }}</h1>
             <div ng-bind-html="trustAsHtml(selectedProgram.displayDescription)"></div>
         </div>
 
         <div class="col-md-12" id="trackedEntityAttributeContainer" ng-controller="dossiersProgramTEAController">
-            <div ng-if="trackedEntityAttributes.length > 0" class="col-md-12">
+            <div ng-if="trackedEntityAttributes.length > 0 && accesses.trackedEntityAttributes" class="col-md-12">
                 <h3 class="section" id="trackedEntityAttributes">{{ "dos_TrackedEntityAttributes" | translate }}</h3>
                 <p>
                     {{ "dos_TrackedEntityAttributesNumber" | translate }}:
                     {{ trackedEntityAttributes.length }}
                     &emsp;
-                    <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" | translate}}</a>
+                    <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" |
+                        translate}}</a>
                 </p>
                 <table class="sectionElementsTable table table-striped">
                     <thead>
                         <tr>
-                            <th>{{ "dos_NameElement" | translate }}</th>
-                            <th>{{ "dos_FormNameElement" | translate }}</th>
-                            <th>{{ "dos_DescriptionElement" | translate }}</th>
-                            <th>{{ "dos_ValueType" | translate }}</th>
-                            <th>{{ "dos_AggregationType" | translate }}</th>
-                            <th>{{ "dos_Mandatory" | translate }}</th>
-                            <th>{{ "dos_Visibility" | translate }}</th>
-                            <th>{{ "dos_OptionSet" | translate }}</th>
+                            <th title='{{ "programs_tei_name_help" | translate }}'
+                                ng-if="accesses.trackedEntityAttributes_name">{{ "dos_NameElement" | translate }}</th>
+                            <th title='{{ "programs_tei_formName_help" | translate }}'
+                                ng-if="accesses.trackedEntityAttributes_formName">{{ "dos_FormNameElement" | translate
+                                }}</th>
+                            <th title='{{ "programs_tei_description_help" | translate }}'
+                                ng-if="accesses.trackedEntityAttributes_description">{{ "dos_DescriptionElement" |
+                                translate }}</th>
+                            <th title='{{ "programs_tei_valueType_help" | translate }}'
+                                ng-if="accesses.trackedEntityAttributes_valueType">{{ "dos_ValueType" | translate }}
+                            </th>
+                            <th title='{{ "programs_tei_aggregationType_help" | translate }}'
+                                ng-if="accesses.trackedEntityAttributes_aggregationType">{{ "dos_AggregationType" |
+                                translate }}</th>
+                            <th title='{{ "programs_tei_mandatory_help" | translate }}'
+                                ng-if="accesses.trackedEntityAttributes_mandatory">{{ "dos_Mandatory" | translate }}
+                            </th>
+                            <th title='{{ "programs_tei_visbility_help" | translate }}'
+                                ng-if="accesses.trackedEntityAttributes_visibilityInDataEntry">{{ "dos_Visibility" |
+                                translate }}</th>
+                            <th title='{{ "programs_tei_optionSet_help" | translate }}'
+                                ng-if="accesses.trackedEntityAttributes_optionSet">{{ "dos_OptionSet" | translate }}
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="tea in trackedEntityAttributes">
-                            <td>{{ tea.name }}</td>
-                            <td>{{ tea.formName }}</td>
-                            <td>{{ tea.description }}</td>
-                            <td>{{ tea.valueType }}</td>
-                            <td>{{ tea.aggregationType }}</td>
-                            <td>{{ tea.mandatory }}</td>
-                            <td>
+                            <td ng-if="accesses.trackedEntityAttributes_name">{{ tea.name }}</td>
+                            <td ng-if="accesses.trackedEntityAttributes_formName">{{ tea.formName }}</td>
+                            <td ng-if="accesses.trackedEntityAttributes_description">{{ tea.description }}</td>
+                            <td ng-if="accesses.trackedEntityAttributes_valueType">{{ tea.valueType }}</td>
+                            <td ng-if="accesses.trackedEntityAttributes_aggregationType">{{ tea.aggregationType }}</td>
+                            <td ng-if="accesses.trackedEntityAttributes_mandatory">{{ tea.mandatory }}</td>
+                            <td ng-if="accesses.trackedEntityAttributes_visibilityInDataEntry">
                                 <ul ng-if="dataElement.visibility">
                                     <li ng-repeat="visibility in dataElement.visibility">
                                         <div>{{ visibility.type }}: {{ visibility.name }}</div>
                                     </li>
                                 </ul>
                             </td>
-                            <td>
+                            <td ng-if="accesses.trackedEntityAttributes_optionSet">
                                 <div ng-if="tea.optionSet.options">
                                     <p>{{ "dos_OptionSetName" | translate }}: {{ tea.optionSet.name }}</p>
                                     <select class="form-control col-md-2">
@@ -127,7 +131,7 @@
         </div>
 
         <div id="stageContainer" ng-controller="dossiersProgramSectionController">
-            <div class="col-md-12" ng-repeat="stage in stages | orderBy:'sortOrder'">
+            <div class="col-md-12" ng-repeat="stage in stages | orderBy:'sortOrder'" ng-if="accesses.programStages">
                 <h2 class="stage" id="{{ stage.id }}">{{ stage.displayName }}</h2>
                 <div ng-if="stage.displayDescription" class="stage">
                     <h4>{{ "dos_DescriptionStage" | translate }}</h4>
@@ -138,7 +142,8 @@
                     <p>
                         {{ "dos_NumberElementsSection" | translate }}: {{ section.dataElements.length }}
                         &emsp;
-                        <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" | translate}}</a>
+                        <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" |
+                            translate}}</a>
                     </p>
                     <div ng-if="section.displayDescription" class="section">
                         <h4>{{ "dos_DescriptionStage" | translate }}</h4>
@@ -147,26 +152,37 @@
                     <table class="sectionElementsTable table table-striped">
                         <thead>
                             <tr>
-                                <th>{{ "dos_NameElement" | translate }}</th>
-                                <th>{{ "dos_FormNameElement" | translate }}</th>
-                                <th>{{ "dos_DescriptionElement" | translate }}</th>
-                                <th>{{ "dos_ValueType" | translate }}</th>
-                                <th>{{ "dos_CalculationMode" | translate }}</th>
-                                <th>{{ "dos_Mandatory" | translate }}</th>
-                                <th>{{ "dos_Visibility" | translate }}</th>
-                                <th>{{ "dos_Options" | translate }}</th>
+                                <th title='{{ "programs_ps_name_help" | translate }}'
+                                    ng-if="accesses.programStages_name">{{ "dos_NameElement" | translate }}</th>
+                                <th title='{{ "programs_ps_formName_help" | translate }}'
+                                    ng-if="accesses.programStages_formName">{{ "dos_FormNameElement" | translate }}</th>
+                                <th title='{{ "programs_ps_description_help" | translate }}'
+                                    ng-if="accesses.programStages_description">{{ "dos_DescriptionElement" | translate
+                                    }}</th>
+                                <th title='{{ "programs_ps_valueType_help" | translate }}'
+                                    ng-if="accesses.programStages_valueType">{{ "dos_ValueType" | translate }}</th>
+                                <th title='{{ "programs_ps_calculationMode_help" | translate }}'
+                                    ng-if="accesses.programStages_calculationMode">{{ "dos_CalculationMode" | translate
+                                    }}</th>
+                                <th title='{{ "programs_ps_mandatory_help" | translate }}'
+                                    ng-if="accesses.programStages_mandatory">{{ "dos_Mandatory" | translate }}</th>
+                                <th title='{{ "programs_ps_visbility_help" | translate }}'
+                                    ng-if="accesses.programStages_visibilityInDataEntry">{{ "dos_Visibility" | translate
+                                    }}</th>
+                                <th title='{{ "programs_ps_optionSet_help" | translate }}'
+                                    ng-if="accesses.programStages_optionSet">{{ "dos_OptionSet" | translate }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="dataElement in section.dataElements">
-                                <td>{{ dataElement.displayName }}</td>
-                                <td>{{ dataElement.displayFormName }}</td>
-                                <td>{{ dataElement.displayDescription }}</td>
-                                <td>{{ dataElement.valueType }}</td>
-                                <td>
+                                <td ng-if="accesses.programStages_name">{{ dataElement.displayName }}</td>
+                                <td ng-if="accesses.programStages_formName">{{ dataElement.displayFormName }}</td>
+                                <td ng-if="accesses.programStages_description">{{ dataElement.displayDescription }}</td>
+                                <td ng-if="accesses.programStages_valueType">{{ dataElement.valueType }}</td>
+                                <td ng-if="accesses.programStages_calculationMode">
                                     <div ng-switch="dataElement.calcMode.type">
                                         <div ng-switch-when="programRule">
-                                            {{ "dos_ProgramRule" | translate }}: 
+                                            {{ "dos_ProgramRule" | translate }}:
                                             <ul ng-if="dataElement.calcMode.names">
                                                 <li ng-repeat="name in dataElement.calcMode.names">
                                                     <div> {{ name }}</div>
@@ -179,15 +195,15 @@
                                         <div ng-switch-default>{{ "dos_DirectDataEntry" | translate }}</div>
                                     </div>
                                 </td>
-                                <td>{{ dataElement.compulsory }}</td>
-                                <td>
+                                <td ng-if="accesses.programStages_mandatory">{{ dataElement.compulsory }}</td>
+                                <td ng-if="accesses.programStages_visibilityInDataEntry">
                                     <ul ng-if="dataElement.visibility">
                                         <li ng-repeat="visibility in dataElement.visibility">
                                             <div>{{ visibility.type }}: {{ visibility.name }}</div>
                                         </li>
                                     </ul>
                                 </td>
-                                <td>
+                                <td ng-if="accesses.programStages_optionSet">
                                     <div ng-if="dataElement.optionSet.options">
                                         <p>{{ "dos_OptionSetName" | translate }}: {{ dataElement.optionSet.name }}</p>
                                         <select class="form-control col-md-2">
@@ -205,128 +221,150 @@
             </div>
         </div>
 
-        <div
-            class="col-md-12"
-            ng-controller="dossiersProgramIndicatorController"
-            id="IndicatorGroupsContainer"
-            ng-show="programIndicators[0]"
-        >
-            <h2 class="indicatorGroup" id="indicators">{{ "Program indicators" | translate }}</h2>
-            <div class="col-md-12">
-                <p>
-                    {{ "dosNumberOfProgramIndicators" | translate }}: {{ programIndicators.length }}
-                    &emsp;
-                    <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" | translate}}</a>
-                </p>
-                <table class="indicatorTable table table-striped">
-                    <thead>
-                        <tr>
-                            <th>{{ "dos_NameElement" | translate }}</th>
-                            <th>{{ "dos_DescriptionElement" | translate }}</th>
-                            <th>{{ "dos_Filter" | translate }}</th>
-                            <th>{{ "dos_Calculation" | translate }}</th>
-                            <th>{{ "dos_AggregationType" | translate }}</th>
-                            <th>{{ "dos_TypeOfProgramIndicator" | translate }}</th>
-                            <th>{{ "dos_StagesReferenced" | translate }}</th>
-                            <th>{{ "dos_Boundaries" | translate }}</th> 
-                            <th>{{ "dos_Visualization" | translate }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="indicator in programIndicators | orderBy: 'displayName'">
-                            <td>{{ indicator.displayName }}</td>
-                            <td>{{ indicator.displayDescription }}</td>
-                            <td>{{ indicator.filter }}</td>
-                            <td>{{ indicator.expression }}</td>
-                            <td>{{ indicator.aggregationType }}</td>
-                            <td>{{ indicator.analyticsType }}</td>
-                            <td>
-                                <ul ng-if="indicator.stageRef">
-                                    <li ng-repeat="stageRef in indicator.stageRef">
-                                        {{ stageRef }}
-                                    </li>
-                                </ul>
-                            </td>
-                            <td>
-                                <ul ng-if="indicator.analyticsPeriodBoundaries">
-                                    <li ng-repeat="boundarie in indicator.analyticsPeriodBoundaries">
-                                        <div>{{ "dos_BoundaryTarget" | translate }}: {{ boundarie.boundaryTarget }}</div>
-                                        <div ng-if="boundarie.analyticsPeriodBoundaryType">
-                                            {{ "dos_AnalyticsBoundaryType" | translate }}:
-                                            {{ boundarie.analyticsPeriodBoundaryType }}
-                                        </div>
-                                        <div ng-if="boundarie.offsetPeriods">
-                                            {{ "dos_OffsetPeriod" | translate }}:
-                                            {{ boundarie.offsetPeriods }}
-                                        </div>
-                                        <div ng-if="boundarie.offsetPeoffsetPeriodTyperiods">
-                                            {{ "dos_PeriodType" | translate }}: {{ boundarie.offsetPeriodType }}
-                                        </div>
-                                    </li>
-                                </ul>
-                            </td>
-                            <td>
-                                <a
-                                    ng-controller="makeIndicatorVisualizations"
-                                    href=""
-                                    ng-click="getTable(
-                                        indicator.displayName,
-                                        indicator.id,
-                                        indicator.rowItems
-                                        )"
-                                    ><img src="./assets/img/pivottable.png" alt="View Table" width="15" />
-                                </a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+        <div class="col-md-12" ng-controller="dossiersProgramIndicatorController" id="IndicatorGroupsContainer"
+            ng-show="programIndicators[0]">
+            <div class="col-md-12" ng-if="accesses.programIndicators">
+                <h2 class="indicatorGroup" id="indicators">{{ "dos_ProgramIndicators" | translate }}</h2>
+                <div class="col-md-12">
+                    <p>
+                        {{ "dos_NumberOfProgramIndicators" | translate }}: {{ programIndicators.length }}
+                        &emsp;
+                        <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" |
+                            translate}}</a>
+                    </p>
+                    <table class="indicatorTable table table-striped">
+                        <thead>
+                            <tr>
+                                <th title='{{ "programs_pi_name_help" | translate }}'
+                                    ng-if="accesses.programIndicators_name">{{ "dos_NameElement" | translate }}</th>
+                                <th title='{{ "programs_pi_description_help" | translate }}'
+                                    ng-if="accesses.programIndicators_description">{{ "dos_DescriptionElement" |
+                                    translate }}</th>
+                                <th title='{{ "programs_pi_filter_help" | translate }}'
+                                    ng-if="accesses.programIndicators_filter">{{ "dos_Filter" | translate }}</th>
+                                <th title='{{ "programs_title=' {{ "" | translate}}' pi_calculation_help" | translate
+                                    }}' ng-if="accesses.programIndicators_calculation">{{ "dos_Calculation" | translate
+                                    }}
+                                </th>
+                                <th title='{{ "programs_pi_aggregationType_help" | translate }}'
+                                    ng-if="accesses.programIndicators_aggregationType">{{ "dos_AggregationType" |
+                                    translate }}</th>
+                                <th title='{{ "programs_pi_type_help" | translate }}'
+                                    ng-if="accesses.programIndicators_typeOfProgramIndicator">{{
+                                    "dos_TypeOfProgramIndicator" | translate }}</th>
+                                <th title='{{ "programs_pi_stagesReferenced_help" | translate }}'
+                                    ng-if="accesses.programIndicators_stagesReferenced">{{ "dos_StagesReferenced" |
+                                    translate }}</th>
+                                <th title='{{ "programs_pi_boundaries_help" | translate }}'
+                                    ng-if="accesses.programIndicators_boundaries">{{ "dos_Boundaries" | translate }}
+                                </th>
+                                <th title='{{ "programs_pi_visualization_help" | translate }}'
+                                    ng-if="accesses.programIndicators_visualization">{{ "dos_Visualization" | translate
+                                    }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="indicator in programIndicators | orderBy: 'displayName'">
+                                <td ng-if="accesses.programIndicators_name">{{ indicator.displayName }}</td>
+                                <td ng-if="accesses.programIndicators_description">{{ indicator.displayDescription }}
+                                </td>
+                                <td ng-if="accesses.programIndicators_filter">{{ indicator.filter }}</td>
+                                <td ng-if="accesses.programIndicators_calculation">{{ indicator.expression }}</td>
+                                <td ng-if="accesses.programIndicators_aggregationType">{{ indicator.aggregationType }}
+                                </td>
+                                <td ng-if="accesses.programIndicators_typeOfProgramIndicator">{{ indicator.analyticsType
+                                    }}</td>
+                                <td ng-if="accesses.programIndicators_stagesReferenced">
+                                    <ul ng-if="indicator.stageRef">
+                                        <li ng-repeat="stageRef in indicator.stageRef">
+                                            {{ stageRef }}
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td ng-if="accesses.programIndicators_boundaries">
+                                    <ul ng-if="indicator.analyticsPeriodBoundaries">
+                                        <li ng-repeat="boundarie in indicator.analyticsPeriodBoundaries">
+                                            <div>{{ "dos_BoundaryTarget" | translate }}: {{ boundarie.boundaryTarget }}
+                                            </div>
+                                            <div ng-if="boundarie.analyticsPeriodBoundaryType">
+                                                {{ "dos_AnalyticsBoundaryType" | translate }}:
+                                                {{ boundarie.analyticsPeriodBoundaryType }}
+                                            </div>
+                                            <div ng-if="boundarie.offsetPeriods">
+                                                {{ "dos_OffsetPeriod" | translate }}:
+                                                {{ boundarie.offsetPeriods }}
+                                            </div>
+                                            <div ng-if="boundarie.offsetPeoffsetPeriodTyperiods">
+                                                {{ "dos_PeriodType" | translate }}: {{ boundarie.offsetPeriodType }}
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td ng-if="accesses.programIndicators_visualization">
+                                    <a ng-controller="makeIndicatorVisualizations" href="" ng-click="getTable(
+                                            indicator.displayName,
+                                            indicator.id,
+                                            indicator.rowItems
+                                            )"><img src="./assets/img/pivottable.png" alt="View Table" width="15" />
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
         <div class="col-md-12" id="indicatorContainer" ng-controller="dossierProgramGlobalIndicatorController">
-            <div ng-if="indicators.length > 0" class="col-md-12">
+            <div ng-if="indicators.length > 0 && accesses.indicators" class="col-md-12">
                 <h3 class="section" id="indicators">{{ "dos_Indicators" | translate }}</h3>
                 <p>
-                    {{ "dosNumberOfIndicators" | translate }}: {{ programIndicators.length }}
+                    {{ "dos_NumberOfIndicators" | translate }}: {{ programIndicators.length }}
                     &emsp;
-                    <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" | translate}}</a>
+                    <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" |
+                        translate}}</a>
                 </p>
                 <table class="sectionElementsTable table table-striped">
                     <thead>
                         <tr>
-                            <th>{{ "dos_NameElement" | translate }}</th>
-                            <th>{{ "dos_DescriptionElement" | translate }}</th>
-                            <th>{{ "dos_Type" | translate }}</th>
-                            <th>{{ "dos_NumeratorIndicator" | translate }}</th>
-                            <th>{{ "dos_DenominatorIndicator" | translate }}</th>
-                            <th>{{ "dos_StagesReferenced" | translate }}</th>
-                            <th>{{ "dos_Visualization" | translate }}</th>
+                            <th title='{{ "programs_i_name_help" | translate }}' ng-if="accesses.indicators_name">{{
+                                "dos_NameElement" | translate }}</th>
+                            <th title='{{ "programs_i_description_help" | translate }}'
+                                ng-if="accesses.indicators_description">{{ "dos_DescriptionElement" | translate }}</th>
+                            <th title='{{ "programs_i_type_help" | translate }}' ng-if="accesses.indicators_type">{{
+                                "dos_Type" | translate }}</th>
+                            <th title='{{ "programs_i_numerator_help" | translate }}'
+                                ng-if="accesses.indicators_numerator">{{ "dos_NumeratorIndicator" | translate }}</th>
+                            <th title='{{ "programs_i_denominator_help" | translate }}'
+                                ng-if="accesses.indicators_denominator">{{ "dos_DenominatorIndicator" | translate }}
+                            </th>
+                            <th title='{{ "programs_i_stagesReferenced_help" | translate }}'
+                                ng-if="accesses.indicators_stagesReferenced">{{ "dos_StagesReferenced" | translate }}
+                            </th>
+                            <th title='{{ "programs_i_visualization_help" | translate }}'
+                                ng-if="accesses.indicators_visualization">{{ "dos_Visualization" | translate }}</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="indicator in indicators |  orderBy: 'displayName'">
-                            <td>{{ indicator.displayName }}</td>
-                            <td>{{ indicator.displayDescription }}</td>
-                            <td>{{ indicator.indicatorType.displayName }}</td>
-                            <td>{{ indicator.numerator }}</td>
-                            <td>{{ indicator.denominator }}</td>
-                            <td>
+                            <td ng-if="accesses.indicators_name">{{ indicator.displayName }}</td>
+                            <td ng-if="accesses.indicators_description">{{ indicator.displayDescription }}</td>
+                            <td ng-if="accesses.indicators_type">{{ indicator.indicatorType.displayName }}</td>
+                            <td ng-if="accesses.indicators_numerator">{{ indicator.numerator }}</td>
+                            <td ng-if="accesses.indicators_denominator">{{ indicator.denominator }}</td>
+                            <td ng-if="accesses.indicators_stagesReferenced">
                                 <ul ng-if="indicator.stageRef">
                                     <li ng-repeat="stageRef in indicator.stageRef">
                                         {{ stageRef }}
                                     </li>
                                 </ul>
                             </td>
-                            <td>
-                                <a
-                                    ng-controller="makeIndicatorVisualizations"
-                                    href=""
-                                    ng-click="getTable(
+                            <td ng-if="accesses.indicators_visualization">
+                                <a ng-controller="makeIndicatorVisualizations" href="" ng-click="getTable(
                                         indicator.displayName,
                                         indicator.id,
                                         indicator.rowItems
-                                        )"
-                                    ><img src="./assets/img/pivottable.png" alt="View Table" width="15" />
+                                        )"><img src="./assets/img/pivottable.png" alt="View Table" width="15" />
                                 </a>
                             </td>
                         </tr>
@@ -336,30 +374,38 @@
         </div>
 
         <div class="col-md-12" id="RuleContainer" ng-controller="dossiersProgramRuleController">
-            <div ng-if="rules.length > 0" class="col-md-12">
-                <h3 class="section" id="rules">{{ "Program Rules" | translate }}</h3>
+            <div ng-if="rules.length > 0 && accesses.programRules" class="col-md-12">
+                <h3 class="section" id="rules">{{ "dos_ProgramRules" | translate }}</h3>
                 <p>
                     {{ "Number of Rules in Program" | translate }}: {{ rules.length }}
                     &emsp;
-                    <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" | translate}}</a>
+                    <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" |
+                        translate}}</a>
                 </p>
                 <table class="sectionElementsTable table table-striped">
                     <thead>
                         <tr>
-                            <th>{{ "dos_NameElement" | translate }}</th>
-                            <th>{{ "dos_DescriptionElement" | translate }}</th>
-                            <th>{{ "dos_ProgramStage" | translate }}</th>
-                            <th>{{ "dos_Condition" | translate }}</th>
-                            <th>{{ "dos_ProgramRuleActions" | translate }}</th>
+                            <th title='{{ "programs_pr_name_help" | translate }}' ng-if="accesses.programRules_name">{{
+                                "dos_NameElement" | translate }}</th>
+                            <th title='{{ "programs_pr_description_help" | translate }}'
+                                ng-if="accesses.programRules_description">{{ "dos_DescriptionElement" | translate }}
+                            </th>
+                            <th title='{{ "programs_pr_type_help" | translate }}'
+                                ng-if="accesses.programRules_programStage">{{ "dos_ProgramStage" | translate }}</th>
+                            <th title='{{ "programs_pr_numerator_help" | translate }}'
+                                ng-if="accesses.programRules_condition">{{ "dos_Condition" | translate }}</th>
+                            <th title='{{ "programs_pr_denominator_help" | translate }}'
+                                ng-if="accesses.programRules_programRuleActions">{{ "dos_ProgramRuleActions" | translate
+                                }}</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="rule in rules">
-                            <td>{{ rule.name }}</td>
-                            <td>{{ rule.description }}</td>
-                            <td>{{ rule.programStage.name }}</td>
-                            <td>{{ rule.condition }}</td>
-                            <td>
+                            <td ng-if="accesses.programRules_name">{{ rule.name }}</td>
+                            <td ng-if="accesses.programRules_description">{{ rule.description }}</td>
+                            <td ng-if="accesses.programRules_programStage">{{ rule.programStage.name }}</td>
+                            <td ng-if="accesses.programRules_condition">{{ rule.condition }}</td>
+                            <td ng-if="accesses.programRules_programRuleActions">
                                 <ul ng-if="rule.programRuleActions">
                                     <li ng-repeat="prAction in rule.programRuleActions">
                                         <div ng-switch="prAction.programRuleActionType">
@@ -496,7 +542,8 @@
                                                     {{ prAction.trackedEntityAttribute.name }}
                                                 </div>
                                                 <div ng-if="prAction.content">
-                                                    {{ "dos_OptionGroupToHide" | translate }}: {{ prAction.option.name }}
+                                                    {{ "dos_OptionGroupToHide" | translate }}: {{ prAction.option.name
+                                                    }}
                                                 </div>
                                             </div>
                                             <div ng-switch-when="HIDEPROGRAMSTAGE">
@@ -558,32 +605,45 @@
         </div>
 
         <div class="col-md-12" id="RuleVariablesContainer" ng-controller="dossiersProgramRuleVariablesController">
-            <div ng-if="ruleVariables.length > 0" class="col-md-12">
-                <h3 class="section" id="ruleVariables">{{ "dos_ProgramRulesVariables" | translate }}</h3>
+            <div ng-if="ruleVariables.length > 0 && accesses.programRuleVariables" class="col-md-12">
+                <h3 class="section" id="ruleVariables">{{ "dos_ProgramRuleVariables" | translate }}</h3>
                 <p>
-                    {{ "dos_ProgramRulesVariablesNumber" | translate }}: {{ ruleVariables.length }}
+                    {{ "dos_ProgramRuleVariablesNumber" | translate }}: {{ ruleVariables.length }}
                     &emsp;
-                    <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" | translate}}</a>
+                    <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" |
+                        translate}}</a>
                 </p>
                 <table class="sectionElementsTable table table-striped">
                     <thead>
                         <tr>
-                            <th>{{ "dos_NameElement" | translate }}</th>
-                            <th>{{ "dos_SourceType" | translate }}</th>
-                            <th>{{ "dos_ProgramStage" | translate }}</th>
-                            <th>{{ "dos_DataElement" | translate }}</th>
-                            <th>{{ "dos_TrackedEntityAttributes" | translate }}</th>
-                            <th>{{ "dos_AssociatedProgramRules" | translate }}</th>
+                            <th title='{{ "programs_prv_name_help" | translate }}'
+                                ng-if="accesses.programRuleVariables_name">{{ "dos_NameElement" | translate }}</th>
+                            <th title='{{ "programs_prv_sourceType_help" | translate }}'
+                                ng-if="accesses.programRuleVariables_sourceType">{{ "dos_SourceType" | translate }}</th>
+                            <th title='{{ "programs_prv_programStage_help" | translate }}'
+                                ng-if="accesses.programRuleVariables_programStage">{{ "dos_ProgramStage" | translate }}
+                            </th>
+                            <th title='{{ "programs_prv_dataElement_help" | translate }}'
+                                ng-if="accesses.programRuleVariables_dataElement">{{ "dos_DataElement" | translate }}
+                            </th>
+                            <th title='{{ "programs_prv_trackedEntityAttributes_help" | translate }}'
+                                ng-if="accesses.programRuleVariables_trackedEntityAttributes">{{
+                                "dos_TrackedEntityAttributes" | translate }}</th>
+                            <th title='{{ "programs_prv_associatedProgramRules_help" | translate }}'
+                                ng-if="accesses.programRuleVariables_associatedProgramRules">{{
+                                "dos_AssociatedProgramRules" | translate }}</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="var in ruleVariables">
-                            <td>{{var.name}}</td>
-                            <td>{{var.programRuleVariableSourceType}}</td>
-                            <td>{{var.programStage.name}}</td>
-                            <td>{{var.dataElement.name}}</td>
-                            <td>{{var.trackedEntityAttribute.name}}</td>
-                            <td>
+                            <td ng-if="accesses.programRuleVariables_name">{{var.name}}</td>
+                            <td ng-if="accesses.programRuleVariables_sourceType">{{var.programRuleVariableSourceType}}
+                            </td>
+                            <td ng-if="accesses.programRuleVariables_programStage">{{var.programStage.name}}</td>
+                            <td ng-if="accesses.programRuleVariables_dataElement">{{var.dataElement.name}}</td>
+                            <td ng-if="accesses.programRuleVariables_trackedEntityAttributes">
+                                {{var.trackedEntityAttribute.name}}</td>
+                            <td ng-if="accesses.programRuleVariables_associatedProgramRules">
                                 <ul ng-if="var.associatedProgramRules">
                                     <li ng-repeat="associatedProgramRule in var.associatedProgramRules">
                                         {{ associatedProgramRule }}
@@ -602,7 +662,8 @@
                 <p>
                     {{ "dos_ResourcesNumber" | translate }}: {{ resources.length }}
                     &emsp;
-                    <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" | translate}}</a>
+                    <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" |
+                        translate}}</a>
                 </p>
                 <table class="sectionElementsTable table table-striped">
                     <thead>
@@ -618,10 +679,9 @@
                             <td>{{res.displayName}}</td>
                             <td>{{res.displayDescription}}</td>
                             <td>{{res.type}}</td>
-                            <td><a
-                                href={{res.link}}
-                                ><img src="./assets/img/pivottable.png" alt="View Resource" width="15" />
-                            </a></td>
+                            <td><a href={{res.link}}><img src="./assets/img/pivottable.png" alt="View Resource"
+                                        width="15" />
+                                </a></td>
                         </tr>
                     </tbody>
                 </table>

@@ -42,3 +42,6 @@ cypress/fixtures/
 
 # VS Code
 .vscode/*
+
+# Translations
+languages/*.csv

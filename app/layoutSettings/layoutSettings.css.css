@@ -1,0 +1,54 @@
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+}
+
+.modal td {
+    height: unset;
+    vertical-align: middle;
+}
+
+.modal-header .close {
+    font-size: 2.5rem;
+}
+
+.modal .pre-scrollable {
+    max-height: 600px;
+}
+
+.layoutSettings {
+    font-size: 14px;
+}
+
+.layoutSettings .table > tbody > tr.child > td:first-of-type {
+    padding-left: 2.5em;
+}
+
+.layoutSettings .table > tbody > tr:not(.child) > td:first-of-type {
+    font-weight: bold;
+    padding-left: 1em;
+}
+
+.layoutSettings .table > tbody > tr > td:not(:first-of-type),
+.layoutSettings .table > thead > tr > th:not(:first-of-type) {
+    text-align: center;
+    width: 1%;
+    white-space: nowrap;
+}
+
+.layoutSettings .table {
+    margin-top: 1em;
+}
+
+#dossierProgramsPanel .layoutSettings .table th {
+    position: static;
+}
+
+#searchLayoutSettings {
+    margin-left: 1em;
+}

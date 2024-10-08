@@ -5,22 +5,155 @@
 
 dossierProgramsModule.controller("dossierProgramsMainController", [
     "$scope",
-    "$translate",
     "$anchorScroll",
     "$sce",
     "dossiersProgramsFactory",
     "dossiersProgramsLinkTestFactory",
     "dossiersProgramLoadingService",
+    "advancedUsersFactory",
+    "layoutSettingsFactory",
     function (
         $scope,
-        $translate,
         $anchorScroll,
         $sce,
         dossiersProgramsFactory,
         dossiersProgramsLinkTestFactory,
-        dossiersProgramLoadingService
+        dossiersProgramLoadingService,
+        advancedUsersFactory,
+        layoutSettingsFactory
     ) {
         $("#dossiersPrograms").tab("show");
+
+        $scope.layoutSettings = {
+            advancedUserGroups: ["LjRqO9XzQPs"],
+            accesses: {
+                programDescription: {
+                    index: 0,
+                    translationKey: "dos_DescriptionOfProgram",
+                    access: 2,
+                },
+                trackedEntityAttributes: {
+                    index: 1,
+                    translationKey: "dos_TrackedEntityAttributes",
+                    access: 2,
+                    columns: {
+                        name: { index: 0, translationKey: "dos_NameElement", access: 2 },
+                        formName: { index: 1, translationKey: "dos_FormNameElement", access: 2 },
+                        description: { index: 2, translationKey: "dos_DescriptionElement", access: 2 },
+                        valueType: { index: 3, translationKey: "dos_ValueType", access: 1 },
+                        aggregationType: { index: 4, translationKey: "dos_AggregationType", access: 1 },
+                        mandatory: { index: 5, translationKey: "dos_Mandatory", access: 1 },
+                        visibilityInDataEntry: { index: 6, translationKey: "dos_Visibility", access: 1 },
+                        optionSet: { index: 7, translationKey: "dos_OptionSet", access: 1 },
+                    },
+                },
+                programStages: {
+                    index: 2,
+                    translationKey: "dos_ProgramStages",
+                    access: 2,
+                    columns: {
+                        name: { index: 0, translationKey: "dos_NameElement", access: 2 },
+                        formName: { index: 1, translationKey: "dos_FormNameElement", access: 2 },
+                        description: { index: 2, translationKey: "dos_DescriptionElement", access: 2 },
+                        valueType: { index: 3, translationKey: "dos_ValueType", access: 1 },
+                        calculationMode: { index: 4, translationKey: "dos_CalculationMode", access: 1 },
+                        mandatory: { index: 5, translationKey: "dos_Mandatory", access: 1 },
+                        visibilityInDataEntry: { index: 6, translationKey: "dos_Visibility", access: 1 },
+                        optionSet: { index: 7, translationKey: "dos_OptionSet", access: 1 },
+                    },
+                },
+                programIndicators: {
+                    index: 3,
+                    translationKey: "dos_ProgramIndicators",
+                    access: 2,
+                    columns: {
+                        name: { index: 0, translationKey: "dos_NameElement", access: 2 },
+                        description: { index: 1, translationKey: "dos_DescriptionElement", access: 2 },
+                        filter: { index: 2, translationKey: "dos_Filter", access: 1 },
+                        calculation: { index: 3, translationKey: "dos_Calculation", access: 1 },
+                        aggregationType: { index: 4, translationKey: "dos_AggregationType", access: 1 },
+                        typeOfProgramIndicator: { index: 5, translationKey: "dos_TypeOfProgramIndicator", access: 1 },
+                        stagesReferenced: { index: 6, translationKey: "dos_StagesReferenced", access: 1 },
+                        boundaries: { index: 7, translationKey: "dos_Boundaries", access: 1 },
+                        visualization: { index: 8, translationKey: "dos_Visualization", access: 2 },
+                    },
+                },
+                indicators: {
+                    index: 4,
+                    translationKey: "dos_Indicators",
+                    access: 2,
+                    columns: {
+                        name: { index: 0, translationKey: "dos_NameElement", access: 2 },
+                        description: { index: 1, translationKey: "dos_DescriptionElement", access: 2 },
+                        type: { index: 2, translationKey: "dos_Type", access: 2 },
+                        numerator: { index: 3, translationKey: "dos_NumeratorIndicator", access: 2 },
+                        denominator: { index: 4, translationKey: "dos_DenominatorIndicator", access: 2 },
+                        stagesReferenced: { index: 5, translationKey: "dos_StagesReferenced", access: 2 },
+                        visualization: { index: 6, translationKey: "dos_Visualization", access: 2 },
+                    },
+                },
+                programRules: {
+                    index: 5,
+                    translationKey: "dos_ProgramRules",
+                    access: 1,
+                    columns: {
+                        name: { index: 0, translationKey: "dos_NameElement", access: 1 },
+                        description: { index: 1, translationKey: "dos_DescriptionElement", access: 1 },
+                        programStage: { index: 2, translationKey: "dos_ProgramStage", access: 1 },
+                        condition: { index: 3, translationKey: "dos_Condition", access: 1 },
+                        programRuleActions: { index: 4, translationKey: "dos_ProgramRuleActions", access: 1 },
+                    },
+                },
+                programRuleVariables: {
+                    index: 6,
+                    translationKey: "dos_ProgramRuleVariables",
+                    access: 1,
+                    columns: {
+                        name: { index: 0, translationKey: "dos_NameElement", access: 1 },
+                        sourceType: { index: 1, translationKey: "dos_SourceType", access: 1 },
+                        programStage: { index: 2, translationKey: "dos_ProgramStage", access: 1 },
+                        dataElement: { index: 3, translationKey: "dos_DataElement", access: 1 },
+                        trackedEntityAttributes: { index: 4, translationKey: "dos_TrackedEntityAttributes", access: 1 },
+                        associatedProgramRules: { index: 5, translationKey: "dos_AssociatedProgramRules", access: 1 },
+                    },
+                },
+            },
+        };
+
+        const namespace = "programs";
+
+        layoutSettingsFactory.get
+            .query({ view: namespace })
+            .$promise.then(data => {
+                $scope.layoutSettings = data.toJSON();
+            })
+            .catch(error => {
+                /* If no sharing settings are found, create them */
+                if (error.status === 404) {
+                    layoutSettingsFactory.set.query(
+                        { view: namespace },
+                        JSON.stringify($scope.layoutSettings),
+                        response => {
+                            if (response.status === "OK") {
+                                console.log("dossierProgramsModule: Layout Settings created");
+                            } else {
+                                console.log("dossierProgramsModule: Error creating Layout Settings");
+                            }
+                        }
+                    );
+                } else {
+                    console.log("dossierProgramsModule: Error getting Layout Settings");
+                }
+            });
+
+        $scope.isAdvancedUser = false;
+
+        $scope.$watch("layoutSettings", function () {
+            advancedUsersFactory.isAdvancedUser($scope.layoutSettings.advancedUserGroups).query({}, function (data) {
+                $scope.isAdvancedUser = data.isAdvancedUser;
+                $scope.accesses = userAccesses($scope.layoutSettings.accesses, $scope.isAdvancedUser);
+            });
+        });
 
         /*
          *  @alias appModule.controller~addtoTOC
@@ -29,6 +162,13 @@ dossierProgramsModule.controller("dossierProgramsMainController", [
          *  @todo Move to dossier controller
          */
         addtoTOC = function (toc, items, parent, type) {
+            if (type == "Program Rules" && !$scope.accesses.programRules) return;
+            if (type == "Program Rules Variables" && !$scope.accesses.programRulesVariables) return;
+            if (type == "programs" && !$scope.accesses.programStages) return;
+            if (type == "Tracked Entity Attributes" && !$scope.accesses.trackedEntityAttributes) return;
+            if (type == "Program Indicators" && !$scope.accesses.programIndicators) return;
+            if (type == "Indicators" && !$scope.accesses.indicators) return;
+
             var index = toc.entries.push({
                 parent: parent,
                 children: items,
@@ -83,19 +223,15 @@ dossierProgramsModule.controller("dossierProgramsMainController", [
 dossierProgramsModule.controller("dossiersProgramSectionController", [
     "$scope",
     "$q",
-    "$translate",
     "dossiersProgramStageSectionsFactory",
     "dossiersProgramStageCalcModeFactory",
-    "Ping",
     "dossiersProgramDataService",
     "dossiersProgramLoadingService",
     function (
         $scope,
         $q,
-        $translate,
         dossiersProgramStageSectionsFactory,
         dossiersProgramStageCalcModeFactory,
-        Ping,
         dossiersProgramDataService,
         dossiersProgramLoadingService
     ) {
@@ -143,6 +279,10 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
             });
         }
 
+        function filterDataElement(dataElement) {
+            return !dataElement.dataElementGroups.some(deg => $scope.blacklist_dataelementgroups.includes(deg.id));
+        }
+
         /*
          *  @name createStageWithoutSections
          *  @description Display stage data elements as a "phantom" stage and add stage to table of contents
@@ -153,13 +293,15 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
             stage.programStageSections = [
                 {
                     displayName: "Data Elements",
-                    dataElements: stage.programStageDataElements.map(stageDataElement => {
-                        return {
-                            ...stageDataElement.dataElement,
-                            compulsory: stageDataElement.compulsory,
-                            visibility: makeDEVisibility(stageDataElement.dataElement.id, hiddenDEArray, stage.id),
-                        };
-                    }),
+                    dataElements: stage.programStageDataElements
+                        .filter(stageDataElement => filterDataElement(stageDataElement.dataElement))
+                        .map(stageDataElement => {
+                            return {
+                                ...stageDataElement.dataElement,
+                                compulsory: stageDataElement.compulsory,
+                                visibility: makeDEVisibility(stageDataElement.dataElement.id, hiddenDEArray, stage.id),
+                            };
+                        }),
                 },
             ];
 
@@ -191,7 +333,13 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
             });
 
             addtoTOC($scope.toc, stage.programStageSections, toc, "programs");
-            return stage;
+            return {
+                ...stage,
+                programStageSections: stage.programStageSections.map(section => ({
+                    ...section,
+                    dataElements: section.dataElements.filter(filterDataElement),
+                })),
+            };
         }
 
         /*
@@ -338,6 +486,7 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
                                 return createStageWithSections(stage, toc, hiddenSectionsArray, hiddenDEArray);
                             }
                         });
+
                         dossiersProgramDataService.data.stages = $scope.stages;
                         dossiersProgramLoadingService.loading.programs = true;
                         if (dossiersProgramLoadingService.done()) endLoadingState(true);
@@ -778,19 +927,15 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
 dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
     "$scope",
     "$rootScope",
-    "$translate",
     "dossiersProgramGlobalIndicatorsFactory",
     "dossiersProgramGlobalIndicatorExpressionFactory",
-    "Ping",
     "dossiersProgramDataService",
     "dossiersProgramLoadingService",
     function (
         $scope,
         $rootScope,
-        $translate,
         dossiersProgramGlobalIndicatorsFactory,
         dossiersProgramGlobalIndicatorExpressionFactory,
-        Ping,
         dossiersProgramDataService,
         dossiersProgramLoadingService
     ) {
@@ -936,15 +1081,22 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
 
                     //Query indicator information
                     dossiersProgramGlobalIndicatorsFactory.get(function (data) {
-                        $scope.allIndicators = data.indicators.forEach(function (indicator) {
-                            const num = indicator.numerator;
-                            const den = indicator.denominator;
-                            parseExpression(indicator, num);
-                            parseExpression(indicator, den);
-                            if (indicator.stageRef) indicator.stageRef = _.uniq(indicator.stageRef);
+                        $scope.allIndicators = data.indicators
+                            .filter(
+                                indicator =>
+                                    !indicator.indicatorGroups.some(ig =>
+                                        $scope.blacklist_indicatorgroups.includes(ig.id)
+                                    )
+                            )
+                            .forEach(function (indicator) {
+                                const num = indicator.numerator;
+                                const den = indicator.denominator;
+                                parseExpression(indicator, num);
+                                parseExpression(indicator, den);
+                                if (indicator.stageRef) indicator.stageRef = _.uniq(indicator.stageRef);
 
-                            indicator.rowItems = extractVisItemsFromInd(num, den);
-                        });
+                                indicator.rowItems = extractVisItemsFromInd(num, den);
+                            });
                         if ($scope.indicators.length > 0) {
                             addtoTOC($scope.toc, null, $scope.indicators4TOC, "Indicators");
                             recursiveAssignNumerator(0);
@@ -965,14 +1117,12 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
 
 dossierProgramsModule.controller("dossiersProgramTEAController", [
     "$scope",
-    "$translate",
     "dossiersProgramTEAsFactory",
     "dossiersProgramTEAsRulesFactory",
     "dossiersProgramDataService",
     "dossiersProgramLoadingService",
     function (
         $scope,
-        $translate,
         dossiersProgramTEAsFactory,
         dossiersProgramTEAsRulesFactory,
         dossiersProgramDataService,
@@ -1063,7 +1213,6 @@ dossierProgramsModule.controller("dossiersProgramTEAController", [
 dossierProgramsModule.controller("dossiersProgramRuleController", [
     "$scope",
     "$rootScope",
-    "$translate",
     "dossiersProgramRulesFactory",
     "dossiersProgramRulesActionsTemplateName",
     "dossiersProgramDataService",
@@ -1071,7 +1220,6 @@ dossierProgramsModule.controller("dossiersProgramRuleController", [
     function (
         $scope,
         $rootScope,
-        $translate,
         dossiersProgramRulesFactory,
         dossiersProgramRulesActionsTemplateName,
         dossiersProgramDataService,
@@ -1146,14 +1294,12 @@ dossierProgramsModule.controller("dossiersProgramRuleController", [
 dossierProgramsModule.controller("dossiersProgramRuleVariablesController", [
     "$scope",
     "$rootScope",
-    "$translate",
     "dossiersProgramRuleVariablesFactory",
     "dossiersProgramDataService",
     "dossiersProgramLoadingService",
     function (
         $scope,
         $rootScope,
-        $translate,
         dossiersProgramRuleVariablesFactory,
         dossiersProgramDataService,
         dossiersProgramLoadingService
@@ -1196,7 +1342,7 @@ dossierProgramsModule.controller("dossiersProgramRuleVariablesController", [
                         });
 
                         if ($scope.ruleVariables.length > 0) {
-                            addtoTOC($scope.toc, null, $scope.ruleVariables4TOC, "Program Rules");
+                            addtoTOC($scope.toc, null, $scope.ruleVariables4TOC, "Program Rules Variables");
                             dossiersProgramDataService.data.ruleVariables = $scope.ruleVariables;
                         }
 
@@ -1211,14 +1357,12 @@ dossierProgramsModule.controller("dossiersProgramRuleVariablesController", [
 
 dossierProgramsModule.controller("dossiersProgramResourcesController", [
     "$scope",
-    "$translate",
     "dossiersProgramDataService",
     "dossiersProgramResourcesAttributeFactory",
     "dossiersProgramResourcesElementsFactory",
     "dossiersProgramLoadingService",
     function (
         $scope,
-        $translate,
         dossiersProgramDataService,
         dossiersProgramResourcesAttributeFactory,
         dossiersProgramResourcesElementsFactory,
@@ -1422,24 +1566,35 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         @description Makes a sheet from Stage Section / Data Elements data
         @scope dossiersProgramExport
         */
-        function makeDataElementsSheets(workbook, stages) {
+        function makeDataElementsSheets(workbook, stages, accesses) {
             const data = stages.flatMap(stage => {
                 return stage.programStageSections.flatMap(section => {
                     return section.dataElements.flatMap(de => {
-                        return {
-                            [translate("dos_Stage")]: stage.displayName,
-                            [translate("dos_Section")]:
+                        const row = [
+                            [translate("dos_Stage"), stage.displayName],
+                            [
+                                translate("dos_Section"),
                                 section.displayName === "Data Elements" ? "" : section.displayName,
-                            [translate("dos_NameElement")]: de?.displayName,
-                            [translate("dos_FormNameElement")]: de?.displayFormName,
-                            [translate("dos_DescriptionElement")]: de?.displayDescription,
-                            [translate("dos_ValueType")]: de?.valueType,
-                            [translate("dos_CalculationMode")]: makeCalcMode(de?.calcMode),
-                            [translate("dos_OptionSetName")]: de?.optionSet?.name,
-                            [translate("dos_OptionSetOptions")]: joinAndTrim(
-                                de?.optionSet?.options?.map(opt => opt.displayName)
-                            ),
-                        };
+                            ],
+                            accesses.programStages_name && [translate("dos_NameElement"), de?.displayName],
+                            accesses.programStages_formName && [translate("dos_FormNameElement"), de?.displayFormName],
+                            accesses.programStages_description && [
+                                translate("dos_DescriptionElement"),
+                                de?.displayDescription,
+                            ],
+                            accesses.programStages_valueType && [translate("dos_ValueType"), de?.valueType],
+                            accesses.programStages_calculationMode && [
+                                translate("dos_CalculationMode"),
+                                makeCalcMode(de?.calcMode),
+                            ],
+                            accesses.programStages_optionSet && [translate("dos_OptionSetName"), de?.optionSet?.name],
+                            accesses.programStages_optionSet && [
+                                translate("dos_OptionSetOptions"),
+                                joinAndTrim(de?.optionSet?.options?.map(opt => opt.displayName)),
+                            ],
+                        ];
+
+                        return _(row).compact().fromPairs().value();
                     });
                 });
             });
@@ -1454,19 +1609,31 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         @description Makes a sheet from Tracked Entity Attributes data
         @scope dossiersProgramExport
         */
-        function makeTEASheet(workbook, trackedEntityAttributes) {
+        function makeTEASheet(workbook, trackedEntityAttributes, accesses) {
             const data = trackedEntityAttributes.map(item => {
-                return {
-                    [translate("dos_NameElement")]: item?.name,
-                    [translate("dos_FormNameElement")]: item?.formName,
-                    [translate("dos_DescriptionElement")]: item?.description,
-                    [translate("dos_AggregationType")]: item?.aggregationType,
-                    [translate("dos_ValueType")]: item?.valueType,
-                    [translate("dos_OptionSetName")]: item?.optionSet?.name,
-                    [translate("dos_OptionSetOptions")]: joinAndTrim(
-                        item?.optionSet?.options.map(option => option.name)
-                    ),
-                };
+                const row = [
+                    accesses.trackedEntityAttributes_name && [translate("dos_NameElement"), item?.name],
+                    accesses.trackedEntityAttributes_formName && [translate("dos_FormNameElement"), item?.formName],
+                    accesses.trackedEntityAttributes_description && [
+                        translate("dos_DescriptionElement"),
+                        item?.description,
+                    ],
+                    accesses.trackedEntityAttributes_aggregationType && [
+                        translate("dos_AggregationType"),
+                        item?.aggregationType,
+                    ],
+                    accesses.trackedEntityAttributes_valueType && [translate("dos_ValueType"), item?.valueType],
+                    accesses.trackedEntityAttributes_optionSet && [
+                        translate("dos_OptionSetName"),
+                        item?.optionSet?.name,
+                    ],
+                    accesses.trackedEntityAttributes_optionSet && [
+                        translate("dos_OptionSetOptions"),
+                        joinAndTrim(item?.optionSet?.options.map(option => option.name)),
+                    ],
+                ];
+
+                return _(row).compact().fromPairs().value();
             });
 
             const sheet = workbook.addSheet("Tracked Entity Attributes");
@@ -1479,16 +1646,21 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         @description Makes a sheet from Indicators data
         @scope dossiersProgramExport
         */
-        function makeIndicatorsSheet(workbook, indicators) {
+        function makeIndicatorsSheet(workbook, indicators, accesses) {
             const data = indicators.map(item => {
-                return {
-                    [translate("dos_NameElement")]: item?.displayName,
-                    [translate("dos_DescriptionElement")]: item?.displayDescription,
-                    [translate("dos_Type")]: item?.indicatorType?.displayName,
-                    [translate("dos_NumeratorIndicator")]: item?.numerator,
-                    [translate("dos_DenominatorIndicator")]: item?.denominator,
-                    [translate("dos_StagesReferenced")]: joinAndTrim(item?.stageRef),
-                };
+                const row = [
+                    accesses.indicators_name && [translate("dos_NameElement"), item?.displayName],
+                    accesses.indicators_description && [translate("dos_DescriptionElement"), item?.displayDescription],
+                    accesses.indicators_type && [translate("dos_Type"), item?.indicatorType?.displayName],
+                    accesses.indicators_numerator && [translate("dos_NumeratorIndicator"), item?.numerator],
+                    accesses.indicators_denominator && [translate("dos_DenominatorIndicator"), item?.denominator],
+                    accesses.indicators_stagesReferenced && [
+                        translate("dos_StagesReferenced"),
+                        joinAndTrim(item?.stageRef),
+                    ],
+                ];
+
+                return _(row).compact().fromPairs().value();
             });
 
             const sheet = workbook.addSheet("Indicators");
@@ -1501,24 +1673,41 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         @description Makes a sheet from Program Indicators data
         @scope dossiersProgramExport
         */
-        function makeProgramIndicatorsSheet(workbook, programIndicators) {
+        function makeProgramIndicatorsSheet(workbook, programIndicators, accesses) {
             const data = programIndicators.map(item => {
-                return {
-                    [translate("dos_NameElement")]: item?.displayName,
-                    [translate("dos_DescriptionElement")]: item?.displayDescription,
-                    [translate("dos_Filter")]: item?.filter,
-                    [translate("dos_Calculation")]: item?.expression,
-                    [translate("dos_AggregationType")]: item?.aggregationType,
-                    [translate("dos_TypeOfProgramIndicator")]: item?.analyticsType,
-                    [translate("dos_StagesReferenced")]: item?.stageRef?.join(" | "),
-                    [translate("dos_Boundaries")]: joinAndTrim(
-                        item?.analyticsPeriodBoundaries?.map(apb =>
-                            Object.entries(_.omit(apb, "$$hashKey"))
-                                .map(i => i.join(": "))
-                                .join(", ")
-                        )
-                    ),
-                };
+                const row = [
+                    accesses.programIndicators_name && [translate("dos_NameElement"), item?.displayName],
+                    accesses.programIndicators_description && [
+                        translate("dos_DescriptionElement"),
+                        item?.displayDescription,
+                    ],
+                    accesses.programIndicators_filter && [translate("dos_Filter"), item?.filter],
+                    accesses.programIndicators_calculation && [translate("dos_Calculation"), item?.expression],
+                    accesses.programIndicators_aggregationType && [
+                        translate("dos_AggregationType"),
+                        item?.aggregationType,
+                    ],
+                    accesses.programIndicators_typeOfProgramIndicator && [
+                        translate("dos_TypeOfProgramIndicator"),
+                        item?.analyticsType,
+                    ],
+                    accesses.programIndicators_stagesReferenced && [
+                        translate("dos_StagesReferenced"),
+                        item?.stageRef?.join(" | "),
+                    ],
+                    accesses.programIndicators_boundaries && [
+                        translate("dos_Boundaries"),
+                        joinAndTrim(
+                            item?.analyticsPeriodBoundaries?.map(apb =>
+                                Object.entries(_.omit(apb, "$$hashKey"))
+                                    .map(i => i.join(": "))
+                                    .join(", ")
+                            )
+                        ),
+                    ],
+                ];
+
+                return _(row).compact().fromPairs().value();
             });
 
             const sheet = workbook.addSheet("Program Indicators");
@@ -1604,15 +1793,18 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         */
         function makeRulesSheet(workbook, rules) {
             var data = rules.map(item => {
-                return {
-                    [translate("dos_NameElement")]: item?.name,
-                    [translate("dos_DescriptionElement")]: item?.description,
-                    [translate("dos_ProgramStage")]: item?.programStage?.name,
-                    [translate("dos_Condition")]: item?.condition,
-                    [translate("dos_ActionsTypes")]: joinAndTrim(
-                        item?.programRuleActions?.map(pra => pra.programRuleActionType)
-                    ),
-                };
+                const row = [
+                    accesses.programRules_name && [translate("dos_NameElement"), item?.name],
+                    accesses.programRules_description && [translate("dos_DescriptionElement"), item?.description],
+                    accesses.programRules_programStage && [translate("dos_ProgramStage"), item?.programStage?.name],
+                    accesses.programRules_condition && [translate("dos_Condition"), item?.condition],
+                    accesses.programRules_programRuleActions && [
+                        translate("dos_ActionsTypes"),
+                        joinAndTrim(item?.programRuleActions?.map(pra => pra.programRuleActionType)),
+                    ],
+                ];
+
+                return _(row).compact().fromPairs().value();
             });
 
             const sheet = workbook.addSheet("Program Rules");
@@ -1627,13 +1819,27 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         */
         function makeRuleVariablesSheet(workbook, ruleVariables) {
             const data = ruleVariables.map(item => {
-                return {
-                    [translate("dos_NameElement")]: item?.name,
-                    [translate("dos_SourceType")]: item?.programRuleVariableSourceType,
-                    [translate("dos_ProgramStage")]: item?.programStage?.name,
-                    [translate("dos_DataElement")]: item?.dataElement?.name,
-                    [translate("dos_TrackedEntityAttributes")]: item?.trackedEntityAttribute?.name,
-                };
+                const row = [
+                    accesses.programRuleVariables_name && [translate("dos_NameElement"), item?.name],
+                    accesses.programRuleVariables_sourceType && [
+                        translate("dos_SourceType"),
+                        item?.programRuleVariableSourceType,
+                    ],
+                    accesses.programRuleVariables_programStage && [
+                        translate("dos_ProgramStage"),
+                        item?.programStage?.name,
+                    ],
+                    accesses.programRuleVariables_dataElement && [
+                        translate("dos_DataElement"),
+                        item?.dataElement?.name,
+                    ],
+                    accesses.programRuleVariables_trackedEntityAttributes && [
+                        translate("dos_TrackedEntityAttributes"),
+                        item?.trackedEntityAttribute?.name,
+                    ],
+                ];
+
+                return _(row).compact().fromPairs().value();
             });
 
             const sheet = workbook.addSheet("Program Rules Variables");
@@ -1677,32 +1883,35 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         @description Exports program dossier to xlsx spreadsheet
         @scope dossiersProgramExport
         */
-        $scope.exportToExcel = function () {
+        $scope.exportToExcel = function (accesses) {
             $scope.$watchGroup(["selectedProgram", "dossiersProgramDataService"], async function () {
                 ping();
                 if ($scope.selectedProgram && $scope.button.clicked) {
                     const workbook = await XlsxPopulate.fromBlankAsync().then(workbook => {
                         for (const [key, value] of Object.entries(dossiersProgramDataService.data)) {
                             if (value === undefined) continue;
+                            console.log(accesses);
                             switch (key) {
                                 case "stages":
-                                    makeDataElementsSheets(workbook, value);
+                                    accesses.programStages && makeDataElementsSheets(workbook, value, accesses);
                                     break;
                                 case "programIndicators":
-                                    makeProgramIndicatorsSheet(workbook, value);
+                                    accesses.programIndicators && makeProgramIndicatorsSheet(workbook, value, accesses);
                                     break;
                                 case "indicators":
-                                    makeIndicatorsSheet(workbook, value);
+                                    accesses.indicators && makeIndicatorsSheet(workbook, value, accesses);
                                     break;
                                 case "trackedEntityAttributes":
-                                    makeTEASheet(workbook, value);
+                                    accesses.trackedEntityAttributes && makeTEASheet(workbook, value, accesses);
                                     break;
                                 case "rules":
-                                    makeRulesSheet(workbook, value);
-                                    makeRulesActionsSheet(workbook, value);
+                                    accesses.programRules && makeRulesSheet(workbook, value, accesses);
+                                    accesses.programRules &&
+                                        accesses.programRules_programRuleActions &&
+                                        makeRulesActionsSheet(workbook, value);
                                     break;
                                 case "ruleVariables":
-                                    makeRuleVariablesSheet(workbook, value);
+                                    accesses.programRuleVariables && makeRuleVariablesSheet(workbook, value, accesses);
                                     break;
                                 default:
                             }
