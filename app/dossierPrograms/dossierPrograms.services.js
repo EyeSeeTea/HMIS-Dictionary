@@ -152,6 +152,10 @@ dossierProgramsModule.factory("dossiersProgramIndicatorsFactory", [
     },
 ]);
 
+var expressionHeaders = {
+    "Content-Type": "text/plain",
+};
+
 var qryProgramIndicatorExpressions = dhisUrl + "programIndicators/expression/description";
 
 dossierProgramsModule.factory("dossiersProgramIndicatorExpressionFactory", [
@@ -165,6 +169,7 @@ dossierProgramsModule.factory("dossiersProgramIndicatorExpressionFactory", [
                     method: "POST",
                     data: "@expression",
                     isArray: false,
+                    headers: expressionHeaders,
                 },
             }
         );
@@ -184,6 +189,7 @@ dossierProgramsModule.factory("dossiersProgramIndicatorFilterFactory", [
                     method: "POST",
                     data: "@filter",
                     isArray: false,
+                    headers: expressionHeaders,
                 },
             }
         );
