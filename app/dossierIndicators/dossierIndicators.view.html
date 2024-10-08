@@ -45,6 +45,10 @@
             <div class="col-md-12" ng-show="numerator.value != ''" ng-if="accesses.formula">
                 <h2 id="formulaIndicator" title='{{ "indicators_description_help" | translate }}'>{{
                     "dos_FormulaOfIndicator" | translate }}</h2>
+                <p>
+                    <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" |
+                        translate}}</a>
+                </p>
                 <div class="col-md-12">
                     <table class="table table-striped">
                         <thead>
@@ -80,7 +84,11 @@
         <div class="col-md-12" ng-controller="dossierNumeratorTable">
             <div class="col-md-12" ng-show="tabNumeratorRegroups.length > 0" ng-if="accesses.numerator">
                 <h2 id="numerator">{{ "dos_NumeratorIndicator" | translate }}</h2>
-                <p>{{ selectedIndicator.numeratorDescription }}</p>
+                <p>{{ selectedIndicator.numeratorDescription }}
+                    &emsp;
+                    <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" |
+                        translate}}</a>
+                </p>
                 <div class="col-md-12">
                     <table class="table table-striped">
                         <thead>
@@ -120,7 +128,11 @@
         <div class="col-md-12" ng-controller="dossierDenominatorTable">
             <div class="col-md-12" ng-show="tabDenominatorRegroups.length > 0" ng-if="accesses.denominator">
                 <h2 id="denominator">{{ "dos_DenominatorIndicator" | translate }}</h2>
-                <p>{{ selectedIndicator.denominatorDescription }}</p>
+                <p>{{ selectedIndicator.denominatorDescription }}
+                    &emsp;
+                    <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" |
+                        translate}}</a>
+                </p>
                 <div class="col-md-12">
                     <table class="table table-striped">
                         <thead>

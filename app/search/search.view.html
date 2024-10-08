@@ -69,7 +69,8 @@
                         </div>
                         <div class="panel-body">
                             <div class="row">
-                                <div class="col-xs-3" ng-if="accesses.objectsBasics">
+                                <div class="col-xs-3"
+                                    ng-if="accesses.objectsBasics && (show_object || show_object_advanced)">
                                     <p>
                                         <b>{{ "srch_SelectColumns_objBasics" | translate }}</b>
                                     </p>
@@ -83,7 +84,7 @@
                                         </label>
                                     </div>
                                 </div>
-                                <div class="col-xs-3" ng-if="accesses.objectsDescriptions">
+                                <div class="col-xs-3" ng-if="accesses.objectsDescriptions && show_object_desc">
                                     <p>
                                         <b>{{ "srch_SelectColumns_objDescs" | translate }}</b>
                                     </p>
@@ -97,7 +98,8 @@
                                         </label>
                                     </div>
                                 </div>
-                                <div class="col-xs-3" ng-if="accesses.groupsBasics">
+                                <div class="col-xs-3"
+                                    ng-if="accesses.groupsBasics && (show_objectGroup || show_objectGroup_advanced)">
                                     <p>
                                         <b>{{ "srch_SelectColumns_grpBasics" | translate }}</b>
                                     </p>
@@ -111,7 +113,8 @@
                                         </label>
                                     </div>
                                 </div>
-                                <div class="col-xs-3" ng-show="show_dossiers" ng-if="accesses.servicesBasics">
+                                <div class="col-xs-3" ng-show="show_dossiers"
+                                    ng-if="accesses.servicesBasics && (show_service || show_service_advanced)">
                                     <p>
                                         <b>{{ "srch_SelectColumns_servBasics" | translate }}</b>
                                     </p>
@@ -126,8 +129,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row" ng-show="advanced">
-                                <div class="col-xs-3" ng-if="accesses.objectsBasics">
+                            <div class="row" ng-show="advanced"
+                                ng-if="show_object_advanced && show_objectGroup_advanced && show_service_advanced">
+                                <div class="col-xs-3" ng-if="accesses.objectsBasics && show_object_advanced">
                                     <div class="col-xs-1"></div>
                                     <div class="col-xs-11">
                                         <label class="checkbox" ng-repeat="col in table.cols"
@@ -138,8 +142,9 @@
                                         </label>
                                     </div>
                                 </div>
-                                <div class="col-xs-3" ng-if="accesses.objectsDescriptions"></div>
-                                <div class="col-xs-3" ng-if="accesses.groupsBasics">
+                                <div class="col-xs-3" ng-if="accesses.objectsDescriptions">
+                                </div>
+                                <div class="col-xs-3" ng-if="accesses.groupsBasics && show_objectGroup_advanced">
                                     <div class="col-xs-1"></div>
                                     <div class="col-xs-11">
                                         <label class="checkbox" ng-repeat="col in table.cols"
@@ -150,7 +155,8 @@
                                         </label>
                                     </div>
                                 </div>
-                                <div class="col-xs-3" ng-show="show_dossiers" ng-if="accesses.servicesBasics">
+                                <div class="col-xs-3" ng-show="show_dossiers"
+                                    ng-if="accesses.servicesBasics && show_service_advanced">
                                     <div class="col-xs-1"></div>
                                     <div class="col-xs-11">
                                         <label class="checkbox" ng-repeat="col in table.cols"

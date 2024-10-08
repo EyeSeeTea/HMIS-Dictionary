@@ -225,6 +225,14 @@ searchModule.controller("searchController", [
                 service_id: $scope.accesses?.servicesBasics_id ?? true,
                 service_code: $scope.accesses?.servicesBasics_code ?? true,
             };
+
+            $scope.show_object = Object.values($scope.cols_object).some(v => Boolean(v));
+            $scope.show_object_advanced = Object.values($scope.cols_object_advanced).some(v => Boolean(v));
+            $scope.show_object_desc = Object.values($scope.cols_object_desc).some(v => Boolean(v));
+            $scope.show_objectGroup = Object.values($scope.cols_objectGroup).some(v => Boolean(v));
+            $scope.show_objectGroup_advanced = Object.values($scope.cols_objectGroup_advanced).some(v => Boolean(v));
+            $scope.show_service = Object.values($scope.cols_service).some(v => Boolean(v));
+            $scope.show_service_advanced = Object.values($scope.cols_service_advanced).some(v => Boolean(v));
         }
 
         function getCols() {

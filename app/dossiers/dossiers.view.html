@@ -10,13 +10,9 @@
         <p>{{ "dos_Number of DataSets in Service" | translate }}: {{ serviceDataSets.length }}</p>
         <p>{{ "dos_Number of IndicatorGroups in Service" | translate }}: {{ indicatorGroups.length }}</p>
         <div class="col-md-2">
-            <select
-                class="form-control col-md-2"
+            <select class="form-control col-md-2"
                 ng-options="service.displayName for service in services.organisationUnitGroups | orderBy: 'displayName'"
-                name="selectService"
-                id="drpBoxServices"
-                ng-model="selectedService"
-            >
+                name="selectService" id="drpBoxServices" ng-model="selectedService">
                 <option value="" disabled selected>{{ "dos_Select a service" | translate }}</option>
             </select>
         </div>
@@ -33,29 +29,19 @@
             <h3 ng-if="selectedService" style="text-decoration: underline">{{ "dos_Table of Content" | translate }}</h3>
             <ul ng-if="selectedService">
                 <li>
-                    <big
-                        ><b
-                            ><a href="" class="pageref" ng-click='scrollTo("DossierTextTitleContainer",22)'>{{
+                    <big><b><a href="" class="pageref" ng-click='scrollTo("DossierTextTitleContainer",22)'>{{
                                 "dos_Description of Service" | translate
-                            }}</a></b
-                        ></big
-                    >
+                                }}</a></b></big>
                 </li>
                 <li ng-if="toc.dataSets">
-                    <big
-                        ><b
-                            ><a href="" class="pageref" ng-click='scrollTo("DataSetsTitleContainer",22)'>{{
+                    <big><b><a href="" class="pageref" ng-click='scrollTo("DataSetsTitleContainer",22)'>{{
                                 "dos_Data Sets" | translate
-                            }}</a></b
-                        ></big
-                    >
+                                }}</a></b></big>
                     <ul ng-repeat="i in toc.entries | orderBy:'parent.displayName'" ng-if="i.type == 'Data Set'">
                         <li>
-                            <b
-                                ><a href="" class="pageref" ng-click="scrollTo(i.parent.id,66)" target="_self">{{
+                            <b><a href="" class="pageref" ng-click="scrollTo(i.parent.id,66)" target="_self">{{
                                     i.parent.displayName
-                                }}</a></b
-                            >
+                                    }}</a></b>
                             <ul ng-repeat="j in i.children">
                                 <li>
                                     <a href="" class="pageref" ng-click="scrollTo(j.id,66)">{{ j.displayName }}</a>
@@ -65,20 +51,14 @@
                     </ul>
                 </li>
                 <li ng-if="toc.indicatorGroups">
-                    <big
-                        ><b
-                            ><a href="" class="pageref" ng-click='scrollTo("IndicatorGroupsTitleContainer",22)'>{{
+                    <big><b><a href="" class="pageref" ng-click='scrollTo("IndicatorGroupsTitleContainer",22)'>{{
                                 "dos_Indicator Groups" | translate
-                            }}</a></b
-                        ></big
-                    >
+                                }}</a></b></big>
                     <ul ng-repeat="i in toc.entries | orderBy:'parent.displayName'" ng-if="i.type == 'Indicator Group'">
                         <li>
-                            <b
-                                ><a href="" class="pageref" ng-click="scrollTo(i.parent.id,66)" target="_self">{{
+                            <b><a href="" class="pageref" ng-click="scrollTo(i.parent.id,66)" target="_self">{{
                                     i.parent.displayName
-                                }}</a></b
-                            >
+                                    }}</a></b>
                             <ul ng-repeat="j in i.children">
                                 <li>
                                     <a href="" class="pageref" ng-click="scrollTo(j.id,66)">{{ j.displayName }}</a>
@@ -100,7 +80,7 @@
             <p id="backtotop">
                 <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel",66)'>{{
                     "dos_BackToTop" | translate
-                }}</a>
+                    }}</a>
             </p>
         </div>
 
@@ -109,13 +89,8 @@
             <h1>{{ "dos_Data Sets" | translate }}</h1>
         </div>
 
-        <div
-            id="ServiceDataSetContainer"
-            class="service"
-            ng-repeat="selectedSet in serviceDataSets"
-            ng-model="selectedSet"
-            class="row"
-        >
+        <div id="ServiceDataSetContainer" class="service" ng-repeat="selectedSet in serviceDataSets"
+            ng-model="selectedSet" class="row">
             <h2 class="dataset row" id="{{ selectedSet.id }}">
                 {{ "dos_Data Set" | translate }}: {{ selectedSet.displayName }}
             </h2>
@@ -124,12 +99,13 @@
                     <h3 class="section" id="{{ section.id }}">
                         {{ "dos_Section" | translate }}: {{ section.displayName }}
                     </h3>
-                    <p>{{ "dos_NumberElementsSection" | translate }}: {{ section.dataElements.length }}</p>
-                    <table
-                        ng-controller="dossiersElementsTableController"
-                        ng-init="getElementsInSection(section)"
-                        class="sectionElementsTable table table-striped"
-                    >
+                    <p>{{ "dos_NumberElementsSection" | translate }}: {{ section.dataElements.length }}
+                        &emsp;
+                        <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" |
+                            translate}}</a>
+                    </p>
+                    <table ng-controller="dossiersElementsTableController" ng-init="getElementsInSection(section)"
+                        class="sectionElementsTable table table-striped">
                         <thead>
                             <tr>
                                 <th>{{ "dos_NameElement" | translate }}</th>
@@ -148,7 +124,7 @@
                     <p id="backtotop">
                         <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel",66)'>{{
                             "dos_BackToTop" | translate
-                        }}</a>
+                            }}</a>
                     </p>
                 </div>
             </div>
@@ -159,16 +135,17 @@
             <h1>{{ "dos_Indicator Groups" | translate }}</h1>
         </div>
 
-        <div
-            id="IndicatorGroupsContainer"
-            ng-repeat="selectedGrp in indicatorGroups | orderBy: 'displayName'"
-            class="row"
-        >
+        <div id="IndicatorGroupsContainer" ng-repeat="selectedGrp in indicatorGroups | orderBy: 'displayName'"
+            class="row">
             <h2 class="indicatorGroup" id="{{ selectedGrp.id }}">
                 {{ "dos_Indicator Group" | translate }}: {{ selectedGrp.displayName }}
             </h2>
             <div ng-controller="dossiersIndicatorController">
-                <p>{{ "dos_Number of Indicators in Group" | translate }}: {{ indicatorGroup.indicators.length }}</p>
+                <p>{{ "dos_Number of Indicators in Group" | translate }}: {{ indicatorGroup.indicators.length }}
+                    &emsp;
+                    <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" |
+                        translate}}</a>
+                </p>
                 <table class="indicatorTable table table-striped">
                     <thead>
                         <tr>
@@ -186,7 +163,7 @@
                 <p id="backtotop">
                     <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel",66)'>{{
                         "dos_BackToTop" | translate
-                    }}</a>
+                        }}</a>
                 </p>
             </div>
         </div>
