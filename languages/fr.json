@@ -1,6 +1,5 @@
 {
   "INDEX.HTML": "****************************",
-
   "idx_Dossiers": "Dossiers",
   "idx_Search": "Recherche",
   "idx_Graph": "Graphique",
@@ -8,18 +7,14 @@
   "idx_Programs": "Programmes",
   "idx_DataSets": "Ens. Données",
   "idx_Indicators": "Indicateurs",
-
   "MODULE:ALL": "****************************",
   "OPEN": "Ouvrir",
-
   "MODULE:DOSSIERS": "****************************",
-
   "dos_Dossiers": "Dossiers",
   "dos_Number of Services": "Nombre de Services",
   "dos_Number of DataSets in Service": "Nombre d'Ensembles de Données dans le Service",
   "dos_Number of IndicatorGroups in Service": "Nombre de Groupes d'Indicateurs dans le Service",
   "dos_Select a service": "Sélectionner un service",
-
   "dos_Table of Content": "Table des Matières",
   "dos_Description of Service": "Description du Service",
   "dos_Data Sets": "Ensembles de Données > Sections > Éléments de Données (Table 1)",
@@ -28,9 +23,7 @@
   "dos_Stage": "Étape",
   "dos_Indicator Groups": "Groupes d'Indicateurs > Indicateurs (Table 2)",
   "dos_Indicator Group": "Groupe d'Indicateurs",
-
   "dos_BackToTop": "Haut de Page",
-
   "dos_NumberElementsSection": "Nombre d'Éléments de Données dans la Section",
   "dos_DescriptionStage": "Description de l'Étape",
   "dos_DescriptionSection": "Description de la Section Étape",
@@ -94,13 +87,11 @@
   "dos_EventCharts": "Graphiques d'événements",
   "dos_EventChartsNumber": "Nombre de diagrammes d'événements",
   "dos_ActionsTypes": "Types d'actions",
-
   "dos_Number of Indicators in Group": "Nombre d'Indicateurs dans le Groupe d'Indicateurs",
   "dos_NameIndicator": "Nom",
   "dos_DescriptionIndicator": "Description",
   "dos_NumeratorIndicator": "Numérateur",
   "dos_DenominatorIndicator": "Dénominateur",
-
   "dos_Comments": "Commentaires",
   "dos_Mandatory": "Obligatoire",
   "dos_Visibility": "Visibilité de la saisie des données",
@@ -108,44 +99,35 @@
   "dos_ResourcesNumber": "Nombre de Ressources",
   "dos_ResourceType": "Type de Ressource",
   "dos_AssociatedProgramRules": "Règles du Programme Associés",
-
   "MODULE:SEARCH": "****************************",
-
   "srch_SearchAll": "Recherche",
   "srch_SearchAll_Clear": "Effacer les filtres",
   "srch_SearchAll_Row": "Montrer / Cacher les filtres de colonnes",
   "srch_SearchAll_Here": "Écrivez ici...",
-
   "srch_SelectColumns": "Sélectionner les Colonnes",
-
   "srch_SelectColumns_objBasics": "Éléments de données ou indicateurs - Principes de base",
   "object_type": "Type",
   "object_name": "Nom",
   "object_form": "Nom dans le Formulaire (datae. seulement)",
   "object_id": "ID",
   "object_code": "Code",
-
   "srch_SelectColumns_objDescs": "Éléments de données ou indicateurs - Descriptions",
   "object_description": "Description",
   "object_den_description": "Description du Dénominateur (ind. seulement)",
   "object_num_description": "Description du Numérateur (ind. seulement)",
   "object_den_formula": "Formule du Dénominateur (ind. seulement)",
   "object_num_formula": "Formule du Numérateur (ind. seulement)",
-
   "srch_SelectColumns_grpBasics": "Groupes d'éléments de données ou d'indicateurs - Principes de base",
   "objectGroup_name": "Ensemble de Données/Groupe d'Indicateurs",
   "objectGroup_id": "ID du Groupe",
   "objectGroup_code": "Code du Groupe",
-
   "srch_SelectColumns_servBasics": "Services - Principes de base",
   "service_name": "Nom du Service",
   "service_id": "ID du Service",
   "service_code": "Code du Service",
-
   "srch_Help": "Aide",
   "srch_Help_Text": "<p>Cette interface permet de simplifier l'accès des utilisateurs à la terminologie associée aux informations collectées avec HMIS. <ul> <li> Via l'onglet <b>Rechercher</b>, vous pouvez rechercher directement un terme dans toutes les colonnes de la table. Vous pouvez également afficher des filtres de colonne, ce qui vous permet de rechercher des informations dans une colonne spécifique. Utilisez 'Effacer les filtres' pour réinitialiser tous les filtres. <i> Les utilisateurs experts peuvent utiliser le mot clé '|' (OR) pour chercher plusieurs objets à la fois. </i> </li> <li> Grâce à l'onglet <b>Sélectionner les Colonnes</b>, vous pouvez sélectionner les colonnes à afficher dans la table. <i>Les utilisateurs expérimentés peuvent utiliser les colonnes avancées pour effectuer des recherches détaillées via les IDs. </i> </li> </ul>Vous pouvez enfin exporter les résultats de votre recherche vers Excel (page par page, et n'oubliez pas d'enregistrer sous .xls).</p>",
   "srch_exportToExcel": "Exporter cette page vers Excel",
-
   "MODULE:PROGRAMS": "***************************",
   "dos_DescriptionOfProgram": "Description du programme",
   "dos_NumberOfProgramIndicators": "Number of Indicateurs du Programme",
@@ -181,11 +163,11 @@
   "programs_tei_mandatory_help": "Définit une expression booléenne indiquant si l'attribut de l'entité suivie doit être visible ou non dans un formulaire de saisie.",
   "programs_tei_visbility_help": "Définit une expression booléenne indiquant si l'attribut doit ou non être utilisé dans un formulaire de saisie.",
   "programs_tei_optionSet_help": "Définit l'ensemble des options pour les données d'attributs d'entités suivies utilisées dans un formulaire de saisie.",
-  "programs_ps_name_help": "Définit le nom du formulaire utilisé dans une étape du programme dans HMIS.",
-  "programs_ps_formName_help": "Définit la description de l'étape d'un programme dans HMIS.",
-  "programs_ps_description_help": "Définit le nom de l'étape d'un programme dans HMIS.",
-  "programs_ps_valueType_help": "Définit le mode de calcul des valeurs de données à collecter lors d'une étape du programme dans HMIS.",
-  "programs_ps_calculationMode_help": "Définit le type de données à collecter lors d'une étape du programme dans HMIS.",
+  "programs_ps_name_help": "Définit le nom de l'étape d'un programme dans HMIS.",
+  "programs_ps_formName_help": "Définit le nom du formulaire utilisé dans une étape du programme dans HMIS.",
+  "programs_ps_description_help": "Définit la description de l'étape d'un programme dans HMIS.",
+  "programs_ps_valueType_help": "Définit le type de données à collecter lors d'une étape du programme dans HMIS.",
+  "programs_ps_calculationMode_help": "Définit le mode de calcul des valeurs de données à collecter lors d'une étape du programme dans HMIS.",
   "programs_ps_mandatory_help": "Définit une expression booléenne indiquant si l'étape du programme doit être obligatoire dans un formulaire de saisie.",
   "programs_ps_visbility_help": "Définit une expression booléenne indiquant si l'attribut doit ou non être utilisé dans un formulaire de saisie.",
   "programs_ps_optionSet_help": "Définit l'ensemble des options pour les données d'attributs d'entités suivies utilisées dans un formulaire de saisie.",
