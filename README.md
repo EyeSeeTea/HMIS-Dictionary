@@ -13,7 +13,7 @@ NB: HMIS refers to Health Information Management System
 
 - **DataSets**: displays the list of sections, data elements and associated category combos
 - **Search**: a search tool to access directly data elements (aggregate domain) and indicators
-- **Programs**: displays the list of sections, data elements with optionSets, progam indicators, event reports and event charts
+- **Programs**: displays the list of sections, data elements with optionSets, Program indicators, Indicators, Tracked Entity Attributes, Program Rules, Program Rule Variables and Program Resources
 - **Dossiers**: displays list of data sets and indicator groups by 'service'
 - **Admin**: configuration of the Dossiers panel and 'service' concept
 
@@ -25,6 +25,7 @@ The configuration relies on the following elements that have to be defined throu
 - then *dataSets* and *indicatorGroups* have one attribute, repectively "DS_#CODE1#_#CODE2#..." and "ING_#CODE2#" that permits the direct association with the typology of services (association with multiple services is allowed),
 - finally the *dataElements* are associated via the *sections* to the dataSets and the *indicators* are associated directly to the indicatorGroups (*dataElements* outside of *sections* would not appear).
 - in *indicators* the descriptions of numerators and denominators cannot be translated (as of dhis v2.25) so the key words "NUM:" and "DENOM:" (both compulsory) are used in *indicators* descriptions (which have a translation).
+- an *attribute* for *programs* where the associated resources are referenced by ID in the following format: "(ID1;ID2;...)". This *attribute* has to have its code field set to: "HMIS-Dict_Resources".
 
 Some elements are defined at the **Admin** panel:
 - The uid of the *organisationUnitGroupSet*
