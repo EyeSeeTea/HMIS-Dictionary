@@ -196,7 +196,7 @@ searchModule.controller("searchController", [
                 },
                 publicAccess: "--------",
                 type: "PIVOT_TABLE",
-                hideEmptyColumns: true,
+                hideEmptyColumns: false,
                 hideEmptyRows: false,
                 subscribed: false,
                 parentGraphMap: {},
