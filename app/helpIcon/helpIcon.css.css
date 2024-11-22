@@ -1,7 +1,16 @@
 svg.help-icon {
+    line-height: 1;
+    fill: #777;
+}
+
+svg.help-icon.small {
     width: 1.75rem;
     height: 1.75rem;
-    line-height: 1;
     vertical-align: text-top;
-    fill: #777;
+}
+
+svg.help-icon.medium {
+    width: 2.25rem;
+    height: 2.25rem;
+    vertical-align: middle;
 }

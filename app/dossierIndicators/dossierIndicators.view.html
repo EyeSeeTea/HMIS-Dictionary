@@ -43,8 +43,10 @@
         </div>
         <div class="col-md-12" ng-controller="dossierIndicatorsTitle">
             <div class="col-md-12" ng-show="numerator.value != ''" ng-if="accesses.formula">
-                <h2 id="formulaIndicator" title='{{ "indicators_description_help" | translate }}'>{{
-                    "dos_FormulaOfIndicator" | translate }}</h2>
+                <h2 id="formulaIndicator">
+                    {{ "dos_FormulaOfIndicator" | translate }}
+                    <help-icon title='{{ "indicators_description_help" | translate }}' size="medium" />
+                </h2>
                 <p>
                     <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" |
                         translate}}</a>
@@ -93,14 +95,22 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th title='{{ "indicators_num_type_help" | translate }}'
-                                    ng-if="accesses.numerator_type">{{ "dos_Type" | translate }}</th>
-                                <th title='{{ "indicators_num_name_help" | translate }}'
-                                    ng-if="accesses.numerator_name">{{ "dos_NameIndicator" | translate }}</th>
-                                <th title='{{ "indicators_num_dataSets_help" | translate }}'
-                                    ng-if="accesses.numerator_datasets">{{ "DataSets" | translate }}</th>
-                                <th title='{{ "indicators_num_program_help" | translate }}'
-                                    ng-if="accesses.numerator_program">{{ "dos_Program" | translate }}</th>
+                                <th ng-if="accesses.numerator_type">
+                                    {{ "dos_Type" | translate }}
+                                    <help-icon title='{{ "indicators_num_type_help" | translate }}' />
+                                </th>
+                                <th ng-if="accesses.numerator_name">
+                                    {{ "dos_NameIndicator" | translate }}
+                                    <help-icon title='{{ "indicators_num_name_help" | translate }}' />
+                                </th>
+                                <th ng-if="accesses.numerator_datasets">
+                                    {{ "DataSets" | translate }}
+                                    <help-icon title='{{ "indicators_num_dataSets_help" | translate }}' />
+                                </th>
+                                <th ng-if="accesses.numerator_program">
+                                    {{ "dos_Program" | translate }}
+                                    <help-icon title='{{ "indicators_num_program_help" | translate }}' />
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -137,14 +147,22 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th title='{{ "indicators_den_type_help" | translate }}'
-                                    ng-if="accesses.denominator_type">{{ "dos_Type" | translate }}</th>
-                                <th title='{{ "indicators_den_name_help" | translate }}'
-                                    ng-if="accesses.denominator_name">{{ "dos_NameIndicator" | translate }}</th>
-                                <th title='{{ "indicators_den_dataSets_help" | translate }}'
-                                    ng-if="accesses.denominator_datasets">{{ "dos_DataSets" | translate }}</th>
-                                <th title='{{ "indicators_den_program_help" | translate }}'
-                                    ng-if="accesses.denominator_program">{{ "dos_Program" | translate }}</th>
+                                <th ng-if="accesses.denominator_type">
+                                    {{ "dos_Type" | translate }}
+                                    <help-icon title='{{ "indicators_den_type_help" | translate }}' />
+                                </th>
+                                <th ng-if="accesses.denominator_name">
+                                    {{ "dos_NameIndicator" | translate }}
+                                    <help-icon title='{{ "indicators_den_name_help" | translate }}' />
+                                </th>
+                                <th ng-if="accesses.denominator_datasets">
+                                    {{ "dos_DataSets" | translate }}
+                                    <help-icon title='{{ "indicators_den_dataSets_help" | translate }}' />
+                                </th>
+                                <th ng-if="accesses.denominator_program">
+                                    {{ "dos_Program" | translate }}
+                                    <help-icon title='{{ "indicators_den_program_help" | translate }}' />
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
