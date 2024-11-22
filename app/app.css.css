@@ -212,5 +212,5 @@ a {
 }
 
 th {
-    min-width: 100px;
+    white-space: nowrap;
 }
