@@ -210,3 +210,7 @@ a {
 .icon-btn.left {
     margin-right: 2px;
 }
+
+th {
+    min-width: 100px;
+}
