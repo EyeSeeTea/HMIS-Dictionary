@@ -47,6 +47,7 @@
                     {{ "dos_FormulaOfIndicator" | translate }}
                     <help-icon title='{{ "indicators_description_help" | translate }}' size="medium" />
                 </h2>
+                <p class="body1">{{ "indicators_fi_description" | translate }}</p>
                 <p>
                     <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" |
                         translate}}</a>
@@ -86,6 +87,7 @@
         <div class="col-md-12" ng-controller="dossierNumeratorTable">
             <div class="col-md-12" ng-show="tabNumeratorRegroups.length > 0" ng-if="accesses.numerator">
                 <h2 id="numerator">{{ "dos_NumeratorIndicator" | translate }}</h2>
+                <p class="body1">{{ "indicators_num_description" | translate }}</p>
                 <p>{{ selectedIndicator.numeratorDescription }}
                     &emsp;
                     <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" |
@@ -138,6 +140,7 @@
         <div class="col-md-12" ng-controller="dossierDenominatorTable">
             <div class="col-md-12" ng-show="tabDenominatorRegroups.length > 0" ng-if="accesses.denominator">
                 <h2 id="denominator">{{ "dos_DenominatorIndicator" | translate }}</h2>
+                <p class="body1">{{ "indicators_den_description" | translate }}</p>
                 <p>{{ selectedIndicator.denominatorDescription }}
                     &emsp;
                     <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" |

@@ -49,6 +49,7 @@
             <!-- Request if userHaveAcces after controller, because category combo section is dependent of this controller -->
             <div ng-repeat="section in datasetDataElements.sections" ng-if="accesses.sections">
                 <h3 class="section" id="{{ section.id }}">{{ section.displayName }}</h3>
+                <p class="body2">{{ "datasets_sec_description" | translate }}</p>
                 <p>{{ "Number of Elements in Section" | translate }}: {{ section.dataElements.length }}
                     &emsp;
                     <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" |
@@ -127,6 +128,7 @@
         <div class="col-md-12" id="categoryComboContainer" ng-controller="datasetCategoryComboController">
             <div ng-if="selectedDataset && accesses.categoryCombinations" class="col-md-12">
                 <h3 class="section" id="categoryCombinations">{{ "dos_CategoryCombinations" | translate }}</h3>
+                <p class="body2">{{ "datasets_cc_description" | translate }}</p>
                 <p>
                     <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" |
                         translate}}</a>
@@ -181,6 +183,7 @@
         <div class="col-md-12" id="indicatorContainer" ng-controller="datasetsIndicatorsController">
             <div ng-if="indicators.length > 0 && accesses.indicators" col-md-12>
                 <h3 class="section" id="indicators">{{ "dos_Indicators" | translate }}</h3>
+                <p class="body2">{{ "datasets_i_description" | translate }}</p>
                 <p>
                     <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" |
                         translate}}</a>
