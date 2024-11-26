@@ -49,6 +49,7 @@
             <!-- Request if userHaveAcces after controller, because category combo section is dependent of this controller -->
             <div ng-repeat="section in datasetDataElements.sections" ng-if="accesses.sections">
                 <h3 class="section" id="{{ section.id }}">{{ section.displayName }}</h3>
+                <p class="body2">{{ "datasets_sec_description" | translate }}</p>
                 <p>{{ "Number of Elements in Section" | translate }}: {{ section.dataElements.length }}
                     &emsp;
                     <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" |
@@ -57,19 +58,29 @@
                 <table class="sectionElementsTable table table-striped">
                     <thead>
                         <tr>
-                            <th title='{{ "datasets_sec_name_help" | translate }}' ng-if="accesses.sections_name">{{
-                                "dos_NameElement" | translate }}</th>
-                            <th title='{{ "datasets_sec_formName_help" | translate }}'
-                                ng-if="accesses.sections_formName">{{ "dos_FormNameElement" | translate }}</th>
-                            <th title='{{ "datasets_sec_description_help" | translate }}'
-                                ng-if="accesses.sections_description">{{ "dos_DescriptionElement" | translate }}</th>
-                            <th title='{{ "datasets_sec_dataTypeElement_help" | translate }}'
-                                ng-if="accesses.sections_dataTypeElement">{{ "dos_DataTypeElement" | translate }}</th>
-                            <th title='{{ "datasets_sec_options_help" | translate }}' ng-if="accesses.sections_options">
-                                {{ "dos_Options" | translate }}</th>
-                            <th title='{{ "datasets_sec_categoryCombination_help" | translate }}'
-                                ng-if="accesses.sections_categoryCombination">
+                            <th ng-if="accesses.sections_name">
+                                {{ "dos_NameElement" | translate }}
+                                <help-icon title='{{ "datasets_sec_name_help" | translate }}' />
+                            </th>
+                            <th ng-if="accesses.sections_formName">
+                                {{ "dos_FormNameElement" | translate }}
+                                <help-icon title='{{ "datasets_sec_formName_help" | translate }}' />
+                            </th>
+                            <th ng-if="accesses.sections_description">
+                                {{ "dos_DescriptionElement" | translate }}
+                                <help-icon title='{{ "datasets_sec_description_help" | translate }}' />
+                            </th>
+                            <th ng-if="accesses.sections_dataTypeElement">
+                                {{ "dos_DataTypeElement" | translate }}
+                                <help-icon title='{{ "datasets_sec_dataTypeElement_help" | translate }}' />
+                            </th>
+                            <th ng-if="accesses.sections_options">
+                                {{ "dos_Options" | translate }}
+                                <help-icon title='{{ "datasets_sec_options_help" | translate }}' />
+                            </th>
+                            <th ng-if="accesses.sections_categoryCombination">
                                 {{ "dos_CategoryCombination" | translate }}
+                                <help-icon title='{{ "datasets_sec_categoryCombination_help" | translate }}' />
                             </th>
                         </tr>
                     </thead>
@@ -117,6 +128,7 @@
         <div class="col-md-12" id="categoryComboContainer" ng-controller="datasetCategoryComboController">
             <div ng-if="selectedDataset && accesses.categoryCombinations" class="col-md-12">
                 <h3 class="section" id="categoryCombinations">{{ "dos_CategoryCombinations" | translate }}</h3>
+                <p class="body2">{{ "datasets_cc_description" | translate }}</p>
                 <p>
                     <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" |
                         translate}}</a>
@@ -124,14 +136,18 @@
                 <table class="sectionElementsTable table table-striped">
                     <thead>
                         <tr>
-                            <th title='{{ "datasets_cc_categoryCombination_help" | translate }}'
-                                ng-if="accesses.categoryCombinations_categoryCombination">
+                            <th ng-if="accesses.categoryCombinations_categoryCombination">
                                 {{ "dos_CategoryCombination" | translate }}
+                                <help-icon title='{{ "datasets_cc_categoryCombination_help" | translate }}' />
                             </th>
-                            <th title='{{ "datasets_cc_categories_help" | translate }}'
-                                ng-if="accesses.categoryCombinations_categories">{{ "dos_Categories" | translate }}</th>
-                            <th title='{{ "datasets_cc_items_help" | translate }}'
-                                ng-if="accesses.categoryCombinations_items">{{ "dos_Items" | translate }}</th>
+                            <th ng-if="accesses.categoryCombinations_categories">
+                                {{ "dos_Categories" | translate }}
+                                <help-icon title='{{ "datasets_cc_categories_help" | translate }}' />
+                            </th>
+                            <th ng-if="accesses.categoryCombinations_items">
+                                {{ "dos_Items" | translate }}
+                                <help-icon title='{{ "datasets_cc_items_help" | translate }}' />
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -167,6 +183,7 @@
         <div class="col-md-12" id="indicatorContainer" ng-controller="datasetsIndicatorsController">
             <div ng-if="indicators.length > 0 && accesses.indicators" col-md-12>
                 <h3 class="section" id="indicators">{{ "dos_Indicators" | translate }}</h3>
+                <p class="body2">{{ "datasets_i_description" | translate }}</p>
                 <p>
                     <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" |
                         translate}}</a>
@@ -174,23 +191,29 @@
                 <table class="sectionElementsTable table table-striped">
                     <thead>
                         <tr>
-                            <th title='{{ "datasets_ind_name_help" | translate }}' ng-if="accesses.indicators_name">{{
-                                "dos_NameIndicator" | translate }}</th>
-                            <th title='{{ "datasets_ind_type_help" | translate }}' ng-if="accesses.indicators_type">{{
-                                "dos_Type" | translate }}</th>
-                            <th title='{{ "datasets_ind_numerator_help" | translate }}'
-                                ng-if="accesses.indicators_numerator">{{ "dos_NumeratorIndicator" | translate }}</th>
-                            <th title='{{ "datasets_ind_numeratorDescription_help" | translate }}'
-                                ng-if="accesses.indicators_numeratorDescription">
+                            <th ng-if="accesses.indicators_name">
+                                {{ "dos_NameIndicator" | translate }}
+                                <help-icon title='{{ "datasets_ind_name_help" | translate }}' />
+                            </th>
+                            <th ng-if="accesses.indicators_type">
+                                {{ "dos_Type" | translate }}
+                                <help-icon title='{{ "datasets_ind_type_help" | translate }}' />
+                            </th>
+                            <th ng-if="accesses.indicators_numerator">
+                                {{ "dos_NumeratorIndicator" | translate }}
+                                <help-icon title='{{ "datasets_ind_numerator_help" | translate }}' />
+                            </th>
+                            <th ng-if="accesses.indicators_numeratorDescription">
                                 {{ "dos_NumeratorIndicatorDescription" | translate }}
+                                <help-icon title='{{ "datasets_ind_numeratorDescription_help" | translate }}' />
                             </th>
-                            <th title='{{ "datasets_ind_denominator_help" | translate }}'
-                                ng-if="accesses.indicators_denominator">
+                            <th ng-if="accesses.indicators_denominator">
                                 {{ "dos_DenominatorIndicator" | translate }}
+                                <help-icon title='{{ "datasets_ind_denominator_help" | translate }}' />
                             </th>
-                            <th title='{{ "datasets_ind_denominatorDescription_help" | translate }}'
-                                ng-if="accesses.indicators_denominatorDescription">
+                            <th ng-if="accesses.indicators_denominatorDescription">
                                 {{ "dos_DenominatorIndicatorDescription" | translate }}
+                                <help-icon title='{{ "datasets_ind_denominatorDescription_help" | translate }}' />
                             </th>
                         </tr>
                     </thead>

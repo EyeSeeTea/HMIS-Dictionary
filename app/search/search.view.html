@@ -77,10 +77,11 @@
                                     <div class="col-xs-1"></div>
                                     <div class="col-xs-11">
                                         <label class="checkbox" ng-repeat="col in table.cols"
-                                            ng-if="cols_object[col.code]" title="{{ col.headerTitle() }}">
+                                            ng-if="cols_object[col.code]">
                                             <input type="checkbox" ng-model-options="{ getterSetter: true }"
                                                 ng-model="col.show" />
                                             {{ col.title() }}
+                                            <help-icon title="{{ col.headerTitle() }}" />
                                         </label>
                                     </div>
                                 </div>
@@ -91,10 +92,11 @@
                                     <div class="col-xs-1"></div>
                                     <div class="col-xs-11">
                                         <label class="checkbox" ng-repeat="col in table.cols"
-                                            ng-if="cols_object_desc[col.code]" title="{{ col.headerTitle() }}">
+                                            ng-if="cols_object_desc[col.code]">
                                             <input type="checkbox" ng-model-options="{ getterSetter: true }"
                                                 ng-model="col.show" />
                                             {{ col.title() }}
+                                            <help-icon title="{{ col.headerTitle() }}" />
                                         </label>
                                     </div>
                                 </div>
@@ -106,10 +108,11 @@
                                     <div class="col-xs-1"></div>
                                     <div class="col-xs-11">
                                         <label class="checkbox" ng-repeat="col in table.cols"
-                                            ng-if="cols_objectGroup[col.code]" title="{{ col.headerTitle() }}">
+                                            ng-if="cols_objectGroup[col.code]">
                                             <input type="checkbox" ng-model-options="{ getterSetter: true }"
                                                 ng-model="col.show" />
                                             {{ col.title() }}
+                                            <help-icon title="{{ col.headerTitle() }}" />
                                         </label>
                                     </div>
                                 </div>
@@ -121,10 +124,11 @@
                                     <div class="col-xs-1"></div>
                                     <div class="col-xs-11">
                                         <label class="checkbox" ng-repeat="col in table.cols"
-                                            ng-if="cols_service[col.code]" title="{{ col.headerTitle() }}">
+                                            ng-if="cols_service[col.code]">
                                             <input type="checkbox" ng-model-options="{ getterSetter: true }"
                                                 ng-model="col.show" />
                                             {{ col.title() }}
+                                            <help-icon title="{{ col.headerTitle() }}" />
                                         </label>
                                     </div>
                                 </div>
@@ -135,10 +139,11 @@
                                     <div class="col-xs-1"></div>
                                     <div class="col-xs-11">
                                         <label class="checkbox" ng-repeat="col in table.cols"
-                                            ng-if="cols_object_advanced[col.code]" title="{{ col.headerTitle() }}">
+                                            ng-if="cols_object_advanced[col.code]">
                                             <input type="checkbox" ng-model-options="{ getterSetter: true }"
                                                 ng-model="col.show" />
                                             {{ col.title() }}
+                                            <help-icon title="{{ col.headerTitle() }}" />
                                         </label>
                                     </div>
                                 </div>
@@ -148,10 +153,11 @@
                                     <div class="col-xs-1"></div>
                                     <div class="col-xs-11">
                                         <label class="checkbox" ng-repeat="col in table.cols"
-                                            ng-if="cols_objectGroup_advanced[col.code]" title="{{ col.headerTitle() }}">
+                                            ng-if="cols_objectGroup_advanced[col.code]">
                                             <input type="checkbox" ng-model-options="{ getterSetter: true }"
                                                 ng-model="col.show" />
                                             {{ col.title() }}
+                                            <help-icon title="{{ col.headerTitle() }}" />
                                         </label>
                                     </div>
                                 </div>
@@ -160,10 +166,11 @@
                                     <div class="col-xs-1"></div>
                                     <div class="col-xs-11">
                                         <label class="checkbox" ng-repeat="col in table.cols"
-                                            ng-if="cols_service_advanced[col.code]" title="{{ col.headerTitle() }}">
+                                            ng-if="cols_service_advanced[col.code]">
                                             <input type="checkbox" ng-model-options="{ getterSetter: true }"
                                                 ng-model="col.show" />
                                             {{ col.title() }}
+                                            <help-icon title="{{ col.headerTitle() }}" />
                                         </label>
                                     </div>
                                 </div>
