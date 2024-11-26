@@ -43,8 +43,11 @@
         </div>
         <div class="col-md-12" ng-controller="dossierIndicatorsTitle">
             <div class="col-md-12" ng-show="numerator.value != ''" ng-if="accesses.formula">
-                <h2 id="formulaIndicator" title='{{ "indicators_description_help" | translate }}'>{{
-                    "dos_FormulaOfIndicator" | translate }}</h2>
+                <h2 id="formulaIndicator">
+                    {{ "dos_FormulaOfIndicator" | translate }}
+                    <help-icon title='{{ "indicators_description_help" | translate }}' size="medium" />
+                </h2>
+                <p class="body1">{{ "indicators_fi_description" | translate }}</p>
                 <p>
                     <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" |
                         translate}}</a>
@@ -84,6 +87,7 @@
         <div class="col-md-12" ng-controller="dossierNumeratorTable">
             <div class="col-md-12" ng-show="tabNumeratorRegroups.length > 0" ng-if="accesses.numerator">
                 <h2 id="numerator">{{ "dos_NumeratorIndicator" | translate }}</h2>
+                <p class="body1">{{ "indicators_num_description" | translate }}</p>
                 <p>{{ selectedIndicator.numeratorDescription }}
                     &emsp;
                     <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" |
@@ -93,14 +97,22 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th title='{{ "indicators_num_type_help" | translate }}'
-                                    ng-if="accesses.numerator_type">{{ "dos_Type" | translate }}</th>
-                                <th title='{{ "indicators_num_name_help" | translate }}'
-                                    ng-if="accesses.numerator_name">{{ "dos_NameIndicator" | translate }}</th>
-                                <th title='{{ "indicators_num_dataSets_help" | translate }}'
-                                    ng-if="accesses.numerator_datasets">{{ "DataSets" | translate }}</th>
-                                <th title='{{ "indicators_num_program_help" | translate }}'
-                                    ng-if="accesses.numerator_program">{{ "dos_Program" | translate }}</th>
+                                <th ng-if="accesses.numerator_type">
+                                    {{ "dos_Type" | translate }}
+                                    <help-icon title='{{ "indicators_num_type_help" | translate }}' />
+                                </th>
+                                <th ng-if="accesses.numerator_name">
+                                    {{ "dos_NameIndicator" | translate }}
+                                    <help-icon title='{{ "indicators_num_name_help" | translate }}' />
+                                </th>
+                                <th ng-if="accesses.numerator_datasets">
+                                    {{ "DataSets" | translate }}
+                                    <help-icon title='{{ "indicators_num_dataSets_help" | translate }}' />
+                                </th>
+                                <th ng-if="accesses.numerator_program">
+                                    {{ "dos_Program" | translate }}
+                                    <help-icon title='{{ "indicators_num_program_help" | translate }}' />
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -128,6 +140,7 @@
         <div class="col-md-12" ng-controller="dossierDenominatorTable">
             <div class="col-md-12" ng-show="tabDenominatorRegroups.length > 0" ng-if="accesses.denominator">
                 <h2 id="denominator">{{ "dos_DenominatorIndicator" | translate }}</h2>
+                <p class="body1">{{ "indicators_den_description" | translate }}</p>
                 <p>{{ selectedIndicator.denominatorDescription }}
                     &emsp;
                     <a href="" class="pageref" ng-click='scrollTo("headerDossierPanel")'>{{"dos_GoToIndex" |
@@ -137,14 +150,22 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th title='{{ "indicators_den_type_help" | translate }}'
-                                    ng-if="accesses.denominator_type">{{ "dos_Type" | translate }}</th>
-                                <th title='{{ "indicators_den_name_help" | translate }}'
-                                    ng-if="accesses.denominator_name">{{ "dos_NameIndicator" | translate }}</th>
-                                <th title='{{ "indicators_den_dataSets_help" | translate }}'
-                                    ng-if="accesses.denominator_datasets">{{ "dos_DataSets" | translate }}</th>
-                                <th title='{{ "indicators_den_program_help" | translate }}'
-                                    ng-if="accesses.denominator_program">{{ "dos_Program" | translate }}</th>
+                                <th ng-if="accesses.denominator_type">
+                                    {{ "dos_Type" | translate }}
+                                    <help-icon title='{{ "indicators_den_type_help" | translate }}' />
+                                </th>
+                                <th ng-if="accesses.denominator_name">
+                                    {{ "dos_NameIndicator" | translate }}
+                                    <help-icon title='{{ "indicators_den_name_help" | translate }}' />
+                                </th>
+                                <th ng-if="accesses.denominator_datasets">
+                                    {{ "dos_DataSets" | translate }}
+                                    <help-icon title='{{ "indicators_den_dataSets_help" | translate }}' />
+                                </th>
+                                <th ng-if="accesses.denominator_program">
+                                    {{ "dos_Program" | translate }}
+                                    <help-icon title='{{ "indicators_den_program_help" | translate }}' />
+                                </th>
                             </tr>
                         </thead>
                         <tbody>

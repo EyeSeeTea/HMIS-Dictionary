@@ -210,3 +210,15 @@ a {
 .icon-btn.left {
     margin-right: 2px;
 }
+
+th {
+    white-space: nowrap;
+}
+
+.body1 {
+    font-size: 1.2em;
+}
+
+.body2 {
+    font-size: 1.1em;
+}
