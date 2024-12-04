@@ -60,16 +60,19 @@
             <br />
             <h1>
                 {{ "dos_DescriptionOfProgram" | translate }}
-                <help-icon title='{{ "program_description_help" | translate }}' size="medium" />
+                <help-icon
+                    title='{{ "program_description_help" | translate }} {{ "programs_description_description" | translate }}'
+                    size="medium" />
             </h1>
-            <p>{{ "programs_description_description" | translate }}</p>
             <div class="body1" ng-bind-html="trustAsHtml(selectedProgram.displayDescription)"></div>
         </div>
 
         <div class="col-md-12" id="trackedEntityAttributeContainer" ng-controller="dossiersProgramTEAController">
             <div ng-if="trackedEntityAttributes.length > 0 && accesses.trackedEntityAttributes" class="col-md-12">
-                <h3 class="section" id="trackedEntityAttributes">{{ "dos_TrackedEntityAttributes" | translate }}</h3>
-                <p class="body2">{{ "programs_tei_description" | translate }}</p>
+                <h3 class="section" id="trackedEntityAttributes">
+                    {{ "dos_TrackedEntityAttributes" | translate }}
+                    <help-icon title='{{ "programs_tei_description" | translate }}' size="medium" />
+                </h3>
                 <p>
                     {{ "dos_TrackedEntityAttributesNumber" | translate }}:
                     {{ trackedEntityAttributes.length }}
@@ -146,8 +149,10 @@
 
         <div id="stageContainer" ng-controller="dossiersProgramSectionController">
             <div class="col-md-12" ng-repeat="stage in stages | orderBy:'sortOrder'" ng-if="accesses.programStages">
-                <h2 class="stage" id="{{ stage.id }}">{{ stage.displayName }}</h2>
-                <p class="body2">{{ "programs_ps_description" | translate }}</p>
+                <h2 class="stage" id="{{ stage.id }}">
+                    {{ stage.displayName }}
+                    <help-icon title='{{ "programs_ps_description" | translate }}' size="medium" />
+                </h2>
                 <div ng-if="stage.displayDescription" class="stage">
                     <h4>{{ "dos_DescriptionStage" | translate }}</h4>
                     <div class="body2" ng-bind-html="trustAsHtml(stage.displayDescription)"></div>
@@ -252,8 +257,10 @@
         <div class="col-md-12" ng-controller="dossiersProgramIndicatorController" id="IndicatorGroupsContainer"
             ng-show="programIndicators[0]">
             <div class="col-md-12" ng-if="accesses.programIndicators">
-                <h2 class="indicatorGroup" id="indicators">{{ "dos_ProgramIndicators" | translate }}</h2>
-                <p class="body2">{{ "programs_pi_description" | translate }}</p>
+                <h2 class="indicatorGroup" id="indicators">
+                    {{ "dos_ProgramIndicators" | translate }}
+                    <help-icon title='{{ "programs_pi_description" | translate }}' size="medium" />
+                </h2>
                 <div class="col-md-12">
                     <p>
                         {{ "dos_NumberOfProgramIndicators" | translate }}: {{ programIndicators.length }}
@@ -356,8 +363,10 @@
 
         <div class="col-md-12" id="indicatorContainer" ng-controller="dossierProgramGlobalIndicatorController">
             <div ng-if="indicators.length > 0 && accesses.indicators" class="col-md-12">
-                <h3 class="section" id="indicators">{{ "dos_Indicators" | translate }}</h3>
-                <p class="body2">{{ "programs_i_description" | translate }}</p>
+                <h3 class="section" id="indicators">
+                    {{ "dos_Indicators" | translate }}
+                    <help-icon title='{{ "programs_i_description" | translate }}' size="medium" />
+                </h3>
                 <p>
                     {{ "dos_NumberOfIndicators" | translate }}: {{ programIndicators.length }}
                     &emsp;
@@ -427,8 +436,10 @@
 
         <div class="col-md-12" id="RuleContainer" ng-controller="dossiersProgramRuleController">
             <div ng-if="rules.length > 0 && accesses.programRules" class="col-md-12">
-                <h3 class="section" id="rules">{{ "dos_ProgramRules" | translate }}</h3>
-                <p class="body2">{{ "programs_pr_description" | translate }}</p>
+                <h3 class="section" id="rules">
+                    {{ "dos_ProgramRules" | translate }}
+                    <help-icon title='{{ "programs_pr_description" | translate }}' size="medium" />
+                </h3>
                 <p>
                     {{ "Number of Rules in Program" | translate }}: {{ rules.length }}
                     &emsp;
@@ -667,8 +678,10 @@
 
         <div class="col-md-12" id="RuleVariablesContainer" ng-controller="dossiersProgramRuleVariablesController">
             <div ng-if="ruleVariables.length > 0 && accesses.programRuleVariables" class="col-md-12">
-                <h3 class="section" id="ruleVariables">{{ "dos_ProgramRuleVariables" | translate }}</h3>
-                <p class="body2">{{ "programs_prv_description" | translate }}</p>
+                <h3 class="section" id="ruleVariables">
+                    {{ "dos_ProgramRuleVariables" | translate }}
+                    <help-icon title='{{ "programs_prv_description" | translate }}' size="medium" />
+                </h3>
                 <p>
                     {{ "dos_ProgramRuleVariablesNumber" | translate }}: {{ ruleVariables.length }}
                     &emsp;
