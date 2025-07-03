@@ -1791,7 +1791,7 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         @description Makes a sheet from Program Rules data
         @scope dossiersProgramExport
         */
-        function makeRulesSheet(workbook, rules) {
+        function makeRulesSheet(workbook, rules, accesses) {
             var data = rules.map(item => {
                 const row = [
                     accesses.programRules_name && [translate("dos_NameElement"), item?.name],
@@ -1817,7 +1817,7 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         @description Makes a sheet from Program Rules Variables data
         @scope dossiersProgramExport
         */
-        function makeRuleVariablesSheet(workbook, ruleVariables) {
+        function makeRuleVariablesSheet(workbook, ruleVariables, accesses) {
             const data = ruleVariables.map(item => {
                 const row = [
                     accesses.programRuleVariables_name && [translate("dos_NameElement"), item?.name],
