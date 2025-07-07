@@ -772,7 +772,10 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
          *  @scope dossiersProgramIndicatorController
          */
         function recursiveAssignExpression(i) {
-            if (i >= $scope.programIndicators.length) return;
+            if (i >= $scope.programIndicators.length) {
+                $rootScope.recursiveAssignExpressionDone = true;
+                return;
+            }
 
             const stageRef = $scope.programIndicators[i].stageRef;
             if (stageRef && stageRef.length > 0) {
@@ -876,6 +879,7 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
             if ($scope.selectedProgram) {
                 startLoadingState(false);
                 dossiersProgramLoadingService.loading.programIndicators = false;
+                $rootScope.recursiveAssignExpressionDone = false;
                 $rootScope.recursiveAssignFilterDone = false;
                 $rootScope.programIndicatorsEmpty = false;
 
@@ -1063,6 +1067,7 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
                 "selectedProgram",
                 "programIndicators",
                 "programStages",
+                "recursiveAssignExpressionDone",
                 "recursiveAssignFilterDone",
                 "programIndicatorsEmpty",
             ],
@@ -1073,7 +1078,8 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
                     $scope.selectedProgram &&
                     $scope.programIndicators &&
                     $scope.programStages &&
-                    $rootScope.recursiveAssignFilterDone
+                    $rootScope.recursiveAssignFilterDone &&
+                    $rootScope.recursiveAssignExpressionDone
                 ) {
                     startLoadingState(false);
                     dossiersProgramLoadingService.loading.indicators = false;
