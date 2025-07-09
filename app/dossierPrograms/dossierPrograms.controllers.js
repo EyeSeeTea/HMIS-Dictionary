@@ -1509,22 +1509,27 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         @scope dossiersProgramExport
         */
         function joinAndTrim(array) {
-            if (array === undefined) return;
+            if (!Array.isArray(array)) return;
+
+            const cleanArray = array.filter(item => item !== null && item !== undefined);
+
+            if (cleanArray.length === 0) return;
 
             let count = 0;
             let index = 0;
-            for (const item of array) {
+            const maxLength = 32733;
+            for (const item of cleanArray) {
                 count += item.length;
-                if (count < 32733) {
+                if (count < maxLength) {
                     // Separator chars
                     count += 3;
                     index += 1;
                 } else {
-                    return "Not all entries fit in the cell | " + array.slice(0, index).join(" | ");
+                    return "Not all entries fit in the cell | " + cleanArray.slice(0, index).join(" | ");
                 }
             }
 
-            return array.join(" | ");
+            return cleanArray.join(" | ");
         }
 
         /* 
@@ -1596,7 +1601,7 @@ dossierProgramsModule.controller("dossiersProgramExport", [
                             accesses.programStages_optionSet && [translate("dos_OptionSetName"), de?.optionSet?.name],
                             accesses.programStages_optionSet && [
                                 translate("dos_OptionSetOptions"),
-                                joinAndTrim(de?.optionSet?.options?.map(opt => opt.displayName)),
+                                joinAndTrim(de?.optionSet?.options?.map(opt => opt?.displayName)),
                             ],
                         ];
 
@@ -1635,7 +1640,7 @@ dossierProgramsModule.controller("dossiersProgramExport", [
                     ],
                     accesses.trackedEntityAttributes_optionSet && [
                         translate("dos_OptionSetOptions"),
-                        joinAndTrim(item?.optionSet?.options.map(option => option.name)),
+                        joinAndTrim(item?.optionSet?.options.map(option => option?.name)),
                     ],
                 ];
 
