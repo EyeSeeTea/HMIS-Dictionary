@@ -137,7 +137,7 @@
                                     <p>{{ "dos_OptionSetName" | translate }}: {{ tea.optionSet.name }}</p>
                                     <select class="form-control col-md-2">
                                         <option selected>{{ "dos_SeeOptions" | translate }}</option>
-                                        <option ng-repeat="option in tea.optionSet.options">{{ option.name }}</option>
+                                        <option ng-repeat="option in tea.optionSet.options track by $index">{{ option.name }}</option>
                                     </select>
                                 </div>
                             </td>
@@ -241,7 +241,7 @@
                                         <p>{{ "dos_OptionSetName" | translate }}: {{ dataElement.optionSet.name }}</p>
                                         <select class="form-control col-md-2">
                                             <option selected>{{ "dos_SeeOptions" | translate }}</option>
-                                            <option ng-repeat="option in dataElement.optionSet.options">
+                                            <option ng-repeat="option in dataElement.optionSet.options track by $index">
                                                 {{ option.displayName }}
                                             </option>
                                         </select>
