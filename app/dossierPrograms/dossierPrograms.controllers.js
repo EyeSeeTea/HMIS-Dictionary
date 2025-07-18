@@ -772,7 +772,10 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
          *  @scope dossiersProgramIndicatorController
          */
         function recursiveAssignExpression(i) {
-            if (i >= $scope.programIndicators.length) return;
+            if (i >= $scope.programIndicators.length) {
+                $rootScope.recursiveAssignExpressionDone = true;
+                return;
+            }
 
             const stageRef = $scope.programIndicators[i].stageRef;
             if (stageRef && stageRef.length > 0) {
@@ -876,6 +879,7 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
             if ($scope.selectedProgram) {
                 startLoadingState(false);
                 dossiersProgramLoadingService.loading.programIndicators = false;
+                $rootScope.recursiveAssignExpressionDone = false;
                 $rootScope.recursiveAssignFilterDone = false;
                 $rootScope.programIndicatorsEmpty = false;
 
@@ -1063,6 +1067,7 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
                 "selectedProgram",
                 "programIndicators",
                 "programStages",
+                "recursiveAssignExpressionDone",
                 "recursiveAssignFilterDone",
                 "programIndicatorsEmpty",
             ],
@@ -1073,7 +1078,8 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
                     $scope.selectedProgram &&
                     $scope.programIndicators &&
                     $scope.programStages &&
-                    $rootScope.recursiveAssignFilterDone
+                    $rootScope.recursiveAssignFilterDone &&
+                    $rootScope.recursiveAssignExpressionDone
                 ) {
                     startLoadingState(false);
                     dossiersProgramLoadingService.loading.indicators = false;
@@ -1503,22 +1509,27 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         @scope dossiersProgramExport
         */
         function joinAndTrim(array) {
-            if (array === undefined) return;
+            if (!Array.isArray(array)) return;
+
+            const cleanArray = array.filter(item => item !== null && item !== undefined);
+
+            if (cleanArray.length === 0) return;
 
             let count = 0;
             let index = 0;
-            for (const item of array) {
+            const maxLength = 32733;
+            for (const item of cleanArray) {
                 count += item.length;
-                if (count < 32733) {
+                if (count < maxLength) {
                     // Separator chars
                     count += 3;
                     index += 1;
                 } else {
-                    return "Not all entries fit in the cell | " + array.slice(0, index).join(" | ");
+                    return "Not all entries fit in the cell | " + cleanArray.slice(0, index).join(" | ");
                 }
             }
 
-            return array.join(" | ");
+            return cleanArray.join(" | ");
         }
 
         /* 
@@ -1590,7 +1601,7 @@ dossierProgramsModule.controller("dossiersProgramExport", [
                             accesses.programStages_optionSet && [translate("dos_OptionSetName"), de?.optionSet?.name],
                             accesses.programStages_optionSet && [
                                 translate("dos_OptionSetOptions"),
-                                joinAndTrim(de?.optionSet?.options?.map(opt => opt.displayName)),
+                                joinAndTrim(de?.optionSet?.options?.map(opt => opt?.displayName)),
                             ],
                         ];
 
@@ -1629,7 +1640,7 @@ dossierProgramsModule.controller("dossiersProgramExport", [
                     ],
                     accesses.trackedEntityAttributes_optionSet && [
                         translate("dos_OptionSetOptions"),
-                        joinAndTrim(item?.optionSet?.options.map(option => option.name)),
+                        joinAndTrim(item?.optionSet?.options.map(option => option?.name)),
                     ],
                 ];
 
@@ -1791,7 +1802,7 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         @description Makes a sheet from Program Rules data
         @scope dossiersProgramExport
         */
-        function makeRulesSheet(workbook, rules) {
+        function makeRulesSheet(workbook, rules, accesses) {
             var data = rules.map(item => {
                 const row = [
                     accesses.programRules_name && [translate("dos_NameElement"), item?.name],
@@ -1817,7 +1828,7 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         @description Makes a sheet from Program Rules Variables data
         @scope dossiersProgramExport
         */
-        function makeRuleVariablesSheet(workbook, ruleVariables) {
+        function makeRuleVariablesSheet(workbook, ruleVariables, accesses) {
             const data = ruleVariables.map(item => {
                 const row = [
                     accesses.programRuleVariables_name && [translate("dos_NameElement"), item?.name],
