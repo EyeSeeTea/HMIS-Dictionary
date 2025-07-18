@@ -1025,10 +1025,9 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
          */
         function recursiveAssignNumerator(i) {
             if (i >= $scope.indicators.length) return;
-            dossiersProgramGlobalIndicatorExpressionFactory.get(
-                {
-                    expression: $scope.indicators[i].numerator,
-                },
+            dossiersProgramGlobalIndicatorExpressionFactory.save(
+                {},
+                $scope.indicators[i].numerator,
                 function (data) {
                     $scope.indicators[i].numerator = data.description;
                     recursiveAssignNumerator(i + 1);
@@ -1044,10 +1043,9 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
          */
         function recursiveAssignDenominator(i) {
             if (i >= $scope.indicators.length) return;
-            dossiersProgramGlobalIndicatorExpressionFactory.get(
-                {
-                    expression: $scope.indicators[i].denominator,
-                },
+            dossiersProgramGlobalIndicatorExpressionFactory.save(
+                {},
+                $scope.indicators[i].denominator,
                 function (data) {
                     $scope.indicators[i].denominator = data.description;
                     recursiveAssignDenominator(i + 1);
