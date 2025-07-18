@@ -28,9 +28,9 @@ install -D --mode=$mode node_modules/@bower_components/angular-resource/LICENSE.
 install -D --mode=$mode node_modules/@bower_components/angular-sanitize/angular-sanitize.min.js bower_components/angular-sanitize/angular-sanitize.min.js
 install -D --mode=$mode node_modules/@bower_components/angular-sanitize/LICENSE.md bower_components/angular-sanitize/LICENSE.txt
 # angular-table
-install -D --mode=$mode node_modules/@bower_components/angular-table/ng-table.min.js bower_components/angular-table/ng-table.min.js
-install -D --mode=$mode node_modules/@bower_components/angular-table/ng-table.min.css bower_components/angular-table/ng-table.min.css
-install -D --mode=$mode node_modules/@bower_components/angular-table/LICENSE.txt bower_components/angular-table/LICENSE.txt
+install -D --mode=$mode angular_table_source/@bower_components/angular-table/ng-table.min.js bower_components/angular-table/ng-table.min.js
+install -D --mode=$mode angular_table_source/@bower_components/angular-table/ng-table.min.css bower_components/angular-table/ng-table.min.css
+install -D --mode=$mode angular_table_source/@bower_components/angular-table/LICENSE.txt bower_components/angular-table/LICENSE.txt
 # angular-translate
 install -D --mode=$mode node_modules/@bower_components/angular-translate/angular-translate.min.js bower_components/angular-translate/angular-translate.min.js
 install -D --mode=$mode node_modules/@bower_components/angular-translate/README.md bower_components/angular-translate/README.md

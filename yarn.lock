@@ -14,7 +14,7 @@
   version "1.5.9"
   resolved "https://codeload.github.com/angular/bower-angular-sanitize/tar.gz/935bad867e89ec35f1cd6d93a4f779848bc6fa33"
 
-"@bower_components/angular-table@file:node_modules/@bower_components/angular-table":
+"@bower_components/angular-table@file:angular_table_source/@bower_components/angular-table":
   version "0.0.0"
 
 "@bower_components/angular-translate-loader-static-files@PascalPrecht/bower-angular-translate-loader-static-files#2.11.0":
