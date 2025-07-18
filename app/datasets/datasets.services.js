@@ -106,20 +106,21 @@ datasetsModule.factory("datasetsIndicatorsFactory", [
     },
 ]);
 
-var qryDatsetIndicatorExpression = dhisUrl + "expressions/description?expression=:expression";
+var qryDatsetIndicatorExpression = dhisUrl + "indicators/expression/description";
 
 datasetsModule.factory("datasetsIndicatorExpressionFactory", [
     "$resource",
     function ($resource) {
         return $resource(
             qryDatsetIndicatorExpression,
+            {},
             {
-                expression: "@expression",
-            },
-            {
-                query: {
-                    method: "GET",
+                save: {
+                    method: "POST",
                     isArray: false,
+                    headers: {
+                        "Content-Type": "text/plain",
+                    },
                 },
             }
         );
