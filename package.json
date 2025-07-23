@@ -14,7 +14,7 @@
         "@bower_components/angular": "angular/bower-angular#1.5.9",
         "@bower_components/angular-resource": "angular/bower-angular-resource#1.5.9",
         "@bower_components/angular-sanitize": "angular/bower-angular-sanitize#1.5.9",
-        "@bower_components/angular-table": "file:node_modules/@bower_components/angular-table",
+        "@bower_components/angular-table": "file:angular_table_source/@bower_components/angular-table",
         "@bower_components/angular-translate": "PascalPrecht/bower-angular-translate#~2.11.0",
         "@bower_components/angular-translate-loader-static-files": "PascalPrecht/bower-angular-translate-loader-static-files#2.11.0",
         "@bower_components/angular-ui-bootstrap": "angular-ui/bootstrap-bower#2.3.0",
