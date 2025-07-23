@@ -365,10 +365,9 @@ datasetsModule.controller("datasetsIndicatorsController", [
          */
         recursiveAssignNumerator = function (i) {
             if (i >= $scope.indicators.length) return;
-            datasetsIndicatorExpressionFactory.get(
-                {
-                    expression: $scope.indicators[i].numerator,
-                },
+            datasetsIndicatorExpressionFactory.save(
+                {},
+                $scope.indicators[i].numerator,
                 function (data) {
                     $scope.indicators[i].numerator = data.description;
                     recursiveAssignNumerator(i + 1);
@@ -384,10 +383,9 @@ datasetsModule.controller("datasetsIndicatorsController", [
          */
         recursiveAssignDenominator = function (i) {
             if (i >= $scope.indicators.length) return;
-            datasetsIndicatorExpressionFactory.get(
-                {
-                    expression: $scope.indicators[i].denominator,
-                },
+            datasetsIndicatorExpressionFactory.save(
+                {},
+                $scope.indicators[i].denominator,
                 function (data) {
                     $scope.indicators[i].denominator = data.description;
                     recursiveAssignDenominator(i + 1);
