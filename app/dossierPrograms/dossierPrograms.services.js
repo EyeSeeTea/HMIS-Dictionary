@@ -169,7 +169,6 @@ dossierProgramsModule.factory("dossiersProgramIndicatorExpressionFactory", [
             {
                 save: {
                     method: "POST",
-                    data: "@expression",
                     isArray: false,
                     headers: expressionHeaders,
                 },
@@ -189,7 +188,6 @@ dossierProgramsModule.factory("dossiersProgramIndicatorFilterFactory", [
             {
                 save: {
                     method: "POST",
-                    data: "@filter",
                     isArray: false,
                     headers: expressionHeaders,
                 },
@@ -254,7 +252,7 @@ dossierProgramsModule.factory("dossiersProgramGlobalIndicatorsFactory", [
     },
 ]);
 
-var qryProgramGlobalIndicatorExpression = dhisUrl + "expressions/description?expression=:expression";
+var qryProgramGlobalIndicatorExpression = dhisUrl + "indicators/expression/description";
 
 dossierProgramsModule.factory("dossiersProgramGlobalIndicatorExpressionFactory", [
     "$resource",
@@ -265,9 +263,10 @@ dossierProgramsModule.factory("dossiersProgramGlobalIndicatorExpressionFactory",
                 expression: "@expression",
             },
             {
-                query: {
-                    method: "GET",
+                save: {
+                    method: "POST",
                     isArray: false,
+                    headers: expressionHeaders,
                 },
             }
         );
