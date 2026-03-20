@@ -19,15 +19,18 @@ h6 {
     font-family: "Rajdhani", sans-serif;
 }
 
-.nav > li > a {
+.nav>li>a {
     color: #ddd;
 }
+
 .active {
     color: black;
 }
+
 a:visited {
     color: #bbb;
 }
+
 a {
     text-decoration: underline;
     color: #696969;
@@ -65,26 +68,60 @@ a {
 /* Print                                                                      */
 /*----------------------------------------------------------------------------*/
 
-#print-foot {
+html.in-global-shell #print-btn-fixed {
+    display: block;
+}
+
+html.in-global-shell .printButtonHeader {
     display: none;
 }
 
-.printButton {
+html:not(.in-global-shell) #print-btn-fixed {
+    display: none;
+}
+
+.printButtonHeader {
     margin: 3px 0 0 -40px;
     color: white;
     border-style: none;
 }
-.printButton:hover,
-.printButton:focus,
-.printButton:active {
+
+.printButtonHeader:hover,
+.printButtonHeader:focus,
+.printButtonHeader:active {
     color: white;
     background-color: #ddd;
 }
 
+#print-btn-fixed {
+    display: none;
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    color: #555;
+    z-index: 100;
+}
+
+#print-foot {
+    display: none;
+}
+
 @media print {
-    #header, #menu-container, #menu-background, #headerDossierPanel /*dossiers.view*/, #editDescButton /*dossiersReader.view*/, #backtotop {
-        display: none;
+    #header,
+    #menu-container,
+    #menu-background,
+    #headerDossierPanel
+    /*dossiers.view*/
+    ,
+    #editDescButton
+
+    /*dossiersReader.view*/
+    ,
+    #backtotop,
+    #print-btn-fixed {
+        display: none !important;
     }
+
     a[href]:after {
         content: none !important;
     }
@@ -105,14 +142,16 @@ a {
         page-break-before: always;
     }
 
-    .service > .dataset:first-child,
+    .service>.dataset:first-child,
     .indicatorGroup:first-child {
         page-break-before: avoid;
     }
-    .service > .dataset,
+
+    .service>.dataset,
     .indicatorGroup {
         page-break-before: always;
     }
+
     /* works only properly in firefox */
     @-moz-document url-prefix() {
         #print-foot:after {
@@ -120,6 +159,7 @@ a {
             counter-increment: page;
         }
     }
+
     @page {
         /*size: auto;   /* auto is the initial value */
 
@@ -131,6 +171,14 @@ a {
 /*----------------------------------------------------------------------------*/
 /* Header                                                                     */
 /*----------------------------------------------------------------------------*/
+
+html.in-global-shell #header {
+    display: none;
+}
+
+html.in-global-shell #view-container {
+    margin-top: 0;
+}
 
 #header {
     background-color: #b40303;

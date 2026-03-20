@@ -10,15 +10,13 @@ dossiersEditorModule.controller("dossiersEditorMainController", [
     "dossiersDossierFactory",
     "dossiersEditorTranslationsFactory",
     "dossiersEditorUpdateDescriptionFactory",
-    "dossiersEditorCreateDescriptionFactory",
     function (
         $scope,
         dossiersReaderMeFactory,
         dossiersServicesFactory,
         dossiersDossierFactory,
         dossiersEditorTranslationsFactory,
-        dossiersEditorUpdateDescriptionFactory,
-        dossiersEditorCreateDescriptionFactory
+        dossiersEditorUpdateDescriptionFactory
     ) {
         startLoadingState();
 

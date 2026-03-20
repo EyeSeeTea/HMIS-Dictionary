@@ -41,20 +41,3 @@ dossiersEditorModule.factory("dossiersEditorUpdateDescriptionFactory", [
         );
     },
 ]);
-
-var qryCreateDescription = dhisUrl + "translations/";
-
-dossiersEditorModule.factory("dossiersEditorCreateDescriptionFactory", [
-    "$resource",
-    function ($resource) {
-        return $resource(
-            qryCreateDescription,
-            {},
-            {
-                create: {
-                    method: "POST",
-                },
-            }
-        );
-    },
-]);
