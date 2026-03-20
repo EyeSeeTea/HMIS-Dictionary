@@ -239,9 +239,11 @@
                 data-title="'object_name' | translate" data-header-title="'object_name_help' | translate">
                 <span
                     ng-bind-html='object.object_name | highlight: table.globalSearchTerm:params.filter():"object_name"'></span>
-                <a ng-if="object.object_type == 'indicator'" href="" ng-click="getTable(object.object_name,
-			object.object_id,object.object_numerator ,  object.object_denominator)"><img src="./assets/img/pivottable.png"
-                        alt="View Table" width="15" /></a>
+                <button
+                    ng-if="object.object_type == 'indicator'" type="button" class="btn btn-link btn-xs"
+                    ng-click="getTable(object.object_name, object.object_id, object.object_numerator, object.object_denominator)">
+                    <img src="./assets/img/pivottable.png" alt="View Table" width="15" />
+                </button>
             </td>
             <td sortable="'object_form'" filter="{object_form:'./app/search/search.table.html'}" ng-if="false"
                 data-title="'object_form' | translate" data-header-title="'object_form_help' | translate">

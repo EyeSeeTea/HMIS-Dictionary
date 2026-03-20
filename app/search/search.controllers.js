@@ -449,7 +449,7 @@ searchModule.controller("searchController", [
             payload.name = name + " - " + id;
             payload.rows[0].items = items;
 
-            $scope.table = getTableFactory.query(
+            getTableFactory.query(
                 {
                     filter: "name:eq:" + payload.name,
                 },
