@@ -4,6 +4,18 @@
 <head>
     <title>Metadata Dictionary</title>
 
+    <script>
+        (function () {
+            var inGlobalShell = window.self !== window.top;
+            window.HMIS_IN_GLOBAL_SHELL = inGlobalShell;
+
+            if (inGlobalShell) {
+                document.documentElement.className +=
+                    (document.documentElement.className ? " " : "") + "in-global-shell";
+            }
+        })();
+    </script>
+
     <!-- dependencies: jQuery -->
     <script src="bower_components/jquery/jquery.min.js"></script>
 
@@ -144,7 +156,7 @@
                 <div class="col-xs-11" d2-menu></div>
                 <div class="col-xs-1 pull-right">
                     <button disabled="disabled" type="button" onclick="javascript:window.print()"
-                        class="btn btn-link btn-lg printButton">
+                        class="btn btn-link btn-lg printButton printButtonHeader">
                         <span aria-hidden="true" class="glyphicon glyphicon-print"></span>
                     </button>
                 </div>
@@ -174,6 +186,32 @@
             <!--<li id="graph" role="presentation"><a href="#graph" data-toggle="tab">{{'idx_Graph' | translate}}</a></li> -->
         </ul>
         <div id="menu-background"></div>
+
+        <div id="print-btn-fixed-slot"></div>
+        <script>
+            if (window.HMIS_IN_GLOBAL_SHELL) {
+                var slot = document.getElementById("print-btn-fixed-slot");
+                var wrapper = document.createElement("div");
+                var button = document.createElement("button");
+                var icon = document.createElement("span");
+
+                wrapper.id = "print-btn-fixed";
+
+                button.disabled = true;
+                button.type = "button";
+                button.className = "btn btn-default btn-lg printButton printButtonFloating";
+                button.onclick = function () {
+                    window.print();
+                };
+
+                icon.setAttribute("aria-hidden", "true");
+                icon.className = "glyphicon glyphicon-print";
+
+                button.appendChild(icon);
+                wrapper.appendChild(button);
+                slot.appendChild(wrapper);
+            }
+        </script>
 
         <!-- app: view-container -->
         <div id="view-container">
