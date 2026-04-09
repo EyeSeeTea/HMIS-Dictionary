@@ -43,7 +43,8 @@ dossiersModule.factory("dossiersServiceDataSetsFactory", [
 ]);
 
 var qryDossier =
-    dhisUrl + "organisationUnitGroups/:serviceId.json?fields=displayDescription&paging=false&locale=:languageCode";
+    dhisUrl +
+    "organisationUnitGroups/:serviceId.json?fields=displayDescription&paging=false&translate=true&locale=:languageCode";
 
 dossiersModule.factory("dossiersDossierFactory", [
     "$resource",
