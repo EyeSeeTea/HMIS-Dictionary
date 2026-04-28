@@ -31,7 +31,7 @@ layoutSettingsModule.controller("SharingSettingsController", [
             }
         }
 
-        const previousAdvancedUsers = JSON.stringify($scope.state.advancedUserGroups);
+        var previousAdvancedUsers = JSON.stringify($scope.state.advancedUserGroups);
         $scope.advancedUsers = previousAdvancedUsers;
 
         $scope.restore = () => {
@@ -45,6 +45,15 @@ layoutSettingsModule.controller("SharingSettingsController", [
         $scope.previousRows = angular.copy($scope.rows);
         $scope.hasChanges = () =>
             !angular.equals($scope.rows, $scope.previousRows) || $scope.advancedUsers !== previousAdvancedUsers;
+
+        var unregisterStateWatch = $scope.$watch("state", function (newState, oldState) {
+            if (newState === oldState || !newState) return;
+            previousAdvancedUsers = JSON.stringify(newState.advancedUserGroups);
+            $scope.restore();
+            $scope.previousRows = angular.copy($scope.rows);
+        });
+
+        $scope.$on("$destroy", unregisterStateWatch);
 
         $scope.showInvalidFormat = false;
         $scope.showInvalidUserGroup = false;
