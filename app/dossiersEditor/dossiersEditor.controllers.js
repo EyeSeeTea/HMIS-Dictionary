@@ -74,6 +74,10 @@ dossiersEditorModule.controller("dossiersEditorMainController", [
                     language: "PT",
                     code: "pt",
                 },
+                {
+                    language: "AR",
+                    code: "ar",
+                },
             ],
         };
 

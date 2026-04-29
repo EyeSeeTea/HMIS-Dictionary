@@ -93,11 +93,12 @@ appModule.config([
 
         $translateProvider.useSanitizeValueStrategy(null);
 
-        $translateProvider.registerAvailableLanguageKeys(["es", "fr", "en", "pt"], {
+        $translateProvider.registerAvailableLanguageKeys(["es", "fr", "en", "pt", "ar"], {
             "en*": "en",
             "es*": "es",
             "fr*": "fr",
             "pt*": "pt",
+            "ar*": "ar",
             "*": "en", // must be last!
         });
 
