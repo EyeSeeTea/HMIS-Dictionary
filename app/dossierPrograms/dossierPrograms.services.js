@@ -307,11 +307,11 @@ var qryProgramTrackedEntityAttributes =
     dhisUrl +
     "programs/:programId?fields=" +
     [
-        "programTrackedEntityAttributes[mandatory,trackedEntityAttribute[id,name",
-        "formName",
-        "description",
-        "optionSet[name",
-        "options[name]]",
+        "programTrackedEntityAttributes[mandatory,trackedEntityAttribute[id,displayName",
+        "displayFormName",
+        "displayDescription",
+        "optionSet[displayName",
+        "options[displayName]]",
         "valueType",
         "aggregationType]]",
     ].join(",") +

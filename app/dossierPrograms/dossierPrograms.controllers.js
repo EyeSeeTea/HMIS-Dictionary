@@ -1621,11 +1621,14 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         function makeTEASheet(workbook, trackedEntityAttributes, accesses) {
             const data = trackedEntityAttributes.map(item => {
                 const row = [
-                    accesses.trackedEntityAttributes_name && [translate("dos_NameElement"), item?.name],
-                    accesses.trackedEntityAttributes_formName && [translate("dos_FormNameElement"), item?.formName],
+                    accesses.trackedEntityAttributes_name && [translate("dos_NameElement"), item?.displayName],
+                    accesses.trackedEntityAttributes_formName && [
+                        translate("dos_FormNameElement"),
+                        item?.displayFormName,
+                    ],
                     accesses.trackedEntityAttributes_description && [
                         translate("dos_DescriptionElement"),
-                        item?.description,
+                        item?.displayDescription,
                     ],
                     accesses.trackedEntityAttributes_aggregationType && [
                         translate("dos_AggregationType"),
@@ -1634,11 +1637,11 @@ dossierProgramsModule.controller("dossiersProgramExport", [
                     accesses.trackedEntityAttributes_valueType && [translate("dos_ValueType"), item?.valueType],
                     accesses.trackedEntityAttributes_optionSet && [
                         translate("dos_OptionSetName"),
-                        item?.optionSet?.name,
+                        item?.optionSet?.displayName,
                     ],
                     accesses.trackedEntityAttributes_optionSet && [
                         translate("dos_OptionSetOptions"),
-                        joinAndTrim(item?.optionSet?.options.map(option => option?.name)),
+                        joinAndTrim(item?.optionSet?.options.map(option => option?.displayName)),
                     ],
                 ];
 
