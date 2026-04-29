@@ -1596,7 +1596,10 @@ dossierProgramsModule.controller("dossiersProgramExport", [
                                 translate("dos_CalculationMode"),
                                 makeCalcMode(de?.calcMode),
                             ],
-                            accesses.programStages_optionSet && [translate("dos_OptionSetName"), de?.optionSet?.name],
+                            accesses.programStages_optionSet && [
+                                translate("dos_OptionSetName"),
+                                de?.optionSet?.displayName,
+                            ],
                             accesses.programStages_optionSet && [
                                 translate("dos_OptionSetOptions"),
                                 joinAndTrim(de?.optionSet?.options?.map(opt => opt?.displayName)),

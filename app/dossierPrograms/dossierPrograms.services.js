@@ -44,7 +44,7 @@ var qryProgramStageSections =
             "dataElementGroups[id]",
             "valueType",
             "optionSetValue",
-            "optionSet[name",
+            "optionSet[displayName",
             "options[code,displayName]]]]",
         ].join(","),
         [
@@ -55,7 +55,7 @@ var qryProgramStageSections =
             "dataElementGroups[id]",
             "valueType",
             "optionSetValue",
-            "optionSet[name",
+            "optionSet[displayName",
             "options[code,displayName]]]]",
         ].join(","),
     ].join(",") +

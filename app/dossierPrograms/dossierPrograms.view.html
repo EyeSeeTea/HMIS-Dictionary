@@ -238,7 +238,7 @@
                                 </td>
                                 <td ng-if="accesses.programStages_optionSet">
                                     <div ng-if="dataElement.optionSet.options">
-                                        <p>{{ "dos_OptionSetName" | translate }}: {{ dataElement.optionSet.name }}</p>
+                                        <p>{{ "dos_OptionSetName" | translate }}: {{ dataElement.optionSet.displayName }}</p>
                                         <select class="form-control col-md-2">
                                             <option selected>{{ "dos_SeeOptions" | translate }}</option>
                                             <option ng-repeat="option in dataElement.optionSet.options track by $index">
