@@ -150,6 +150,36 @@
             </div>
 
             <div class="col-md-12">
+                <div class="col-md-6">
+                    <div class="alert alert-warning" role="alert">
+                        <p>[<i>Optional</i>] An array of not in use <strong>indicatorGroups</strong> 'UID's to hide in the 'Programs' panel.</p>
+
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" name="NIU_IG_UIDs" ng-model="notInUseIG"/>
+                        </div>
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-primary" id="submitNIU_IG" ng-click="submitNIU_IG()">Submit</button>
+                        </div>
+
+                        <p><br><br>[<i>Optional</i>] An array of not in use <strong>programIndicatorGroups</strong> 'UID's to hide in the 'Programs' panel.</p>
+
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" name="NIU_PIG_UIDs" ng-model="notInUsePIG"/>
+                        </div>
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-primary" id="submitNIU_PIG" ng-click="submitNIU_PIG()">Submit</button>
+                        </div>
+                        <p><br><br></p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="alert rounded" style="background-color:#f9f9f9"role="alert">
+                        <p>The arrays should be formatted as follows: <code>["rD7MJ3LaakW","vnoUusJDY1Z","vCfO0z5igGT"]</code>.<p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
                 <h4>About <strong>dataElements</strong> and <strong>indicators</strong>:</h4>
                 <div class="alert rounded" style="background-color:#f9f9f9"role="alert">
                     <p>

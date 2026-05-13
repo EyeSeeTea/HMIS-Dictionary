@@ -72,6 +72,32 @@ adminModule.factory("adminIGFactory", [
     },
 ]);
 
+var qry_set_NIU_IG = dhisUrl + "dataStore/HMIS_Dictionary/notInUse_indicatorGroups";
+
+adminModule.factory("adminNIU_IGFactory", [
+    "$resource",
+    function ($resource) {
+        return {
+            get_NIU_IG_set: $resource(qry_set_NIU_IG, {}, { query: { method: "GET", isArray: true } }),
+            set_NIU_IG: $resource(qry_set_NIU_IG, {}, { query: { method: "POST", isArray: false } }),
+            upd_NIU_IG: $resource(qry_set_NIU_IG, {}, { query: { method: "PUT", isArray: false } }),
+        };
+    },
+]);
+
+var qry_set_NIU_PIG = dhisUrl + "dataStore/HMIS_Dictionary/notInUse_programIndicatorGroups";
+
+adminModule.factory("adminNIU_PIGFactory", [
+    "$resource",
+    function ($resource) {
+        return {
+            get_NIU_PIG_set: $resource(qry_set_NIU_PIG, {}, { query: { method: "GET", isArray: true } }),
+            set_NIU_PIG: $resource(qry_set_NIU_PIG, {}, { query: { method: "POST", isArray: false } }),
+            upd_NIU_PIG: $resource(qry_set_NIU_PIG, {}, { query: { method: "PUT", isArray: false } }),
+        };
+    },
+]);
+
 var qry_get_A = dhisUrl + "attributes.json?fields=name,id,dataSetAttribute,indicatorGroupAttribute&paging=false";
 
 adminModule.factory("adminAFactory", [

@@ -13,6 +13,8 @@ adminModule.controller("adminMainController", [
     "adminDEGFactory",
     "adminDSFactory",
     "adminIGFactory",
+    "adminNIU_IGFactory",
+    "adminNIU_PIGFactory",
     "adminDossierConfigCompleteFactory",
     function (
         $scope,
@@ -24,6 +26,8 @@ adminModule.controller("adminMainController", [
         adminDEGFactory,
         adminDSFactory,
         adminIGFactory,
+        adminNIU_IGFactory,
+        adminNIU_PIGFactory,
         adminDossierConfigCompleteFactory
     ) {
         $("#admin").tab("show");
@@ -284,6 +288,62 @@ adminModule.controller("adminMainController", [
                         return adminIGFactory.set_IG.query($scope.selectedIG, function (response) {
                             if (response) {
                                 $scope.blacklist_indicatorgroups = $scope.selectedIG;
+                            }
+                        });
+                    }
+                )
+                .then(function () {
+                    window.location.reload(true);
+                });
+        };
+
+        if ($scope.notInUse_indicatorGroups) {
+            $scope.notInUseIG = JSON.stringify($scope.notInUse_indicatorGroups);
+        }
+
+        $scope.submitNIU_IG = function () {
+            adminNIU_IGFactory.get_NIU_IG_set
+                .query($scope.notInUseIG)
+                .$promise.then(
+                    function (response1) {
+                        return adminNIU_IGFactory.upd_NIU_IG.query($scope.notInUseIG, function (response2) {
+                            if (response2) {
+                                $scope.notInUse_indicatorGroups = $scope.notInUseIG;
+                            }
+                        });
+                    },
+                    function () {
+                        return adminNIU_IGFactory.set_NIU_IG.query($scope.notInUseIG, function (response) {
+                            if (response) {
+                                $scope.notInUse_indicatorGroups = $scope.notInUseIG;
+                            }
+                        });
+                    }
+                )
+                .then(function () {
+                    window.location.reload(true);
+                });
+        };
+
+        if ($scope.notInUse_programIndicatorGroups) {
+            $scope.notInUsePIG = JSON.stringify($scope.notInUse_programIndicatorGroups);
+        }
+
+        $scope.submitNIU_PIG = function () {
+            adminNIU_PIGFactory.get_NIU_PIG_set
+                .query($scope.notInUsePIG)
+                .$promise.then(
+                    function (response1) {
+                        return adminNIU_PIGFactory.upd_NIU_PIG.query($scope.notInUsePIG, function (response2) {
+                            if (response2) {
+                                $scope.notInUse_programIndicatorGroups = $scope.notInUsePIG;
+                            }
+                        });
+                    },
+                    function () {
+                        return adminNIU_PIGFactory.set_NIU_PIG.query($scope.notInUsePIG, function (response) {
+                            if (response) {
+                                $scope.notInUse_programIndicatorGroups = $scope.notInUsePIG;
                             }
                         });
                     }
