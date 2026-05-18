@@ -165,10 +165,15 @@ searchModule.controller("searchController", [
         console.debug("searchModule: Blacklisted dataSets: " + $scope.blacklist_datasets);
         console.debug("searchModule: Blacklisted indicatorGroups: " + $scope.blacklist_indicatorgroups);
         var filterObjects = function (obj, type) {
+            const isAdmin = !!$scope.is_admin;
             if (type == "dataElement") {
                 return !obj.dataElementGroups.some(deg => $scope.blacklist_dataelementgroups.includes(deg.id));
             } else if (type == "indicator") {
-                return !obj.indicatorGroups.some(ig => $scope.blacklist_indicatorgroups.includes(ig.id));
+                return !obj.indicatorGroups.some(
+                    ig =>
+                        $scope.blacklist_indicatorgroups.includes(ig.id) ||
+                        (!isAdmin && $scope.notInUse_indicatorGroups.includes(ig.id))
+                );
             }
         };
 

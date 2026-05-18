@@ -88,7 +88,18 @@ datasetsModule.factory("datasetsCategoryCombosFactory", [
 
 var qryDatasetIndicators =
     dhisUrl +
-    "indicators?fields=displayName,indicatorType[displayName],description,numerator,numeratorDescription,denominator,denominatorDescription&paging=false";
+    "indicators?fields=" +
+    [
+        "displayName",
+        "indicatorType[displayName]",
+        "description",
+        "numerator",
+        "numeratorDescription",
+        "denominator",
+        "denominatorDescription",
+        "indicatorGroups[id]",
+    ].join(",") +
+    "&paging=false";
 
 datasetsModule.factory("datasetsIndicatorsFactory", [
     "$resource",

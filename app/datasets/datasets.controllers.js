@@ -154,15 +154,6 @@ datasetsModule.controller("datasetsMainController", [
         $scope.datasets = datasetsFactory.get({ blackList: $scope.blacklist_datasets }, function () {
             endLoadingState(true);
         });
-        /*
-         *  @name $scope.dataSets
-         *  @description Gets the list of data sets
-         *  @dependencies datasetsFactory
-         *  @scope datasetsMainController
-         */
-        $scope.datasets = datasetsFactory.get({ blackList: $scope.blacklist_datasets }, function () {
-            endLoadingState(true);
-        });
 
         if (sessionStorage.getItem("dataSetName") !== null) {
             $scope.dataSetName = sessionStorage.getItem("dataSetName");
@@ -410,8 +401,17 @@ datasetsModule.controller("datasetsIndicatorsController", [
                 //Query indicator information
                 $scope.allIndicators = datasetsIndicatorsFactory.get(function () {
                     endLoadingState(true);
+                    const isAdmin = !!$scope.is_admin;
+                    const filteredIndicators = $scope.allIndicators.indicators.filter(
+                        indicator =>
+                            !indicator.indicatorGroups.some(
+                                ig =>
+                                    $scope.blacklist_indicatorgroups.includes(ig.id) ||
+                                    (!isAdmin && $scope.notInUse_indicatorGroups.includes(ig.id))
+                            )
+                    );
                     $scope.datasetDataElements.dataSetElements.forEach(function (dataElement) {
-                        $scope.allIndicators.indicators.forEach(function (indicator) {
+                        filteredIndicators.forEach(function (indicator) {
                             const regex = /#{(\w+)\.?\w+?}/g;
                             const num = indicator.numerator;
                             const den = indicator.denominator;
