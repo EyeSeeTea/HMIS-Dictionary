@@ -112,7 +112,7 @@
             <div class="col-md-12">
                 <div class="col-md-6">
                     <div class="alert alert-warning" role="alert">
-                        <p>[<i>Optional</i>] An array of <strong>dataElementGroups</strong> 'UID's to blacklist form the 'Search' panel.</p>
+                        <p>[<i>Optional</i>] An array of <strong>dataElementGroups</strong> 'UID's to blacklist form the panels.</p>
 
                         <div class="col-md-9">
                             <input type="text" class="form-control" name="DEG_UIDs" ng-model="selectedDEG"/>
@@ -121,7 +121,7 @@
                             <button type="submit" class="btn btn-primary" id="submitDEG" ng-click="submitDEG()">Submit</button>
                         </div>
 
-                        <p><br><br>[<i>Optional</i>] An array of <strong>dataSets</strong> 'UID's to blacklist form the 'Search' panel.</p>
+                        <p><br><br>[<i>Optional</i>] An array of <strong>dataSets</strong> 'UID's to blacklist form the panels.</p>
 
                         <div class="col-md-9">
                             <input type="text" class="form-control" name="DS_UIDs" ng-model="selectedDS"/>
@@ -130,7 +130,7 @@
                             <button type="submit" class="btn btn-primary" id="submitDS" ng-click="submitDS()">Submit</button>
                         </div>
 
-                        <p><br><br>[<i>Optional</i>] An array of <strong>indicatorGroups</strong> 'UID's to blacklist form the 'Search' panel.</p>
+                        <p><br><br>[<i>Optional</i>] An array of <strong>indicatorGroups</strong> 'UID's to blacklist form the panels.</p>
 
                         <div class="col-md-9">
                             <input type="text" class="form-control" name="IG_UIDs" ng-model="selectedIG"/>
@@ -139,6 +139,37 @@
                         <div class="col-md-3">
                             <button type="submit" class="btn btn-primary" id="submitIG" ng-click="submitIG()">Submit</button>
                         </div>
+                        <p><br><br></p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="alert rounded" style="background-color:#f9f9f9"role="alert">
+                        <p>The arrays should be formatted as follows: <code>["rD7MJ3LaakW","vnoUusJDY1Z","vCfO0z5igGT"]</code>.<p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="col-md-6">
+                    <div class="alert alert-warning" role="alert">
+                        <p>[<i>Optional</i>] An array of legacy <strong>dataElementGroups</strong> 'UID's for the 'Programs' panel.</p>
+
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" name="DEG_UIDs" ng-model="selectedLEG_DEG"/>
+                        </div>
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-primary" id="submitLEG_DEG" ng-click="submitLEG_DEG()">Submit</button>
+                        </div>
+
+                        <p><br><br>[<i>Optional</i>] An array of legacy <strong>optionGroups</strong> 'UID's for the 'Programs' panel.</p>
+
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" name="DS_UIDs" ng-model="selectedLEG_OPG"/>
+                        </div>
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-primary" id="submitLEG_OPG" ng-click="submitLEG_OPG()">Submit</button>
+                        </div>
+
                         <p><br><br></p>
                     </div>
                 </div>
