@@ -163,6 +163,7 @@
   "dos_ProgramStages": "Program Stages",
   "dos_ProgramIndicators": "Program Indicators",
   "dos_ProgramRules": "Program Rules",
+  "dos_showLegacy": "Show legacy data elements and options",
   "MODULE:INDICATORS": "***************************",
   "dos_FormulaOfIndicator": "Formula of Indicator",
   "dos_DataSets": "DataSets",
