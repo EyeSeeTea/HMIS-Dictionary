@@ -45,7 +45,7 @@ var qryProgramStageSections =
             "valueType",
             "optionSetValue",
             "optionSet[name",
-            "options[code,displayName]]]]",
+            "options[id,code,displayName]]]]",
         ].join(","),
         [
             "programStageDataElements[compulsory,dataElement[id",
@@ -56,7 +56,7 @@ var qryProgramStageSections =
             "valueType",
             "optionSetValue",
             "optionSet[name",
-            "options[code,displayName]]]]",
+            "options[id,code,displayName]]]]",
         ].join(","),
     ].join(",") +
     "&paging=false";
@@ -311,7 +311,7 @@ var qryProgramTrackedEntityAttributes =
         "formName",
         "description",
         "optionSet[name",
-        "options[name]]",
+        "options[id,name]]",
         "valueType",
         "aggregationType]]",
     ].join(",") +
@@ -494,6 +494,28 @@ dossierProgramsModule.factory("dossiersProgramResourcesElementsFactory", [
             qryProgramResourcesElements,
             {
                 resourcesIDs: "@resourcesIDs",
+            },
+            {
+                query: {
+                    method: "GET",
+                    isArray: false,
+                },
+            }
+        );
+    },
+]);
+
+var qryLegacyOptionGroups =
+    dhisUrl +
+    "optionGroups.json?fields=id,displayName,optionSet,options[id,name,displayName]&filter=id\\:in\\:[:optionGroupIDs]&paging=false";
+
+dossierProgramsModule.factory("dossiersProgramLegacyOptionGroupsFactory", [
+    "$resource",
+    function ($resource) {
+        return $resource(
+            qryLegacyOptionGroups,
+            {
+                optionGroupIDs: "@optionGroupIDs",
             },
             {
                 query: {

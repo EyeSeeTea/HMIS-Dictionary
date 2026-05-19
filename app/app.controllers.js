@@ -161,6 +161,60 @@ appModule.controller("appSharedController", [
                 $scope.blacklist_indicatorgroups = [];
             });
 
+        /* For legacy DEG list */
+        jQuery
+            .ajax({
+                url: dhisUrl + "dataStore/HMIS_Dictionary/legacy_dataElementGroups",
+                contentType: "json",
+                method: "GET",
+                dataType: "text",
+                async: false,
+            })
+            .success(function (LEG_DEGlist) {
+                LEG_DEGlist = JSON.parse(LEG_DEGlist);
+                $scope.legacy_dataelementgroups = LEG_DEGlist;
+                if ($scope.legacy_dataelementgroups) {
+                    console.log("appModule: List of legacy dataElementGroups for the 'Programs' panel: " + LEG_DEGlist);
+                } else {
+                    console.log(
+                        "appModule: List of legacy dataElementGroups for the 'Programs' panel has not been defined yet, go to the admin panel!"
+                    );
+                    $scope.legacy_dataelementgroups = [];
+                }
+            })
+            .fail(function () {
+                console.log(
+                    "appModule: List of legacy dataElementGroups for the 'Programs' panel has not been identified."
+                );
+                $scope.legacy_dataelementgroups = [];
+            });
+
+        /* For legacy OPG list */
+        jQuery
+            .ajax({
+                url: dhisUrl + "dataStore/HMIS_Dictionary/legacy_optionGroups",
+                contentType: "json",
+                method: "GET",
+                dataType: "text",
+                async: false,
+            })
+            .success(function (LEG_OPGlist) {
+                LEG_OPGlist = JSON.parse(LEG_OPGlist);
+                $scope.legacy_optiongroups = LEG_OPGlist;
+                if ($scope.legacy_optiongroups) {
+                    console.log("appModule: List of legacy optionGroups for the 'Programs' panel: " + LEG_OPGlist);
+                } else {
+                    console.log(
+                        "appModule: List of legacy optionGroups for the 'Programs' panel has not been defined yet, go to the admin panel!"
+                    );
+                    $scope.legacy_optiongroups = [];
+                }
+            })
+            .fail(function () {
+                console.log("appModule: List of legacy optionGroups for the 'Programs' panel has not been identified.");
+                $scope.legacy_optiongroups = [];
+            });
+
         /* For admin tab */
         jQuery
             .ajax({
