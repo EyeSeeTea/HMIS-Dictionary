@@ -527,6 +527,12 @@ dossierProgramsModule.service("dossiersProgramLoadingService", function () {
         resources: undefined,
     };
 
+    this.progress = {
+        message: "",
+        current: 0,
+        total: 0,
+    };
+
     this.resetState = function () {
         this.loading = {
             programs: undefined,
@@ -537,6 +543,17 @@ dossierProgramsModule.service("dossiersProgramLoadingService", function () {
             ruleVariables: undefined,
             resources: undefined,
         };
+        this.progress = {
+            message: "",
+            current: 0,
+            total: 0,
+        };
+    };
+
+    this.setProgress = function (message, current, total) {
+        this.progress.message = message;
+        this.progress.current = current;
+        this.progress.total = total;
     };
 
     this.done = function () {

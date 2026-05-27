@@ -456,7 +456,7 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
         $scope.$watch("selectedProgram", function () {
             ping();
             if ($scope.selectedProgram) {
-                startLoadingState(false);
+                startLoadingState(false, { message: "Loading program stages..." });
                 dossiersProgramLoadingService.loading.programs = false;
                 //Query sections and data elements
                 var stageSectionPromises = $scope.selectedProgram.programStages.map(function (stage) {
@@ -766,6 +766,122 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
             return _.uniq(idsNamesArray.concat(namesArray));
         }
 
+        function updatePIProgress() {
+            // const totalExpressions = $scope.programIndicators.length;
+            // const totalFilters = $scope.programIndicators.filter(pi => !!pi.filter).length;
+            // const totalSteps = totalExpressions + totalFilters;
+            const totalSteps = $scope.programIndicators.length;
+            const current = $scope.programIndicators.reduce(
+                (sum, pi) => sum + (pi.expressionDone && pi.filterDone ? 1 : 0),
+                0
+            );
+            updateProgressMessage({
+                message: "Loading program indicators...",
+                current,
+                total: totalSteps,
+            });
+        }
+
+        function buildUniquePayloadMap(field, preprocessFn) {
+            const payloadMap = {};
+
+            $scope.programIndicators.forEach((indicator, index) => {
+                const rawValue = indicator[field];
+                if (typeof rawValue === "undefined") return;
+
+                const payload = preprocessFn ? preprocessFn(rawValue, indicator) : rawValue;
+                if (typeof payload === "undefined") return;
+
+                if (!payloadMap[payload]) payloadMap[payload] = [];
+                payloadMap[payload].push(index);
+            });
+
+            return payloadMap;
+        }
+
+        function runUniqueTranslations(payloadMap, saveFactory, applyFn, doneFn) {
+            const payloads = Object.keys(payloadMap);
+
+            if (payloads.length === 0) {
+                doneFn();
+                return;
+            }
+
+            function translateAt(i) {
+                if (i >= payloads.length) {
+                    doneFn();
+                    return;
+                }
+
+                const payload = payloads[i];
+                const indicatorIndices = payloadMap[payload];
+
+                saveFactory.save({}, payload, function (data) {
+                    indicatorIndices.forEach(index => applyFn(index, data));
+                    translateAt(i + 1);
+                });
+            }
+
+            translateAt(0);
+        }
+
+        function assignProgramIndicatorStageRefsFromField(indicator, field) {
+            const value = indicator[field];
+            if (typeof value === "undefined") return;
+
+            const stageRef = indicator.stageRef;
+            const newRef = getStageRef(value);
+
+            indicator.stageRef = stageRef && stageRef.length > 0 ? _.uniq(stageRef.concat(newRef)) : newRef;
+        }
+
+        function startProgramIndicatorTranslation() {
+            const optionRegex = /#{(\w+).(\w+)} *?(!=|==) ?'(.?)'/g;
+            const stageIdRegex = /Program stage id *== *'"['"]/g;
+
+            const expressionPayloadMap = buildUniquePayloadMap("expression", function (rawExpression, indicator) {
+                assignProgramIndicatorStageRefsFromField(indicator, "expression");
+                return rawExpression;
+            });
+
+            const filterPayloadMap = buildUniquePayloadMap("filter", function (rawFilter, indicator) {
+                assignProgramIndicatorStageRefsFromField(indicator, "filter");
+
+                const normalizedFilter = rawFilter.replaceAll(optionRegex, optionReplacer);
+                indicator.filter = normalizedFilter;
+                return normalizedFilter;
+            });
+
+            runUniqueTranslations(
+                expressionPayloadMap,
+                dossiersProgramIndicatorExpressionFactory,
+                function (index, data) {
+                    $scope.programIndicators[index].expression = data.description.replaceAll(".", ".");
+                    $scope.programIndicators[index].expressionDone = true;
+                    updatePIProgress();
+                },
+                function () {
+                    $rootScope.recursiveAssignExpressionDone = true;
+                }
+            );
+
+            runUniqueTranslations(
+                filterPayloadMap,
+                dossiersProgramIndicatorFilterFactory,
+                function (index, data) {
+                    const translated = data.description.includes("Program stage id")
+                        ? data.description.replaceAll(stageIdRegex, stageIdReplacer)
+                        : data.description.replaceAll(".", ".");
+                    $scope.programIndicators[index].filter = translated;
+                    $scope.programIndicators[index].filterDone = true;
+                    updatePIProgress();
+                },
+                function () {
+                    $rootScope.recursiveAssignFilterDone = true;
+                }
+            );
+        }
+
         /*
          *  @name recursiveAssignExpression
          *  @description Gets the "readable" expressions for each indicator expression
@@ -787,6 +903,8 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
 
             dossiersProgramIndicatorExpressionFactory.save({}, $scope.programIndicators[i].expression, function (data) {
                 $scope.programIndicators[i].expression = data.description.replaceAll("\\.", ".");
+                $scope.programIndicators[i].expressionDone = true;
+                updatePIProgress();
                 recursiveAssignExpression(i + 1);
             });
         }
@@ -864,6 +982,8 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
                     $scope.programIndicators[i].filter = data.description.replaceAll("\\.", ".");
                 }
 
+                $scope.programIndicators[i].filterDone = true;
+                updatePIProgress();
                 recursiveAssignFilter(i + 1);
             });
         }
@@ -877,7 +997,6 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
         $scope.$watch("selectedProgram", function () {
             ping();
             if ($scope.selectedProgram) {
-                startLoadingState(false);
                 dossiersProgramLoadingService.loading.programIndicators = false;
                 $rootScope.recursiveAssignExpressionDone = false;
                 $rootScope.recursiveAssignFilterDone = false;
@@ -905,12 +1024,24 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
                                             }
                                             return bound;
                                         });
-                                        return pi;
+                                        return {
+                                            ...pi,
+                                            expressionDone: !pi.expression,
+                                            filterDone: !pi.filter,
+                                        };
                                     });
                                     addtoTOC($scope.toc, null, $scope.programIndicators4TOC, "Program Indicators");
 
-                                    recursiveAssignExpression(0);
-                                    recursiveAssignFilter(0);
+                                    updateProgressMessage({
+                                        message: "Loading program indicators...",
+                                        current: 0,
+                                        total: $scope.programIndicators.length,
+                                    });
+
+                                    updatePIProgress();
+                                    // recursiveAssignExpression(0);
+                                    // recursiveAssignFilter(0);
+                                    startProgramIndicatorTranslation();
                                     $rootScope.programIndicators = $scope.programIndicators;
                                     $rootScope.programStages = $scope.programStages;
                                     dossiersProgramDataService.data.programIndicators = $scope.programIndicators;
@@ -1018,19 +1149,73 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
             });
         }
 
+        function updateIndicatorProgress(index, total) {
+            updateProgressMessage({
+                message: "Loading indicators...",
+                current: index,
+                total: total,
+            });
+        }
+
+        function createIndicatorProgressTracker(total, onDone) {
+            const progress = {
+                done: 0,
+                total: total,
+            };
+
+            updateIndicatorProgress(0, progress.total);
+
+            return {
+                step: function () {
+                    progress.done += 1;
+                    updateIndicatorProgress(progress.done, progress.total);
+                    if (progress.done >= progress.total) {
+                        onDone();
+                    }
+                },
+                finishIfEmpty: function () {
+                    if (progress.total === 0) {
+                        onDone();
+                    }
+                },
+            };
+        }
+
+        function getUniqueExpressions(indicators, field) {
+            const unique = {};
+            indicators.forEach((indicator, index) => {
+                const expression = indicator[field];
+                if (!unique[expression]) {
+                    unique[expression] = [];
+                }
+                unique[expression].push(index);
+            });
+            return unique;
+        }
+
         /*
          *  @name recursiveAssignNumerator
          *  @description Gets the "readable" expressions for each indicator numerator
          *  @scope dossierProgramGlobalIndicatorController
          */
-        function recursiveAssignNumerator(i) {
-            if (i >= $scope.indicators.length) return;
+        function recursiveAssignNumerator(expressionMap, expressions, progressTracker, currentIndex = 0) {
+            if (currentIndex >= expressions.length) {
+                return;
+            }
+
+            const expression = expressions[currentIndex];
+            const indicatorIndices = expressionMap[expression];
+
             dossiersProgramGlobalIndicatorExpressionFactory.save(
                 {},
-                $scope.indicators[i].numerator,
+                expression,
                 function (data) {
-                    $scope.indicators[i].numerator = data.description;
-                    recursiveAssignNumerator(i + 1);
+                    // Apply result to ALL indicators sharing this numerator
+                    indicatorIndices.forEach(idx => {
+                        $scope.indicators[idx].numerator = data.description;
+                    });
+                    progressTracker.step();
+                    recursiveAssignNumerator(expressionMap, expressions, progressTracker, currentIndex + 1);
                 },
                 true
             );
@@ -1041,14 +1226,21 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
          *  @description Gets the "readable" expressions for each indicator denominator
          *  @scope dossierProgramGlobalIndicatorController
          */
-        function recursiveAssignDenominator(i) {
-            if (i >= $scope.indicators.length) return;
+        function recursiveAssignDenominator(expressionMap, expressions, progressTracker, currentIndex = 0) {
+            if (currentIndex >= expressions.length) return;
+
+            const expression = expressions[currentIndex];
+            const indicatorIndices = expressionMap[expression];
+
             dossiersProgramGlobalIndicatorExpressionFactory.save(
                 {},
-                $scope.indicators[i].denominator,
+                expression,
                 function (data) {
-                    $scope.indicators[i].denominator = data.description;
-                    recursiveAssignDenominator(i + 1);
+                    indicatorIndices.forEach(idx => {
+                        $scope.indicators[idx].denominator = data.description;
+                    });
+                    progressTracker.step();
+                    recursiveAssignDenominator(expressionMap, expressions, progressTracker, currentIndex + 1);
                 },
                 true
             );
@@ -1079,7 +1271,7 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
                     $rootScope.recursiveAssignFilterDone &&
                     $rootScope.recursiveAssignExpressionDone
                 ) {
-                    startLoadingState(false);
+                    startLoadingState(false, { message: "Loading indicators..." });
                     dossiersProgramLoadingService.loading.indicators = false;
                     $scope.indicators = [];
 
@@ -1093,6 +1285,7 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
                                     )
                             )
                             .forEach(function (indicator) {
+                                console.debug("Processing indicator:", indicator.displayName);
                                 const num = indicator.numerator;
                                 const den = indicator.denominator;
                                 parseExpression(indicator, num);
@@ -1103,12 +1296,30 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
                             });
                         if ($scope.indicators.length > 0) {
                             addtoTOC($scope.toc, null, $scope.indicators4TOC, "Indicators");
-                            recursiveAssignNumerator(0);
-                            recursiveAssignDenominator(0);
+                            const numeratorMap = getUniqueExpressions($scope.indicators, "numerator");
+                            const uniqueNumerators = Object.keys(numeratorMap);
+                            const denominatorMap = getUniqueExpressions($scope.indicators, "denominator");
+                            const uniqueDenominators = Object.keys(denominatorMap);
+                            const progressTracker = createIndicatorProgressTracker(
+                                uniqueNumerators.length + uniqueDenominators.length,
+                                function () {
+                                    dossiersProgramLoadingService.loading.indicators = true;
+                                    if (dossiersProgramLoadingService.done()) endLoadingState(true);
+                                }
+                            );
+
+                            console.debug("numeratorMap:", JSON.stringify(numeratorMap, null, 2));
+                            console.debug("uniqueNumerators:", JSON.stringify(uniqueNumerators, null, 2));
+                            recursiveAssignNumerator(numeratorMap, uniqueNumerators, progressTracker, 0);
+                            console.debug("denominatorMap:", JSON.stringify(denominatorMap, null, 2));
+                            console.debug("uniqueDenominators:", JSON.stringify(uniqueDenominators, null, 2));
+                            recursiveAssignDenominator(denominatorMap, uniqueDenominators, progressTracker, 0);
+                            progressTracker.finishIfEmpty();
                             dossiersProgramDataService.data.indicators = $scope.indicators;
+                        } else {
+                            dossiersProgramLoadingService.loading.indicators = true;
+                            if (dossiersProgramLoadingService.done()) endLoadingState(true);
                         }
-                        dossiersProgramLoadingService.loading.indicators = true;
-                        if (dossiersProgramLoadingService.done()) endLoadingState(true);
                     });
                 } else if ($rootScope.programIndicatorsEmpty) {
                     dossiersProgramLoadingService.loading.indicators = true;
@@ -1167,7 +1378,7 @@ dossierProgramsModule.controller("dossiersProgramTEAController", [
         $scope.$watch("selectedProgram", function () {
             ping();
             if ($scope.selectedProgram) {
-                startLoadingState(false);
+                startLoadingState(false, { message: "Loading tracked entity attributes..." });
                 dossiersProgramLoadingService.loading.trackedEntityAttributes = false;
 
                 dossiersProgramTEAsFactory.get(
@@ -1267,7 +1478,7 @@ dossierProgramsModule.controller("dossiersProgramRuleController", [
         $scope.$watch("selectedProgram", function () {
             ping();
             if ($scope.selectedProgram) {
-                startLoadingState(false);
+                startLoadingState(false, { message: "Loading program rules..." });
                 dossiersProgramLoadingService.loading.rules = false;
                 $rootScope.programRulesDone = false;
 
@@ -1323,7 +1534,7 @@ dossierProgramsModule.controller("dossiersProgramRuleVariablesController", [
         $scope.$watchGroup(["selectedProgram", "programRulesDone"], function () {
             ping();
             if ($scope.selectedProgram && $rootScope.programRulesDone) {
-                startLoadingState(false);
+                startLoadingState(false, { message: "Loading program rule variables..." });
                 dossiersProgramLoadingService.loading.ruleVariables = false;
 
                 dossiersProgramRuleVariablesFactory.get(
@@ -1438,7 +1649,7 @@ dossierProgramsModule.controller("dossiersProgramResourcesController", [
         $scope.$watch("selectedProgram", function () {
             ping();
             if ($scope.selectedProgram) {
-                startLoadingState(false);
+                startLoadingState(false, { message: "Loading program resources..." });
                 dossiersProgramLoadingService.loading.resources = false;
 
                 dossiersProgramResourcesAttributeFactory.get({ programId: $scope.selectedProgram.id }, function (data) {
