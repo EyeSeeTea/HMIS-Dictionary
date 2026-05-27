@@ -55,3 +55,100 @@ label {
 .tooltipcontainer:hover .tooltiptext {
     visibility: visible;
 }
+
+.formula-modal-btn {
+    margin-left: 6px;
+}
+
+.formula-modal-body {
+    max-height: 70vh;
+    overflow-y: auto;
+    word-break: break-word;
+    line-height: 1.5;
+}
+
+.modal-header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.formula-modal-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.formula-modal-controls label {
+    margin: 0;
+    font-weight: normal;
+}
+
+.formula-depth-input {
+    width: 60px;
+    padding: 4px 6px;
+    font-size: 12px;
+}
+
+.formula-indicator-block {
+    display: inline;
+    padding: 1px 3px;
+    border-radius: 3px;
+    margin: 0 1px;
+}
+
+.formula-legend {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px 10px;
+    margin-bottom: 12px;
+    background: #f9f9f9;
+}
+
+.formula-legend-item {
+    display: inline-block;
+    margin-right: 14px;
+    margin-bottom: 6px;
+}
+
+.formula-legend-chip {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+
+.formula-indicator-color-1 {
+    background-color: #ffecb3;
+}
+
+.formula-indicator-color-2 {
+    background-color: #c8e6c9;
+}
+
+.formula-indicator-color-3 {
+    background-color: #bbdefb;
+}
+
+.formula-indicator-color-4 {
+    background-color: #ffd6cc;
+}
+
+.formula-indicator-color-5 {
+    background-color: #e1bee7;
+}
+
+.formula-indicator-color-6 {
+    background-color: #b2dfdb;
+}
+
+.formula-indicator-color-7 {
+    background-color: #dcedc8;
+}
+
+.formula-indicator-color-8 {
+    background-color: #f8bbd0;
+}

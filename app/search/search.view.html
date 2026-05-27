@@ -262,12 +262,22 @@
                 data-header-title="'object_num_formula_help' | translate">
                 <span
                     ng-bind-html='object.object_num_formula | highlight: table.globalSearchTerm:params.filter():"object_num_formula"'></span>
+                <button ng-if="object.object_type == 'indicator' && hasNestedIndicators(object.object_numerator)" type="button" class="btn btn-default btn-xs formula-modal-btn"
+                    data-toggle="modal" data-target="#indicatorFormulaModal"
+                    ng-click="openFormulaModal(object, 'numerator')">
+                    Expand
+                </button>
             </td>
             <td sortable="'object_den_formula'" filter="{object_den_formula:'./app/search/search.table.html'}"
                 ng-if="false" data-title="'object_den_formula' | translate"
                 data-header-title="'object_den_formula_help' | translate">
                 <span
                     ng-bind-html='object.object_den_formula | highlight: table.globalSearchTerm:params.filter():"object_den_formula"'></span>
+                <button ng-if="object.object_type == 'indicator' && hasNestedIndicators(object.object_denominator)" type="button" class="btn btn-default btn-xs formula-modal-btn"
+                    data-toggle="modal" data-target="#indicatorFormulaModal"
+                    ng-click="openFormulaModal(object, 'denominator')">
+                    Expand
+                </button>
             </td>
 
             <td sortable="'objectGroup_id'" filter="{objectGroup_id:'./app/search/search.table.html'}" ng-if="false"
@@ -306,4 +316,39 @@
     <button class="btn btn-link" ng-click="exportToExcel()">
         <span class="glyphicon glyphicon-share"></span> {{ "srch_exportToExcel" | translate }}
     </button>
+
+    <div class="modal fade" id="indicatorFormulaModal" tabindex="-1" role="dialog"
+        aria-labelledby="indicatorFormulaModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <div class="modal-header-content">
+                        <h4 class="modal-title" id="indicatorFormulaModalLabel">{{ formulaModal.title }}</h4>
+                        <div class="formula-modal-controls">
+                            <label for="maxDepthInput">Max Depth:</label>
+                            <input type="number" id="maxDepthInput" ng-model="formulaModalSettings.maxDepth" min="1" max="10" 
+                                ng-change="openFormulaModal(currentFormulaObject, currentFormulaType)" 
+                                class="form-control formula-depth-input" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body formula-modal-body">
+                    <div class="formula-legend" ng-if="formulaModal.legend.length">
+                        <div class="formula-legend-item" ng-repeat="entry in formulaModal.legend track by entry.id">
+                            <span class="formula-legend-chip" ng-class="'formula-indicator-color-' + entry.colorIndex"></span>
+                            <strong>{{ entry.name }}</strong>
+                            <span>({{ entry.id }})</span>
+                        </div>
+                    </div>
+                    <div ng-bind-html="formulaModal.formulaHtml"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

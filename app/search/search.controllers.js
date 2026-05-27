@@ -511,12 +511,92 @@ searchModule.controller("searchController", [
                 .filter(el => el != undefined);
         }
 
-        $scope.parseFormula = function (formula, dataElements, categoryOptionCombos, programIndicators, indicators) {
-            var operatorRegex = /}\s*[\+\-\*]\s*(#|I)/g;
+        $scope.formulaModal = {
+            title: "",
+            formulaHtml: "",
+            legend: [],
+        };
+
+        $scope.formulaModalSettings = {
+            maxDepth: 3,
+        };
+
+        $scope.formulaSources = {
+            dataElements: {},
+            categoryOptionCombos: {},
+            programIndicators: {},
+            indicators: {},
+        };
+
+        $scope.openFormulaModal = function (object, type) {
+            if (!object || object.object_type !== "indicator") {
+                $scope.formulaModal.title = "Formula";
+                $scope.formulaModal.formulaHtml = "";
+                $scope.formulaModal.legend = [];
+                return;
+            }
+
+            $scope.currentFormulaObject = object;
+            $scope.currentFormulaType = type;
+
+            const baseFormula = type === "denominator" ? object.object_denominator : object.object_numerator;
+            const label = type === "denominator" ? "Denominator" : "Numerator";
+            const legendById = {};
+
+            $scope.formulaModal.title = object.object_name + " - " + label + " (recursive)";
+            $scope.formulaModal.formulaHtml = $scope.parseFormula(
+                baseFormula,
+                $scope.formulaSources.dataElements,
+                $scope.formulaSources.categoryOptionCombos,
+                $scope.formulaSources.programIndicators,
+                $scope.formulaSources.indicators,
+                {
+                    expandIndicators: true,
+                    depth: 0,
+                    maxDepth: $scope.formulaModalSettings.maxDepth,
+                    visitedIndicators: new Set([object.object_id]),
+                    legendById,
+                }
+            );
+
+            $scope.formulaModal.legend = Object.values(legendById).sort((a, b) => a.order - b.order);
+        };
+
+        function nextLegendColorIndex(legendById) {
+            return (Object.keys(legendById).length % 8) + 1;
+        }
+
+        $scope.hasNestedIndicators = function (formula) {
+            return /N\{\w+\}/.test(formula || "");
+        };
+
+        $scope.parseFormula = function (
+            formula,
+            dataElements,
+            categoryOptionCombos,
+            programIndicators,
+            indicators,
+            options
+        ) {
+            const config = Object.assign(
+                {
+                    expandIndicators: false,
+                    depth: 0,
+                    maxDepth: 8,
+                    visitedIndicators: new Set(),
+                    legendById: {},
+                },
+                options || {}
+            );
+
+            var operatorRegex = /}\s*[\+\-\*]\s*(#|I|N)/g;
             var dataElementRegex = /#\{\w*}/g;
             var dataElementCatRegex = /#\{\w*.\w*}/g;
             var programIndicatorRegex = /I\{\w*}/g;
             var indicatorRegex = /N\{\w*}/g;
+            if (!formula) {
+                return "";
+            }
             return formula
                 .replace(operatorRegex, function (nexus) {
                     var operator = nexus.split("}")[1].trim().charAt(0);
@@ -547,7 +627,71 @@ searchModule.controller("searchController", [
                 })
                 .replace(indicatorRegex, function (indicatorWithCurlyBraces) {
                     var indId = indicatorWithCurlyBraces.substr(0, indicatorWithCurlyBraces.length - 1).substr(2);
-                    return indicators[indId] ? getTableObjectHtml(indicators[indId]) : indId;
+                    if (!config.expandIndicators) {
+                        return indicators[indId] ? getTableObjectHtml(indicators[indId]) : indId;
+                    }
+
+                    if (config.depth >= config.maxDepth) {
+                        return indicators[indId] ? getTableObjectHtml(indicators[indId]) : indId;
+                    }
+
+                    if (config.visitedIndicators.has(indId)) {
+                        return "[cyclic indicator reference: " + indId + "]";
+                    }
+
+                    if (!indicators[indId]) {
+                        return indId;
+                    }
+
+                    if (!config.legendById[indId]) {
+                        config.legendById[indId] = {
+                            id: indId,
+                            name: indicators[indId].object_name || indId,
+                            colorIndex: nextLegendColorIndex(config.legendById),
+                            depth: config.depth + 1,
+                            order: Object.keys(config.legendById).length,
+                        };
+                    }
+
+                    const nextVisited = new Set(config.visitedIndicators);
+                    nextVisited.add(indId);
+                    const currentLegend = config.legendById[indId];
+
+                    return (
+                        "<span class='formula-indicator-block formula-indicator-color-" +
+                        currentLegend.colorIndex +
+                        "'>[" +
+                        $scope.parseFormula(
+                            indicators[indId].object_numerator,
+                            dataElements,
+                            categoryOptionCombos,
+                            programIndicators,
+                            indicators,
+                            {
+                                expandIndicators: true,
+                                depth: config.depth + 1,
+                                maxDepth: config.maxDepth,
+                                visitedIndicators: nextVisited,
+                                legendById: config.legendById,
+                            }
+                        ) +
+                        " / " +
+                        $scope.parseFormula(
+                            indicators[indId].object_denominator,
+                            dataElements,
+                            categoryOptionCombos,
+                            programIndicators,
+                            indicators,
+                            {
+                                expandIndicators: true,
+                                depth: config.depth + 1,
+                                maxDepth: config.maxDepth,
+                                visitedIndicators: nextVisited,
+                                legendById: config.legendById,
+                            }
+                        ) +
+                        "]</span>"
+                    );
                 });
         };
 
@@ -682,6 +826,8 @@ searchModule.controller("searchController", [
                                 id: obj.id,
                                 object_name: obj.displayName,
                                 object_description: obj.displayDescription,
+                                object_numerator: obj.numerator,
+                                object_denominator: obj.denominator,
                             };
                         });
 
@@ -733,14 +879,16 @@ searchModule.controller("searchController", [
                                     temp,
                                     categoryOptionCombosTemp,
                                     programIndicatorsTemp,
-                                    indicatorsTemp
+                                    indicatorsTemp,
+                                    { expandIndicators: false }
                                 ),
                                 object_num_formula: $scope.parseFormula(
                                     obj.numerator,
                                     temp,
                                     categoryOptionCombosTemp,
                                     programIndicatorsTemp,
-                                    indicatorsTemp
+                                    indicatorsTemp,
+                                    { expandIndicators: false }
                                 ),
                                 object_description: obj.displayDescription,
                                 objectGroup_id: temp_arr.objectGroup_id.join(", "),
@@ -755,6 +903,12 @@ searchModule.controller("searchController", [
                         $scope.loaded.get_indicators = true;
                         $scope.loaded.get_indicatorsDescriptions = true;
                         $scope.loaded.get_indicatorGroups = true;
+                        $scope.formulaSources = {
+                            dataElements: temp,
+                            categoryOptionCombos: categoryOptionCombosTemp,
+                            programIndicators: programIndicatorsTemp,
+                            indicators: indicatorsTemp,
+                        };
                         $scope.allObjects = Object.keys(temp).map(function (key) {
                             return temp[key];
                         });
