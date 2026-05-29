@@ -766,10 +766,12 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
             return _.uniq(idsNamesArray.concat(namesArray));
         }
 
+        /*
+         *  @name updatePIProgress
+         *  @description Updates the program indicators translation progress and message
+         *  @scope dossiersProgramIndicatorController
+         */
         function updatePIProgress() {
-            // const totalExpressions = $scope.programIndicators.length;
-            // const totalFilters = $scope.programIndicators.filter(pi => !!pi.filter).length;
-            // const totalSteps = totalExpressions + totalFilters;
             const totalSteps = $scope.programIndicators.length;
             const current = $scope.programIndicators.reduce(
                 (sum, pi) => sum + (pi.expressionDone && pi.filterDone ? 1 : 0),
@@ -782,6 +784,11 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
             });
         }
 
+        /*
+         *  @name buildUniquePayloadMap
+         *  @description Builds a map of unique payloads for a given field
+         *  @scope dossiersProgramIndicatorController
+         */
         function buildUniquePayloadMap(field, preprocessFn) {
             const payloadMap = {};
 
@@ -799,6 +806,11 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
             return payloadMap;
         }
 
+        /*
+         *  @name runUniqueTranslations
+         *  @description Runs the translation for each unique payload and applies the result to the corresponding indicators
+         *  @scope dossiersProgramIndicatorController
+         */
         function runUniqueTranslations(payloadMap, saveFactory, applyFn, doneFn) {
             const payloads = Object.keys(payloadMap);
 
@@ -825,6 +837,11 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
             translateAt(0);
         }
 
+        /*
+         *  @name assignProgramIndicatorStageRefsFromField
+         *  @description Assigns the stage references for a program indicator from a given field
+         *  @scope dossiersProgramIndicatorController
+         */
         function assignProgramIndicatorStageRefsFromField(indicator, field) {
             const value = indicator[field];
             if (typeof value === "undefined") return;
@@ -835,6 +852,11 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
             indicator.stageRef = stageRef && stageRef.length > 0 ? _.uniq(stageRef.concat(newRef)) : newRef;
         }
 
+        /*
+         *  @name startProgramIndicatorTranslation
+         *  @description Starts the translation process for program indicators
+         *  @scope dossiersProgramIndicatorController
+         */
         function startProgramIndicatorTranslation() {
             const optionRegex = /#{(\w+).(\w+)} *?(!=|==) ?'(.?)'/g;
             const stageIdRegex = /Program stage id *== *'"['"]/g;
@@ -891,33 +913,6 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
                     $rootScope.recursiveAssignFilterDone = true;
                 }
             );
-        }
-
-        /*
-         *  @name recursiveAssignExpression
-         *  @description Gets the "readable" expressions for each indicator expression
-         *  @scope dossiersProgramIndicatorController
-         */
-        function recursiveAssignExpression(i) {
-            if (i >= $scope.programIndicators.length) {
-                $rootScope.recursiveAssignExpressionDone = true;
-                return;
-            }
-
-            const stageRef = $scope.programIndicators[i].stageRef;
-            if (stageRef && stageRef.length > 0) {
-                const newRef = getStageRef($scope.programIndicators[i].expression);
-                $scope.programIndicators[i].stageRef = _.uniq($scope.programIndicators[i].stageRef.concat(newRef));
-            } else {
-                $scope.programIndicators[i].stageRef = getStageRef($scope.programIndicators[i].expression);
-            }
-
-            dossiersProgramIndicatorExpressionFactory.save({}, $scope.programIndicators[i].expression, function (data) {
-                $scope.programIndicators[i].expression = data.description.replaceAll("\\.", ".");
-                $scope.programIndicators[i].expressionDone = true;
-                updatePIProgress();
-                recursiveAssignExpression(i + 1);
-            });
         }
 
         /*
@@ -1050,8 +1045,6 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
                                     });
 
                                     updatePIProgress();
-                                    // recursiveAssignExpression(0);
-                                    // recursiveAssignFilter(0);
                                     startProgramIndicatorTranslation();
                                     $rootScope.programIndicators = $scope.programIndicators;
                                     $rootScope.programStages = $scope.programStages;
@@ -1160,6 +1153,11 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
             });
         }
 
+        /*
+         *  @name updateIndicatorProgress
+         *  @description Updates the progress message for indicators
+         *  @scope dossierProgramGlobalIndicatorController
+         */
         function updateIndicatorProgress(index, total) {
             updateProgressMessage({
                 message: "load_indicators",
@@ -1168,6 +1166,11 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
             });
         }
 
+        /*
+         *  @name createIndicatorProgressTracker
+         *  @description Creates a progress tracker for indicators
+         *  @scope dossierProgramGlobalIndicatorController
+         */
         function createIndicatorProgressTracker(total, onDone) {
             const progress = {
                 done: 0,
@@ -1192,6 +1195,11 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
             };
         }
 
+        /*
+         *  @name getUniqueExpressions
+         *  @description Gets the unique expressions for a given field from the indicators
+         *  @scope dossierProgramGlobalIndicatorController
+         */
         function getUniqueExpressions(indicators, field) {
             const unique = {};
             indicators.forEach((indicator, index) => {
@@ -1233,7 +1241,7 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
         }
 
         /*
-         *  @name recursiveAssignNumerator
+         *  @name recursiveAssignDenominator
          *  @description Gets the "readable" expressions for each indicator denominator
          *  @scope dossierProgramGlobalIndicatorController
          */
@@ -1319,11 +1327,7 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
                                 }
                             );
 
-                            console.debug("numeratorMap:", JSON.stringify(numeratorMap, null, 2));
-                            console.debug("uniqueNumerators:", JSON.stringify(uniqueNumerators, null, 2));
                             recursiveAssignNumerator(numeratorMap, uniqueNumerators, progressTracker, 0);
-                            console.debug("denominatorMap:", JSON.stringify(denominatorMap, null, 2));
-                            console.debug("uniqueDenominators:", JSON.stringify(uniqueDenominators, null, 2));
                             recursiveAssignDenominator(denominatorMap, uniqueDenominators, progressTracker, 0);
                             progressTracker.finishIfEmpty();
                             dossiersProgramDataService.data.indicators = $scope.indicators;
