@@ -61,7 +61,8 @@ label {
 }
 
 .formula-modal-body {
-    max-height: 70vh;
+    min-height: 40vh;
+    max-height: 80vh;
     overflow-y: auto;
     word-break: break-word;
     line-height: 1.5;

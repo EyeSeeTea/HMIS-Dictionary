@@ -339,7 +339,10 @@
                     <div class="formula-legend" ng-if="formulaModal.legend.length">
                         <div class="formula-legend-item" ng-repeat="entry in formulaModal.legend track by entry.id">
                             <span class="formula-legend-chip" ng-class="'formula-indicator-color-' + entry.colorIndex"></span>
-                            <strong>{{ entry.name }}</strong>
+                            <span class="tooltipcontainer">
+                                <strong>{{ entry.name }}</strong>
+                                <span class="tooltiptext" ng-if="entry.description">{{ entry.description }}</span>
+                            </span>
                             <span>({{ entry.id }})</span>
                         </div>
                     </div>

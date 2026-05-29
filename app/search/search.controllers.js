@@ -653,6 +653,7 @@ searchModule.controller("searchController", [
                         config.legendById[indId] = {
                             id: indId,
                             name: indicators[indId].object_name || indId,
+                            description: indicators[indId].object_description || "",
                             colorIndex: nextLegendColorIndex(config.legendById),
                             depth: config.depth + 1,
                             order: Object.keys(config.legendById).length,
