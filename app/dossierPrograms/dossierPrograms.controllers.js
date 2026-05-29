@@ -856,7 +856,13 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
                 expressionPayloadMap,
                 dossiersProgramIndicatorExpressionFactory,
                 function (index, data) {
-                    $scope.programIndicators[index].expression = data.description.replaceAll(".", ".");
+                    let expression;
+                    if (data.status === "ERROR") {
+                        expression = `${data.message}: ${data.description} Expression: ${$scope.programIndicators[index].expression}`;
+                    } else {
+                        expression = data.description.replaceAll("\\.", ".");
+                    }
+                    $scope.programIndicators[index].expression = expression;
                     $scope.programIndicators[index].expressionDone = true;
                     updatePIProgress();
                 },
@@ -869,10 +875,15 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
                 filterPayloadMap,
                 dossiersProgramIndicatorFilterFactory,
                 function (index, data) {
-                    const translated = data.description.includes("Program stage id")
-                        ? data.description.replaceAll(stageIdRegex, stageIdReplacer)
-                        : data.description.replaceAll(".", ".");
-                    $scope.programIndicators[index].filter = translated;
+                    let filter;
+                    if (data.status === "ERROR") {
+                        filter = `${data.message}: ${data.description}\n Filter: ${$scope.programIndicators[index].filter}`;
+                    } else {
+                        filter = data.description.includes("Program stage id")
+                            ? data.description.replaceAll(stageIdRegex, stageIdReplacer)
+                            : data.description.replaceAll("\\.", ".");
+                    }
+                    $scope.programIndicators[index].filter = filter;
                     $scope.programIndicators[index].filterDone = true;
                     updatePIProgress();
                 },
