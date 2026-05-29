@@ -530,7 +530,7 @@ searchModule.controller("searchController", [
 
         $scope.openFormulaModal = function (object, type) {
             if (!object || object.object_type !== "indicator") {
-                $scope.formulaModal.title = "Formula";
+                $scope.formulaModal.title = $translate.instant("dos_FormulaOfIndicator");
                 $scope.formulaModal.formulaHtml = "";
                 $scope.formulaModal.legend = [];
                 return;
@@ -540,10 +540,16 @@ searchModule.controller("searchController", [
             $scope.currentFormulaType = type;
 
             const baseFormula = type === "denominator" ? object.object_denominator : object.object_numerator;
-            const label = type === "denominator" ? "Denominator" : "Numerator";
+            const labelKey = type === "denominator" ? "object_expand_den_formula" : "object_expand_num_formula";
             const legendById = {};
 
-            $scope.formulaModal.title = object.object_name + " - " + label + " (recursive)";
+            $scope.formulaModal.title =
+                object.object_name +
+                " - " +
+                $translate.instant(labelKey) +
+                " (" +
+                $translate.instant("srch_formula_modal_recursive") +
+                ")";
             $scope.formulaModal.formulaHtml = $scope.parseFormula(
                 baseFormula,
                 $scope.formulaSources.dataElements,

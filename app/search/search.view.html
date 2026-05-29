@@ -265,7 +265,7 @@
                 <button ng-if="object.object_type == 'indicator' && hasNestedIndicators(object.object_numerator)" type="button" class="btn btn-default btn-xs formula-modal-btn"
                     data-toggle="modal" data-target="#indicatorFormulaModal"
                     ng-click="openFormulaModal(object, 'numerator')">
-                    Expand
+                    {{ 'srch_formula_modal_expand' | translate }}
                 </button>
             </td>
             <td sortable="'object_den_formula'" filter="{object_den_formula:'./app/search/search.table.html'}"
@@ -276,7 +276,7 @@
                 <button ng-if="object.object_type == 'indicator' && hasNestedIndicators(object.object_denominator)" type="button" class="btn btn-default btn-xs formula-modal-btn"
                     data-toggle="modal" data-target="#indicatorFormulaModal"
                     ng-click="openFormulaModal(object, 'denominator')">
-                    Expand
+                    {{ 'srch_formula_modal_expand' | translate }}
                 </button>
             </td>
 
@@ -328,7 +328,7 @@
                     <div class="modal-header-content">
                         <h4 class="modal-title" id="indicatorFormulaModalLabel">{{ formulaModal.title }}</h4>
                         <div class="formula-modal-controls">
-                            <label for="maxDepthInput">Max Depth:</label>
+                            <label for="maxDepthInput">{{ 'srch_formula_modal_max_depth' | translate }}</label>
                             <input type="number" id="maxDepthInput" ng-model="formulaModalSettings.maxDepth" min="1" max="10" 
                                 ng-change="openFormulaModal(currentFormulaObject, currentFormulaType)" 
                                 class="form-control formula-depth-input" />
@@ -346,7 +346,7 @@
                     <div ng-bind-html="formulaModal.formulaHtml"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'CLOSE' | translate }}</button>
                 </div>
             </div>
         </div>
