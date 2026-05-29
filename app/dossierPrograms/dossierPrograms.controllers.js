@@ -456,7 +456,7 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
         $scope.$watch("selectedProgram", function () {
             ping();
             if ($scope.selectedProgram) {
-                startLoadingState(false, { message: "Loading program stages..." });
+                startLoadingState(false, { message: "load_programStages" });
                 dossiersProgramLoadingService.loading.programs = false;
                 //Query sections and data elements
                 var stageSectionPromises = $scope.selectedProgram.programStages.map(function (stage) {
@@ -776,7 +776,7 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
                 0
             );
             updateProgressMessage({
-                message: "Loading program indicators...",
+                message: "load_programIndicators",
                 current,
                 total: totalSteps,
             });
@@ -1033,7 +1033,7 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
                                     addtoTOC($scope.toc, null, $scope.programIndicators4TOC, "Program Indicators");
 
                                     updateProgressMessage({
-                                        message: "Loading program indicators...",
+                                        message: "load_programIndicators",
                                         current: 0,
                                         total: $scope.programIndicators.length,
                                     });
@@ -1151,7 +1151,7 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
 
         function updateIndicatorProgress(index, total) {
             updateProgressMessage({
-                message: "Loading indicators...",
+                message: "load_indicators",
                 current: index,
                 total: total,
             });
@@ -1271,7 +1271,7 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
                     $rootScope.recursiveAssignFilterDone &&
                     $rootScope.recursiveAssignExpressionDone
                 ) {
-                    startLoadingState(false, { message: "Loading indicators..." });
+                    startLoadingState(false, { message: "load_indicators" });
                     dossiersProgramLoadingService.loading.indicators = false;
                     $scope.indicators = [];
 
@@ -1378,7 +1378,7 @@ dossierProgramsModule.controller("dossiersProgramTEAController", [
         $scope.$watch("selectedProgram", function () {
             ping();
             if ($scope.selectedProgram) {
-                startLoadingState(false, { message: "Loading tracked entity attributes..." });
+                startLoadingState(false, { message: "load_trackedEntityAttributes" });
                 dossiersProgramLoadingService.loading.trackedEntityAttributes = false;
 
                 dossiersProgramTEAsFactory.get(
@@ -1478,7 +1478,7 @@ dossierProgramsModule.controller("dossiersProgramRuleController", [
         $scope.$watch("selectedProgram", function () {
             ping();
             if ($scope.selectedProgram) {
-                startLoadingState(false, { message: "Loading program rules..." });
+                startLoadingState(false, { message: "load_programRules" });
                 dossiersProgramLoadingService.loading.rules = false;
                 $rootScope.programRulesDone = false;
 
@@ -1534,7 +1534,7 @@ dossierProgramsModule.controller("dossiersProgramRuleVariablesController", [
         $scope.$watchGroup(["selectedProgram", "programRulesDone"], function () {
             ping();
             if ($scope.selectedProgram && $rootScope.programRulesDone) {
-                startLoadingState(false, { message: "Loading program rule variables..." });
+                startLoadingState(false, { message: "load_programRuleVariables" });
                 dossiersProgramLoadingService.loading.ruleVariables = false;
 
                 dossiersProgramRuleVariablesFactory.get(
@@ -1649,7 +1649,7 @@ dossierProgramsModule.controller("dossiersProgramResourcesController", [
         $scope.$watch("selectedProgram", function () {
             ping();
             if ($scope.selectedProgram) {
-                startLoadingState(false, { message: "Loading program resources..." });
+                startLoadingState(false, { message: "load_programIndicators" });
                 dossiersProgramLoadingService.loading.resources = false;
 
                 dossiersProgramResourcesAttributeFactory.get({ programId: $scope.selectedProgram.id }, function (data) {

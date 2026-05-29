@@ -264,7 +264,7 @@ appModule.controller("appSharedController", [
          *  @param {Object} progressConfig - Optional {message, current, total}
          */
         startLoadingState = function (onlyprint, progressConfig) {
-            $loadingMessage.text("Loading...");
+            $loadingMessage.text($translate.instant("load_loading") + "...");
             $(".printButton").prop("disabled", true);
             if (!onlyprint === true) {
                 $(".loading").show();
@@ -285,8 +285,8 @@ appModule.controller("appSharedController", [
             const current = config.current || 0;
             const total = config.total || 0;
 
-            const progressText = total > 0 ? ` (${current}/${total})` : "";
-            $loadingMessage.text(message + progressText);
+            const progressText = total > 0 ? ` (${current}/${total})` : "...";
+            $loadingMessage.text($translate.instant(message) + progressText);
         };
 
         /*
