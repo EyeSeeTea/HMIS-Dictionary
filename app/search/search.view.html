@@ -280,6 +280,19 @@
                 </button>
             </td>
 
+            <td sortable="'object_exp_formula'" filter="{object_exp_formula:'./app/search/search.table.html'}"
+                ng-if="false" data-title="'object_exp_formula' | translate"
+                data-header-title="'object_exp_formula_help' | translate">
+                <span
+                    ng-bind-html='object.object_exp_formula | highlight: table.globalSearchTerm:params.filter():"object_exp_formula"'></span>
+            </td>
+             <td sortable="'object_flt_formula'" filter="{object_flt_formula:'./app/search/search.table.html'}"
+                ng-if="false" data-title="'object_flt_formula' | translate"
+                data-header-title="'object_flt_formula_help' | translate">
+                <span
+                    ng-bind-html='object.object_flt_formula | highlight: table.globalSearchTerm:params.filter():"object_flt_formula"'></span>
+            </td>
+
             <td sortable="'objectGroup_id'" filter="{objectGroup_id:'./app/search/search.table.html'}" ng-if="false"
                 data-title="'objectGroup_id' | translate" data-header-title="'objectGroup_id_help' | translate">
                 <span
