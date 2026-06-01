@@ -642,7 +642,7 @@ searchModule.controller("searchController", [
                     }
 
                     if (config.visitedIndicators.has(indId)) {
-                        return "[cyclic indicator reference: " + indId + "]";
+                        return "[cyclic indicator reference: " + indicators[indId].object_name + "]";
                     }
 
                     if (!indicators[indId]) {
