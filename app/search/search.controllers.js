@@ -56,7 +56,7 @@ searchModule.controller("searchController", [
                         description: { index: 0, translationKey: "object_description", access: 2 },
                         numFormula: { index: 1, translationKey: "object_num_formula", access: 2 },
                         denFormula: { index: 2, translationKey: "object_den_formula", access: 2 },
-                        filterFormula: { index: 3, translationKey: "object_filter_formula", access: 2 },
+                        filterFormula: { index: 3, translationKey: "object_flt_formula", access: 2 },
                         expFormula: { index: 4, translationKey: "object_exp_formula", access: 2 },
                     },
                 },
