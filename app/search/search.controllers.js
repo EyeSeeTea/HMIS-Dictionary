@@ -598,7 +598,13 @@ searchModule.controller("searchController", [
                     {},
                     object.object_expression,
                     function (response) {
-                        object.object_exp_formula = (response.description || "").replaceAll("\\.", ".");
+                        let expression = "";
+                        if (response.status === "ERROR") {
+                            expression = `${response.message}: ${response.description} Expression: ${object.object_expression}`;
+                        } else {
+                            expression = response.description.replaceAll("\\.", ".");
+                        }
+                        object.object_exp_formula = expression;
                         doneOne();
                     },
                     function () {
@@ -614,7 +620,13 @@ searchModule.controller("searchController", [
                     {},
                     object.object_filter,
                     function (response) {
-                        object.object_flt_formula = (response.description || "").replaceAll("\\.", ".");
+                        let filter = "";
+                        if (response.status === "ERROR") {
+                            filter = `${response.message}: ${response.description}\n Filter: ${object.object_filter}`;
+                        } else {
+                            filter = response.description.replaceAll("\\.", ".");
+                        }
+                        object.object_flt_formula = filter;
                         doneOne();
                     },
                     function () {
