@@ -214,7 +214,7 @@ html.in-global-shell #view-container {
 #menu-container {
     margin-top: 1px !important;
     margin-left: 6px !important;
-    background-color: #fff;
+    background-color: transparent;
     position: fixed;
     height: 100%;
     z-index: 9;
@@ -230,6 +230,17 @@ html.in-global-shell #view-container {
     width: 48px;
     border: 1px solid #dcdcdc;
     z-index: 10;
+}
+
+#menu-base {
+    margin-top: 0px !important;
+    left: 0px !important;
+    position: fixed;
+    background-color: #fff;
+    pointer-events: none;
+    height: 100%;
+    width: 48px;
+    z-index: 8;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -269,4 +280,42 @@ th {
 
 .body2 {
     font-size: 1.1em;
+}
+
+
+#menu-container.sideways.tabs-left {
+    padding-inline-start: 0;
+}
+
+#menu-container.sideways > li {
+    width: 170px;
+    margin-bottom: 145px;
+}
+
+#menu-container.sideways > li > a {
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+html[dir="ltr"] #menu-container.sideways.tabs-left {
+    left: -75px;
+    right: auto;
+    width: 120px;
+}
+
+html[dir="rtl"] #menu-container.sideways.tabs-left {
+    left: -75px;
+    right: auto;
+}
+
+html[dir="ltr"] #menu-background,
+html[dir="rtl"] #menu-background {
+    left: 0 !important;
+    right: auto !important;
+}
+
+html[dir="rtl"] .dossier-select {
+    float: right;
 }

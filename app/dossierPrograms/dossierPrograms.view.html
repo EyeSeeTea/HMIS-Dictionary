@@ -9,7 +9,7 @@
 
         <h1>{{ "dos_Programs" | translate }}</h1>
         <p>{{ "dos_NumberOfPrograms" | translate }}: {{ programs.programs.length }}</p>
-        <div class="col-md-2">
+        <div class="col-md-2 dossier-select">
             <select class="form-control col-md-2"
                 ng-options="program.displayName for program in programs.programs | orderBy: 'displayName'"
                 name="selectProgram" id="drpBoxServices" ng-model="selectedProgram">
