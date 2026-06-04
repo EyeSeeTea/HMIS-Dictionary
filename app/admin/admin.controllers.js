@@ -13,6 +13,8 @@ adminModule.controller("adminMainController", [
     "adminDEGFactory",
     "adminDSFactory",
     "adminIGFactory",
+    "adminLEG_DEGFactory",
+    "adminLEG_OPGFactory",
     "adminDossierConfigCompleteFactory",
     function (
         $scope,
@@ -24,6 +26,8 @@ adminModule.controller("adminMainController", [
         adminDEGFactory,
         adminDSFactory,
         adminIGFactory,
+        adminLEG_DEGFactory,
+        adminLEG_OPGFactory,
         adminDossierConfigCompleteFactory
     ) {
         $("#admin").tab("show");
@@ -284,6 +288,62 @@ adminModule.controller("adminMainController", [
                         return adminIGFactory.set_IG.query($scope.selectedIG, function (response) {
                             if (response) {
                                 $scope.blacklist_indicatorgroups = $scope.selectedIG;
+                            }
+                        });
+                    }
+                )
+                .then(function () {
+                    window.location.reload(true);
+                });
+        };
+
+        if ($scope.legacy_dataelementgroups) {
+            $scope.selectedLEG_DEG = JSON.stringify($scope.legacy_dataelementgroups);
+        }
+
+        $scope.submitLEG_DEG = function () {
+            adminLEG_DEGFactory.get_DEG_set
+                .query($scope.selectedLEG_DEG)
+                .$promise.then(
+                    function (response1) {
+                        return adminLEG_DEGFactory.upd_DEG.query($scope.selectedLEG_DEG, function (response2) {
+                            if (response2) {
+                                $scope.legacy_dataelementgroups = $scope.selectedLEG_DEG;
+                            }
+                        });
+                    },
+                    function () {
+                        return adminLEG_DEGFactory.set_DEG.query($scope.selectedLEG_DEG, function (response) {
+                            if (response) {
+                                $scope.legacy_dataelementgroups = $scope.selectedLEG_DEG;
+                            }
+                        });
+                    }
+                )
+                .then(function () {
+                    window.location.reload(true);
+                });
+        };
+
+        if ($scope.legacy_optiongroups) {
+            $scope.selectedLEG_OPG = JSON.stringify($scope.legacy_optiongroups);
+        }
+
+        $scope.submitLEG_OPG = function () {
+            adminLEG_OPGFactory.get_OPG_set
+                .query($scope.selectedLEG_OPG)
+                .$promise.then(
+                    function (response1) {
+                        return adminLEG_OPGFactory.upd_OPG.query($scope.selectedLEG_OPG, function (response2) {
+                            if (response2) {
+                                $scope.legacy_optiongroups = $scope.selectedLEG_OPG;
+                            }
+                        });
+                    },
+                    function () {
+                        return adminLEG_OPGFactory.set_OPG.query($scope.selectedLEG_OPG, function (response) {
+                            if (response) {
+                                $scope.legacy_optiongroups = $scope.selectedLEG_OPG;
                             }
                         });
                     }

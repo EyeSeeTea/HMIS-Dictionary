@@ -16,6 +16,12 @@
                 <option value="" disabled selected>{{ "Select a program" | translate }}</option>
             </select>
         </div>
+        <div class="col-md-2">
+            <label class="">
+                <input type="checkbox" ng-model="showLegacy" ng-change="onToggleLegacyChanged()" />
+                {{ "dos_showLegacy" | translate }}
+            </label>
+        </div>
     </div>
 
     <div class="col-md-12" ng-if="selectedProgram">

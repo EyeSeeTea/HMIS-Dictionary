@@ -505,6 +505,28 @@ dossierProgramsModule.factory("dossiersProgramResourcesElementsFactory", [
     },
 ]);
 
+var qryLegacyOptionGroups =
+    dhisUrl +
+    "optionGroups.json?fields=id,displayName,optionSet,options[id,name,displayName]&filter=id\\:in\\:[:optionGroupIDs]&paging=false";
+
+dossierProgramsModule.factory("dossiersProgramLegacyOptionGroupsFactory", [
+    "$resource",
+    function ($resource) {
+        return $resource(
+            qryLegacyOptionGroups,
+            {
+                optionGroupIDs: "@optionGroupIDs",
+            },
+            {
+                query: {
+                    method: "GET",
+                    isArray: false,
+                },
+            }
+        );
+    },
+]);
+
 dossierProgramsModule.service("dossiersProgramDataService", function () {
     this.data = {
         stages: undefined,
