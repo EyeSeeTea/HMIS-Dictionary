@@ -941,14 +941,23 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
                         programId: $scope.selectedProgram.id,
                     },
                     function (data) {
+                        const isAdmin = !!$scope.is_admin;
+                        let programIndicators = isAdmin
+                            ? data.programIndicators
+                            : data.programIndicators.filter(
+                                  pi =>
+                                      !pi.programIndicatorGroups.some(pig =>
+                                          $scope.notInUse_programIndicatorGroups.includes(pig.id)
+                                      )
+                              );
                         dossiersProgramIndicatorStagesFactory.get(
                             {
                                 programId: $scope.selectedProgram.id,
                             },
                             function (psData) {
                                 $scope.programStages = psData.programs[0].programStages.map(ps => ps);
-                                if (data.programIndicators.length > 0) {
-                                    $scope.programIndicators = data.programIndicators.map(pi => {
+                                if (programIndicators.length > 0) {
+                                    $scope.programIndicators = programIndicators.map(pi => {
                                         pi.analyticsPeriodBoundaries = pi.analyticsPeriodBoundaries.map(bound => {
                                             const btTextArray = bound.boundaryTarget.split(":");
                                             const btId = btTextArray[1];
@@ -1138,11 +1147,14 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
 
                     //Query indicator information
                     dossiersProgramGlobalIndicatorsFactory.get(function (data) {
+                        const isAdmin = !!$scope.is_admin;
                         $scope.allIndicators = data.indicators
                             .filter(
                                 indicator =>
-                                    !indicator.indicatorGroups.some(ig =>
-                                        $scope.blacklist_indicatorgroups.includes(ig.id)
+                                    !indicator.indicatorGroups.some(
+                                        ig =>
+                                            $scope.blacklist_indicatorgroups.includes(ig.id) ||
+                                            (!isAdmin && $scope.notInUse_indicatorGroups.includes(ig.id))
                                     )
                             )
                             .forEach(function (indicator) {

@@ -133,6 +133,7 @@ var qryProgramIndicators =
         "analyticsPeriodBoundaryType",
         "offsetPeriods",
         "offsetPeriodType]",
+        "programIndicatorGroups",
     ].join(",") +
     "]&paging=false";
 
