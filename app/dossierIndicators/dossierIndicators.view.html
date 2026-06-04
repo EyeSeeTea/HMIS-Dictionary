@@ -8,7 +8,7 @@
 
         <h1>{{ "dos_Indicators" | translate }}</h1>
         <p>{{ "Number of Indicators" | translate }}: {{ indicators.indicators.length }}</p>
-        <div class="col-md-2">
+        <div class="col-md-2 dossier-select">
             <select class="form-control col-md-2"
                 ng-options="indicators.name for indicators in indicators.indicators | orderBy: 'name'"
                 name="selectProgram" id="drpBoxServices" ng-model="selectedIndicator">
