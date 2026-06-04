@@ -50,12 +50,45 @@ a {
 
 .loading {
     display: none;
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    width: 100%;
+    position: fixed;
+        top: 0;
+        left: 33%;
+        right: 33%;
+        height: 44px;
+        background-color: #b40303;
+        z-index: 16;
+        pointer-events: none;
+    }
+    
+    .loading .spinner-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
     height: 100%;
+}
+
+.loading .spinner {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
     background: url("../assets/img/spin.gif") no-repeat center center;
+    background-size: contain;
+        filter: brightness(0) invert(1);
+    }
+    
+    .loading .loading-message {
+        font-size: 14px;
+        font-weight: bold;
+        color: #fff;
+        margin: 0;
+        white-space: nowrap;
+    }
+    
+    #view-container {
+        margin-top: 44px;
+        margin-left: 66px;
+        margin-right: 44px;
 }
 
 #view-container {

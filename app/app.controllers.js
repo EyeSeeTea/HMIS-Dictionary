@@ -161,6 +161,109 @@ appModule.controller("appSharedController", [
                 $scope.blacklist_indicatorgroups = [];
             });
 
+<<<<<<< HEAD
+        /* For IG not in use */
+        jQuery
+            .ajax({
+                url: dhisUrl + "dataStore/HMIS_Dictionary/notInUse_indicatorGroups",
+=======
+        /* For legacy DEG list */
+        jQuery
+            .ajax({
+                url: dhisUrl + "dataStore/HMIS_Dictionary/legacy_dataElementGroups",
+>>>>>>> development
+                contentType: "json",
+                method: "GET",
+                dataType: "text",
+                async: false,
+            })
+<<<<<<< HEAD
+            .success(function (NIU_IGlist) {
+                NIU_IGlist = JSON.parse(NIU_IGlist);
+                $scope.notInUse_indicatorGroups = NIU_IGlist;
+                if ($scope.notInUse_indicatorGroups) {
+                    console.log("appModule: List of not in use indicatorGroups: " + NIU_IGlist);
+                } else {
+                    console.log(
+                        "appModule: List of not in use indicatorGroups has not been defined yet, go to the admin panel!"
+                    );
+                    $scope.notInUse_indicatorGroups = [];
+                }
+            })
+            .fail(function () {
+                console.log("appModule: List of not in use indicatorGroups has not been identified.");
+                $scope.notInUse_indicatorGroups = [];
+            });
+
+        /* For PIG not in use */
+        jQuery
+            .ajax({
+                url: dhisUrl + "dataStore/HMIS_Dictionary/notInUse_programIndicatorGroups",
+=======
+            .success(function (LEG_DEGlist) {
+                LEG_DEGlist = JSON.parse(LEG_DEGlist);
+                $scope.legacy_dataelementgroups = LEG_DEGlist;
+                if ($scope.legacy_dataelementgroups) {
+                    console.log("appModule: List of legacy dataElementGroups for the 'Programs' panel: " + LEG_DEGlist);
+                } else {
+                    console.log(
+                        "appModule: List of legacy dataElementGroups for the 'Programs' panel has not been defined yet, go to the admin panel!"
+                    );
+                    $scope.legacy_dataelementgroups = [];
+                }
+            })
+            .fail(function () {
+                console.log(
+                    "appModule: List of legacy dataElementGroups for the 'Programs' panel has not been identified."
+                );
+                $scope.legacy_dataelementgroups = [];
+            });
+
+        /* For legacy OPG list */
+        jQuery
+            .ajax({
+                url: dhisUrl + "dataStore/HMIS_Dictionary/legacy_optionGroups",
+>>>>>>> development
+                contentType: "json",
+                method: "GET",
+                dataType: "text",
+                async: false,
+            })
+<<<<<<< HEAD
+            .success(function (NIU_PIGlist) {
+                NIU_PIGlist = JSON.parse(NIU_PIGlist);
+                $scope.notInUse_programIndicatorGroups = NIU_PIGlist;
+                if ($scope.notInUse_programIndicatorGroups) {
+                    console.log("appModule: List of not in use programIndicatorGroups: " + NIU_PIGlist);
+                } else {
+                    console.log(
+                        "appModule: List of not in use programIndicatorGroups has not been defined yet, go to the admin panel!"
+                    );
+                    $scope.notInUse_programIndicatorGroups = [];
+                }
+            })
+            .fail(function () {
+                console.log("appModule: List of not in use programIndicatorGroups has not been identified.");
+                $scope.notInUse_programIndicatorGroups = [];
+=======
+            .success(function (LEG_OPGlist) {
+                LEG_OPGlist = JSON.parse(LEG_OPGlist);
+                $scope.legacy_optiongroups = LEG_OPGlist;
+                if ($scope.legacy_optiongroups) {
+                    console.log("appModule: List of legacy optionGroups for the 'Programs' panel: " + LEG_OPGlist);
+                } else {
+                    console.log(
+                        "appModule: List of legacy optionGroups for the 'Programs' panel has not been defined yet, go to the admin panel!"
+                    );
+                    $scope.legacy_optiongroups = [];
+                }
+            })
+            .fail(function () {
+                console.log("appModule: List of legacy optionGroups for the 'Programs' panel has not been identified.");
+                $scope.legacy_optiongroups = [];
+>>>>>>> development
+            });
+
         /* For admin tab */
         jQuery
             .ajax({
@@ -254,24 +357,46 @@ appModule.controller("appSharedController", [
             startLoadingState(true);
         };
 
+        var $loadingElement = $(".loading");
+        var $loadingMessage = $(".loading-message");
         /*
          *  @alias appModule.controller~startLoadingState
          *  @type {Function}
-         *  @description To make sure all emelemnts and indicators are loaded before printing
-         *  @todo
+         *  @description Show loading spinner with optional progress message
+         *  @param {Boolean} onlyprint - If true, only disable print button
+         *  @param {Object} progressConfig - Optional {message, current, total}
          */
-        startLoadingState = function (onlyprint) {
+        startLoadingState = function (onlyprint, progressConfig) {
+            $loadingMessage.text($translate.instant("load_loading") + "...");
             $(".printButton").prop("disabled", true);
             if (!onlyprint === true) {
                 $(".loading").show();
+                if (progressConfig) {
+                    updateProgressMessage(progressConfig);
+                }
             }
+        };
+
+        /*
+         *  @alias appModule.controller~updateProgressMessage
+         *  @type {Function}
+         *  @description Update the progress message in the spinner
+         *  @param {Object} config - {message, current, total}
+         */
+        updateProgressMessage = function (config) {
+            const message = config.message || "";
+            const current = config.current || 0;
+            const total = config.total || 0;
+
+            const progressText = total > 0 ? ` (${current}/${total})` : "...";
+            $loadingMessage.text($translate.instant(message) + progressText);
         };
 
         /*
          *  @alias appModule.controller~endLoadingState
          *  @type {Function}
-         *  @description To make sure all emelemnts and indicators are loaded before printing
-         *  @todo
+         *  @description Hide loading spinner
+         *  @param {Boolean} disableprint - Re-enable print button after delay
          */
         endLoadingState = function (disableprint) {
             if (disableprint === true) {

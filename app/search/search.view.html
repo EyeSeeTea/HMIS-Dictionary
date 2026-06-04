@@ -245,6 +245,11 @@
                     <img src="./assets/img/pivottable.png" alt="View Table" width="15" />
                 </button>
             </td>
+            <td sortable="'object_shortName'" filter="{object_shortName:'./app/search/search.table.html'}" ng-if="true"
+                data-title="'object_shortName' | translate" data-header-title="'object_shortName_help' | translate">
+                <span
+                    ng-bind-html='object.object_shortName | highlight: table.globalSearchTerm:params.filter():"object_shortName"'></span>
+            </td>
             <td sortable="'object_form'" filter="{object_form:'./app/search/search.table.html'}" ng-if="false"
                 data-title="'object_form' | translate" data-header-title="'object_form_help' | translate">
                 <span
