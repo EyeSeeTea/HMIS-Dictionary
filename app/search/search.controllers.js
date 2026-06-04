@@ -591,6 +591,7 @@ searchModule.controller("searchController", [
             var categoryOptionCombosTemp = {};
             var programIndicatorsTemp = {};
 
+            startLoadingState(false, { message: "load_dataElements" });
             searchAllFactory.qry_dataElementsAll
                 .query()
                 .$promise.then(function (response) {
@@ -678,6 +679,7 @@ searchModule.controller("searchController", [
                     return "done";
                 })
                 .then(function () {
+                    startLoadingState(false, { message: "load_categoryOptionCombos" });
                     return searchAllFactory.get_categoryOptionCombosAll.query().$promise.then(function (response) {
                         response.categoryOptionCombos.forEach(function (obj) {
                             categoryOptionCombosTemp[obj.id] = {
@@ -688,6 +690,7 @@ searchModule.controller("searchController", [
                     });
                 })
                 .then(function () {
+                    startLoadingState(false, { message: "load_programIndicators" });
                     return searchAllFactory.get_programIndicatorsAll.query().$promise.then(function (response) {
                         response.programIndicators.forEach(function (obj) {
                             programIndicatorsTemp[obj.id] = {
@@ -699,6 +702,7 @@ searchModule.controller("searchController", [
                     });
                 })
                 .then(function () {
+                    startLoadingState(false, { message: "load_indicators" });
                     return searchAllFactory.get_indicatorsAll.query().$promise.then(function (response) {
                         response.indicators
                             .filter(obj => filterObjects(obj, "indicator"))
