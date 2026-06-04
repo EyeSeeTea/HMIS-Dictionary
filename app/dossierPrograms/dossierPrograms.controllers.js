@@ -531,13 +531,10 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
                     return dossiersProgramStageSectionsFactory.get({ programStageId: stage.id }).$promise;
                 });
 
-                $q.resolve(
-                    dossiersProgramStageCalcModeFactory.get({ programId: programId }).$promise,
-                    data => {
-                        if (!isProgramScopeActive($scope, programId)) return;
-                        $scope.programRules = data.programRules;
-                    }
-                ).then(() => {
+                $q.resolve(dossiersProgramStageCalcModeFactory.get({ programId: programId }).$promise, data => {
+                    if (!isProgramScopeActive($scope, programId)) return;
+                    $scope.programRules = data.programRules;
+                }).then(() => {
                     if (!isProgramScopeActive($scope, programId)) return;
                     $q.all(stageSectionPromises).then(function (stages) {
                         if (!isProgramScopeActive($scope, programId)) return;
@@ -1360,7 +1357,13 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
                         $scope.indicators[idx].denominator = data.description;
                     });
                     progressTracker.step();
-                    recursiveAssignDenominator(expressionMap, expressions, progressTracker, programId, currentIndex + 1);
+                    recursiveAssignDenominator(
+                        expressionMap,
+                        expressions,
+                        progressTracker,
+                        programId,
+                        currentIndex + 1
+                    );
                 },
                 true
             );

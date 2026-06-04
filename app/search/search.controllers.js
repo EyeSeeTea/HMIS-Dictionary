@@ -485,7 +485,7 @@ searchModule.controller("searchController", [
                                 },
                                 payload,
                                 function (response) {
-                                    updateSharing.update({ uid: tbl.visualizations[0].id }, sharing, function (res) { });
+                                    updateSharing.update({ uid: tbl.visualizations[0].id }, sharing, function (res) {});
 
                                     uid = tbl.visualizations[0].id;
                                     $window.open(dhisroot + "dhis-web-data-visualizer/index.html#/" + uid, "_blank");
@@ -498,7 +498,7 @@ searchModule.controller("searchController", [
                         console.debug("Creating Table");
                         searchTableFactory.set_table.query(payload, function (response) {
                             uid = response.response.uid;
-                            updateSharing.update({ uid: uid }, sharing, function (res) { });
+                            updateSharing.update({ uid: uid }, sharing, function (res) {});
                             $window.open(dhisroot + "dhis-web-data-visualizer/index.html#/" + uid, "_blank");
                         });
                     }
@@ -746,11 +746,11 @@ searchModule.controller("searchController", [
                 .replace(indicatorRegex, function (indicatorWithCurlyBraces) {
                     var indId = indicatorWithCurlyBraces.substr(0, indicatorWithCurlyBraces.length - 1).substr(2);
                     if (!config.expandIndicators) {
-                        return indicators[indId] ? getTableObjectHtml(indicators[indId]) : indId;
+                        return indicators[indId] ? getTableObjectHtml(indicators[indId], "indicator") : indId;
                     }
 
                     if (config.depth >= config.maxDepth) {
-                        return indicators[indId] ? getTableObjectHtml(indicators[indId]) : indId;
+                        return indicators[indId] ? getTableObjectHtml(indicators[indId], "indicator") : indId;
                     }
 
                     if (config.visitedIndicators.has(indId)) {
@@ -814,11 +814,12 @@ searchModule.controller("searchController", [
                 });
         };
 
-        function getTableObjectHtml(object) {
+        function getTableObjectHtml(object, tagText) {
             const description = object.object_description
                 ? "<span class='tooltiptext'>" + object.object_description + "</span>"
                 : "";
-            return "<span class='tooltipcontainer'>" + object.object_name + description + "</span>";
+            const indicatorTag = tagText ? " <i>(" + tagText + ")</i> " : "";
+            return "<span class='tooltipcontainer'>" + object.object_name + indicatorTag + description + "</span>";
         }
 
         function load_table_info() {
@@ -1105,18 +1106,6 @@ searchModule.controller("searchController", [
                     $scope.allObjectsLength = Object.keys($scope.allObjects).length;
 
                     console.debug("searchModule: Program Indicators loaded");
-                    console.debug(
-                        `${Object.keys($scope.loaded).map(function (key) {
-                            return $scope.loaded[key];
-                        })}`
-                    );
-                    console.debug(
-                        `${Object.keys($scope.loaded)
-                            .map(function (key) {
-                                return $scope.loaded[key];
-                            })
-                            .indexOf(false)}`
-                    );
 
                     return "done";
                 })

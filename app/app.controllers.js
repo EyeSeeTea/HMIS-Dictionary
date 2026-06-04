@@ -169,7 +169,8 @@ appModule.controller("appSharedController", [
                 method: "GET",
                 dataType: "text",
                 async: false,
-            }).success(function (NIU_IGlist) {
+            })
+            .success(function (NIU_IGlist) {
                 NIU_IGlist = JSON.parse(NIU_IGlist);
                 $scope.notInUse_indicatorGroups = NIU_IGlist;
                 if ($scope.notInUse_indicatorGroups) {
@@ -194,7 +195,8 @@ appModule.controller("appSharedController", [
                 method: "GET",
                 dataType: "text",
                 async: false,
-            }).success(function (LEG_DEGlist) {
+            })
+            .success(function (LEG_DEGlist) {
                 LEG_DEGlist = JSON.parse(LEG_DEGlist);
                 $scope.legacy_dataelementgroups = LEG_DEGlist;
                 if ($scope.legacy_dataelementgroups) {
@@ -213,7 +215,6 @@ appModule.controller("appSharedController", [
                 $scope.legacy_dataelementgroups = [];
             });
 
-
         /* For PIG not in use */
         jQuery
             .ajax({
@@ -222,7 +223,8 @@ appModule.controller("appSharedController", [
                 method: "GET",
                 dataType: "text",
                 async: false,
-            }).success(function (NIU_PIGlist) {
+            })
+            .success(function (NIU_PIGlist) {
                 NIU_PIGlist = JSON.parse(NIU_PIGlist);
                 $scope.notInUse_programIndicatorGroups = NIU_PIGlist;
                 if ($scope.notInUse_programIndicatorGroups) {

@@ -385,7 +385,6 @@ adminModule.controller("adminMainController", [
                 });
         };
 
-
         if ($scope.legacy_optiongroups) {
             $scope.selectedLEG_OPG = JSON.stringify($scope.legacy_optiongroups);
         }
