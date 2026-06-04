@@ -10,7 +10,7 @@
         <h1>{{ "idx_DataSets" | translate }}</h1>
         <p>{{ "Number of Data Sets" | translate }}: {{ datasets.dataSets.length }}</p>
 
-        <div class="col-md-2">
+        <div class="col-md-2 dossier-select">
             <select class="form-control col-md-2"
                 ng-options="dataset.displayName for dataset in datasets.dataSets | orderBy: 'displayName'"
                 name="selectedDataset" id="drpBoxServices" ng-model="selectedDataset">
@@ -67,6 +67,10 @@
                                 {{ "dos_FormNameElement" | translate }}
                                 <help-icon title='{{ "datasets_sec_formName_help" | translate }}' />
                             </th>
+                            <th ng-if="accesses.sections_shortName">
+                                {{ "dos_ShortNameElement" | translate }}
+                                <help-icon title='{{ "datasets_sec_shortName_help" | translate }}' />
+                            </th>
                             <th ng-if="accesses.sections_description">
                                 {{ "dos_DescriptionElement" | translate }}
                                 <help-icon title='{{ "datasets_sec_description_help" | translate }}' />
@@ -92,6 +96,9 @@
                             </td>
                             <td ng-if="accesses.sections_formName">
                                 {{ dataElement.displayFormName || dataElement.dataElement.displayFormName }}
+                            </td>
+                            <td ng-if="accesses.sections_shortName">
+                                {{ dataElement.displayShortName || dataElement.dataElement.displayShortName }}
                             </td>
                             <td ng-if="accesses.sections_description">
                                 {{ dataElement.displayDescription || dataElement.dataElement.displayDescription }}
@@ -200,6 +207,10 @@
                                 {{ "dos_NameIndicator" | translate }}
                                 <help-icon title='{{ "datasets_ind_name_help" | translate }}' />
                             </th>
+                            <th ng-if="accesses.indicators_shortName">
+                                {{ "dos_ShortNameIndicator" | translate }}
+                                <help-icon title='{{ "datasets_ind_shortName_help" | translate }}' />
+                            </th>
                             <th ng-if="accesses.indicators_type">
                                 {{ "dos_Type" | translate }}
                                 <help-icon title='{{ "datasets_ind_type_help" | translate }}' />
@@ -225,6 +236,7 @@
                     <tbody>
                         <tr ng-repeat="indicator in indicators |  orderBy: 'displayName'">
                             <td ng-if="accesses.indicators_name">{{ indicator.displayName }}</td>
+                            <td ng-if="accesses.indicators_shortName">{{ indicator.displayShortName }}</td>
                             <td ng-if="accesses.indicators_type">{{ indicator.indicatorType.displayName }}</td>
                             <td ng-if="accesses.indicators_numerator">{{ indicator.numerator }}</td>
                             <td ng-if="accesses.indicators_numeratorDescription">

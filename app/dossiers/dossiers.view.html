@@ -9,7 +9,7 @@
         <p>{{ "dos_Number of Services" | translate }}: {{ services.organisationUnitGroups.length }}</p>
         <p>{{ "dos_Number of DataSets in Service" | translate }}: {{ serviceDataSets.length }}</p>
         <p>{{ "dos_Number of IndicatorGroups in Service" | translate }}: {{ indicatorGroups.length }}</p>
-        <div class="col-md-2">
+        <div class="col-md-2 dossier-select">
             <select class="form-control col-md-2"
                 ng-options="service.displayName for service in services.organisationUnitGroups | orderBy: 'displayName'"
                 name="selectService" id="drpBoxServices" ng-model="selectedService">

@@ -44,8 +44,8 @@ var qryProgramStageSections =
             "dataElementGroups[id]",
             "valueType",
             "optionSetValue",
-            "optionSet[name",
-            "options[code,displayName]]]]",
+            "optionSet[displayName",
+            "options[id,code,displayName]]]]",
         ].join(","),
         [
             "programStageDataElements[compulsory,dataElement[id",
@@ -55,8 +55,8 @@ var qryProgramStageSections =
             "dataElementGroups[id]",
             "valueType",
             "optionSetValue",
-            "optionSet[name",
-            "options[code,displayName]]]]",
+            "optionSet[displayName",
+            "options[id,code,displayName]]]]",
         ].join(","),
     ].join(",") +
     "&paging=false";
@@ -133,6 +133,7 @@ var qryProgramIndicators =
         "analyticsPeriodBoundaryType",
         "offsetPeriods",
         "offsetPeriodType]",
+        "programIndicatorGroups",
     ].join(",") +
     "]&paging=false";
 
@@ -307,11 +308,11 @@ var qryProgramTrackedEntityAttributes =
     dhisUrl +
     "programs/:programId?fields=" +
     [
-        "programTrackedEntityAttributes[mandatory,trackedEntityAttribute[id,name",
-        "formName",
-        "description",
-        "optionSet[name",
-        "options[name]]",
+        "programTrackedEntityAttributes[mandatory,trackedEntityAttribute[id,displayName",
+        "displayFormName",
+        "displayDescription",
+        "optionSet[displayName",
+        "options[id,displayName]]",
         "valueType",
         "aggregationType]]",
     ].join(",") +
@@ -505,6 +506,28 @@ dossierProgramsModule.factory("dossiersProgramResourcesElementsFactory", [
     },
 ]);
 
+var qryLegacyOptionGroups =
+    dhisUrl +
+    "optionGroups.json?fields=id,displayName,optionSet,options[id,name,displayName]&filter=id\\:in\\:[:optionGroupIDs]&paging=false";
+
+dossierProgramsModule.factory("dossiersProgramLegacyOptionGroupsFactory", [
+    "$resource",
+    function ($resource) {
+        return $resource(
+            qryLegacyOptionGroups,
+            {
+                optionGroupIDs: "@optionGroupIDs",
+            },
+            {
+                query: {
+                    method: "GET",
+                    isArray: false,
+                },
+            }
+        );
+    },
+]);
+
 dossierProgramsModule.service("dossiersProgramDataService", function () {
     this.data = {
         stages: undefined,
@@ -527,6 +550,12 @@ dossierProgramsModule.service("dossiersProgramLoadingService", function () {
         resources: undefined,
     };
 
+    this.progress = {
+        message: "",
+        current: 0,
+        total: 0,
+    };
+
     this.resetState = function () {
         this.loading = {
             programs: undefined,
@@ -537,6 +566,17 @@ dossierProgramsModule.service("dossiersProgramLoadingService", function () {
             ruleVariables: undefined,
             resources: undefined,
         };
+        this.progress = {
+            message: "",
+            current: 0,
+            total: 0,
+        };
+    };
+
+    this.setProgress = function (message, current, total) {
+        this.progress.message = message;
+        this.progress.current = current;
+        this.progress.total = total;
     };
 
     this.done = function () {

@@ -93,11 +93,12 @@ appModule.config([
 
         $translateProvider.useSanitizeValueStrategy(null);
 
-        $translateProvider.registerAvailableLanguageKeys(["es", "fr", "en", "pt"], {
+        $translateProvider.registerAvailableLanguageKeys(["es", "fr", "en", "pt", "ar"], {
             "en*": "en",
             "es*": "es",
             "fr*": "fr",
             "pt*": "pt",
+            "ar*": "ar",
             "*": "en", // must be last!
         });
 
@@ -121,5 +122,33 @@ appModule.config([
             .fail(function () {
                 $translateProvider.determinePreferredLanguage();
             });
+    },
+]);
+
+appModule.run([
+    "$rootScope",
+    "$translate",
+    "$document",
+    function ($rootScope, $translate, $document) {
+        function applyDirection(lang) {
+            const isRtl = (lang || "").toLowerCase().startsWith("ar");
+
+            // <html>
+            $document[0].documentElement.dir = isRtl ? "rtl" : "ltr";
+            $document[0].documentElement.lang = isRtl ? "ar" : "en";
+
+            // <body class="rtl">
+            if (isRtl) {
+                $document[0].body.classList.add("rtl");
+            } else {
+                $document[0].body.classList.remove("rtl");
+            }
+        }
+
+        applyDirection($translate.use() || $translate.proposedLanguage() || $translate.fallbackLanguage());
+
+        $rootScope.$on("$translateChangeSuccess", function (evt, data) {
+            applyDirection(data.language);
+        });
     },
 ]);

@@ -13,6 +13,10 @@ adminModule.controller("adminMainController", [
     "adminDEGFactory",
     "adminDSFactory",
     "adminIGFactory",
+    "adminNIU_IGFactory",
+    "adminNIU_PIGFactory",
+    "adminLEG_DEGFactory",
+    "adminLEG_OPGFactory",
     "adminDossierConfigCompleteFactory",
     function (
         $scope,
@@ -24,6 +28,10 @@ adminModule.controller("adminMainController", [
         adminDEGFactory,
         adminDSFactory,
         adminIGFactory,
+        adminNIU_IGFactory,
+        adminNIU_PIGFactory,
+        adminLEG_DEGFactory,
+        adminLEG_OPGFactory,
         adminDossierConfigCompleteFactory
     ) {
         $("#admin").tab("show");
@@ -284,6 +292,118 @@ adminModule.controller("adminMainController", [
                         return adminIGFactory.set_IG.query($scope.selectedIG, function (response) {
                             if (response) {
                                 $scope.blacklist_indicatorgroups = $scope.selectedIG;
+                            }
+                        });
+                    }
+                )
+                .then(function () {
+                    window.location.reload(true);
+                });
+        };
+
+        if ($scope.notInUse_indicatorGroups) {
+            $scope.notInUseIG = JSON.stringify($scope.notInUse_indicatorGroups);
+        }
+
+        $scope.submitNIU_IG = function () {
+            adminNIU_IGFactory.get_NIU_IG_set
+                .query($scope.notInUseIG)
+                .$promise.then(
+                    function (response1) {
+                        return adminNIU_IGFactory.upd_NIU_IG.query($scope.notInUseIG, function (response2) {
+                            if (response2) {
+                                $scope.notInUse_indicatorGroups = $scope.notInUseIG;
+                            }
+                        });
+                    },
+                    function () {
+                        return adminNIU_IGFactory.set_NIU_IG.query($scope.notInUseIG, function (response) {
+                            if (response) {
+                                $scope.notInUse_indicatorGroups = $scope.notInUseIG;
+                            }
+                        });
+                    }
+                )
+                .then(function () {
+                    window.location.reload(true);
+                });
+        };
+
+        if ($scope.legacy_dataelementgroups) {
+            $scope.selectedLEG_DEG = JSON.stringify($scope.legacy_dataelementgroups);
+        }
+
+        $scope.submitLEG_DEG = function () {
+            adminLEG_DEGFactory.get_DEG_set
+                .query($scope.selectedLEG_DEG)
+                .$promise.then(
+                    function (response1) {
+                        return adminLEG_DEGFactory.upd_DEG.query($scope.selectedLEG_DEG, function (response2) {
+                            if (response2) {
+                                $scope.legacy_dataelementgroups = $scope.selectedLEG_DEG;
+                            }
+                        });
+                    },
+                    function () {
+                        return adminLEG_DEGFactory.set_DEG.query($scope.selectedLEG_DEG, function (response) {
+                            if (response) {
+                                $scope.legacy_dataelementgroups = $scope.selectedLEG_DEG;
+                            }
+                        });
+                    }
+                )
+                .then(function () {
+                    window.location.reload(true);
+                });
+        };
+
+        if ($scope.notInUse_programIndicatorGroups) {
+            $scope.notInUsePIG = JSON.stringify($scope.notInUse_programIndicatorGroups);
+        }
+
+        $scope.submitNIU_PIG = function () {
+            adminNIU_PIGFactory.get_NIU_PIG_set
+                .query($scope.notInUsePIG)
+                .$promise.then(
+                    function (response1) {
+                        return adminNIU_PIGFactory.upd_NIU_PIG.query($scope.notInUsePIG, function (response2) {
+                            if (response2) {
+                                $scope.notInUse_programIndicatorGroups = $scope.notInUsePIG;
+                            }
+                        });
+                    },
+                    function () {
+                        return adminNIU_PIGFactory.set_NIU_PIG.query($scope.notInUsePIG, function (response) {
+                            if (response) {
+                                $scope.notInUse_programIndicatorGroups = $scope.notInUsePIG;
+                            }
+                        });
+                    }
+                )
+                .then(function () {
+                    window.location.reload(true);
+                });
+        };
+
+        if ($scope.legacy_optiongroups) {
+            $scope.selectedLEG_OPG = JSON.stringify($scope.legacy_optiongroups);
+        }
+
+        $scope.submitLEG_OPG = function () {
+            adminLEG_OPGFactory.get_OPG_set
+                .query($scope.selectedLEG_OPG)
+                .$promise.then(
+                    function (response1) {
+                        return adminLEG_OPGFactory.upd_OPG.query($scope.selectedLEG_OPG, function (response2) {
+                            if (response2) {
+                                $scope.legacy_optiongroups = $scope.selectedLEG_OPG;
+                            }
+                        });
+                    },
+                    function () {
+                        return adminLEG_OPGFactory.set_OPG.query($scope.selectedLEG_OPG, function (response) {
+                            if (response) {
+                                $scope.legacy_optiongroups = $scope.selectedLEG_OPG;
                             }
                         });
                     }

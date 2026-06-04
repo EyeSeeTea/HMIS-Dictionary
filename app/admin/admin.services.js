@@ -72,6 +72,58 @@ adminModule.factory("adminIGFactory", [
     },
 ]);
 
+var qry_set_NIU_IG = dhisUrl + "dataStore/HMIS_Dictionary/notInUse_indicatorGroups";
+
+adminModule.factory("adminNIU_IGFactory", [
+    "$resource",
+    function ($resource) {
+        return {
+            get_NIU_IG_set: $resource(qry_set_NIU_IG, {}, { query: { method: "GET", isArray: true } }),
+            set_NIU_IG: $resource(qry_set_NIU_IG, {}, { query: { method: "POST", isArray: false } }),
+            upd_NIU_IG: $resource(qry_set_NIU_IG, {}, { query: { method: "PUT", isArray: false } }),
+        };
+    },
+]);
+
+var qry_set_LEG_DEG = dhisUrl + "dataStore/HMIS_Dictionary/legacy_dataElementGroups";
+
+adminModule.factory("adminLEG_DEGFactory", [
+    "$resource",
+    function ($resource) {
+        return {
+            get_DEG_set: $resource(qry_set_LEG_DEG, {}, { query: { method: "GET", isArray: true } }),
+            set_DEG: $resource(qry_set_LEG_DEG, {}, { query: { method: "POST", isArray: false } }),
+            upd_DEG: $resource(qry_set_LEG_DEG, {}, { query: { method: "PUT", isArray: false } }),
+        };
+    },
+]);
+
+var qry_set_NIU_PIG = dhisUrl + "dataStore/HMIS_Dictionary/notInUse_programIndicatorGroups";
+
+adminModule.factory("adminNIU_PIGFactory", [
+    "$resource",
+    function ($resource) {
+        return {
+            get_NIU_PIG_set: $resource(qry_set_NIU_PIG, {}, { query: { method: "GET", isArray: true } }),
+            set_NIU_PIG: $resource(qry_set_NIU_PIG, {}, { query: { method: "POST", isArray: false } }),
+            upd_NIU_PIG: $resource(qry_set_NIU_PIG, {}, { query: { method: "PUT", isArray: false } }),
+        };
+    },
+]);
+
+var qry_set_LEG_OPG = dhisUrl + "dataStore/HMIS_Dictionary/legacy_optionGroups";
+
+adminModule.factory("adminLEG_OPGFactory", [
+    "$resource",
+    function ($resource) {
+        return {
+            get_OPG_set: $resource(qry_set_LEG_OPG, {}, { query: { method: "GET", isArray: true } }),
+            set_OPG: $resource(qry_set_LEG_OPG, {}, { query: { method: "POST", isArray: false } }),
+            upd_OPG: $resource(qry_set_LEG_OPG, {}, { query: { method: "PUT", isArray: false } }),
+        };
+    },
+]);
+
 var qry_get_A = dhisUrl + "attributes.json?fields=name,id,dataSetAttribute,indicatorGroupAttribute&paging=false";
 
 adminModule.factory("adminAFactory", [

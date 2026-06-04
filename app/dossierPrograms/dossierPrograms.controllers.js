@@ -3,6 +3,10 @@
     Please refer to the LICENSE.md and LICENSES-DEP.md for complete licenses.
 ------------------------------------------------------------------------------------*/
 
+function isProgramScopeActive(scope, programId) {
+    return !scope.$$destroyed && (!programId || scope.selectedProgram?.id === programId);
+}
+
 dossierProgramsModule.controller("dossierProgramsMainController", [
     "$scope",
     "$anchorScroll",
@@ -12,6 +16,7 @@ dossierProgramsModule.controller("dossierProgramsMainController", [
     "dossiersProgramLoadingService",
     "advancedUsersFactory",
     "layoutSettingsFactory",
+    "dossiersProgramLegacyOptionGroupsFactory",
     function (
         $scope,
         $anchorScroll,
@@ -20,7 +25,8 @@ dossierProgramsModule.controller("dossierProgramsMainController", [
         dossiersProgramsLinkTestFactory,
         dossiersProgramLoadingService,
         advancedUsersFactory,
-        layoutSettingsFactory
+        layoutSettingsFactory,
+        dossiersProgramLegacyOptionGroupsFactory
     ) {
         $("#dossiersPrograms").tab("show");
 
@@ -125,9 +131,11 @@ dossierProgramsModule.controller("dossierProgramsMainController", [
         layoutSettingsFactory.get
             .query({ view: namespace })
             .$promise.then(data => {
+                if ($scope.$$destroyed) return;
                 $scope.layoutSettings = data.toJSON();
             })
             .catch(error => {
+                if ($scope.$$destroyed) return;
                 /* If no sharing settings are found, create them */
                 if (error.status === 404) {
                     layoutSettingsFactory.set.query(
@@ -150,10 +158,20 @@ dossierProgramsModule.controller("dossierProgramsMainController", [
 
         $scope.$watch("layoutSettings", function () {
             advancedUsersFactory.isAdvancedUser($scope.layoutSettings.advancedUserGroups).query({}, function (data) {
+                if ($scope.$$destroyed) return;
                 $scope.isAdvancedUser = data.isAdvancedUser;
                 $scope.accesses = userAccesses($scope.layoutSettings.accesses, $scope.isAdvancedUser);
             });
         });
+
+        const showLegacyKey = "programs_show_legacy";
+        $scope.showLegacy = sessionStorage.getItem(showLegacyKey) === "true";
+        $scope.onToggleLegacyChanged = function () {
+            sessionStorage.setItem(showLegacyKey, String(!!$scope.showLegacy));
+            if ($scope.selectedProgram && $scope.selectedProgram.displayName) {
+                window.location.reload();
+            }
+        };
 
         /*
          *  @alias appModule.controller~addtoTOC
@@ -201,13 +219,26 @@ dossierProgramsModule.controller("dossierProgramsMainController", [
             sessionStorage.clear();
 
             $scope.programs = dossiersProgramsLinkTestFactory.get({ displayName: $scope.programName }, function () {
+                if ($scope.$$destroyed) return;
                 endLoadingState(false);
             });
         } else {
             $scope.programs = dossiersProgramsFactory.get(function () {
+                if ($scope.$$destroyed) return;
                 endLoadingState(false);
             });
         }
+
+        $scope.legacyOptionGroups = [];
+        dossiersProgramLegacyOptionGroupsFactory.query(
+            { optionGroupIDs: ($scope.legacy_optiongroups || []).join(",") },
+            function (data) {
+                $scope.legacyOptionGroups = data.optionGroups || [];
+                $scope.legacyOptionIds = new Set(
+                    $scope.legacyOptionGroups.flatMap(group => group.options || []).map(option => option.id)
+                );
+            }
+        );
 
         //Clear the TOC
         $scope.$watch("selectedProgram", function () {
@@ -216,6 +247,11 @@ dossierProgramsModule.controller("dossierProgramsMainController", [
             $scope.toc = {
                 entries: [],
             };
+        });
+
+        $scope.$on("$destroy", function () {
+            dossiersProgramLoadingService.resetState();
+            endLoadingState(true);
         });
     },
 ]);
@@ -279,8 +315,38 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
             });
         }
 
+        /*
+         *  @name filterDELegacyOptions
+         *  @description Filter out legacy options from data elements option sets if "Show Legacy" is not checked
+         *  @scope dossiersProgramSectionController
+         */
+        function filterDELegacyOptions(dataElement) {
+            if ($scope.showLegacy) return dataElement;
+            if (!dataElement?.optionSet?.options) return dataElement;
+
+            return {
+                ...dataElement,
+                optionSet: {
+                    ...dataElement.optionSet,
+                    options: dataElement.optionSet.options.filter(option => {
+                        const isLegacy = $scope.legacyOptionIds?.has(option.id);
+                        return !isLegacy;
+                    }),
+                },
+            };
+        }
+
+        /*
+         *  @name filterDataElement
+         *  @description Filter out data elements based on blacklist and legacy settings
+         *  @scope dossiersProgramSectionController
+         */
         function filterDataElement(dataElement) {
-            return !dataElement.dataElementGroups.some(deg => $scope.blacklist_dataelementgroups.includes(deg.id));
+            return !dataElement.dataElementGroups.some(
+                deg =>
+                    $scope.blacklist_dataelementgroups.includes(deg.id) ||
+                    (!$scope.showLegacy && $scope.legacy_dataelementgroups.includes(deg.id))
+            );
         }
 
         /*
@@ -301,7 +367,8 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
                                 compulsory: stageDataElement.compulsory,
                                 visibility: makeDEVisibility(stageDataElement.dataElement.id, hiddenDEArray, stage.id),
                             };
-                        }),
+                        })
+                        .map(filterDELegacyOptions),
                 },
             ];
 
@@ -337,7 +404,7 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
                 ...stage,
                 programStageSections: stage.programStageSections.map(section => ({
                     ...section,
-                    dataElements: section.dataElements.filter(filterDataElement),
+                    dataElements: section.dataElements.filter(filterDataElement).map(filterDELegacyOptions),
                 })),
             };
         }
@@ -456,18 +523,21 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
         $scope.$watch("selectedProgram", function () {
             ping();
             if ($scope.selectedProgram) {
-                startLoadingState(false);
+                const programId = $scope.selectedProgram.id;
+                startLoadingState(false, { message: "load_programStages" });
                 dossiersProgramLoadingService.loading.programs = false;
                 //Query sections and data elements
                 var stageSectionPromises = $scope.selectedProgram.programStages.map(function (stage) {
                     return dossiersProgramStageSectionsFactory.get({ programStageId: stage.id }).$promise;
                 });
 
-                $q.resolve(
-                    dossiersProgramStageCalcModeFactory.get({ programId: $scope.selectedProgram.id }).$promise,
-                    data => ($scope.programRules = data.programRules)
-                ).then(() => {
+                $q.resolve(dossiersProgramStageCalcModeFactory.get({ programId: programId }).$promise, data => {
+                    if (!isProgramScopeActive($scope, programId)) return;
+                    $scope.programRules = data.programRules;
+                }).then(() => {
+                    if (!isProgramScopeActive($scope, programId)) return;
                     $q.all(stageSectionPromises).then(function (stages) {
+                        if (!isProgramScopeActive($scope, programId)) return;
                         const hiddenSectionsArray = getDEAffectedByRuleAction($scope.programRules, "HIDESECTION");
                         const assignedDEArray = getDEAffectedByRuleAction($scope.programRules, "ASSIGN");
                         const hiddenDEArray = getDEAffectedByRuleAction($scope.programRules, "HIDEFIELD");
@@ -767,28 +837,163 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
         }
 
         /*
-         *  @name recursiveAssignExpression
-         *  @description Gets the "readable" expressions for each indicator expression
+         *  @name updatePIProgress
+         *  @description Updates the program indicators translation progress and message
          *  @scope dossiersProgramIndicatorController
          */
-        function recursiveAssignExpression(i) {
-            if (i >= $scope.programIndicators.length) {
-                $rootScope.recursiveAssignExpressionDone = true;
+        function updatePIProgress(programId) {
+            if (!isProgramScopeActive($scope, programId) || !$scope.programIndicators) return;
+
+            const totalSteps = $scope.programIndicators.length;
+            const current = $scope.programIndicators.reduce(
+                (sum, pi) => sum + (pi.expressionDone && pi.filterDone ? 1 : 0),
+                0
+            );
+            updateProgressMessage({
+                message: "load_programIndicators",
+                current,
+                total: totalSteps,
+            });
+        }
+
+        /*
+         *  @name buildUniquePayloadMap
+         *  @description Builds a map of unique payloads for a given field
+         *  @scope dossiersProgramIndicatorController
+         */
+        function buildUniquePayloadMap(field, preprocessFn) {
+            const payloadMap = {};
+
+            $scope.programIndicators.forEach((indicator, index) => {
+                const rawValue = indicator[field];
+                if (typeof rawValue === "undefined") return;
+
+                const payload = preprocessFn ? preprocessFn(rawValue, indicator) : rawValue;
+                if (typeof payload === "undefined") return;
+
+                if (!payloadMap[payload]) payloadMap[payload] = [];
+                payloadMap[payload].push(index);
+            });
+
+            return payloadMap;
+        }
+
+        /*
+         *  @name runUniqueTranslations
+         *  @description Runs the translation for each unique payload and applies the result to the corresponding indicators
+         *  @scope dossiersProgramIndicatorController
+         */
+        function runUniqueTranslations(payloadMap, saveFactory, applyFn, doneFn, programId) {
+            const payloads = Object.keys(payloadMap);
+
+            if (payloads.length === 0) {
+                if (isProgramScopeActive($scope, programId)) {
+                    doneFn();
+                }
                 return;
             }
 
-            const stageRef = $scope.programIndicators[i].stageRef;
-            if (stageRef && stageRef.length > 0) {
-                const newRef = getStageRef($scope.programIndicators[i].expression);
-                $scope.programIndicators[i].stageRef = _.uniq($scope.programIndicators[i].stageRef.concat(newRef));
-            } else {
-                $scope.programIndicators[i].stageRef = getStageRef($scope.programIndicators[i].expression);
+            function translateAt(i) {
+                if (i >= payloads.length) {
+                    doneFn();
+                    return;
+                }
+
+                const payload = payloads[i];
+                const indicatorIndices = payloadMap[payload];
+
+                saveFactory.save({}, payload, function (data) {
+                    if (!isProgramScopeActive($scope, programId)) return;
+                    indicatorIndices.forEach(index => applyFn(index, data));
+                    translateAt(i + 1);
+                });
             }
 
-            dossiersProgramIndicatorExpressionFactory.save({}, $scope.programIndicators[i].expression, function (data) {
-                $scope.programIndicators[i].expression = data.description.replaceAll("\\.", ".");
-                recursiveAssignExpression(i + 1);
+            translateAt(0);
+        }
+
+        /*
+         *  @name assignProgramIndicatorStageRefsFromField
+         *  @description Assigns the stage references for a program indicator from a given field
+         *  @scope dossiersProgramIndicatorController
+         */
+        function assignProgramIndicatorStageRefsFromField(indicator, field) {
+            const value = indicator[field];
+            if (typeof value === "undefined") return;
+
+            const stageRef = indicator.stageRef;
+            const newRef = getStageRef(value);
+
+            indicator.stageRef = stageRef && stageRef.length > 0 ? _.uniq(stageRef.concat(newRef)) : newRef;
+        }
+
+        /*
+         *  @name startProgramIndicatorTranslation
+         *  @description Starts the translation process for program indicators
+         *  @scope dossiersProgramIndicatorController
+         */
+        function startProgramIndicatorTranslation(programId) {
+            const optionRegex = /#{(\w+).(\w+)} *?(!=|==) ?'(.?)'/g;
+            const stageIdRegex = /Program stage id *== *'"['"]/g;
+
+            const expressionPayloadMap = buildUniquePayloadMap("expression", function (rawExpression, indicator) {
+                assignProgramIndicatorStageRefsFromField(indicator, "expression");
+                return rawExpression;
             });
+
+            const filterPayloadMap = buildUniquePayloadMap("filter", function (rawFilter, indicator) {
+                assignProgramIndicatorStageRefsFromField(indicator, "filter");
+
+                const normalizedFilter = rawFilter.replaceAll(optionRegex, optionReplacer);
+                indicator.filter = normalizedFilter;
+                return normalizedFilter;
+            });
+
+            runUniqueTranslations(
+                expressionPayloadMap,
+                dossiersProgramIndicatorExpressionFactory,
+                function (index, data) {
+                    if (!isProgramScopeActive($scope, programId)) return;
+                    let expression;
+                    if (data.status === "ERROR") {
+                        expression = `${data.message}: ${data.description} Expression: ${$scope.programIndicators[index].expression}`;
+                    } else {
+                        expression = data.description.replaceAll("\\.", ".");
+                    }
+                    $scope.programIndicators[index].expression = expression;
+                    $scope.programIndicators[index].expressionDone = true;
+                    updatePIProgress(programId);
+                },
+                function () {
+                    if (!isProgramScopeActive($scope, programId)) return;
+                    $rootScope.recursiveAssignExpressionDone = true;
+                },
+                programId
+            );
+
+            runUniqueTranslations(
+                filterPayloadMap,
+                dossiersProgramIndicatorFilterFactory,
+                function (index, data) {
+                    if (!isProgramScopeActive($scope, programId)) return;
+                    let filter;
+                    if (data.status === "ERROR") {
+                        filter = `${data.message}: ${data.description}\n Filter: ${$scope.programIndicators[index].filter}`;
+                    } else {
+                        filter = data.description.includes("Program stage id")
+                            ? data.description.replaceAll(stageIdRegex, stageIdReplacer)
+                            : data.description.replaceAll("\\.", ".");
+                    }
+                    $scope.programIndicators[index].filter = filter;
+                    $scope.programIndicators[index].filterDone = true;
+                    updatePIProgress(programId);
+                },
+                function () {
+                    if (!isProgramScopeActive($scope, programId)) return;
+                    $rootScope.recursiveAssignFilterDone = true;
+                },
+                programId
+            );
         }
 
         /*
@@ -864,6 +1069,8 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
                     $scope.programIndicators[i].filter = data.description.replaceAll("\\.", ".");
                 }
 
+                $scope.programIndicators[i].filterDone = true;
+                updatePIProgress();
                 recursiveAssignFilter(i + 1);
             });
         }
@@ -877,7 +1084,7 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
         $scope.$watch("selectedProgram", function () {
             ping();
             if ($scope.selectedProgram) {
-                startLoadingState(false);
+                const programId = $scope.selectedProgram.id;
                 dossiersProgramLoadingService.loading.programIndicators = false;
                 $rootScope.recursiveAssignExpressionDone = false;
                 $rootScope.recursiveAssignFilterDone = false;
@@ -885,17 +1092,28 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
 
                 dossiersProgramIndicatorsFactory.get(
                     {
-                        programId: $scope.selectedProgram.id,
+                        programId: programId,
                     },
                     function (data) {
+                        if (!isProgramScopeActive($scope, programId)) return;
+                        const isAdmin = !!$scope.is_admin;
+                        let programIndicators = isAdmin
+                            ? data.programIndicators
+                            : data.programIndicators.filter(
+                                  pi =>
+                                      !pi.programIndicatorGroups.some(pig =>
+                                          $scope.notInUse_programIndicatorGroups.includes(pig.id)
+                                      )
+                              );
                         dossiersProgramIndicatorStagesFactory.get(
                             {
-                                programId: $scope.selectedProgram.id,
+                                programId: programId,
                             },
                             function (psData) {
+                                if (!isProgramScopeActive($scope, programId)) return;
                                 $scope.programStages = psData.programs[0].programStages.map(ps => ps);
-                                if (data.programIndicators.length > 0) {
-                                    $scope.programIndicators = data.programIndicators.map(pi => {
+                                if (programIndicators.length > 0) {
+                                    $scope.programIndicators = programIndicators.map(pi => {
                                         pi.analyticsPeriodBoundaries = pi.analyticsPeriodBoundaries.map(bound => {
                                             const btTextArray = bound.boundaryTarget.split(":");
                                             const btId = btTextArray[1];
@@ -905,12 +1123,22 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
                                             }
                                             return bound;
                                         });
-                                        return pi;
+                                        return {
+                                            ...pi,
+                                            expressionDone: !pi.expression,
+                                            filterDone: !pi.filter,
+                                        };
                                     });
                                     addtoTOC($scope.toc, null, $scope.programIndicators4TOC, "Program Indicators");
 
-                                    recursiveAssignExpression(0);
-                                    recursiveAssignFilter(0);
+                                    updateProgressMessage({
+                                        message: "load_programIndicators",
+                                        current: 0,
+                                        total: $scope.programIndicators.length,
+                                    });
+
+                                    updatePIProgress(programId);
+                                    startProgramIndicatorTranslation(programId);
                                     $rootScope.programIndicators = $scope.programIndicators;
                                     $rootScope.programStages = $scope.programStages;
                                     dossiersProgramDataService.data.programIndicators = $scope.programIndicators;
@@ -1019,36 +1247,123 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
         }
 
         /*
+         *  @name updateIndicatorProgress
+         *  @description Updates the progress message for indicators
+         *  @scope dossierProgramGlobalIndicatorController
+         */
+        function updateIndicatorProgress(index, total, programId) {
+            if (!isProgramScopeActive($scope, programId)) return;
+
+            updateProgressMessage({
+                message: "load_indicators",
+                current: index,
+                total: total,
+            });
+        }
+
+        /*
+         *  @name createIndicatorProgressTracker
+         *  @description Creates a progress tracker for indicators
+         *  @scope dossierProgramGlobalIndicatorController
+         */
+        function createIndicatorProgressTracker(total, onDone, programId) {
+            const progress = {
+                done: 0,
+                total: total,
+            };
+
+            updateIndicatorProgress(0, progress.total, programId);
+
+            return {
+                step: function () {
+                    if (!isProgramScopeActive($scope, programId)) return;
+                    progress.done += 1;
+                    updateIndicatorProgress(progress.done, progress.total, programId);
+                    if (progress.done >= progress.total) {
+                        onDone();
+                    }
+                },
+                finishIfEmpty: function () {
+                    if (progress.total === 0 && isProgramScopeActive($scope, programId)) {
+                        onDone();
+                    }
+                },
+            };
+        }
+
+        /*
+         *  @name getUniqueExpressions
+         *  @description Gets the unique expressions for a given field from the indicators
+         *  @scope dossierProgramGlobalIndicatorController
+         */
+        function getUniqueExpressions(indicators, field) {
+            const unique = {};
+            indicators.forEach((indicator, index) => {
+                const expression = indicator[field];
+                if (!unique[expression]) {
+                    unique[expression] = [];
+                }
+                unique[expression].push(index);
+            });
+            return unique;
+        }
+
+        /*
          *  @name recursiveAssignNumerator
          *  @description Gets the "readable" expressions for each indicator numerator
          *  @scope dossierProgramGlobalIndicatorController
          */
-        function recursiveAssignNumerator(i) {
-            if (i >= $scope.indicators.length) return;
+        function recursiveAssignNumerator(expressionMap, expressions, progressTracker, programId, currentIndex = 0) {
+            if (currentIndex >= expressions.length) {
+                return;
+            }
+
+            const expression = expressions[currentIndex];
+            const indicatorIndices = expressionMap[expression];
+
             dossiersProgramGlobalIndicatorExpressionFactory.save(
                 {},
-                $scope.indicators[i].numerator,
+                expression,
                 function (data) {
-                    $scope.indicators[i].numerator = data.description;
-                    recursiveAssignNumerator(i + 1);
+                    if (!isProgramScopeActive($scope, programId)) return;
+                    // Apply result to ALL indicators sharing this numerator
+                    indicatorIndices.forEach(idx => {
+                        $scope.indicators[idx].numerator = data.description;
+                    });
+                    progressTracker.step();
+                    recursiveAssignNumerator(expressionMap, expressions, progressTracker, programId, currentIndex + 1);
                 },
                 true
             );
         }
 
         /*
-         *  @name recursiveAssignNumerator
+         *  @name recursiveAssignDenominator
          *  @description Gets the "readable" expressions for each indicator denominator
          *  @scope dossierProgramGlobalIndicatorController
          */
-        function recursiveAssignDenominator(i) {
-            if (i >= $scope.indicators.length) return;
+        function recursiveAssignDenominator(expressionMap, expressions, progressTracker, programId, currentIndex = 0) {
+            if (currentIndex >= expressions.length) return;
+
+            const expression = expressions[currentIndex];
+            const indicatorIndices = expressionMap[expression];
+
             dossiersProgramGlobalIndicatorExpressionFactory.save(
                 {},
-                $scope.indicators[i].denominator,
+                expression,
                 function (data) {
-                    $scope.indicators[i].denominator = data.description;
-                    recursiveAssignDenominator(i + 1);
+                    if (!isProgramScopeActive($scope, programId)) return;
+                    indicatorIndices.forEach(idx => {
+                        $scope.indicators[idx].denominator = data.description;
+                    });
+                    progressTracker.step();
+                    recursiveAssignDenominator(
+                        expressionMap,
+                        expressions,
+                        progressTracker,
+                        programId,
+                        currentIndex + 1
+                    );
                 },
                 true
             );
@@ -1079,20 +1394,26 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
                     $rootScope.recursiveAssignFilterDone &&
                     $rootScope.recursiveAssignExpressionDone
                 ) {
-                    startLoadingState(false);
+                    const programId = $scope.selectedProgram.id;
+                    startLoadingState(false, { message: "load_indicators" });
                     dossiersProgramLoadingService.loading.indicators = false;
                     $scope.indicators = [];
 
                     //Query indicator information
                     dossiersProgramGlobalIndicatorsFactory.get(function (data) {
+                        if (!isProgramScopeActive($scope, programId)) return;
+                        const isAdmin = !!$scope.is_admin;
                         $scope.allIndicators = data.indicators
                             .filter(
                                 indicator =>
-                                    !indicator.indicatorGroups.some(ig =>
-                                        $scope.blacklist_indicatorgroups.includes(ig.id)
+                                    !indicator.indicatorGroups.some(
+                                        ig =>
+                                            $scope.blacklist_indicatorgroups.includes(ig.id) ||
+                                            (!isAdmin && $scope.notInUse_indicatorGroups.includes(ig.id))
                                     )
                             )
                             .forEach(function (indicator) {
+                                console.debug("Processing indicator:", indicator.displayName);
                                 const num = indicator.numerator;
                                 const den = indicator.denominator;
                                 parseExpression(indicator, num);
@@ -1103,12 +1424,34 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
                             });
                         if ($scope.indicators.length > 0) {
                             addtoTOC($scope.toc, null, $scope.indicators4TOC, "Indicators");
-                            recursiveAssignNumerator(0);
-                            recursiveAssignDenominator(0);
+                            const numeratorMap = getUniqueExpressions($scope.indicators, "numerator");
+                            const uniqueNumerators = Object.keys(numeratorMap);
+                            const denominatorMap = getUniqueExpressions($scope.indicators, "denominator");
+                            const uniqueDenominators = Object.keys(denominatorMap);
+                            const progressTracker = createIndicatorProgressTracker(
+                                uniqueNumerators.length + uniqueDenominators.length,
+                                function () {
+                                    if (!isProgramScopeActive($scope, programId)) return;
+                                    dossiersProgramLoadingService.loading.indicators = true;
+                                    if (dossiersProgramLoadingService.done()) endLoadingState(true);
+                                },
+                                programId
+                            );
+
+                            recursiveAssignNumerator(numeratorMap, uniqueNumerators, progressTracker, programId, 0);
+                            recursiveAssignDenominator(
+                                denominatorMap,
+                                uniqueDenominators,
+                                progressTracker,
+                                programId,
+                                0
+                            );
+                            progressTracker.finishIfEmpty();
                             dossiersProgramDataService.data.indicators = $scope.indicators;
+                        } else {
+                            dossiersProgramLoadingService.loading.indicators = true;
+                            if (dossiersProgramLoadingService.done()) endLoadingState(true);
                         }
-                        dossiersProgramLoadingService.loading.indicators = true;
-                        if (dossiersProgramLoadingService.done()) endLoadingState(true);
                     });
                 } else if ($rootScope.programIndicatorsEmpty) {
                     dossiersProgramLoadingService.loading.indicators = true;
@@ -1159,6 +1502,27 @@ dossierProgramsModule.controller("dossiersProgramTEAController", [
         }
 
         /*
+         *  @name filterTEALegacyOptions
+         *  @description Filter out the legacy options from the TEA option sets if the showLegacy flag is false
+         *  @scope dossiersProgramTEAController
+         */
+        function filterTEALegacyOptions(trackedEntityAttribute) {
+            if ($scope.showLegacy) return trackedEntityAttribute;
+            if (!trackedEntityAttribute?.optionSet?.options) return trackedEntityAttribute;
+
+            return {
+                ...trackedEntityAttribute,
+                optionSet: {
+                    ...trackedEntityAttribute.optionSet,
+                    options: trackedEntityAttribute.optionSet.options.filter(option => {
+                        const isLegacy = $scope.legacyOptionIds?.has(option.id);
+                        return !isLegacy;
+                    }),
+                },
+            };
+        }
+
+        /*
         @name none
         @description Gets the tracked entity attributes information, translates it and shows it
         @dependencies dossiersProgramTEAsFactory, dossiersProgramTEAsRulesFactory
@@ -1167,31 +1531,36 @@ dossierProgramsModule.controller("dossiersProgramTEAController", [
         $scope.$watch("selectedProgram", function () {
             ping();
             if ($scope.selectedProgram) {
-                startLoadingState(false);
+                startLoadingState(false, { message: "load_trackedEntityAttributes" });
                 dossiersProgramLoadingService.loading.trackedEntityAttributes = false;
 
+                const programId = $scope.selectedProgram.id;
                 dossiersProgramTEAsFactory.get(
                     {
-                        programId: $scope.selectedProgram.id,
+                        programId: programId,
                     },
                     function (data) {
+                        if (!isProgramScopeActive($scope, programId)) return;
                         const teasIds = data.programTrackedEntityAttributes
                             .map(ptea => ptea.trackedEntityAttribute.id)
                             .join(",");
                         dossiersProgramTEAsRulesFactory.get(
                             {
-                                programId: $scope.selectedProgram.id,
+                                programId: programId,
                                 teasIds: teasIds,
                             },
                             function (rulesData) {
-                                $scope.trackedEntityAttributes = data.programTrackedEntityAttributes.map(ptea => ({
-                                    ...ptea.trackedEntityAttribute,
-                                    mandatory: ptea.mandatory,
-                                    visibility: makeTEAVisibility(
-                                        ptea.trackedEntityAttribute.id,
-                                        rulesData.programRules
-                                    ),
-                                }));
+                                if (!isProgramScopeActive($scope, programId)) return;
+                                $scope.trackedEntityAttributes = data.programTrackedEntityAttributes
+                                    .map(ptea => ({
+                                        ...ptea.trackedEntityAttribute,
+                                        mandatory: ptea.mandatory,
+                                        visibility: makeTEAVisibility(
+                                            ptea.trackedEntityAttribute.id,
+                                            rulesData.programRules
+                                        ),
+                                    }))
+                                    .map(filterTEALegacyOptions);
 
                                 if ($scope.trackedEntityAttributes.length > 0) {
                                     addtoTOC(
@@ -1246,6 +1615,7 @@ dossierProgramsModule.controller("dossiersProgramRuleController", [
             );
 
             dossiersProgramRulesActionsTemplateName.get({ templateUid: templateUid }, function (data) {
+                if ($scope.$$destroyed) return;
                 $scope.rules.forEach(rule => {
                     rule.programRuleActions.forEach(pra => {
                         if (pra.templateUid) {
@@ -1267,15 +1637,17 @@ dossierProgramsModule.controller("dossiersProgramRuleController", [
         $scope.$watch("selectedProgram", function () {
             ping();
             if ($scope.selectedProgram) {
-                startLoadingState(false);
+                startLoadingState(false, { message: "load_programRules" });
                 dossiersProgramLoadingService.loading.rules = false;
                 $rootScope.programRulesDone = false;
 
+                const programId = $scope.selectedProgram.id;
                 dossiersProgramRulesFactory.get(
                     {
-                        programId: $scope.selectedProgram.id,
+                        programId: programId,
                     },
                     function (data) {
+                        if (!isProgramScopeActive($scope, programId)) return;
                         $scope.rules = data.programRules.map(rule => ({ ...rule }));
 
                         if ($scope.rules.length > 0) {
@@ -1323,7 +1695,7 @@ dossierProgramsModule.controller("dossiersProgramRuleVariablesController", [
         $scope.$watchGroup(["selectedProgram", "programRulesDone"], function () {
             ping();
             if ($scope.selectedProgram && $rootScope.programRulesDone) {
-                startLoadingState(false);
+                startLoadingState(false, { message: "load_programRuleVariables" });
                 dossiersProgramLoadingService.loading.ruleVariables = false;
 
                 dossiersProgramRuleVariablesFactory.get(
@@ -1331,6 +1703,7 @@ dossierProgramsModule.controller("dossiersProgramRuleVariablesController", [
                         programId: $scope.selectedProgram.id,
                     },
                     function (data) {
+                        if (!isProgramScopeActive($scope, $scope.selectedProgram.id)) return;
                         $scope.ruleVariables = data.programRuleVariables.map(ruleVar => {
                             ruleVar.associatedProgramRules = dossiersProgramDataService.data.rules?.flatMap(rule => {
                                 const actionMatch = rule.programRuleActions.filter(ruleAction => {
@@ -1438,10 +1811,12 @@ dossierProgramsModule.controller("dossiersProgramResourcesController", [
         $scope.$watch("selectedProgram", function () {
             ping();
             if ($scope.selectedProgram) {
-                startLoadingState(false);
+                const programId = $scope.selectedProgram.id;
+                startLoadingState(false, { message: "load_programIndicators" });
                 dossiersProgramLoadingService.loading.resources = false;
 
                 dossiersProgramResourcesAttributeFactory.get({ programId: $scope.selectedProgram.id }, function (data) {
+                    if (!isProgramScopeActive($scope, programId)) return;
                     const resourcesIDs = data.attributeValues
                         .find(attr => attr.attribute.code === "HMIS-Dict_Resources")
                         ?.value.split(";")
@@ -1450,6 +1825,7 @@ dossierProgramsModule.controller("dossiersProgramResourcesController", [
                         });
 
                     dossiersProgramResourcesElementsFactory.get({ resourcesIDs: resourcesIDs }, function (resQryData) {
+                        if (!isProgramScopeActive($scope, programId)) return;
                         const resData = _.pick(resQryData, [
                             "dashboards",
                             "visualizations",
@@ -1596,7 +1972,10 @@ dossierProgramsModule.controller("dossiersProgramExport", [
                                 translate("dos_CalculationMode"),
                                 makeCalcMode(de?.calcMode),
                             ],
-                            accesses.programStages_optionSet && [translate("dos_OptionSetName"), de?.optionSet?.name],
+                            accesses.programStages_optionSet && [
+                                translate("dos_OptionSetName"),
+                                de?.optionSet?.displayName,
+                            ],
                             accesses.programStages_optionSet && [
                                 translate("dos_OptionSetOptions"),
                                 joinAndTrim(de?.optionSet?.options?.map(opt => opt?.displayName)),
@@ -1621,11 +2000,14 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         function makeTEASheet(workbook, trackedEntityAttributes, accesses) {
             const data = trackedEntityAttributes.map(item => {
                 const row = [
-                    accesses.trackedEntityAttributes_name && [translate("dos_NameElement"), item?.name],
-                    accesses.trackedEntityAttributes_formName && [translate("dos_FormNameElement"), item?.formName],
+                    accesses.trackedEntityAttributes_name && [translate("dos_NameElement"), item?.displayName],
+                    accesses.trackedEntityAttributes_formName && [
+                        translate("dos_FormNameElement"),
+                        item?.displayFormName,
+                    ],
                     accesses.trackedEntityAttributes_description && [
                         translate("dos_DescriptionElement"),
-                        item?.description,
+                        item?.displayDescription,
                     ],
                     accesses.trackedEntityAttributes_aggregationType && [
                         translate("dos_AggregationType"),
@@ -1634,11 +2016,11 @@ dossierProgramsModule.controller("dossiersProgramExport", [
                     accesses.trackedEntityAttributes_valueType && [translate("dos_ValueType"), item?.valueType],
                     accesses.trackedEntityAttributes_optionSet && [
                         translate("dos_OptionSetName"),
-                        item?.optionSet?.name,
+                        item?.optionSet?.displayName,
                     ],
                     accesses.trackedEntityAttributes_optionSet && [
                         translate("dos_OptionSetOptions"),
-                        joinAndTrim(item?.optionSet?.options.map(option => option?.name)),
+                        joinAndTrim(item?.optionSet?.options.map(option => option?.displayName)),
                     ],
                 ];
 
