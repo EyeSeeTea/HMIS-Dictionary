@@ -39,7 +39,7 @@ var qry_indicatorGroups =
 var qry_indicatorsAll =
     dhisUrl +
     "indicators.json?" +
-    "fields=id,code,displayName,displayShortName,displayDescription,numerator,denominator,indicatorGroups[id,code,displayName,attributeValues[value]]" +
+    "fields=id,code,displayName,displayFormName,displayShortName,displayDescription,numerator,denominator,indicatorGroups[id,code,displayName,attributeValues[value]]" +
     "&paging=false";
 
 var qry_categoryComobosAll = dhisUrl + "categoryOptionCombos.json?" + "fields=id,displayName" + "&paging=false";
@@ -49,7 +49,7 @@ var qry_organisationUnitGroupSets =
     dhisUrl + "organisationUnitGroupSets/:ougsUID?fields=organisationUnitGroups[id,code,displayName]&paging=false";
 
 //programIndicators
-var qry_programIndicatorsAll = dhisUrl + "programIndicators.json?fields=id,displayName, description&paging=false";
+var qry_programIndicatorsAll = dhisUrl + "programIndicators.json?fields=id,displayName,displayDescription&paging=false";
 
 searchModule.factory("searchAllFactory", [
     "$resource",

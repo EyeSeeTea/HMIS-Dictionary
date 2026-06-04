@@ -314,8 +314,8 @@ searchModule.controller("searchController", [
         });
 
         $scope.getTable = function (name, id, numerator, denominator) {
-            dataElements = extractDefromInd(numerator, denominator);
-            dataElements.push(id); //INDICATOR
+            indicatorComponents = extractIndicatorFormulaComponents(numerator, denominator);
+            indicatorComponents.push(id); //INDICATOR
             getServices.query(
                 {
                     uid: "BtFXTpKRl6n",
@@ -452,7 +452,7 @@ searchModule.controller("searchController", [
                 },
             };
 
-            items = dataElements.map(id => {
+            items = indicatorComponents.map(id => {
                 return { id: id };
             });
 
@@ -477,7 +477,7 @@ searchModule.controller("searchController", [
                                 },
                                 payload,
                                 function (response) {
-                                    updateSharing.update({ uid: tbl.visualizations[0].id }, sharing, function (res) {});
+                                    updateSharing.update({ uid: tbl.visualizations[0].id }, sharing, function (res) { });
 
                                     uid = tbl.visualizations[0].id;
                                     $window.open(dhisroot + "dhis-web-data-visualizer/index.html#/" + uid, "_blank");
@@ -490,7 +490,7 @@ searchModule.controller("searchController", [
                         console.debug("Creating Table");
                         searchTableFactory.set_table.query(payload, function (response) {
                             uid = response.response.uid;
-                            updateSharing.update({ uid: uid }, sharing, function (res) {});
+                            updateSharing.update({ uid: uid }, sharing, function (res) { });
                             $window.open(dhisroot + "dhis-web-data-visualizer/index.html#/" + uid, "_blank");
                         });
                     }
@@ -498,38 +498,121 @@ searchModule.controller("searchController", [
             );
         };
 
-        function extractDefromInd(numerator, denominator) {
-            de_num = extractDefromFormula(numerator);
-            de_den = extractDefromFormula(denominator);
-            return de_num.concat(de_den);
+        function extractIndicatorFormulaComponents(numerator, denominator) {
+            let numerator_ids = extractIdsFromFormula(numerator);
+            let denominator_ids = extractIdsFromFormula(denominator);
+            return numerator_ids.concat(denominator_ids);
         }
 
-        function extractDefromFormula(formula) {
-            formula = formula.replace(/I{/g, "#{");
-            var numerators_array = formula.split("#");
-            var num_filtered = numerators_array.filter(id => id != "");
-            var num_filtered = num_filtered.filter(id => id != " ");
-            var num_filtered = num_filtered.filter(id => id != "(");
-            var num_filtered2 = num_filtered.map(el => el.split("{")[1]);
-
-            var num_filtered3 = num_filtered2.map(el => {
-                if (el != undefined) {
-                    return el.split("}")[0];
-                }
-            });
-            var num_filtered3 = num_filtered3.map(el => {
-                if (el != undefined) {
-                    return el.split(".")[0];
-                }
-            });
-            return num_filtered3;
+        function extractIdsFromFormula(formula) {
+            let formulaElements = formula.replace(/I{/g, "#{").replace(/N{/g, "#{").split("#");
+            return formulaElements
+                .filter(id => id != "")
+                .filter(id => id != " ")
+                .filter(id => id != "(")
+                .map(el => el.split("{")[1])
+                .map(el => {
+                    if (el != undefined) {
+                        return el.split("}")[0];
+                    } else {
+                        return undefined;
+                    }
+                })
+                .filter(el => el != undefined);
         }
 
-        $scope.parseFormula = function (formula, dataElements, categoryOptionCombos, programIndicators) {
-            var operatorRegex = /}\s*[\+\-\*]\s*(#|I)/g;
+        $scope.formulaModal = {
+            title: "",
+            formulaHtml: "",
+            legend: [],
+        };
+
+        $scope.formulaModalSettings = {
+            maxDepth: 3,
+        };
+
+        $scope.formulaSources = {
+            dataElements: {},
+            categoryOptionCombos: {},
+            programIndicators: {},
+            indicators: {},
+        };
+
+        $scope.openFormulaModal = function (object, type) {
+            if (!object || object.object_type !== "indicator") {
+                $scope.formulaModal.title = $translate.instant("dos_FormulaOfIndicator");
+                $scope.formulaModal.formulaHtml = "";
+                $scope.formulaModal.legend = [];
+                return;
+            }
+
+            $scope.currentFormulaObject = object;
+            $scope.currentFormulaType = type;
+
+            const baseFormula = type === "denominator" ? object.object_denominator : object.object_numerator;
+            const labelKey = type === "denominator" ? "object_expand_den_formula" : "object_expand_num_formula";
+            const legendById = {};
+
+            $scope.formulaModal.title =
+                object.object_name +
+                " - " +
+                $translate.instant(labelKey) +
+                " (" +
+                $translate.instant("srch_formula_modal_recursive") +
+                ")";
+            $scope.formulaModal.formulaHtml = $scope.parseFormula(
+                baseFormula,
+                $scope.formulaSources.dataElements,
+                $scope.formulaSources.categoryOptionCombos,
+                $scope.formulaSources.programIndicators,
+                $scope.formulaSources.indicators,
+                {
+                    expandIndicators: true,
+                    depth: 0,
+                    maxDepth: $scope.formulaModalSettings.maxDepth,
+                    visitedIndicators: new Set([object.object_id]),
+                    legendById,
+                }
+            );
+
+            $scope.formulaModal.legend = Object.values(legendById).sort((a, b) => a.order - b.order);
+        };
+
+        function nextLegendColorIndex(legendById) {
+            return (Object.keys(legendById).length % 8) + 1;
+        }
+
+        $scope.hasNestedIndicators = function (formula) {
+            return /N\{\w+\}/.test(formula || "");
+        };
+
+        $scope.parseFormula = function (
+            formula,
+            dataElements,
+            categoryOptionCombos,
+            programIndicators,
+            indicators,
+            options
+        ) {
+            const config = Object.assign(
+                {
+                    expandIndicators: false,
+                    depth: 0,
+                    maxDepth: 8,
+                    visitedIndicators: new Set(),
+                    legendById: {},
+                },
+                options || {}
+            );
+
+            var operatorRegex = /}\s*[\+\-\*]\s*(#|I|N)/g;
             var dataElementRegex = /#\{\w*}/g;
             var dataElementCatRegex = /#\{\w*.\w*}/g;
             var programIndicatorRegex = /I\{\w*}/g;
+            var indicatorRegex = /N\{\w*}/g;
+            if (!formula) {
+                return "";
+            }
             return formula
                 .replace(operatorRegex, function (nexus) {
                     var operator = nexus.split("}")[1].trim().charAt(0);
@@ -539,13 +622,13 @@ searchModule.controller("searchController", [
                 .replace(dataElementRegex, function (dataElementWithCurlyBraces) {
                     var deId = dataElementWithCurlyBraces.substr(0, dataElementWithCurlyBraces.length - 1).substr(2);
 
-                    return dataElements[deId] ? getDataElementHtml(dataElements[deId]) : deId;
+                    return dataElements[deId] ? getTableObjectHtml(dataElements[deId]) : deId;
                 })
                 .replace(dataElementCatRegex, function (dataElementCatWithCurlyBraces) {
                     var deId = dataElementCatWithCurlyBraces.split("{")[1].split(".")[0];
                     var catId = dataElementCatWithCurlyBraces.split(".")[1].split("}")[0];
 
-                    var dataElement = dataElements[deId] ? getDataElementHtml(dataElements[deId]) : deId;
+                    var dataElement = dataElements[deId] ? getTableObjectHtml(dataElements[deId]) : deId;
                     var categoryOptionCombo = categoryOptionCombos[catId]
                         ? categoryOptionCombos[catId].object_name
                         : catId;
@@ -556,31 +639,84 @@ searchModule.controller("searchController", [
                     var piId = programIndicatorWithCurlyBraces
                         .substr(0, programIndicatorWithCurlyBraces.length - 1)
                         .substr(2);
+                    return programIndicators[piId] ? getTableObjectHtml(programIndicators[piId]) : piId;
+                })
+                .replace(indicatorRegex, function (indicatorWithCurlyBraces) {
+                    var indId = indicatorWithCurlyBraces.substr(0, indicatorWithCurlyBraces.length - 1).substr(2);
+                    if (!config.expandIndicators) {
+                        return indicators[indId] ? getTableObjectHtml(indicators[indId]) : indId;
+                    }
 
-                    return programIndicators[piId] ? getProgramIndicatorHtml(programIndicators[piId]) : piId;
+                    if (config.depth >= config.maxDepth) {
+                        return indicators[indId] ? getTableObjectHtml(indicators[indId]) : indId;
+                    }
+
+                    if (config.visitedIndicators.has(indId)) {
+                        return "[cyclic indicator reference: " + indicators[indId].object_name + "]";
+                    }
+
+                    if (!indicators[indId]) {
+                        return indId;
+                    }
+
+                    if (!config.legendById[indId]) {
+                        config.legendById[indId] = {
+                            id: indId,
+                            name: indicators[indId].object_name || indId,
+                            description: indicators[indId].object_description || "",
+                            colorIndex: nextLegendColorIndex(config.legendById),
+                            depth: config.depth + 1,
+                            order: Object.keys(config.legendById).length,
+                        };
+                    }
+
+                    const nextVisited = new Set(config.visitedIndicators);
+                    nextVisited.add(indId);
+                    const currentLegend = config.legendById[indId];
+
+                    return (
+                        "<span class='formula-indicator-block formula-indicator-color-" +
+                        currentLegend.colorIndex +
+                        "'>[" +
+                        $scope.parseFormula(
+                            indicators[indId].object_numerator,
+                            dataElements,
+                            categoryOptionCombos,
+                            programIndicators,
+                            indicators,
+                            {
+                                expandIndicators: true,
+                                depth: config.depth + 1,
+                                maxDepth: config.maxDepth,
+                                visitedIndicators: nextVisited,
+                                legendById: config.legendById,
+                            }
+                        ) +
+                        " / " +
+                        $scope.parseFormula(
+                            indicators[indId].object_denominator,
+                            dataElements,
+                            categoryOptionCombos,
+                            programIndicators,
+                            indicators,
+                            {
+                                expandIndicators: true,
+                                depth: config.depth + 1,
+                                maxDepth: config.maxDepth,
+                                visitedIndicators: nextVisited,
+                                legendById: config.legendById,
+                            }
+                        ) +
+                        "]</span>"
+                    );
                 });
         };
 
-        function getDataElementHtml(dataElementObject) {
-            return (
-                "<span class='tooltipcontainer'>" +
-                dataElementObject.object_name +
-                "<span class='tooltiptext'>" +
-                dataElementObject.object_description +
-                "</span>" +
-                "</span>"
-            );
-        }
-
-        function getProgramIndicatorHtml(programIndicatorObject) {
-            return (
-                "<span class='tooltipcontainer'>" +
-                programIndicatorObject.object_name +
-                "<span class='tooltiptext'>" +
-                programIndicatorObject.object_description +
-                "</span>" +
-                "</span>"
-            );
+        function getTableObjectHtml(object) {
+            const description = object.object_description
+                ? "<span class='tooltiptext'>" + object.object_description + "</span>"
+                : "";
+            return "<span class='tooltipcontainer'>" + object.object_name + description + "</span>";
         }
 
         function load_table_info() {
@@ -590,6 +726,7 @@ searchModule.controller("searchController", [
             var temp = {};
             var categoryOptionCombosTemp = {};
             var programIndicatorsTemp = {};
+            var indicatorsTemp = {};
 
             startLoadingState(false, { message: "load_dataElements" });
             searchAllFactory.qry_dataElementsAll
@@ -696,7 +833,7 @@ searchModule.controller("searchController", [
                             programIndicatorsTemp[obj.id] = {
                                 id: obj.id,
                                 object_name: obj.displayName,
-                                object_description: obj.description,
+                                object_description: obj.displayDescription,
                             };
                         });
                     });
@@ -704,78 +841,96 @@ searchModule.controller("searchController", [
                 .then(function () {
                     startLoadingState(false, { message: "load_indicators" });
                     return searchAllFactory.get_indicatorsAll.query().$promise.then(function (response) {
-                        response.indicators
-                            .filter(obj => filterObjects(obj, "indicator"))
-                            .forEach(function (obj) {
-                                //objectGroup + service
-                                var temp_arr = {
-                                    objectGroup_id: [],
-                                    objectGroup_code: [],
-                                    objectGroup_name: [],
-                                    service_id: [],
-                                    service_code: [],
-                                    service_name: [],
-                                };
+                        var filteredIndicators = response.indicators.filter(obj => filterObjects(obj, "indicator"));
 
-                                obj.indicatorGroups.forEach(function (grp) {
-                                    if (
-                                        $scope.servicesList &&
-                                        grp.attributeValues.length > 0 &&
-                                        grp.attributeValues[0].value
-                                    ) {
-                                        var servicesCode = grp.attributeValues[0].value.split("_");
-                                        servicesCode.shift();
-                                        servicesCode.forEach(function (code) {
-                                            if ($scope.servicesList[code]) {
-                                                temp_arr.service_id.push($scope.servicesList[code].service_id);
-                                                temp_arr.service_code.push($scope.servicesList[code].service_code);
-                                                temp_arr.service_name.push($scope.servicesList[code].service_name);
-                                            } else {
-                                                console.debug(
-                                                    "searchModule: Cannot find any service with code: " + code
-                                                );
-                                            }
-                                        });
-                                    }
-                                    temp_arr.objectGroup_id.push(grp.id);
-                                    temp_arr.objectGroup_code.push(grp.code);
-                                    temp_arr.objectGroup_name.push(grp.displayName);
-                                });
+                        filteredIndicators.forEach(function (obj) {
+                            indicatorsTemp[obj.id] = {
+                                id: obj.id,
+                                object_name: obj.displayName,
+                                object_description: obj.displayDescription,
+                                object_numerator: obj.numerator,
+                                object_denominator: obj.denominator,
+                            };
+                        });
 
-                                temp[obj.id] = {
-                                    object_type: "indicator",
-                                    object_id: obj.id,
-                                    object_code: obj.code,
-                                    object_name: obj.displayName,
-                                    object_shortName: obj.displayShortName,
-                                    object_form: obj.displayFormName,
-                                    object_numerator: obj.numerator,
-                                    object_denominator: obj.denominator,
-                                    object_den_formula: $scope.parseFormula(
-                                        obj.denominator,
-                                        temp,
-                                        categoryOptionCombosTemp,
-                                        programIndicatorsTemp
-                                    ),
-                                    object_num_formula: $scope.parseFormula(
-                                        obj.numerator,
-                                        temp,
-                                        categoryOptionCombosTemp,
-                                        programIndicatorsTemp
-                                    ),
-                                    object_description: obj.displayDescription,
-                                    objectGroup_id: temp_arr.objectGroup_id.join(", "),
-                                    objectGroup_code: temp_arr.objectGroup_code.join(", "),
-                                    objectGroup_name: temp_arr.objectGroup_name.join(", "),
-                                    service_id: _.uniq(temp_arr.service_id).join(", "),
-                                    service_code: _.uniq(temp_arr.service_code).join(", "),
-                                    service_name: _.uniq(temp_arr.service_name).join(", "),
-                                };
+                        filteredIndicators.forEach(function (obj) {
+                            //objectGroup + service
+                            var temp_arr = {
+                                objectGroup_id: [],
+                                objectGroup_code: [],
+                                objectGroup_name: [],
+                                service_id: [],
+                                service_code: [],
+                                service_name: [],
+                            };
+
+                            obj.indicatorGroups.forEach(function (grp) {
+                                if (
+                                    $scope.servicesList &&
+                                    grp.attributeValues.length > 0 &&
+                                    grp.attributeValues[0].value
+                                ) {
+                                    var servicesCode = grp.attributeValues[0].value.split("_");
+                                    servicesCode.shift();
+                                    servicesCode.forEach(function (code) {
+                                        if ($scope.servicesList[code]) {
+                                            temp_arr.service_id.push($scope.servicesList[code].service_id);
+                                            temp_arr.service_code.push($scope.servicesList[code].service_code);
+                                            temp_arr.service_name.push($scope.servicesList[code].service_name);
+                                        } else {
+                                            console.debug("searchModule: Cannot find any service with code: " + code);
+                                        }
+                                    });
+                                }
+                                temp_arr.objectGroup_id.push(grp.id);
+                                temp_arr.objectGroup_code.push(grp.code);
+                                temp_arr.objectGroup_name.push(grp.displayName);
                             });
+
+                            temp[obj.id] = {
+                                object_type: "indicator",
+                                object_id: obj.id,
+                                object_code: obj.code,
+                                object_name: obj.displayName,
+                                object_shortName: obj.displayShortName,
+                                object_form: obj.displayFormName,
+                                object_numerator: obj.numerator,
+                                object_denominator: obj.denominator,
+                                object_den_formula: $scope.parseFormula(
+                                    obj.denominator,
+                                    temp,
+                                    categoryOptionCombosTemp,
+                                    programIndicatorsTemp,
+                                    indicatorsTemp,
+                                    { expandIndicators: false }
+                                ),
+                                object_num_formula: $scope.parseFormula(
+                                    obj.numerator,
+                                    temp,
+                                    categoryOptionCombosTemp,
+                                    programIndicatorsTemp,
+                                    indicatorsTemp,
+                                    { expandIndicators: false }
+                                ),
+                                object_description: obj.displayDescription,
+                                objectGroup_id: temp_arr.objectGroup_id.join(", "),
+                                objectGroup_code: temp_arr.objectGroup_code.join(", "),
+                                objectGroup_name: temp_arr.objectGroup_name.join(", "),
+                                service_id: _.uniq(temp_arr.service_id).join(", "),
+                                service_code: _.uniq(temp_arr.service_code).join(", "),
+                                service_name: _.uniq(temp_arr.service_name).join(", "),
+                            };
+                        });
 
                         $scope.loaded.get_indicators = true;
                         $scope.loaded.get_indicatorsDescriptions = true;
                         $scope.loaded.get_indicatorGroups = true;
+                        $scope.formulaSources = {
+                            dataElements: temp,
+                            categoryOptionCombos: categoryOptionCombosTemp,
+                            programIndicators: programIndicatorsTemp,
+                            indicators: indicatorsTemp,
+                        };
                         $scope.allObjects = Object.keys(temp).map(function (key) {
                             return temp[key];
                         });
