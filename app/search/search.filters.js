@@ -53,7 +53,7 @@ searchModule.filter("filterOR", function () {
             var keys = Object.keys(phrases);
             var cols = Object.keys(row);
             cols = cols.filter(function (item) {
-                return item !== "$$hashKey";
+                return item !== "$$hashKey" && !item.startsWith("_");
             });
             var temp_bool = {};
 

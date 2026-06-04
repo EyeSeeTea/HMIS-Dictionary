@@ -49,7 +49,16 @@ var qry_organisationUnitGroupSets =
     dhisUrl + "organisationUnitGroupSets/:ougsUID?fields=organisationUnitGroups[id,code,displayName]&paging=false";
 
 //programIndicators
-var qry_programIndicatorsAll = dhisUrl + "programIndicators.json?fields=id,displayName,displayDescription&paging=false";
+var qry_programIndicatorsAll =
+    dhisUrl +
+    "programIndicators.json?fields=id,code,displayName,displayFormName,displayDescription,expression,filter,programIndicatorGroups[id,code,name]&paging=false";
+
+var expressionHeaders = {
+    "Content-Type": "text/plain",
+};
+
+var qry_programIndicatorExpressionDescription = dhisUrl + "programIndicators/expression/description";
+var qry_programIndicatorFilterDescription = dhisUrl + "programIndicators/filter/description";
 
 searchModule.factory("searchAllFactory", [
     "$resource",
@@ -94,6 +103,28 @@ searchModule.factory("searchAllFactory", [
                 qry_programIndicatorsAll,
                 {},
                 { query: { method: "GET", isArray: false } }
+            ),
+            get_programIndicatorExpressionDescription: $resource(
+                qry_programIndicatorExpressionDescription,
+                {},
+                {
+                    save: {
+                        method: "POST",
+                        isArray: false,
+                        headers: expressionHeaders,
+                    },
+                }
+            ),
+            get_programIndicatorFilterDescription: $resource(
+                qry_programIndicatorFilterDescription,
+                {},
+                {
+                    save: {
+                        method: "POST",
+                        isArray: false,
+                        headers: expressionHeaders,
+                    },
+                }
             ),
         };
     },
