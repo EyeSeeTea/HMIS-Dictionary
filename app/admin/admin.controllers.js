@@ -15,6 +15,8 @@ adminModule.controller("adminMainController", [
     "adminIGFactory",
     "adminNIU_IGFactory",
     "adminNIU_PIGFactory",
+    "adminLEG_DEGFactory",
+    "adminLEG_OPGFactory",
     "adminDossierConfigCompleteFactory",
     function (
         $scope,
@@ -28,6 +30,8 @@ adminModule.controller("adminMainController", [
         adminIGFactory,
         adminNIU_IGFactory,
         adminNIU_PIGFactory,
+        adminLEG_DEGFactory,
+        adminLEG_OPGFactory,
         adminDossierConfigCompleteFactory
     ) {
         $("#admin").tab("show");
@@ -325,6 +329,34 @@ adminModule.controller("adminMainController", [
                 });
         };
 
+        if ($scope.legacy_dataelementgroups) {
+            $scope.selectedLEG_DEG = JSON.stringify($scope.legacy_dataelementgroups);
+        }
+
+        $scope.submitLEG_DEG = function () {
+            adminLEG_DEGFactory.get_DEG_set
+                .query($scope.selectedLEG_DEG)
+                .$promise.then(
+                    function (response1) {
+                        return adminLEG_DEGFactory.upd_DEG.query($scope.selectedLEG_DEG, function (response2) {
+                            if (response2) {
+                                $scope.legacy_dataelementgroups = $scope.selectedLEG_DEG;
+                            }
+                        });
+                    },
+                    function () {
+                        return adminLEG_DEGFactory.set_DEG.query($scope.selectedLEG_DEG, function (response) {
+                            if (response) {
+                                $scope.legacy_dataelementgroups = $scope.selectedLEG_DEG;
+                            }
+                        });
+                    }
+                )
+                .then(function () {
+                    window.location.reload(true);
+                });
+        };
+
         if ($scope.notInUse_programIndicatorGroups) {
             $scope.notInUsePIG = JSON.stringify($scope.notInUse_programIndicatorGroups);
         }
@@ -344,6 +376,35 @@ adminModule.controller("adminMainController", [
                         return adminNIU_PIGFactory.set_NIU_PIG.query($scope.notInUsePIG, function (response) {
                             if (response) {
                                 $scope.notInUse_programIndicatorGroups = $scope.notInUsePIG;
+                            }
+                        });
+                    }
+                )
+                .then(function () {
+                    window.location.reload(true);
+                });
+        };
+
+
+        if ($scope.legacy_optiongroups) {
+            $scope.selectedLEG_OPG = JSON.stringify($scope.legacy_optiongroups);
+        }
+
+        $scope.submitLEG_OPG = function () {
+            adminLEG_OPGFactory.get_OPG_set
+                .query($scope.selectedLEG_OPG)
+                .$promise.then(
+                    function (response1) {
+                        return adminLEG_OPGFactory.upd_OPG.query($scope.selectedLEG_OPG, function (response2) {
+                            if (response2) {
+                                $scope.legacy_optiongroups = $scope.selectedLEG_OPG;
+                            }
+                        });
+                    },
+                    function () {
+                        return adminLEG_OPGFactory.set_OPG.query($scope.selectedLEG_OPG, function (response) {
+                            if (response) {
+                                $scope.legacy_optiongroups = $scope.selectedLEG_OPG;
                             }
                         });
                     }

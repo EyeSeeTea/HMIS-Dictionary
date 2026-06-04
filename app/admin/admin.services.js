@@ -85,6 +85,20 @@ adminModule.factory("adminNIU_IGFactory", [
     },
 ]);
 
+
+var qry_set_LEG_DEG = dhisUrl + "dataStore/HMIS_Dictionary/legacy_dataElementGroups";
+
+adminModule.factory("adminLEG_DEGFactory", [
+    "$resource",
+    function ($resource) {
+        return {
+            get_DEG_set: $resource(qry_set_LEG_DEG, {}, { query: { method: "GET", isArray: true } }),
+            set_DEG: $resource(qry_set_LEG_DEG, {}, { query: { method: "POST", isArray: false } }),
+            upd_DEG: $resource(qry_set_LEG_DEG, {}, { query: { method: "PUT", isArray: false } }),
+        };
+    },
+]);
+
 var qry_set_NIU_PIG = dhisUrl + "dataStore/HMIS_Dictionary/notInUse_programIndicatorGroups";
 
 adminModule.factory("adminNIU_PIGFactory", [
@@ -94,6 +108,19 @@ adminModule.factory("adminNIU_PIGFactory", [
             get_NIU_PIG_set: $resource(qry_set_NIU_PIG, {}, { query: { method: "GET", isArray: true } }),
             set_NIU_PIG: $resource(qry_set_NIU_PIG, {}, { query: { method: "POST", isArray: false } }),
             upd_NIU_PIG: $resource(qry_set_NIU_PIG, {}, { query: { method: "PUT", isArray: false } }),
+        };
+    },
+]);
+
+var qry_set_LEG_OPG = dhisUrl + "dataStore/HMIS_Dictionary/legacy_optionGroups";
+
+adminModule.factory("adminLEG_OPGFactory", [
+    "$resource",
+    function ($resource) {
+        return {
+            get_OPG_set: $resource(qry_set_LEG_OPG, {}, { query: { method: "GET", isArray: true } }),
+            set_OPG: $resource(qry_set_LEG_OPG, {}, { query: { method: "POST", isArray: false } }),
+            upd_OPG: $resource(qry_set_LEG_OPG, {}, { query: { method: "PUT", isArray: false } }),
         };
     },
 ]);

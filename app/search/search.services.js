@@ -6,7 +6,7 @@
 //dataElements - 255 KB as of 20/11/2106
 var qry_dataElements =
     dhisUrl +
-    "dataElements.json?fields=id,code,attributeValues[value,attribute[id]],displayName,displayFormName,dataSetElements[dataSet[id]]&paging=false&filter=domainType\\:eq\\:AGGREGATE";
+    "dataElements.json?fields=id,code,attributeValues[value,attribute[id]],displayName,displayShortName,displayFormName,dataSetElements[dataSet[id]]&paging=false&filter=domainType\\:eq\\:AGGREGATE";
 
 //descriptions - 286 KB as of 20/11/2106
 var qry_dataElementsDescriptions =
@@ -21,11 +21,12 @@ var qry_dataElementsGroups =
 var qry_dataElementsAll =
     dhisUrl +
     "dataElements.json?" +
-    "fields=id,code,attributeValues[value, attribute[id]],displayName,displayDescription,displayFormName,dataSetElements[dataSet[displayName,id,code,attributeValues[*]]],dataElementGroups[id]" +
+    "fields=id,code,attributeValues[value, attribute[id]],displayName,displayShortName,displayDescription,displayFormName,dataSetElements[dataSet[displayName,id,code,attributeValues[*]]],dataElementGroups[id]" +
     "&paging=false&filter=domainType\\:eq\\:AGGREGATE";
 
 //indicators - 55 KB as of 20/11/2106
-var qry_indicators = dhisUrl + "indicators.json?fields=id,code,displayName,indicatorGroups&paging=false";
+var qry_indicators =
+    dhisUrl + "indicators.json?fields=id,code,displayName,displayShortName,indicatorGroups&paging=false";
 
 //indicators - 254 KB as of 20/11/2106
 var qry_indicatorsDescriptions =
@@ -38,7 +39,7 @@ var qry_indicatorGroups =
 var qry_indicatorsAll =
     dhisUrl +
     "indicators.json?" +
-    "fields=id,code,displayName,displayDescription,numerator,denominator,indicatorGroups[id,code,displayName,attributeValues[value]]" +
+    "fields=id,code,displayName,displayShortName,displayDescription,numerator,denominator,indicatorGroups[id,code,displayName,attributeValues[value]]" +
     "&paging=false";
 
 var qry_categoryComobosAll = dhisUrl + "categoryOptionCombos.json?" + "fields=id,displayName" + "&paging=false";
