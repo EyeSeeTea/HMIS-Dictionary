@@ -485,7 +485,7 @@ searchModule.controller("searchController", [
                                 },
                                 payload,
                                 function (response) {
-                                    updateSharing.update({ uid: tbl.visualizations[0].id }, sharing, function (res) { });
+                                    updateSharing.update({ uid: tbl.visualizations[0].id }, sharing, function (res) {});
 
                                     uid = tbl.visualizations[0].id;
                                     $window.open(dhisroot + "dhis-web-data-visualizer/index.html#/" + uid, "_blank");
@@ -498,7 +498,7 @@ searchModule.controller("searchController", [
                         console.debug("Creating Table");
                         searchTableFactory.set_table.query(payload, function (response) {
                             uid = response.response.uid;
-                            updateSharing.update({ uid: uid }, sharing, function (res) { });
+                            updateSharing.update({ uid: uid }, sharing, function (res) {});
                             $window.open(dhisroot + "dhis-web-data-visualizer/index.html#/" + uid, "_blank");
                         });
                     }
@@ -1105,18 +1105,6 @@ searchModule.controller("searchController", [
                     $scope.allObjectsLength = Object.keys($scope.allObjects).length;
 
                     console.debug("searchModule: Program Indicators loaded");
-                    console.debug(
-                        `${Object.keys($scope.loaded).map(function (key) {
-                            return $scope.loaded[key];
-                        })}`
-                    );
-                    console.debug(
-                        `${Object.keys($scope.loaded)
-                            .map(function (key) {
-                                return $scope.loaded[key];
-                            })
-                            .indexOf(false)}`
-                    );
 
                     return "done";
                 })

@@ -85,7 +85,6 @@ adminModule.factory("adminNIU_IGFactory", [
     },
 ]);
 
-
 var qry_set_LEG_DEG = dhisUrl + "dataStore/HMIS_Dictionary/legacy_dataElementGroups";
 
 adminModule.factory("adminLEG_DEGFactory", [

@@ -19,7 +19,7 @@ h6 {
     font-family: "Rajdhani", sans-serif;
 }
 
-.nav>li>a {
+.nav > li > a {
     color: #ddd;
 }
 
@@ -51,20 +51,20 @@ a {
 .loading {
     display: none;
     position: fixed;
-        top: 0;
-        left: 33%;
-        right: 33%;
-        height: 44px;
-        background-color: #b40303;
-        z-index: 16;
-        pointer-events: none;
-    }
-    
-    .loading .spinner-container {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 15px;
+    top: 0;
+    left: 33%;
+    right: 33%;
+    height: 44px;
+    background-color: #b40303;
+    z-index: 16;
+    pointer-events: none;
+}
+
+.loading .spinner-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
     height: 100%;
 }
 
@@ -74,21 +74,21 @@ a {
     flex-shrink: 0;
     background: url("../assets/img/spin.gif") no-repeat center center;
     background-size: contain;
-        filter: brightness(0) invert(1);
-    }
-    
-    .loading .loading-message {
-        font-size: 14px;
-        font-weight: bold;
-        color: #fff;
-        margin: 0;
-        white-space: nowrap;
-    }
-    
-    #view-container {
-        margin-top: 44px;
-        margin-left: 66px;
-        margin-right: 44px;
+    filter: brightness(0) invert(1);
+}
+
+.loading .loading-message {
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    margin: 0;
+    white-space: nowrap;
+}
+
+#view-container {
+    margin-top: 44px;
+    margin-left: 66px;
+    margin-right: 44px;
 }
 
 #view-container {
@@ -175,12 +175,12 @@ html:not(.in-global-shell) #print-btn-fixed {
         page-break-before: always;
     }
 
-    .service>.dataset:first-child,
+    .service > .dataset:first-child,
     .indicatorGroup:first-child {
         page-break-before: avoid;
     }
 
-    .service>.dataset,
+    .service > .dataset,
     .indicatorGroup {
         page-break-before: always;
     }
@@ -314,7 +314,6 @@ th {
 .body2 {
     font-size: 1.1em;
 }
-
 
 #menu-container.sideways.tabs-left {
     padding-inline-start: 0;
