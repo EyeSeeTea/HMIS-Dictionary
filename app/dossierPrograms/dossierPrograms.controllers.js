@@ -16,6 +16,7 @@ dossierProgramsModule.controller("dossierProgramsMainController", [
     "dossiersProgramLoadingService",
     "advancedUsersFactory",
     "layoutSettingsFactory",
+    "dossiersProgramLegacyOptionGroupsFactory",
     function (
         $scope,
         $anchorScroll,
@@ -24,7 +25,8 @@ dossierProgramsModule.controller("dossierProgramsMainController", [
         dossiersProgramsLinkTestFactory,
         dossiersProgramLoadingService,
         advancedUsersFactory,
-        layoutSettingsFactory
+        layoutSettingsFactory,
+        dossiersProgramLegacyOptionGroupsFactory
     ) {
         $("#dossiersPrograms").tab("show");
 
@@ -162,6 +164,15 @@ dossierProgramsModule.controller("dossierProgramsMainController", [
             });
         });
 
+        const showLegacyKey = "programs_show_legacy";
+        $scope.showLegacy = sessionStorage.getItem(showLegacyKey) === "true";
+        $scope.onToggleLegacyChanged = function () {
+            sessionStorage.setItem(showLegacyKey, String(!!$scope.showLegacy));
+            if ($scope.selectedProgram && $scope.selectedProgram.displayName) {
+                window.location.reload();
+            }
+        };
+
         /*
          *  @alias appModule.controller~addtoTOC
          *  @type {Function}
@@ -217,6 +228,17 @@ dossierProgramsModule.controller("dossierProgramsMainController", [
                 endLoadingState(false);
             });
         }
+
+        $scope.legacyOptionGroups = [];
+        dossiersProgramLegacyOptionGroupsFactory.query(
+            { optionGroupIDs: ($scope.legacy_optiongroups || []).join(",") },
+            function (data) {
+                $scope.legacyOptionGroups = data.optionGroups || [];
+                $scope.legacyOptionIds = new Set(
+                    $scope.legacyOptionGroups.flatMap(group => group.options || []).map(option => option.id)
+                );
+            }
+        );
 
         //Clear the TOC
         $scope.$watch("selectedProgram", function () {
@@ -293,8 +315,38 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
             });
         }
 
+        /*
+         *  @name filterDELegacyOptions
+         *  @description Filter out legacy options from data elements option sets if "Show Legacy" is not checked
+         *  @scope dossiersProgramSectionController
+         */
+        function filterDELegacyOptions(dataElement) {
+            if ($scope.showLegacy) return dataElement;
+            if (!dataElement?.optionSet?.options) return dataElement;
+
+            return {
+                ...dataElement,
+                optionSet: {
+                    ...dataElement.optionSet,
+                    options: dataElement.optionSet.options.filter(option => {
+                        const isLegacy = $scope.legacyOptionIds?.has(option.id);
+                        return !isLegacy;
+                    }),
+                },
+            };
+        }
+
+        /*
+         *  @name filterDataElement
+         *  @description Filter out data elements based on blacklist and legacy settings
+         *  @scope dossiersProgramSectionController
+         */
         function filterDataElement(dataElement) {
-            return !dataElement.dataElementGroups.some(deg => $scope.blacklist_dataelementgroups.includes(deg.id));
+            return !dataElement.dataElementGroups.some(
+                deg =>
+                    $scope.blacklist_dataelementgroups.includes(deg.id) ||
+                    (!$scope.showLegacy && $scope.legacy_dataelementgroups.includes(deg.id))
+            );
         }
 
         /*
@@ -315,7 +367,8 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
                                 compulsory: stageDataElement.compulsory,
                                 visibility: makeDEVisibility(stageDataElement.dataElement.id, hiddenDEArray, stage.id),
                             };
-                        }),
+                        })
+                        .map(filterDELegacyOptions),
                 },
             ];
 
@@ -351,7 +404,7 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
                 ...stage,
                 programStageSections: stage.programStageSections.map(section => ({
                     ...section,
-                    dataElements: section.dataElements.filter(filterDataElement),
+                    dataElements: section.dataElements.filter(filterDataElement).map(filterDELegacyOptions),
                 })),
             };
         }
@@ -1046,6 +1099,15 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
                     },
                     function (data) {
                         if (!isProgramScopeActive($scope, programId)) return;
+                        const isAdmin = !!$scope.is_admin;
+                        let programIndicators = isAdmin
+                            ? data.programIndicators
+                            : data.programIndicators.filter(
+                                  pi =>
+                                      !pi.programIndicatorGroups.some(pig =>
+                                          $scope.notInUse_programIndicatorGroups.includes(pig.id)
+                                      )
+                              );
                         dossiersProgramIndicatorStagesFactory.get(
                             {
                                 programId: programId,
@@ -1053,8 +1115,8 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
                             function (psData) {
                                 if (!isProgramScopeActive($scope, programId)) return;
                                 $scope.programStages = psData.programs[0].programStages.map(ps => ps);
-                                if (data.programIndicators.length > 0) {
-                                    $scope.programIndicators = data.programIndicators.map(pi => {
+                                if (programIndicators.length > 0) {
+                                    $scope.programIndicators = programIndicators.map(pi => {
                                         pi.analyticsPeriodBoundaries = pi.analyticsPeriodBoundaries.map(bound => {
                                             const btTextArray = bound.boundaryTarget.split(":");
                                             const btId = btTextArray[1];
@@ -1337,11 +1399,14 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
                     //Query indicator information
                     dossiersProgramGlobalIndicatorsFactory.get(function (data) {
                         if (!isProgramScopeActive($scope, programId)) return;
+                        const isAdmin = !!$scope.is_admin;
                         $scope.allIndicators = data.indicators
                             .filter(
                                 indicator =>
-                                    !indicator.indicatorGroups.some(ig =>
-                                        $scope.blacklist_indicatorgroups.includes(ig.id)
+                                    !indicator.indicatorGroups.some(
+                                        ig =>
+                                            $scope.blacklist_indicatorgroups.includes(ig.id) ||
+                                            (!isAdmin && $scope.notInUse_indicatorGroups.includes(ig.id))
                                     )
                             )
                             .forEach(function (indicator) {
@@ -1434,6 +1499,27 @@ dossierProgramsModule.controller("dossiersProgramTEAController", [
         }
 
         /*
+         *  @name filterTEALegacyOptions
+         *  @description Filter out the legacy options from the TEA option sets if the showLegacy flag is false
+         *  @scope dossiersProgramTEAController
+         */
+        function filterTEALegacyOptions(trackedEntityAttribute) {
+            if ($scope.showLegacy) return trackedEntityAttribute;
+            if (!trackedEntityAttribute?.optionSet?.options) return trackedEntityAttribute;
+
+            return {
+                ...trackedEntityAttribute,
+                optionSet: {
+                    ...trackedEntityAttribute.optionSet,
+                    options: trackedEntityAttribute.optionSet.options.filter(option => {
+                        const isLegacy = $scope.legacyOptionIds?.has(option.id);
+                        return !isLegacy;
+                    }),
+                },
+            };
+        }
+
+        /*
         @name none
         @description Gets the tracked entity attributes information, translates it and shows it
         @dependencies dossiersProgramTEAsFactory, dossiersProgramTEAsRulesFactory
@@ -1462,14 +1548,16 @@ dossierProgramsModule.controller("dossiersProgramTEAController", [
                             },
                             function (rulesData) {
                                 if (!isProgramScopeActive($scope, programId)) return;
-                                $scope.trackedEntityAttributes = data.programTrackedEntityAttributes.map(ptea => ({
-                                    ...ptea.trackedEntityAttribute,
-                                    mandatory: ptea.mandatory,
-                                    visibility: makeTEAVisibility(
-                                        ptea.trackedEntityAttribute.id,
-                                        rulesData.programRules
-                                    ),
-                                }));
+                                $scope.trackedEntityAttributes = data.programTrackedEntityAttributes
+                                    .map(ptea => ({
+                                        ...ptea.trackedEntityAttribute,
+                                        mandatory: ptea.mandatory,
+                                        visibility: makeTEAVisibility(
+                                            ptea.trackedEntityAttribute.id,
+                                            rulesData.programRules
+                                        ),
+                                    }))
+                                    .map(filterTEALegacyOptions);
 
                                 if ($scope.trackedEntityAttributes.length > 0) {
                                     addtoTOC(
@@ -1881,7 +1969,10 @@ dossierProgramsModule.controller("dossiersProgramExport", [
                                 translate("dos_CalculationMode"),
                                 makeCalcMode(de?.calcMode),
                             ],
-                            accesses.programStages_optionSet && [translate("dos_OptionSetName"), de?.optionSet?.name],
+                            accesses.programStages_optionSet && [
+                                translate("dos_OptionSetName"),
+                                de?.optionSet?.displayName,
+                            ],
                             accesses.programStages_optionSet && [
                                 translate("dos_OptionSetOptions"),
                                 joinAndTrim(de?.optionSet?.options?.map(opt => opt?.displayName)),
@@ -1906,11 +1997,14 @@ dossierProgramsModule.controller("dossiersProgramExport", [
         function makeTEASheet(workbook, trackedEntityAttributes, accesses) {
             const data = trackedEntityAttributes.map(item => {
                 const row = [
-                    accesses.trackedEntityAttributes_name && [translate("dos_NameElement"), item?.name],
-                    accesses.trackedEntityAttributes_formName && [translate("dos_FormNameElement"), item?.formName],
+                    accesses.trackedEntityAttributes_name && [translate("dos_NameElement"), item?.displayName],
+                    accesses.trackedEntityAttributes_formName && [
+                        translate("dos_FormNameElement"),
+                        item?.displayFormName,
+                    ],
                     accesses.trackedEntityAttributes_description && [
                         translate("dos_DescriptionElement"),
-                        item?.description,
+                        item?.displayDescription,
                     ],
                     accesses.trackedEntityAttributes_aggregationType && [
                         translate("dos_AggregationType"),
@@ -1919,11 +2013,11 @@ dossierProgramsModule.controller("dossiersProgramExport", [
                     accesses.trackedEntityAttributes_valueType && [translate("dos_ValueType"), item?.valueType],
                     accesses.trackedEntityAttributes_optionSet && [
                         translate("dos_OptionSetName"),
-                        item?.optionSet?.name,
+                        item?.optionSet?.displayName,
                     ],
                     accesses.trackedEntityAttributes_optionSet && [
                         translate("dos_OptionSetOptions"),
-                        joinAndTrim(item?.optionSet?.options.map(option => option?.name)),
+                        joinAndTrim(item?.optionSet?.options.map(option => option?.displayName)),
                     ],
                 ];
 

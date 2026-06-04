@@ -161,6 +161,109 @@ appModule.controller("appSharedController", [
                 $scope.blacklist_indicatorgroups = [];
             });
 
+<<<<<<< HEAD
+        /* For IG not in use */
+        jQuery
+            .ajax({
+                url: dhisUrl + "dataStore/HMIS_Dictionary/notInUse_indicatorGroups",
+=======
+        /* For legacy DEG list */
+        jQuery
+            .ajax({
+                url: dhisUrl + "dataStore/HMIS_Dictionary/legacy_dataElementGroups",
+>>>>>>> development
+                contentType: "json",
+                method: "GET",
+                dataType: "text",
+                async: false,
+            })
+<<<<<<< HEAD
+            .success(function (NIU_IGlist) {
+                NIU_IGlist = JSON.parse(NIU_IGlist);
+                $scope.notInUse_indicatorGroups = NIU_IGlist;
+                if ($scope.notInUse_indicatorGroups) {
+                    console.log("appModule: List of not in use indicatorGroups: " + NIU_IGlist);
+                } else {
+                    console.log(
+                        "appModule: List of not in use indicatorGroups has not been defined yet, go to the admin panel!"
+                    );
+                    $scope.notInUse_indicatorGroups = [];
+                }
+            })
+            .fail(function () {
+                console.log("appModule: List of not in use indicatorGroups has not been identified.");
+                $scope.notInUse_indicatorGroups = [];
+            });
+
+        /* For PIG not in use */
+        jQuery
+            .ajax({
+                url: dhisUrl + "dataStore/HMIS_Dictionary/notInUse_programIndicatorGroups",
+=======
+            .success(function (LEG_DEGlist) {
+                LEG_DEGlist = JSON.parse(LEG_DEGlist);
+                $scope.legacy_dataelementgroups = LEG_DEGlist;
+                if ($scope.legacy_dataelementgroups) {
+                    console.log("appModule: List of legacy dataElementGroups for the 'Programs' panel: " + LEG_DEGlist);
+                } else {
+                    console.log(
+                        "appModule: List of legacy dataElementGroups for the 'Programs' panel has not been defined yet, go to the admin panel!"
+                    );
+                    $scope.legacy_dataelementgroups = [];
+                }
+            })
+            .fail(function () {
+                console.log(
+                    "appModule: List of legacy dataElementGroups for the 'Programs' panel has not been identified."
+                );
+                $scope.legacy_dataelementgroups = [];
+            });
+
+        /* For legacy OPG list */
+        jQuery
+            .ajax({
+                url: dhisUrl + "dataStore/HMIS_Dictionary/legacy_optionGroups",
+>>>>>>> development
+                contentType: "json",
+                method: "GET",
+                dataType: "text",
+                async: false,
+            })
+<<<<<<< HEAD
+            .success(function (NIU_PIGlist) {
+                NIU_PIGlist = JSON.parse(NIU_PIGlist);
+                $scope.notInUse_programIndicatorGroups = NIU_PIGlist;
+                if ($scope.notInUse_programIndicatorGroups) {
+                    console.log("appModule: List of not in use programIndicatorGroups: " + NIU_PIGlist);
+                } else {
+                    console.log(
+                        "appModule: List of not in use programIndicatorGroups has not been defined yet, go to the admin panel!"
+                    );
+                    $scope.notInUse_programIndicatorGroups = [];
+                }
+            })
+            .fail(function () {
+                console.log("appModule: List of not in use programIndicatorGroups has not been identified.");
+                $scope.notInUse_programIndicatorGroups = [];
+=======
+            .success(function (LEG_OPGlist) {
+                LEG_OPGlist = JSON.parse(LEG_OPGlist);
+                $scope.legacy_optiongroups = LEG_OPGlist;
+                if ($scope.legacy_optiongroups) {
+                    console.log("appModule: List of legacy optionGroups for the 'Programs' panel: " + LEG_OPGlist);
+                } else {
+                    console.log(
+                        "appModule: List of legacy optionGroups for the 'Programs' panel has not been defined yet, go to the admin panel!"
+                    );
+                    $scope.legacy_optiongroups = [];
+                }
+            })
+            .fail(function () {
+                console.log("appModule: List of legacy optionGroups for the 'Programs' panel has not been identified.");
+                $scope.legacy_optiongroups = [];
+>>>>>>> development
+            });
+
         /* For admin tab */
         jQuery
             .ajax({

@@ -42,10 +42,11 @@ searchModule.controller("searchController", [
                     columns: {
                         type: { index: 0, translationKey: "object_type", access: 2 },
                         name: { index: 1, translationKey: "object_name", access: 2 },
-                        form: { index: 2, translationKey: "object_form", access: 2 },
-                        id: { index: 3, translationKey: "object_id", access: 0 },
-                        code: { index: 4, translationKey: "object_code", access: 0 },
-                        icd10: { index: 5, translationKey: "object_ICD10", access: 0 },
+                        shortName: { index: 2, translationKey: "object_shortName", access: 2 },
+                        form: { index: 3, translationKey: "object_form", access: 2 },
+                        id: { index: 4, translationKey: "object_id", access: 0 },
+                        code: { index: 5, translationKey: "object_code", access: 0 },
+                        icd10: { index: 6, translationKey: "object_ICD10", access: 0 },
                     },
                 },
                 objectsDescriptions: {
@@ -86,7 +87,9 @@ searchModule.controller("searchController", [
         layoutSettingsFactory.get
             .query({ view: namespace })
             .$promise.then(data => {
-                $scope.layoutSettings = data.toJSON();
+                /* Deep-merge over defaults so columns added in newer builds become visible
+                   even when the persisted layoutSettings predate them. */
+                $scope.layoutSettings = _.merge({}, $scope.layoutSettings, data.toJSON());
             })
             .catch(error => {
                 /* If no sharing settings are found, create them */
@@ -165,10 +168,15 @@ searchModule.controller("searchController", [
         console.debug("searchModule: Blacklisted dataSets: " + $scope.blacklist_datasets);
         console.debug("searchModule: Blacklisted indicatorGroups: " + $scope.blacklist_indicatorgroups);
         var filterObjects = function (obj, type) {
+            const isAdmin = !!$scope.is_admin;
             if (type == "dataElement") {
                 return !obj.dataElementGroups.some(deg => $scope.blacklist_dataelementgroups.includes(deg.id));
             } else if (type == "indicator") {
-                return !obj.indicatorGroups.some(ig => $scope.blacklist_indicatorgroups.includes(ig.id));
+                return !obj.indicatorGroups.some(
+                    ig =>
+                        $scope.blacklist_indicatorgroups.includes(ig.id) ||
+                        (!isAdmin && $scope.notInUse_indicatorGroups.includes(ig.id))
+                );
             }
         };
 
@@ -186,6 +194,7 @@ searchModule.controller("searchController", [
                 item.objectGroup_name = _.deburr(item.objectGroup_name);
                 item.object_form = _.deburr(item.object_form);
                 item.object_name = _.deburr(item.object_name);
+                item.object_shortName = _.deburr(item.object_shortName);
 
                 return item;
             });
@@ -199,6 +208,7 @@ searchModule.controller("searchController", [
             $scope.cols_object = {
                 object_type: $scope.accesses?.objectsBasics_type ?? true,
                 object_name: $scope.accesses?.objectsBasics_name ?? true,
+                object_shortName: $scope.accesses?.objectsBasics_shortName ?? true,
                 object_form: $scope.accesses?.objectsBasics_form ?? true,
             };
             $scope.cols_object_advanced = {
@@ -648,6 +658,7 @@ searchModule.controller("searchController", [
                                 object_code: obj.code,
                                 object_ICD10: attribute,
                                 object_name: obj.displayName,
+                                object_shortName: obj.displayShortName,
                                 object_form: obj.displayFormName,
                                 object_description: obj.displayDescription,
                                 objectGroup_id: temp_arr.objectGroup_id.join(", "),
@@ -736,6 +747,7 @@ searchModule.controller("searchController", [
                                     object_id: obj.id,
                                     object_code: obj.code,
                                     object_name: obj.displayName,
+                                    object_shortName: obj.displayShortName,
                                     object_form: obj.displayFormName,
                                     object_numerator: obj.numerator,
                                     object_denominator: obj.denominator,

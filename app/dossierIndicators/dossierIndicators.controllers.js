@@ -98,12 +98,17 @@ dossierIndicatorsModule.controller("dossierIndicatorsMainController", [
 
         startLoadingState(false);
         dossiersIndicatorsFactory.get(function (response) {
+            const isAdmin = !!$scope.is_admin;
             $scope.indicators = {
                 indicators: response.indicators.filter(
                     ind =>
                         !ind.indicatorGroups
                             .map(({ id }) => id)
-                            .some(id => $scope.blacklist_indicatorgroups.includes(id))
+                            .some(
+                                id =>
+                                    $scope.blacklist_indicatorgroups.includes(id) ||
+                                    (!isAdmin && $scope.notInUse_indicatorGroups.includes(id))
+                            )
                 ),
             };
             endLoadingState(false);

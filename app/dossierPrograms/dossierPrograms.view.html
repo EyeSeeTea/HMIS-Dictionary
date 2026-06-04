@@ -16,6 +16,12 @@
                 <option value="" disabled selected>{{ "Select a program" | translate }}</option>
             </select>
         </div>
+        <div class="col-md-2">
+            <label class="">
+                <input type="checkbox" ng-model="showLegacy" ng-change="onToggleLegacyChanged()" />
+                {{ "dos_showLegacy" | translate }}
+            </label>
+        </div>
     </div>
 
     <div class="col-md-12" ng-if="selectedProgram">
@@ -119,9 +125,9 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="tea in trackedEntityAttributes">
-                            <td ng-if="accesses.trackedEntityAttributes_name">{{ tea.name }}</td>
-                            <td ng-if="accesses.trackedEntityAttributes_formName">{{ tea.formName }}</td>
-                            <td ng-if="accesses.trackedEntityAttributes_description">{{ tea.description }}</td>
+                            <td ng-if="accesses.trackedEntityAttributes_name">{{ tea.displayName }}</td>
+                            <td ng-if="accesses.trackedEntityAttributes_formName">{{ tea.displayFormName }}</td>
+                            <td ng-if="accesses.trackedEntityAttributes_description">{{ tea.displayDescription }}</td>
                             <td ng-if="accesses.trackedEntityAttributes_valueType">{{ tea.valueType }}</td>
                             <td ng-if="accesses.trackedEntityAttributes_aggregationType">{{ tea.aggregationType }}</td>
                             <td ng-if="accesses.trackedEntityAttributes_mandatory">{{ tea.mandatory }}</td>
@@ -134,10 +140,10 @@
                             </td>
                             <td ng-if="accesses.trackedEntityAttributes_optionSet">
                                 <div ng-if="tea.optionSet.options">
-                                    <p>{{ "dos_OptionSetName" | translate }}: {{ tea.optionSet.name }}</p>
+                                    <p>{{ "dos_OptionSetName" | translate }}: {{ tea.optionSet.displayName }}</p>
                                     <select class="form-control col-md-2">
                                         <option selected>{{ "dos_SeeOptions" | translate }}</option>
-                                        <option ng-repeat="option in tea.optionSet.options track by $index">{{ option.name }}</option>
+                                        <option ng-repeat="option in tea.optionSet.options track by $index">{{ option.displayName }}</option>
                                     </select>
                                 </div>
                             </td>
@@ -238,7 +244,7 @@
                                 </td>
                                 <td ng-if="accesses.programStages_optionSet">
                                     <div ng-if="dataElement.optionSet.options">
-                                        <p>{{ "dos_OptionSetName" | translate }}: {{ dataElement.optionSet.name }}</p>
+                                        <p>{{ "dos_OptionSetName" | translate }}: {{ dataElement.optionSet.displayName }}</p>
                                         <select class="form-control col-md-2">
                                             <option selected>{{ "dos_SeeOptions" | translate }}</option>
                                             <option ng-repeat="option in dataElement.optionSet.options track by $index">
