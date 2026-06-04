@@ -746,11 +746,11 @@ searchModule.controller("searchController", [
                 .replace(indicatorRegex, function (indicatorWithCurlyBraces) {
                     var indId = indicatorWithCurlyBraces.substr(0, indicatorWithCurlyBraces.length - 1).substr(2);
                     if (!config.expandIndicators) {
-                        return indicators[indId] ? getTableObjectHtml(indicators[indId]) : indId;
+                        return indicators[indId] ? getTableObjectHtml(indicators[indId], "indicator") : indId;
                     }
 
                     if (config.depth >= config.maxDepth) {
-                        return indicators[indId] ? getTableObjectHtml(indicators[indId]) : indId;
+                        return indicators[indId] ? getTableObjectHtml(indicators[indId], "indicator") : indId;
                     }
 
                     if (config.visitedIndicators.has(indId)) {
@@ -814,11 +814,12 @@ searchModule.controller("searchController", [
                 });
         };
 
-        function getTableObjectHtml(object) {
+        function getTableObjectHtml(object, tagText) {
             const description = object.object_description
                 ? "<span class='tooltiptext'>" + object.object_description + "</span>"
                 : "";
-            return "<span class='tooltipcontainer'>" + object.object_name + description + "</span>";
+            const indicatorTag = tagText ? " <i>(" + tagText + ")</i> " : "";
+            return "<span class='tooltipcontainer'>" + object.object_name + indicatorTag + description + "</span>";
         }
 
         function load_table_info() {
