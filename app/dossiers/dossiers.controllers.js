@@ -203,24 +203,39 @@ dossiersModule.controller("dossiersIndicatorController", [
     "$scope",
     "dossiersIndicatorGroupFactory",
     function ($scope, dossiersIndicatorGroupFactory) {
-        $scope.$watch("selectedGrp", function () {
-            ping();
-            if ($scope.$parent.selectedGrp) {
+        $scope.$watchGroup(
+            [
+                function () {
+                    return $scope.$parent && $scope.$parent.selectedGrp ? $scope.$parent.selectedGrp.id : null;
+                },
+                function () {
+                    return $scope.selectedService ? $scope.selectedService.id : null;
+                },
+            ],
+            function (newValues) {
+                var groupId = newValues[0];
+                var serviceId = newValues[1];
+
+                if (!groupId || !serviceId) {
+                    return;
+                }
+
+                ping();
+                var grp = $scope.$parent.selectedGrp;
                 $scope.indicatorGrpParent4Toc = {
-                    displayName: $scope.$parent.selectedGrp.displayName,
-                    id: $scope.$parent.selectedGrp.id,
+                    displayName: grp.displayName,
+                    id: grp.id,
                 };
-                $scope.indicatorGroup = dossiersIndicatorGroupFactory.get(
-                    {
-                        indicatorGrpId: $scope.$parent.selectedGrp.id,
-                    },
-                    function () {
-                        addtoTOC($scope.toc, null, $scope.indicatorGrpParent4Toc, "Indicator Group");
-                        endLoadingState(true);
+
+                $scope.indicatorGroup = dossiersIndicatorGroupFactory.get({ indicatorGrpId: groupId }, function () {
+                    if (!$scope.selectedService || $scope.selectedService.id !== serviceId) {
+                        return;
                     }
-                );
+                    addtoTOC($scope.toc, null, $scope.indicatorGrpParent4Toc, "Indicator Group");
+                    endLoadingState(true);
+                });
             }
-        });
+        );
 
         $scope.getIndicatorGroupNames = function (indicator) {
             var indicatorGroupNames;

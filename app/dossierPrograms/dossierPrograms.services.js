@@ -44,8 +44,8 @@ var qryProgramStageSections =
             "dataElementGroups[id]",
             "valueType",
             "optionSetValue",
-            "optionSet[name",
-            "options[id,code,displayName]]]]",
+            "optionSet[displayName",
+            "options[code,displayName]]]]",
         ].join(","),
         [
             "programStageDataElements[compulsory,dataElement[id",
@@ -55,8 +55,8 @@ var qryProgramStageSections =
             "dataElementGroups[id]",
             "valueType",
             "optionSetValue",
-            "optionSet[name",
-            "options[id,code,displayName]]]]",
+            "optionSet[displayName",
+            "options[code,displayName]]]]",
         ].join(","),
     ].join(",") +
     "&paging=false";
@@ -307,11 +307,11 @@ var qryProgramTrackedEntityAttributes =
     dhisUrl +
     "programs/:programId?fields=" +
     [
-        "programTrackedEntityAttributes[mandatory,trackedEntityAttribute[id,name",
-        "formName",
-        "description",
-        "optionSet[name",
-        "options[id,name]]",
+        "programTrackedEntityAttributes[mandatory,trackedEntityAttribute[id,displayName",
+        "displayFormName",
+        "displayDescription",
+        "optionSet[displayName",
+        "options[displayName]]",
         "valueType",
         "aggregationType]]",
     ].join(",") +
