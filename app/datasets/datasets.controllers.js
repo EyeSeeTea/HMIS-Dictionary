@@ -36,10 +36,11 @@ datasetsModule.controller("datasetsMainController", [
                     columns: {
                         name: { index: 0, translationKey: "dos_NameElement", access: 2 },
                         formName: { index: 1, translationKey: "dos_FormNameElement", access: 2 },
-                        description: { index: 2, translationKey: "dos_DescriptionElement", access: 2 },
-                        dataTypeElement: { index: 3, translationKey: "dos_DataTypeElement", access: 0 },
-                        options: { index: 4, translationKey: "dos_Options", access: 0 },
-                        categoryCombination: { index: 5, translationKey: "dos_CategoryCombination", access: 0 },
+                        shortName: { index: 2, translationKey: "dos_ShortNameElement", access: 2 },
+                        description: { index: 3, translationKey: "dos_DescriptionElement", access: 2 },
+                        dataTypeElement: { index: 4, translationKey: "dos_DataTypeElement", access: 0 },
+                        options: { index: 5, translationKey: "dos_Options", access: 0 },
+                        categoryCombination: { index: 6, translationKey: "dos_CategoryCombination", access: 0 },
                     },
                 },
                 categoryCombinations: {
@@ -58,16 +59,17 @@ datasetsModule.controller("datasetsMainController", [
                     access: 2,
                     columns: {
                         name: { index: 0, translationKey: "dos_NameIndicator", access: 2 },
-                        type: { index: 1, translationKey: "dos_Type", access: 2 },
-                        numerator: { index: 2, translationKey: "dos_NumeratorIndicator", access: 2 },
+                        shortName: { index: 1, translationKey: "dos_ShortNameIndicator", access: 2 },
+                        type: { index: 2, translationKey: "dos_Type", access: 2 },
+                        numerator: { index: 3, translationKey: "dos_NumeratorIndicator", access: 2 },
                         numeratorDescription: {
-                            index: 3,
+                            index: 4,
                             translationKey: "dos_NumeratorIndicatorDescription",
                             access: 2,
                         },
-                        denominator: { index: 4, translationKey: "dos_DenominatorIndicator", access: 2 },
+                        denominator: { index: 5, translationKey: "dos_DenominatorIndicator", access: 2 },
                         denominatorDescription: {
-                            index: 5,
+                            index: 6,
                             translationKey: "dos_DenominatorIndicatorDescription",
                             access: 2,
                         },
@@ -81,7 +83,9 @@ datasetsModule.controller("datasetsMainController", [
         layoutSettingsFactory.get
             .query({ view: namespace })
             .$promise.then(data => {
-                $scope.layoutSettings = data.toJSON();
+                /* Deep-merge over defaults so columns added in newer builds become visible
+                   even when the persisted layoutSettings predate them. */
+                $scope.layoutSettings = _.merge({}, $scope.layoutSettings, data.toJSON());
             })
             .catch(error => {
                 /* If no sharing settings are found, create them */
