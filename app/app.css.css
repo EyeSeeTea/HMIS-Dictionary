@@ -213,6 +213,18 @@ html.in-global-shell #view-container {
     margin-top: 0;
 }
 
+html.in-global-shell .loading {
+    background-color: #ffffff00;
+}
+
+html.in-global-shell .loading .spinner {
+    filter: invert(0);
+}
+
+html.in-global-shell .loading .loading-message {
+    color: #000000;
+}
+
 #header {
     background-color: #b40303;
     height: 44px;
