@@ -827,6 +827,7 @@ searchModule.controller("searchController", [
             var start = new Date();
 
             var temp = {};
+            var allDataElementsTemp = {};
             var categoryOptionCombosTemp = {};
             var programIndicatorsTemp = {};
             var indicatorsTemp = {};
@@ -909,6 +910,15 @@ searchModule.controller("searchController", [
                                 service_name: _.uniq(temp_arr.service_name).join(", "),
                             };
                         });
+
+                    response.dataElements.forEach(function (obj) {
+                        allDataElementsTemp[obj.id] = {
+                            id: obj.id,
+                            object_name: obj.displayName,
+                            object_form: obj.displayFormName,
+                            object_description: obj.displayDescription,
+                        };
+                    });
 
                     $scope.loaded.get_dataElements = true;
                     $scope.loaded.get_dataElementsDescriptions = true;
@@ -1024,7 +1034,7 @@ searchModule.controller("searchController", [
                                 object_denominator: obj.denominator,
                                 object_den_formula: $scope.parseFormula(
                                     obj.denominator,
-                                    temp,
+                                    allDataElementsTemp,
                                     categoryOptionCombosTemp,
                                     programIndicatorsTemp,
                                     indicatorsTemp,
@@ -1032,7 +1042,7 @@ searchModule.controller("searchController", [
                                 ),
                                 object_num_formula: $scope.parseFormula(
                                     obj.numerator,
-                                    temp,
+                                    allDataElementsTemp,
                                     categoryOptionCombosTemp,
                                     programIndicatorsTemp,
                                     indicatorsTemp,
@@ -1070,7 +1080,7 @@ searchModule.controller("searchController", [
                             object_filter: obj.object_filter,
                             object_exp_formula: $scope.parseFormula(
                                 obj.object_expression,
-                                temp,
+                                allDataElementsTemp,
                                 categoryOptionCombosTemp,
                                 programIndicatorsTemp,
                                 indicatorsTemp,
@@ -1078,7 +1088,7 @@ searchModule.controller("searchController", [
                             ),
                             object_flt_formula: $scope.parseFormula(
                                 obj.object_filter,
-                                temp,
+                                allDataElementsTemp,
                                 categoryOptionCombosTemp,
                                 programIndicatorsTemp,
                                 indicatorsTemp,
@@ -1095,7 +1105,7 @@ searchModule.controller("searchController", [
                     $scope.loaded.get_programIndicatorGroups = true;
 
                     $scope.formulaSources = {
-                        dataElements: temp,
+                        dataElements: allDataElementsTemp,
                         categoryOptionCombos: categoryOptionCombosTemp,
                         programIndicators: programIndicatorsTemp,
                         indicators: indicatorsTemp,
