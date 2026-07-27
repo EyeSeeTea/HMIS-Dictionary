@@ -169,17 +169,38 @@ searchModule.controller("searchController", [
         console.debug("searchModule: Blacklisted dataElementGroups: " + $scope.blacklist_dataelementgroups);
         console.debug("searchModule: Blacklisted dataSets: " + $scope.blacklist_datasets);
         console.debug("searchModule: Blacklisted indicatorGroups: " + $scope.blacklist_indicatorgroups);
-        var filterObjects = function (obj, type) {
+        console.debug("searchModule: Blacklisted tag: " + $scope.blacklist_tag);
+
+        var filterDataElements = function (obj) {
+            return !obj.dataElementGroups.some(deg => $scope.blacklist_dataelementgroups.includes(deg.id));
+        };
+
+        var isBlacklistedIndicator = function (obj) {
+            return obj.indicatorGroups.some(ig => $scope.blacklist_indicatorgroups.includes(ig.id));
+        };
+
+        var isNotInUseInicator = function (obj) {
+            return obj.indicatorGroups.some(ig => $scope.notInUse_indicatorGroups.includes(ig.id));
+        };
+
+        var filterIndicators = function (obj) {
             const isAdmin = !!$scope.is_admin;
-            if (type == "dataElement") {
-                return !obj.dataElementGroups.some(deg => $scope.blacklist_dataelementgroups.includes(deg.id));
-            } else if (type == "indicator") {
-                return !obj.indicatorGroups.some(
-                    ig =>
-                        $scope.blacklist_indicatorgroups.includes(ig.id) ||
-                        (!isAdmin && $scope.notInUse_indicatorGroups.includes(ig.id))
-                );
-            }
+            return !obj.indicatorGroups.some(
+                ig =>
+                    $scope.blacklist_indicatorgroups.includes(ig.id) ||
+                    (!isAdmin && $scope.notInUse_indicatorGroups.includes(ig.id))
+            );
+        };
+
+        var isNotInUseProgramInicator = function (obj) {
+            return obj.programIndicatorGroups.some(ig => $scope.notInUse_programIndicatorGroups.includes(ig.id));
+        };
+
+        var filterProgramInicators = function (obj) {
+            const isAdmin = !!$scope.is_admin;
+            return !obj.programIndicatorGroups.some(
+                ig => !isAdmin && $scope.notInUse_programIndicatorGroups.includes(ig.id)
+            );
         };
 
         var self = this;
@@ -741,7 +762,9 @@ searchModule.controller("searchController", [
                     var piId = programIndicatorWithCurlyBraces
                         .substr(0, programIndicatorWithCurlyBraces.length - 1)
                         .substr(2);
-                    return programIndicators[piId] ? getTableObjectHtml(programIndicators[piId]) : piId;
+                    return programIndicators[piId]
+                        ? getTableObjectHtml(programIndicators[piId], "programIndicator")
+                        : piId;
                 })
                 .replace(indicatorRegex, function (indicatorWithCurlyBraces) {
                     var indId = indicatorWithCurlyBraces.substr(0, indicatorWithCurlyBraces.length - 1).substr(2);
@@ -818,8 +841,13 @@ searchModule.controller("searchController", [
             const description = object.object_description
                 ? "<span class='tooltiptext'>" + object.object_description + "</span>"
                 : "";
-            const indicatorTag = tagText ? " <i>(" + tagText + ")</i> " : "";
-            return "<span class='tooltipcontainer'>" + object.object_name + indicatorTag + description + "</span>";
+            const customTag = tagText ? " <i>(" + tagText + ")</i> " : "";
+            const notInUseTag = object.isNotInUse ? " <i>[" + $scope.notInUse_tag + "]</i> " : undefined;
+            const blacklistedTag = object.isBlacklisted ? " <i>[" + $scope.blacklist_tag + "]</i> " : undefined;
+            const filterTag = notInUseTag || blacklistedTag || "";
+            return (
+                "<span class='tooltipcontainer'>" + filterTag + object.object_name + customTag + description + "</span>"
+            );
         }
 
         function load_table_info() {
@@ -830,6 +858,8 @@ searchModule.controller("searchController", [
             var allDataElementsTemp = {};
             var categoryOptionCombosTemp = {};
             var programIndicatorsTemp = {};
+            var allIndicatorsTemp = {};
+            var allProgramIndicatorsTemp = {};
             var indicatorsTemp = {};
 
             startLoadingState(false, { message: "load_dataElements" });
@@ -837,7 +867,7 @@ searchModule.controller("searchController", [
                 .query()
                 .$promise.then(function (response) {
                     response.dataElements
-                        .filter(obj => filterObjects(obj, "dataElement"))
+                        .filter(obj => filterDataElements(obj))
                         .forEach(function (obj) {
                             var attribute = "";
                             //objectGroup + service
@@ -917,6 +947,7 @@ searchModule.controller("searchController", [
                             object_name: obj.displayName,
                             object_form: obj.displayFormName,
                             object_description: obj.displayDescription,
+                            isBlacklisted: !filterDataElements(obj),
                         };
                     });
 
@@ -943,40 +974,65 @@ searchModule.controller("searchController", [
                     startLoadingState(false, { message: "load_programIndicators" });
                     return searchAllFactory.get_programIndicatorsAll.query().$promise.then(function (response) {
                         response.programIndicators.forEach(function (obj) {
-                            programIndicatorsTemp[obj.id] = {
+                            allProgramIndicatorsTemp[obj.id] = {
                                 id: obj.id,
-                                object_code: obj.code,
                                 object_name: obj.displayName,
                                 object_form: obj.displayFormName,
                                 object_description: obj.displayDescription,
-                                object_expression: obj.expression,
-                                object_filter: obj.filter,
-                                objectGroup_id: obj.programIndicatorGroups
-                                    .map(function (grp) {
-                                        return grp.id ? grp.id : undefined;
-                                    })
-                                    .filter(Boolean)
-                                    .join(", "),
-                                objectGroup_code: obj.programIndicatorGroups
-                                    .map(function (grp) {
-                                        return grp.code ? grp.code : undefined;
-                                    })
-                                    .filter(Boolean)
-                                    .join(", "),
-                                objectGroup_name: obj.programIndicatorGroups
-                                    .map(function (grp) {
-                                        return grp.name ? grp.name : undefined;
-                                    })
-                                    .filter(Boolean)
-                                    .join(", "),
+                                isNotInUse: isNotInUseProgramInicator(obj),
                             };
                         });
+
+                        response.programIndicators
+                            .filter(obj => filterProgramInicators(obj))
+                            .forEach(function (obj) {
+                                programIndicatorsTemp[obj.id] = {
+                                    id: obj.id,
+                                    object_code: obj.code,
+                                    object_name: obj.displayName,
+                                    object_form: obj.displayFormName,
+                                    object_description: obj.displayDescription,
+                                    object_expression: obj.expression,
+                                    object_filter: obj.filter,
+                                    objectGroup_id: obj.programIndicatorGroups
+                                        .map(function (grp) {
+                                            return grp.id ? grp.id : undefined;
+                                        })
+                                        .filter(Boolean)
+                                        .join(", "),
+                                    objectGroup_code: obj.programIndicatorGroups
+                                        .map(function (grp) {
+                                            return grp.code ? grp.code : undefined;
+                                        })
+                                        .filter(Boolean)
+                                        .join(", "),
+                                    objectGroup_name: obj.programIndicatorGroups
+                                        .map(function (grp) {
+                                            return grp.name ? grp.name : undefined;
+                                        })
+                                        .filter(Boolean)
+                                        .join(", "),
+                                };
+                            });
                     });
                 })
                 .then(function () {
                     startLoadingState(false, { message: "load_indicators" });
                     return searchAllFactory.get_indicatorsAll.query().$promise.then(function (response) {
-                        var filteredIndicators = response.indicators.filter(obj => filterObjects(obj, "indicator"));
+                        response.indicators.forEach(function (obj) {
+                            allIndicatorsTemp[obj.id] = {
+                                id: obj.id,
+                                object_name: obj.displayName,
+                                object_form: obj.displayFormName,
+                                object_description: obj.displayDescription,
+                                object_numerator: obj.numerator,
+                                object_denominator: obj.denominator,
+                                isBlacklisted: isBlacklistedIndicator(obj),
+                                isNotInUse: isNotInUseInicator(obj),
+                            };
+                        });
+
+                        var filteredIndicators = response.indicators.filter(obj => filterIndicators(obj));
 
                         filteredIndicators.forEach(function (obj) {
                             indicatorsTemp[obj.id] = {
@@ -1036,16 +1092,16 @@ searchModule.controller("searchController", [
                                     obj.denominator,
                                     allDataElementsTemp,
                                     categoryOptionCombosTemp,
-                                    programIndicatorsTemp,
-                                    indicatorsTemp,
+                                    allProgramIndicatorsTemp,
+                                    allIndicatorsTemp,
                                     { expandIndicators: false }
                                 ),
                                 object_num_formula: $scope.parseFormula(
                                     obj.numerator,
                                     allDataElementsTemp,
                                     categoryOptionCombosTemp,
-                                    programIndicatorsTemp,
-                                    indicatorsTemp,
+                                    allProgramIndicatorsTemp,
+                                    allIndicatorsTemp,
                                     { expandIndicators: false }
                                 ),
                                 object_description: obj.displayDescription,
@@ -1082,16 +1138,16 @@ searchModule.controller("searchController", [
                                 obj.object_expression,
                                 allDataElementsTemp,
                                 categoryOptionCombosTemp,
-                                programIndicatorsTemp,
-                                indicatorsTemp,
+                                allProgramIndicatorsTemp,
+                                allIndicatorsTemp,
                                 { expandIndicators: false }
                             ),
                             object_flt_formula: $scope.parseFormula(
                                 obj.object_filter,
                                 allDataElementsTemp,
                                 categoryOptionCombosTemp,
-                                programIndicatorsTemp,
-                                indicatorsTemp,
+                                allProgramIndicatorsTemp,
+                                allIndicatorsTemp,
                                 { expandIndicators: false }
                             ),
                             objectGroup_id: obj.objectGroup_id,
@@ -1107,8 +1163,8 @@ searchModule.controller("searchController", [
                     $scope.formulaSources = {
                         dataElements: allDataElementsTemp,
                         categoryOptionCombos: categoryOptionCombosTemp,
-                        programIndicators: programIndicatorsTemp,
-                        indicators: indicatorsTemp,
+                        programIndicators: allProgramIndicatorsTemp,
+                        indicators: allIndicatorsTemp,
                     };
                     $scope.allObjects = Object.keys(temp).map(function (key) {
                         return temp[key];
