@@ -13,8 +13,10 @@ adminModule.controller("adminMainController", [
     "adminDEGFactory",
     "adminDSFactory",
     "adminIGFactory",
+    "adminBL_TagFactory",
     "adminNIU_IGFactory",
     "adminNIU_PIGFactory",
+    "adminNIU_TagFactory",
     "adminLEG_DEGFactory",
     "adminLEG_OPGFactory",
     "adminDossierConfigCompleteFactory",
@@ -28,8 +30,10 @@ adminModule.controller("adminMainController", [
         adminDEGFactory,
         adminDSFactory,
         adminIGFactory,
+        adminBL_TagFactory,
         adminNIU_IGFactory,
         adminNIU_PIGFactory,
+        adminNIU_TagFactory,
         adminLEG_DEGFactory,
         adminLEG_OPGFactory,
         adminDossierConfigCompleteFactory
@@ -301,6 +305,34 @@ adminModule.controller("adminMainController", [
                 });
         };
 
+        if ($scope.blacklist_tag) {
+            $scope.blTag = JSON.stringify($scope.blacklist_tag);
+        }
+
+        $scope.submitBL_Tag = function () {
+            adminBL_TagFactory.get_BL_tag
+                .query($scope.blTag)
+                .$promise.then(
+                    function (response1) {
+                        return adminBL_TagFactory.upd_BL_tag.query($scope.blTag, function (response2) {
+                            if (response2) {
+                                $scope.blacklist_tag = $scope.blTag;
+                            }
+                        });
+                    },
+                    function () {
+                        return adminBL_TagFactory.set_BL_tag.query($scope.blTag, function (response) {
+                            if (response) {
+                                $scope.blacklist_tag = $scope.blTag;
+                            }
+                        });
+                    }
+                )
+                .then(function () {
+                    window.location.reload(true);
+                });
+        };
+
         if ($scope.notInUse_indicatorGroups) {
             $scope.notInUseIG = JSON.stringify($scope.notInUse_indicatorGroups);
         }
@@ -412,6 +444,38 @@ adminModule.controller("adminMainController", [
                     window.location.reload(true);
                 });
         };
+
+        if ($scope.notInUse_tag) {
+            $scope.niuTag = JSON.stringify($scope.notInUse_tag);
+        }
+
+        $scope.submitNIU_Tag = function () {
+            adminNIU_TagFactory.get_NIU_tag
+                .query($scope.niuTag)
+                .$promise.then(
+                    function (response1) {
+                        return adminNIU_TagFactory.upd_NIU_tag.query($scope.niuTag, function (response2) {
+                            if (response2) {
+                                $scope.notInUse_tag = $scope.niuTag;
+                            }
+                        });
+                    },
+                    function () {
+                        return adminNIU_TagFactory.set_NIU_tag.query($scope.niuTag, function (response) {
+                            if (response) {
+                                $scope.notInUse_tag = $scope.niuTag;
+                            }
+                        });
+                    }
+                )
+                .then(function () {
+                    window.location.reload(true);
+                });
+        };
+
+        if ($scope.notInUse_indicatorGroups) {
+            $scope.notInUseIG = JSON.stringify($scope.notInUse_indicatorGroups);
+        }
 
         $scope.submitDossierConfigComplete = function () {
             console.log("adminModule: $scope.dossierConfigComplete: ", $scope.dossierConfigComplete);
