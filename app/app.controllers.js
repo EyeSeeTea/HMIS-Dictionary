@@ -269,6 +269,54 @@ appModule.controller("appSharedController", [
                 $scope.legacy_optiongroups = [];
             });
 
+        /* For blacklist tag */
+        jQuery
+            .ajax({
+                url: dhisUrl + "dataStore/HMIS_Dictionary/blacklist_tag",
+                contentType: "json",
+                method: "GET",
+                dataType: "text",
+                async: false,
+            })
+            .success(function (BLTag) {
+                BLTag = JSON.parse(BLTag);
+                $scope.blacklist_tag = BLTag;
+                if ($scope.blacklist_tag) {
+                    console.log("appModule: Blacklisted tag: " + BLTag);
+                } else {
+                    console.log("appModule: Blacklisted tag has not been defined yet, go to the admin panel!");
+                    $scope.blacklist_tag = "Blacklisted";
+                }
+            })
+            .fail(function () {
+                console.log("appModule: Blacklisted tag has not been identified.");
+                $scope.blacklist_tag = "Blacklisted";
+            });
+
+        /* For not in use tag */
+        jQuery
+            .ajax({
+                url: dhisUrl + "dataStore/HMIS_Dictionary/notInUse_tag",
+                contentType: "json",
+                method: "GET",
+                dataType: "text",
+                async: false,
+            })
+            .success(function (NIUTag) {
+                NIUTag = JSON.parse(NIUTag);
+                $scope.notInUse_tag = NIUTag;
+                if ($scope.notInUse_tag) {
+                    console.log("appModule: Not in use tag: " + NIUTag);
+                } else {
+                    console.log("appModule: Not in use tag has not been defined yet, go to the admin panel!");
+                    $scope.notInUse_tag = "Not in Use";
+                }
+            })
+            .fail(function () {
+                console.log("appModule: Not in use tag has not been identified.");
+                $scope.notInUse_tag = "Not in Use";
+            });
+
         /* For admin tab */
         jQuery
             .ajax({
