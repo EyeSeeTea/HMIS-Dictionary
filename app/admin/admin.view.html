@@ -139,6 +139,16 @@
                         <div class="col-md-3">
                             <button type="submit" class="btn btn-primary" id="submitIG" ng-click="submitIG()">Submit</button>
                         </div>
+
+                        <p><br><br>[<i>Optional</i>] Text of the tag to display for blacklisted elements in Search panel indicator formulas.</p>
+
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" name="BL_TAG" ng-model="blTag"/>
+                        </div>
+
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-primary" id="submitBL_Tag" ng-click="submitBL_Tag()">Submit</button>
+                        </div>
                         <p><br><br></p>
                     </div>
                 </div>
@@ -146,6 +156,8 @@
                     <div class="alert rounded" style="background-color:#f9f9f9"role="alert">
                         <p>These groups contain blacklisted elements and will not be displayed in the panels.</p>
                         <p>The arrays should be formatted as follows: <code>["rD7MJ3LaakW","vnoUusJDY1Z","vCfO0z5igGT"]</code>.<p>
+                        <p>The tag text field is used to mark metadata elements in the blacklisted groups present in Indicator formulas. 
+                            If no value is set it will default to <i>Blacklisted</i>. Value should be formatted as: <code>"Tag text"</code>.</p>
                     </div>
                 </div>
             </div>
@@ -171,6 +183,15 @@
                             <button type="submit" class="btn btn-primary" id="submitNIU_PIG" ng-click="submitNIU_PIG()">Submit</button>
                         </div>
                 
+                        <p><br><br>[<i>Optional</i>] Text of the tag to display for not in use elements in Search panel indicator formulas.</p>
+
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" name="NIU_TAG" ng-model="niuTag"/>
+                        </div>
+
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-primary" id="submitNIU_Tag" ng-click="submitNIU_Tag()">Submit</button>
+                        </div>
                         <p><br><br></p>
                     </div>
                 </div>
@@ -179,6 +200,8 @@
                     <div class="alert rounded" style="background-color:#f9f9f9"role="alert">
                         <p>These groups contain elements that are not in use and will be hidden in the panels for non-admin users but visible for admin users.</p>
                         <p>The arrays should be formatted as follows: <code>["rD7MJ3LaakW","vnoUusJDY1Z","vCfO0z5igGT"]</code>.<p>
+                        <p>The tag text field is used to mark metadata elements in the not in use groups present in Indicator formulas.
+                            If no value is set it will default to <i>Not in Use</i>. Value should be formatted as: <code>"Tag text"</code>.</p>
                     </div>
                 </div>
             </div>

@@ -124,6 +124,32 @@ adminModule.factory("adminLEG_OPGFactory", [
     },
 ]);
 
+var qry_BL_tag = dhisUrl + "dataStore/HMIS_Dictionary/blacklist_tag";
+
+adminModule.factory("adminBL_TagFactory", [
+    "$resource",
+    function ($resource) {
+        return {
+            get_BL_tag: $resource(qry_BL_tag, {}, { query: { method: "GET", isArray: false } }),
+            set_BL_tag: $resource(qry_BL_tag, {}, { query: { method: "POST", isArray: false } }),
+            upd_BL_tag: $resource(qry_BL_tag, {}, { query: { method: "PUT", isArray: false } }),
+        };
+    },
+]);
+
+var qry_NIU_tag = dhisUrl + "dataStore/HMIS_Dictionary/notInUse_tag";
+
+adminModule.factory("adminNIU_TagFactory", [
+    "$resource",
+    function ($resource) {
+        return {
+            get_NIU_tag: $resource(qry_NIU_tag, {}, { query: { method: "GET", isArray: false } }),
+            set_NIU_tag: $resource(qry_NIU_tag, {}, { query: { method: "POST", isArray: false } }),
+            upd_NIU_tag: $resource(qry_NIU_tag, {}, { query: { method: "PUT", isArray: false } }),
+        };
+    },
+]);
+
 var qry_get_A = dhisUrl + "attributes.json?fields=name,id,dataSetAttribute,indicatorGroupAttribute&paging=false";
 
 adminModule.factory("adminAFactory", [
