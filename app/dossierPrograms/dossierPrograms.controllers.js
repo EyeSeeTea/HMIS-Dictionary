@@ -1115,11 +1115,18 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
                                 if (programIndicators.length > 0) {
                                     $scope.programIndicators = programIndicators.map(pi => {
                                         pi.analyticsPeriodBoundaries = pi.analyticsPeriodBoundaries.map(bound => {
-                                            const btTextArray = bound.boundaryTarget.split(":");
+                                            if (!bound.boundaryTarget) {
+                                                bound.boundaryTarget = "CUSTOM";
+                                                return bound;
+                                            }
+                                            const btTextArray = bound.boundaryTarget?.split(":");
+                                            if (!btTextArray || btTextArray.length < 2) {
+                                                return bound;
+                                            }
                                             const btId = btTextArray[1];
                                             if (btTextArray[0] === "PS_EVENTDATE" && btId && btId.length == 11) {
                                                 const btStage = getStageNameById(btId) ?? btId;
-                                                bound.boundaryTarget = `${btTextArray[0]} - ${btStage}}`;
+                                                bound.boundaryTarget = `${btTextArray[0]} - ${btStage}`;
                                             }
                                             return bound;
                                         });
