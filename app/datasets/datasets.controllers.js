@@ -358,32 +358,32 @@ datasetsModule.controller("datasetsIndicatorsController", [
          *  @description Gets the "readable" expressions for each indicator numerator
          *  @scope datasetsIndicatorsController
          */
-        recursiveAssignNumerator = function (i) {
-            if (i >= $scope.indicators.length) return;
+        recursiveAssignNumerator = function (indicators, i) {
+            if (i >= indicators.length) return;
             datasetsIndicatorExpressionFactory.save(
                 {},
-                $scope.indicators[i].numerator,
+                indicators[i].numerator,
                 function (data) {
-                    $scope.indicators[i].numerator = data.description;
-                    recursiveAssignNumerator(i + 1);
+                    indicators[i].numerator = data.description;
+                    recursiveAssignNumerator(indicators, i + 1);
                 },
                 true
             );
         };
 
         /*
-         *  @name recursiveAssignNumerator
+         *  @name recursiveAssignDenominator
          *  @description Gets the "readable" expressions for each indicator denominator
          *  @scope datasetsIndicatorsController
          */
-        recursiveAssignDenominator = function (i) {
-            if (i >= $scope.indicators.length) return;
+        recursiveAssignDenominator = function (indicators, i) {
+            if (i >= indicators.length) return;
             datasetsIndicatorExpressionFactory.save(
                 {},
-                $scope.indicators[i].denominator,
+                indicators[i].denominator,
                 function (data) {
-                    $scope.indicators[i].denominator = data.description;
-                    recursiveAssignDenominator(i + 1);
+                    indicators[i].denominator = data.description;
+                    recursiveAssignDenominator(indicators, i + 1);
                 },
                 true
             );
@@ -445,8 +445,8 @@ datasetsModule.controller("datasetsIndicatorsController", [
                     }, this);
                     if ($scope.indicators.length > 0) {
                         addtoTOC($scope.toc, null, $scope.indicators4TOC, "Indicators");
-                        recursiveAssignNumerator(0);
-                        recursiveAssignDenominator(0);
+                        recursiveAssignNumerator($scope.indicators, 0);
+                        recursiveAssignDenominator($scope.indicators, 0);
                     }
                 });
             }
