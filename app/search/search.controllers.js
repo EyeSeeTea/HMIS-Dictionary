@@ -730,7 +730,7 @@ searchModule.controller("searchController", [
 
             var operatorRegex = /}\s*[\+\-\*]\s*(#|I|N)/g;
             var dataElementRegex = /#\{\w*}/g;
-            var dataElementCatRegex = /#\{\w*.\w*}/g;
+            var dataElementCatRegex = /#\{\w*\.\w*}/g;
             var programIndicatorRegex = /I\{\w*}/g;
             var indicatorRegex = /N\{\w*}/g;
             if (!formula) {
