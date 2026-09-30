@@ -355,8 +355,7 @@
                                 <td ng-if="accesses.programIndicators_visualization">
                                     <a ng-controller="makeIndicatorVisualizations" href="" ng-click="getTable(
                                             indicator.displayName,
-                                            indicator.id,
-                                            indicator.rowItems
+                                            indicator.id
                                             )"><img src="./assets/img/pivottable.png" alt="View Table" width="15" />
                                     </a>
                                 </td>
@@ -430,7 +429,8 @@
                                 <a ng-controller="makeIndicatorVisualizations" href="" ng-click="getTable(
                                         indicator.displayName,
                                         indicator.id,
-                                        indicator.rowItems
+                                        indicator.numerator_formula,
+                                        indicator.denominator_formula
                                         )"><img src="./assets/img/pivottable.png" alt="View Table" width="15" />
                                 </a>
                             </td>
