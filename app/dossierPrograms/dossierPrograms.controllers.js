@@ -569,187 +569,10 @@ dossierProgramsModule.controller("dossiersProgramSectionController", [
 
 dossierProgramsModule.controller("makeIndicatorVisualizations", [
     "$scope",
-    "$window",
-    "dossiersProgramVisualizationTableFactory",
-    function ($scope, $window, dossiersProgramVisualizationTableFactory) {
-        $scope.getTable = function (name, id, rowItems) {
-            const payload = {
-                name: "TEST",
-                showData: false,
-                fixRowHeaders: false,
-                numberType: "VALUE",
-                legend: {
-                    showKey: false,
-                    style: "FILL",
-                    strategy: "FIXED",
-                },
-                publicAccess: "--------",
-                type: "PIVOT_TABLE",
-                hideEmptyColumns: false,
-                hideEmptyRows: false,
-                subscribed: false,
-                parentGraphMap: {},
-                rowSubTotals: false,
-                displayDensity: "NORMAL",
-                displayDescription: "Created with HMIS Dictionary",
-                regressionType: "NONE",
-                completedOnly: false,
-                cumulativeValues: false,
-                colTotals: false,
-                showDimensionLabels: true,
-                sortOrder: 0,
-                fontSize: "NORMAL",
-                favorite: false,
-                topLimit: 0,
-                hideEmptyRowItems: "NONE",
-                aggregationType: "DEFAULT",
-                displayName: "TEST",
-                hideSubtitle: false,
-                description: "Created with HMIS Dictionary",
-                fixColumnHeaders: false,
-                percentStackedValues: false,
-                colSubTotals: false,
-                noSpaceBetweenColumns: false,
-                showHierarchy: false,
-                rowTotals: false,
-                seriesKey: {
-                    hidden: false,
-                },
-                digitGroupSeparator: "SPACE",
-                hideTitle: false,
-                regression: false,
-                colorSet: "DEFAULT",
-                skipRounding: false,
-
-                fontStyle: {},
-                access: {
-                    read: true,
-                    update: true,
-                    externalize: true,
-                    delete: true,
-                    write: true,
-                    manage: true,
-                },
-                reportingParams: {
-                    organisationUnit: false,
-                    reportingPeriod: false,
-                    parentOrganisationUnit: false,
-                    grandParentOrganisationUnit: false,
-                },
-
-                axes: [],
-                translations: [],
-                yearlySeries: [],
-                interpretations: [],
-                userGroupAccesses: [
-                    {
-                        access: "rw------",
-                        userGroupUid: "epFY01iJN0Z",
-                        displayName: "ALL USERS",
-                        id: "epFY01iJN0Z",
-                    },
-                ],
-                subscribers: [],
-                userAccesses: [],
-                favorites: [],
-                columns: [
-                    {
-                        dimension: "pe",
-                        items: [
-                            {
-                                id: "THIS_YEAR",
-                            },
-                        ],
-                    },
-                ],
-                filters: [
-                    {
-                        dimension: "ou",
-                        items: [
-                            {
-                                id: "USER_ORGUNIT",
-                            },
-                        ],
-                    },
-                ],
-                rows: [
-                    {
-                        dimension: "dx",
-                        items: [
-                            {
-                                id: "DqqSJFWB392",
-                            },
-                            {
-                                id: "qywsusOdy33",
-                            },
-                        ],
-                    },
-                ],
-                series: [],
-                outlierAnalysis: null,
-                cumulative: false,
-            };
-
-            const sharing = {
-                object: {
-                    id: "LEP0WHTGYUe",
-                    name: "name",
-                    publicAccess: "--------",
-                    externalAccess: false,
-                    userGroupAccesses: [{ id: "epFY01iJN0Z", name: "ALL USERS", access: "rw------" }],
-                },
-            };
-
-            let items = [{ id: id }];
-
-            payload.name = name + " - " + id;
-            payload.rows[0].items = rowItems ? items.concat(rowItems.map(id => ({ id: id }))) : items;
-
-            $scope.table = dossiersProgramVisualizationTableFactory.get_table.query(
-                {
-                    filter: "name:eq:" + payload.name,
-                },
-                function (tbl) {
-                    if (tbl && tbl.visualizations[0]) {
-                        const visualizationId = tbl.visualizations[0].id;
-                        if (visualizationId) {
-                            console.log("Updating Table");
-                            payload.id = visualizationId;
-                            sharing.object.id = visualizationId;
-                            sharing.object.name = tbl.visualizations[0].name;
-
-                            dossiersProgramVisualizationTableFactory.upd_table.query(
-                                {
-                                    uid: visualizationId,
-                                },
-                                payload,
-                                function (response) {
-                                    dossiersProgramVisualizationTableFactory.upd_sharing.query(
-                                        { uid: visualizationId },
-                                        sharing,
-                                        function (res) {}
-                                    );
-
-                                    const uid = visualizationId;
-
-                                    $window.open(dhisroot + "dhis-web-data-visualizer/index.html#/" + uid, "_blank");
-                                }
-                            );
-                        }
-                    } else if (tbl.visualizations[0] === undefined) {
-                        console.log("Creating Table");
-                        dossiersProgramVisualizationTableFactory.set_table.query(payload, function (response) {
-                            const uid = response.response.uid;
-                            dossiersProgramVisualizationTableFactory.upd_sharing.query(
-                                { uid: uid },
-                                sharing,
-                                function (res) {}
-                            );
-                            $window.open(dhisroot + "dhis-web-data-visualizer/index.html#/" + uid, "_blank");
-                        });
-                    }
-                }
-            );
+    "indicatorVisualizationService",
+    function ($scope, indicatorVisualizationService) {
+        $scope.getTable = function (name, id, numerator, denominator) {
+            indicatorVisualizationService.openIndicatorVisualization(name, id, numerator, denominator);
         };
     },
 ]);
@@ -1115,11 +938,18 @@ dossierProgramsModule.controller("dossiersProgramIndicatorController", [
                                 if (programIndicators.length > 0) {
                                     $scope.programIndicators = programIndicators.map(pi => {
                                         pi.analyticsPeriodBoundaries = pi.analyticsPeriodBoundaries.map(bound => {
-                                            const btTextArray = bound.boundaryTarget.split(":");
+                                            if (!bound.boundaryTarget) {
+                                                bound.boundaryTarget = "CUSTOM";
+                                                return bound;
+                                            }
+                                            const btTextArray = bound.boundaryTarget?.split(":");
+                                            if (!btTextArray || btTextArray.length < 2) {
+                                                return bound;
+                                            }
                                             const btId = btTextArray[1];
                                             if (btTextArray[0] === "PS_EVENTDATE" && btId && btId.length == 11) {
                                                 const btStage = getStageNameById(btId) ?? btId;
-                                                bound.boundaryTarget = `${btTextArray[0]} - ${btStage}}`;
+                                                bound.boundaryTarget = `${btTextArray[0]} - ${btStage}`;
                                             }
                                             return bound;
                                         });
@@ -1176,36 +1006,6 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
             id: "indicatorContainer",
             index: 98,
         };
-
-        /*
-         *  @name extractVisItemsFromInd
-         *  @description Get the visualization aditional items IDs for numerator and denominator
-         *  @scope dossierProgramGlobalIndicatorController
-         */
-        function extractVisItemsFromInd(numerator, denominator) {
-            const de_num = extractVisItemsFromFormula(numerator);
-            const de_den = extractVisItemsFromFormula(denominator);
-
-            return de_num.concat(de_den);
-        }
-
-        /*
-         *  @name extractVisItemsFromFormula
-         *  @description Get the visualization aditional items IDs for expression
-         *  @scope dossierProgramGlobalIndicatorController
-         */
-        function extractVisItemsFromFormula(formula) {
-            let items = [];
-            const regexArray = [/#{(\w+)}/g, /I{(\w+)}/g];
-
-            regexArray.forEach(regex => {
-                while ((results = regex.exec(formula))) {
-                    items.push(results[1]);
-                }
-            });
-
-            return items;
-        }
 
         /*
          *  @name parseExpression
@@ -1414,13 +1214,11 @@ dossierProgramsModule.controller("dossierProgramGlobalIndicatorController", [
                             )
                             .forEach(function (indicator) {
                                 console.debug("Processing indicator:", indicator.displayName);
-                                const num = indicator.numerator;
-                                const den = indicator.denominator;
-                                parseExpression(indicator, num);
-                                parseExpression(indicator, den);
+                                indicator.numerator_formula = indicator.numerator;
+                                indicator.denominator_formula = indicator.denominator;
+                                parseExpression(indicator, indicator.numerator_formula);
+                                parseExpression(indicator, indicator.denominator_formula);
                                 if (indicator.stageRef) indicator.stageRef = _.uniq(indicator.stageRef);
-
-                                indicator.rowItems = extractVisItemsFromInd(num, den);
                             });
                         if ($scope.indicators.length > 0) {
                             addtoTOC($scope.toc, null, $scope.indicators4TOC, "Indicators");

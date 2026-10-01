@@ -3,6 +3,30 @@
     Please refer to the LICENSE.md and LICENSES-DEP.md for complete licenses.
 ------------------------------------------------------------------------------------*/
 
+datasetsModule.service("datasetsLoadingService", function () {
+    this.loading = {
+        dataElements: undefined,
+        categoryCombos: undefined,
+        indicators: undefined,
+    };
+
+    this.resetState = function () {
+        this.loading = {
+            dataElements: undefined,
+            categoryCombos: undefined,
+            indicators: undefined,
+        };
+    };
+
+    this.done = function () {
+        if (Object.values(this.loading).every(Boolean)) {
+            this.resetState();
+            return true;
+        }
+        return false;
+    };
+});
+
 var qryDatasets = dhisUrl + "dataSets.json?paging=false&filter=id\\:!in\\:[:blackList]";
 
 datasetsModule.factory("datasetsFactory", [

@@ -15,6 +15,7 @@ var datasetsModule = angular.module("datasetsModule", []);
 var dossierIndicatorsModule = angular.module("dossierIndicatorsModule", []);
 var layoutSettingsModule = angular.module("layoutSettingsModule", []);
 var helpIconModule = angular.module("helpIconModule", []);
+var indicatorVisualizationModule = angular.module("indicatorVisualizationModule", []);
 
 var appModule = angular.module("appModule", [
     "ui.router",
@@ -29,6 +30,7 @@ var appModule = angular.module("appModule", [
     "dossierIndicatorsModule",
     "layoutSettingsModule",
     "helpIconModule",
+    "indicatorVisualizationModule",
     "searchModule",
     "adminModule",
     /* "graphModule", */

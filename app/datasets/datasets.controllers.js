@@ -3,6 +3,10 @@
     Please refer to the LICENSE.md and LICENSES-DEP.md for complete licenses.
 ------------------------------------------------------------------------------------*/
 
+function isDatasetScopeActive(scope, datasetId) {
+    return !scope.$$destroyed && (!datasetId || scope.selectedDataset?.id === datasetId);
+}
+
 /*
  *  @name datasetsMainController
  *  @description Clears the table of content when a data set is selected and adds the scrollto function
@@ -15,6 +19,7 @@ datasetsModule.controller("datasetsMainController", [
     "datasetsDataelementsFactory",
     "advancedUsersFactory",
     "layoutSettingsFactory",
+    "datasetsLoadingService",
     function (
         $scope,
         $anchorScroll,
@@ -22,7 +27,8 @@ datasetsModule.controller("datasetsMainController", [
         datasetsLinkFactory,
         datasetsDataelementsFactory,
         advancedUsersFactory,
-        layoutSettingsFactory
+        layoutSettingsFactory,
+        datasetsLoadingService
     ) {
         $("#datasets").tab("show");
 
@@ -179,6 +185,7 @@ datasetsModule.controller("datasetsMainController", [
         $scope.$watch("selectedDataset", function () {
             ping();
             if ($scope.selectedDataset) {
+                const datasetId = $scope.selectedDataset.id;
                 $scope.categoryComboIDs = [];
                 $scope.toc = {
                     entries: [],
@@ -186,14 +193,18 @@ datasetsModule.controller("datasetsMainController", [
                     indicatorGroups: false,
                 };
                 //digest is triggered before the variable is stored
+                datasetsLoadingService.resetState();
+                datasetsLoadingService.loading.dataElements = false;
                 startLoadingState(false);
                 var aux = datasetsDataelementsFactory.get(
                     {
-                        datasetId: $scope.selectedDataset.id,
+                        datasetId: datasetId,
                     },
                     function () {
+                        if (!isDatasetScopeActive($scope, datasetId)) return;
                         $scope.datasetDataElements = aux;
-                        endLoadingState(true);
+                        datasetsLoadingService.loading.dataElements = true;
+                        if (datasetsLoadingService.done()) endLoadingState(true);
                     }
                 );
             }
@@ -309,7 +320,8 @@ datasetsModule.controller("datasetSectionController", [
 datasetsModule.controller("datasetCategoryComboController", [
     "$scope",
     "datasetsCategoryCombosFactory",
-    function ($scope, datasetsCategoryCombosFactory) {
+    "datasetsLoadingService",
+    function ($scope, datasetsCategoryCombosFactory, datasetsLoadingService) {
         $scope.categoryCombos4TOC = {
             displayName: "Category combinations",
             id: "categoryComboContainer",
@@ -325,6 +337,8 @@ datasetsModule.controller("datasetCategoryComboController", [
         $scope.$watch("datasetDataElements", function () {
             ping();
             if (typeof $scope.datasetDataElements.sections !== "undefined") {
+                const datasetId = $scope.selectedDataset && $scope.selectedDataset.id;
+                datasetsLoadingService.loading.categoryCombos = false;
                 startLoadingState(false);
                 //Query category combination information
                 $scope.categoryCombos = datasetsCategoryCombosFactory.get(
@@ -332,8 +346,10 @@ datasetsModule.controller("datasetCategoryComboController", [
                         ids: "id:in:" + "[" + $scope.categoryComboIDs.toString() + "]",
                     },
                     function () {
+                        if (!isDatasetScopeActive($scope, datasetId)) return;
                         addtoTOC($scope.toc, null, $scope.categoryCombos4TOC, "Category combination");
-                        endLoadingState(true);
+                        datasetsLoadingService.loading.categoryCombos = true;
+                        if (datasetsLoadingService.done()) endLoadingState(true);
                     },
                     true
                 );
@@ -346,7 +362,8 @@ datasetsModule.controller("datasetsIndicatorsController", [
     "$scope",
     "datasetsIndicatorsFactory",
     "datasetsIndicatorExpressionFactory",
-    function ($scope, datasetsIndicatorsFactory, datasetsIndicatorExpressionFactory) {
+    "datasetsLoadingService",
+    function ($scope, datasetsIndicatorsFactory, datasetsIndicatorExpressionFactory, datasetsLoadingService) {
         $scope.indicators4TOC = {
             displayName: "Indicators",
             id: "indicatorContainer",
@@ -354,40 +371,142 @@ datasetsModule.controller("datasetsIndicatorsController", [
         };
 
         /*
-         *  @name recursiveAssignNumerator
-         *  @description Gets the "readable" expressions for each indicator numerator
+         *  @name getUniqueExpressions
+         *  @description Gets the unique expressions for a given field from the indicators, mapped to the indices that share them
          *  @scope datasetsIndicatorsController
          */
-        recursiveAssignNumerator = function (i) {
-            if (i >= $scope.indicators.length) return;
-            datasetsIndicatorExpressionFactory.save(
-                {},
-                $scope.indicators[i].numerator,
-                function (data) {
-                    $scope.indicators[i].numerator = data.description;
-                    recursiveAssignNumerator(i + 1);
+        function getUniqueExpressions(indicators, field) {
+            const unique = {};
+            indicators.forEach((indicator, index) => {
+                const expression = indicator[field];
+                if (!unique[expression]) {
+                    unique[expression] = [];
+                }
+                unique[expression].push(index);
+            });
+            return unique;
+        }
+
+        /*
+         *  @name updateIndicatorProgress
+         *  @description Updates the loading spinner with the current indicator translation progress
+         *  @scope datasetsIndicatorsController
+         */
+        function updateIndicatorProgress(index, total, datasetId) {
+            if (!isDatasetScopeActive($scope, datasetId)) return;
+            updateProgressMessage({
+                message: "load_indicators",
+                current: index,
+                total: total,
+            });
+        }
+
+        /*
+         *  @name createIndicatorProgressTracker
+         *  @description Creates a progress tracker for the indicator numerator/denominator translations
+         *  @scope datasetsIndicatorsController
+         */
+        function createIndicatorProgressTracker(total, onDone, datasetId) {
+            const progress = { done: 0, total: total };
+
+            updateIndicatorProgress(0, progress.total, datasetId);
+
+            return {
+                step: function () {
+                    if (!isDatasetScopeActive($scope, datasetId)) return;
+                    progress.done += 1;
+                    updateIndicatorProgress(progress.done, progress.total, datasetId);
+                    if (progress.done >= progress.total) {
+                        onDone();
+                    }
                 },
-                true
-            );
-        };
+                finishIfEmpty: function () {
+                    if (progress.total === 0 && isDatasetScopeActive($scope, datasetId)) {
+                        onDone();
+                    }
+                },
+            };
+        }
 
         /*
          *  @name recursiveAssignNumerator
-         *  @description Gets the "readable" expressions for each indicator denominator
+         *  @description Gets the "readable" expression for each unique indicator numerator, applying it to every indicator that shares it
          *  @scope datasetsIndicatorsController
          */
-        recursiveAssignDenominator = function (i) {
-            if (i >= $scope.indicators.length) return;
+        function recursiveAssignNumerator(
+            indicators,
+            expressionMap,
+            expressions,
+            progressTracker,
+            datasetId,
+            currentIndex
+        ) {
+            if (currentIndex >= expressions.length) return;
+
+            const expression = expressions[currentIndex];
+            const indicatorIndices = expressionMap[expression];
+
             datasetsIndicatorExpressionFactory.save(
                 {},
-                $scope.indicators[i].denominator,
+                expression,
                 function (data) {
-                    $scope.indicators[i].denominator = data.description;
-                    recursiveAssignDenominator(i + 1);
+                    if (!isDatasetScopeActive($scope, datasetId)) return;
+                    indicatorIndices.forEach(idx => {
+                        indicators[idx].numerator = data.description;
+                    });
+                    progressTracker.step();
+                    recursiveAssignNumerator(
+                        indicators,
+                        expressionMap,
+                        expressions,
+                        progressTracker,
+                        datasetId,
+                        currentIndex + 1
+                    );
                 },
                 true
             );
-        };
+        }
+
+        /*
+         *  @name recursiveAssignDenominator
+         *  @description Gets the "readable" expression for each unique indicator denominator, applying it to every indicator that shares it
+         *  @scope datasetsIndicatorsController
+         */
+        function recursiveAssignDenominator(
+            indicators,
+            expressionMap,
+            expressions,
+            progressTracker,
+            datasetId,
+            currentIndex
+        ) {
+            if (currentIndex >= expressions.length) return;
+
+            const expression = expressions[currentIndex];
+            const indicatorIndices = expressionMap[expression];
+
+            datasetsIndicatorExpressionFactory.save(
+                {},
+                expression,
+                function (data) {
+                    if (!isDatasetScopeActive($scope, datasetId)) return;
+                    indicatorIndices.forEach(idx => {
+                        indicators[idx].denominator = data.description;
+                    });
+                    progressTracker.step();
+                    recursiveAssignDenominator(
+                        indicators,
+                        expressionMap,
+                        expressions,
+                        progressTracker,
+                        datasetId,
+                        currentIndex + 1
+                    );
+                },
+                true
+            );
+        }
 
         $scope.indicators = [];
 
@@ -400,11 +519,13 @@ datasetsModule.controller("datasetsIndicatorsController", [
         $scope.$watch("datasetDataElements", function () {
             ping();
             if (typeof $scope.datasetDataElements.dataSetElements != "undefined") {
-                startLoadingState(false);
+                const datasetId = $scope.selectedDataset && $scope.selectedDataset.id;
+                datasetsLoadingService.loading.indicators = false;
+                startLoadingState(false, { message: "load_indicators" });
                 $scope.indicators = [];
                 //Query indicator information
                 $scope.allIndicators = datasetsIndicatorsFactory.get(function () {
-                    endLoadingState(true);
+                    if (!isDatasetScopeActive($scope, datasetId)) return;
                     const isAdmin = !!$scope.is_admin;
                     const filteredIndicators = $scope.allIndicators.indicators.filter(
                         indicator =>
@@ -445,8 +566,41 @@ datasetsModule.controller("datasetsIndicatorsController", [
                     }, this);
                     if ($scope.indicators.length > 0) {
                         addtoTOC($scope.toc, null, $scope.indicators4TOC, "Indicators");
-                        recursiveAssignNumerator(0);
-                        recursiveAssignDenominator(0);
+                        const indicators = $scope.indicators;
+                        const numeratorMap = getUniqueExpressions(indicators, "numerator");
+                        const uniqueNumerators = Object.keys(numeratorMap);
+                        const denominatorMap = getUniqueExpressions(indicators, "denominator");
+                        const uniqueDenominators = Object.keys(denominatorMap);
+                        const progressTracker = createIndicatorProgressTracker(
+                            uniqueNumerators.length + uniqueDenominators.length,
+                            function () {
+                                if (!isDatasetScopeActive($scope, datasetId)) return;
+                                datasetsLoadingService.loading.indicators = true;
+                                if (datasetsLoadingService.done()) endLoadingState(true);
+                            },
+                            datasetId
+                        );
+
+                        recursiveAssignNumerator(
+                            indicators,
+                            numeratorMap,
+                            uniqueNumerators,
+                            progressTracker,
+                            datasetId,
+                            0
+                        );
+                        recursiveAssignDenominator(
+                            indicators,
+                            denominatorMap,
+                            uniqueDenominators,
+                            progressTracker,
+                            datasetId,
+                            0
+                        );
+                        progressTracker.finishIfEmpty();
+                    } else {
+                        datasetsLoadingService.loading.indicators = true;
+                        if (datasetsLoadingService.done()) endLoadingState(true);
                     }
                 });
             }

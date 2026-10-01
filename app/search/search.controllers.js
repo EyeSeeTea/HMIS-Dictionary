@@ -4,29 +4,19 @@
 ------------------------------------------------------------------------------------*/
 
 searchModule.controller("searchController", [
-    "$window",
     "$scope",
     "$translate",
     "NgTableParams",
     "searchAllFactory",
-    "searchTableFactory",
-    "getTableFactory",
-    "updateTable",
-    "updateSharing",
-    "getServices",
+    "indicatorVisualizationService",
     "advancedUsersFactory",
     "layoutSettingsFactory",
     function (
-        $window,
         $scope,
         $translate,
         NgTableParams,
         searchAllFactory,
-        searchTableFactory,
-        getTableFactory,
-        updateTable,
-        updateSharing,
-        getServices,
+        indicatorVisualizationService,
         advancedUsersFactory,
         layoutSettingsFactory
     ) {
@@ -343,212 +333,8 @@ searchModule.controller("searchController", [
         });
 
         $scope.getTable = function (name, id, numerator, denominator) {
-            indicatorComponents = extractIndicatorFormulaComponents(numerator, denominator);
-            indicatorComponents.push(id); //INDICATOR
-            getServices.query(
-                {
-                    uid: "BtFXTpKRl6n",
-                },
-                function (services) {
-                    $scope.serviceItems = services.organisationUnitGroups;
-                }
-            );
-
-            payload = {
-                name: "TEST",
-                showData: false,
-                fixRowHeaders: false,
-                numberType: "VALUE",
-                legend: {
-                    showKey: false,
-                    style: "FILL",
-                    strategy: "FIXED",
-                },
-                publicAccess: "--------",
-                type: "PIVOT_TABLE",
-                hideEmptyColumns: false,
-                hideEmptyRows: false,
-                subscribed: false,
-                parentGraphMap: {},
-                rowSubTotals: false,
-                displayDensity: "NORMAL",
-                displayDescription: "Created with HMIS Dictionary",
-                regressionType: "NONE",
-                completedOnly: false,
-                cumulativeValues: false,
-                colTotals: false,
-                showDimensionLabels: true,
-                sortOrder: 0,
-                fontSize: "NORMAL",
-                favorite: false,
-                topLimit: 0,
-                hideEmptyRowItems: "NONE",
-                aggregationType: "DEFAULT",
-                displayName: "TEST",
-                hideSubtitle: false,
-                description: "Created with HMIS Dictionary",
-                fixColumnHeaders: false,
-                percentStackedValues: false,
-                colSubTotals: false,
-                noSpaceBetweenColumns: false,
-                showHierarchy: false,
-                rowTotals: false,
-                seriesKey: {
-                    hidden: false,
-                },
-                digitGroupSeparator: "SPACE",
-                hideTitle: false,
-                regression: false,
-                colorSet: "DEFAULT",
-                skipRounding: false,
-
-                fontStyle: {},
-                access: {
-                    read: true,
-                    update: true,
-                    externalize: true,
-                    delete: true,
-                    write: true,
-                    manage: true,
-                },
-                reportingParams: {
-                    organisationUnit: false,
-                    reportingPeriod: false,
-                    parentOrganisationUnit: false,
-                    grandParentOrganisationUnit: false,
-                },
-
-                axes: [],
-                translations: [],
-                yearlySeries: [],
-                interpretations: [],
-                userGroupAccesses: [
-                    {
-                        access: "rw------",
-                        userGroupUid: "epFY01iJN0Z",
-                        displayName: "ALL USERS",
-                        id: "epFY01iJN0Z",
-                    },
-                ],
-                subscribers: [],
-                userAccesses: [],
-                favorites: [],
-                columns: [
-                    {
-                        dimension: "pe",
-                        items: [
-                            {
-                                id: "THIS_YEAR",
-                            },
-                        ],
-                    },
-                ],
-                filters: [
-                    {
-                        dimension: "ou",
-                        items: [
-                            {
-                                id: "USER_ORGUNIT",
-                            },
-                        ],
-                    },
-                ],
-                rows: [
-                    {
-                        dimension: "dx",
-                        items: [
-                            {
-                                id: "DqqSJFWB392",
-                            },
-                            {
-                                id: "qywsusOdy33",
-                            },
-                        ],
-                    },
-                ],
-                series: [],
-                outlierAnalysis: null,
-                cumulative: false,
-            };
-
-            sharing = {
-                object: {
-                    id: "LEP0WHTGYUe",
-                    name: "name",
-                    publicAccess: "--------",
-                    externalAccess: false,
-                    userGroupAccesses: [{ id: "epFY01iJN0Z", name: "ALL USERS", access: "rw------" }],
-                },
-            };
-
-            items = indicatorComponents.map(id => {
-                return { id: id };
-            });
-
-            payload.name = name + " - " + id;
-            payload.rows[0].items = items;
-
-            getTableFactory.query(
-                {
-                    filter: "name:eq:" + payload.name,
-                },
-                function (tbl) {
-                    if (tbl && tbl.visualizations[0]) {
-                        if (tbl.visualizations[0].id) {
-                            console.debug("Updating Table");
-                            payload.id = tbl.visualizations[0].id;
-                            sharing.object.id = tbl.visualizations[0].id;
-                            sharing.object.name = tbl.visualizations[0].name;
-
-                            updateTable.update(
-                                {
-                                    uid: tbl.visualizations[0].id,
-                                },
-                                payload,
-                                function (response) {
-                                    updateSharing.update({ uid: tbl.visualizations[0].id }, sharing, function (res) {});
-
-                                    uid = tbl.visualizations[0].id;
-                                    $window.open(dhisroot + "dhis-web-data-visualizer/index.html#/" + uid, "_blank");
-                                }
-                            );
-                        }
-                    }
-
-                    if (tbl.visualizations[0] == undefined) {
-                        console.debug("Creating Table");
-                        searchTableFactory.set_table.query(payload, function (response) {
-                            uid = response.response.uid;
-                            updateSharing.update({ uid: uid }, sharing, function (res) {});
-                            $window.open(dhisroot + "dhis-web-data-visualizer/index.html#/" + uid, "_blank");
-                        });
-                    }
-                }
-            );
+            indicatorVisualizationService.openIndicatorVisualization(name, id, numerator, denominator);
         };
-
-        function extractIndicatorFormulaComponents(numerator, denominator) {
-            let numerator_ids = extractIdsFromFormula(numerator);
-            let denominator_ids = extractIdsFromFormula(denominator);
-            return numerator_ids.concat(denominator_ids);
-        }
-
-        function extractIdsFromFormula(formula) {
-            let formulaElements = formula.replace(/I{/g, "#{").replace(/N{/g, "#{").split("#");
-            return formulaElements
-                .filter(id => id != "")
-                .filter(id => id != " ")
-                .filter(id => id != "(")
-                .map(el => el.split("{")[1])
-                .map(el => {
-                    if (el != undefined) {
-                        return el.split("}")[0];
-                    } else {
-                        return undefined;
-                    }
-                })
-                .filter(el => el != undefined);
-        }
 
         $scope.formulaModal = {
             title: "",
@@ -730,7 +516,7 @@ searchModule.controller("searchController", [
 
             var operatorRegex = /}\s*[\+\-\*]\s*(#|I|N)/g;
             var dataElementRegex = /#\{\w*}/g;
-            var dataElementCatRegex = /#\{\w*.\w*}/g;
+            var dataElementCatRegex = /#\{\w*\.\w*}/g;
             var programIndicatorRegex = /I\{\w*}/g;
             var indicatorRegex = /N\{\w*}/g;
             if (!formula) {
