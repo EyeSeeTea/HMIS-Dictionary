@@ -235,7 +235,11 @@ datasetsModule.controller("datasetSectionController", [
         $scope.$watch("datasetDataElements", function () {
             ping();
             if (typeof $scope.datasetDataElements.dataSetElements != "undefined") {
-                //initialize categoryCombo for datasetCategoryComboController
+                //if there are no sections rearrange/change TOC name
+                if ($scope.datasetDataElements.sections.length == 0) $scope.showWithoutSections();
+                else $scope.showWithSections();
+
+                $scope.categoryCombo = [];
                 $scope.datasetDataElements.sections.forEach((section, sectionIndex) => {
                     $scope.categoryCombo[sectionIndex] = [];
                     section.dataElements.forEach((dataElement, dataElementIndex) => {
@@ -247,10 +251,6 @@ datasetsModule.controller("datasetSectionController", [
                         );
                     });
                 });
-
-                //if there are no sections rearrange/change TOC name
-                if ($scope.datasetDataElements.sections.length == 0) $scope.showWithoutSections();
-                else $scope.showWithSections();
             }
         });
 
