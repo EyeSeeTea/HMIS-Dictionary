@@ -426,22 +426,6 @@ dossierProgramsModule.factory("dossiersProgramRuleVariablesFactory", [
     },
 ]);
 
-var qryTables = dhisUrl + "visualizations";
-var qryTableUpdate = dhisUrl + "visualizations/:uid";
-var qrySharing = dhisUrl + "sharing?type=visualization&id=:uid";
-
-searchModule.factory("dossiersProgramVisualizationTableFactory", [
-    "$resource",
-    function ($resource) {
-        return {
-            get_table: $resource(qryTables, {}, { query: { method: "GET", isArray: false } }),
-            set_table: $resource(qryTables, {}, { query: { method: "POST", isArray: false } }),
-            upd_table: $resource(qryTableUpdate, { uid: "@uid" }, { query: { method: "PUT", isArray: false } }),
-            upd_sharing: $resource(qrySharing, { uid: "@uid" }, { query: { method: "PUT" } }),
-        };
-    },
-]);
-
 var qryTest =
     dhisUrl +
     "programs.json?filter=displayName\\:eq\\::displayName&fields=id,displayName,displayDescription,programStages[id]&paging=false";

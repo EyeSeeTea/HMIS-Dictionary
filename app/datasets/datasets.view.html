@@ -47,7 +47,7 @@
 
         <div class="col-md-12" id="sectionContainer" ng-controller="datasetSectionController">
             <!-- Request if userHaveAcces after controller, because category combo section is dependent of this controller -->
-            <div ng-repeat="section in datasetDataElements.sections" ng-if="accesses.sections">
+            <div ng-repeat="(sectionIndex, section) in datasetDataElements.sections" ng-if="accesses.sections">
                 <h3 class="section" id="{{ section.id }}">{{ section.displayName }}
                     <help-icon title='{{ "datasets_sec_description" | translate }}' size="medium" />
                 </h3>
@@ -90,7 +90,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="dataElement in section.dataElements">
+                        <tr ng-repeat="(dataElementIndex, dataElement) in section.dataElements">
                             <td ng-if="accesses.sections_name">
                                 {{ dataElement.displayName || dataElement.dataElement.displayName }}
                             </td>
@@ -122,9 +122,9 @@
                                 </ul>
                             </td>
                             <td ng-if="accesses.sections_categoryCombination">
-                                <a href="" class="pageref" ng-click="scrollTo(categoryCombo[$parent.$index][$index].id)"
+                                <a href="" class="pageref" ng-click="scrollTo(categoryCombo[sectionIndex][dataElementIndex].id)"
                                     target="_self">
-                                    {{ categoryCombo[$parent.$index][$index].displayName }}
+                                    {{ categoryCombo[sectionIndex][dataElementIndex].displayName }}
                                 </a>
                             </td>
                         </tr>

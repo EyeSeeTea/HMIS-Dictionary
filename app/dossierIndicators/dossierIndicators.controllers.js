@@ -1,3 +1,7 @@
+function isIndicatorScopeActive(scope, indicatorId) {
+    return !scope.$$destroyed && (!indicatorId || scope.selectedIndicator?.id === indicatorId);
+}
+
 dossierIndicatorsModule.controller("dossierIndicatorsMainController", [
     "$scope",
     "$anchorScroll",
@@ -314,6 +318,7 @@ dossierIndicatorsModule.controller("dossierIndicatorsTitle", [
         $scope.$watch("selectedIndicator", function () {
             ping();
             if ($scope.selectedIndicator) {
+                const indicatorId = $scope.selectedIndicator.id;
                 startLoadingState(false);
                 //Step 1 : Numerator :
                 var numeratorOperator = getOperator($scope.selectedIndicator.numerator);
@@ -332,6 +337,7 @@ dossierIndicatorsModule.controller("dossierIndicatorsTitle", [
 
                 //Step 2: execution des promises
                 $q.all(promises).then(function (arr) {
+                    if (!isIndicatorScopeActive($scope, indicatorId)) return;
                     var index = 0;
                     var tabResult = [];
 
@@ -357,6 +363,7 @@ dossierIndicatorsModule.controller("dossierIndicatorsTitle", [
                 var elementMappingDenominator = resultDenominator[2];
 
                 $q.all(promisesDenominator).then(function (arr) {
+                    if (!isIndicatorScopeActive($scope, indicatorId)) return;
                     var indexDenominator = 0;
                     var tabResultDenominator = [];
 
@@ -520,6 +527,7 @@ dossierIndicatorsModule.controller("dossierNumeratorTable", [
         $scope.$watch("selectedIndicator", function () {
             ping();
             if ($scope.selectedIndicator) {
+                const indicatorId = $scope.selectedIndicator.id;
                 startLoadingState(false);
 
                 var tableNumerator = creationArray4Table(parseElement(getElement($scope.selectedIndicator.numerator)));
@@ -529,9 +537,10 @@ dossierIndicatorsModule.controller("dossierNumeratorTable", [
                 var numeratorElementMapping = tableNumerator[2];
 
                 $q.all(promiseNumeratorTable).then(function (arr) {
-                    tabResult = [];
-                    tabPromiseDataSets = [];
-                    index = 0;
+                    if (!isIndicatorScopeActive($scope, indicatorId)) return;
+                    var tabResult = [];
+                    var tabPromiseDataSets = [];
+                    var index = 0;
                     arr.forEach(function (response) {
                         var tab = [];
                         var tabDataElement = [];
@@ -572,7 +581,8 @@ dossierIndicatorsModule.controller("dossierNumeratorTable", [
                     });
                     //Exécution of each promises dataSets
                     $q.all(tabPromiseDataSets).then(function (arr) {
-                        tabResultDataSets = [];
+                        if (!isIndicatorScopeActive($scope, indicatorId)) return;
+                        var tabResultDataSets = [];
                         arr.forEach(function (response) {
                             var name = response.dataSets.map(function (data) {
                                 return data.name;
@@ -821,6 +831,7 @@ dossierIndicatorsModule.controller("dossierDenominatorTable", [
         $scope.$watch("selectedIndicator", function () {
             ping();
             if ($scope.selectedIndicator) {
+                const indicatorId = $scope.selectedIndicator.id;
                 startLoadingState(false);
                 var tableDenominator = creationArray4Table(
                     parseElement(getElement($scope.selectedIndicator.denominator))
@@ -831,9 +842,10 @@ dossierIndicatorsModule.controller("dossierDenominatorTable", [
                 var denominatorElementMapping = tableDenominator[2];
 
                 $q.all(promiseDenominatorTable).then(function (arr) {
-                    tabResultDenominator = [];
-                    tabPromiseDataSetsDenominator = [];
-                    indexDenominator = 0;
+                    if (!isIndicatorScopeActive($scope, indicatorId)) return;
+                    var tabResultDenominator = [];
+                    var tabPromiseDataSetsDenominator = [];
+                    var indexDenominator = 0;
                     arr.forEach(function (response) {
                         var tabDenominator = [];
                         var tabDataElementDenominator = [];
@@ -882,7 +894,8 @@ dossierIndicatorsModule.controller("dossierDenominatorTable", [
                     console.log(tabResultDenominator);
 
                     $q.all(tabPromiseDataSetsDenominator).then(function (arr) {
-                        tabResultDataSetsDenominator = [];
+                        if (!isIndicatorScopeActive($scope, indicatorId)) return;
+                        var tabResultDataSetsDenominator = [];
                         arr.forEach(function (response) {
                             var nameDenominator = response.dataSets.map(function (data) {
                                 return data.name;
