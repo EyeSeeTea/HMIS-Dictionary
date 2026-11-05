@@ -23,6 +23,7 @@ const sources: SearchSources = {
             name: "Tracker element",
             icd10: "",
             groupIds: [],
+            groupNames: [],
             dataSets: [],
         },
         {
@@ -33,6 +34,7 @@ const sources: SearchSources = {
             code: "DE1",
             icd10: "A01",
             groupIds: [],
+            groupNames: ["First group", "Second group"],
             dataSets: [
                 {
                     id: "ds1",
@@ -51,12 +53,21 @@ const sources: SearchSources = {
             name: "Hidden element",
             icd10: "",
             groupIds: ["blacklistedDeg"],
+            groupNames: ["Hidden group"],
             dataSets: [],
         },
     ],
     categoryOptionCombos: [{ id: "coc1", name: "Under 5" }],
     programIndicators: [
-        { ...base, id: "pi1", name: "Program indicator", expression: "1", filter: "2", groups: [] },
+        {
+            ...base,
+            id: "pi1",
+            name: "Program indicator",
+            expression: "1",
+            filter: "2",
+            groups: [],
+            programName: "Its program",
+        },
         {
             ...base,
             id: "pi2",
@@ -64,6 +75,7 @@ const sources: SearchSources = {
             expression: "",
             filter: "",
             groups: [{ id: "notInUsePig", name: "G", code: "" }],
+            programName: "",
         },
     ],
     indicators: [
@@ -127,6 +139,17 @@ describe("SearchCatalog", () => {
         const row = catalog.rows().find(row => row.columns.object_id === "trackerDe");
         expect(row?.columns.object_type).toBe("dataElement (tracker)");
         expect(row?.columns.objectGroup_name).toBe("Line list");
+    });
+
+    it("has columns for the data element groups and the program, next to the group column", () => {
+        const columnsOf = (id: string) =>
+            catalog.rows().find(row => row.columns.object_id === id)?.columns;
+
+        expect(columnsOf("de1")?.dataElementGroup_name).toBe("First group, Second group");
+        expect(columnsOf("de1")?.program_name).toBe("");
+        expect(columnsOf("trackerDe")?.program_name).toBe("Line list");
+        expect(columnsOf("pi1")?.program_name).toBe("Its program");
+        expect(columnsOf("ind1")?.program_name).toBe("");
     });
 
     it("gives program indicators their short name", () => {

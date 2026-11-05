@@ -100,6 +100,17 @@ export const columnTexts: Record<SearchColumn, { title: () => string; help: () =
                 "Defines the name of the data element or indicator groups assigned or used in a dataset or the group names assigned to a program indicator."
             ),
     },
+    dataElementGroup_name: {
+        title: () => i18n.t("Data Element Groups"),
+        help: () => i18n.t("Defines the data element groups a data element belongs to."),
+    },
+    program_name: {
+        title: () => i18n.t("Program"),
+        help: () =>
+            i18n.t(
+                "Defines the program of a program indicator, or the programs that use a tracker data element."
+            ),
+    },
     service_id: {
         title: () => i18n.t("Service ID"),
         help: () =>

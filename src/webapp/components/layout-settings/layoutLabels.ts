@@ -54,6 +54,8 @@ const labels: Record<string, () => string> = {
     objectGroup_code: () => i18n.t("Group Code"),
     objectGroup_id: () => i18n.t("Group ID"),
     objectGroup_name: () => i18n.t("Group Name"),
+    dataElementGroup_name: () => i18n.t("Data Element Groups"),
+    program_name: () => i18n.t("Program"),
     object_ICD10: () => i18n.t("ICD10"),
     object_code: () => i18n.t("Code"),
     object_den_formula: () => i18n.t("Denominator Formula (ind. only)"),

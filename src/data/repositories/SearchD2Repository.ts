@@ -48,7 +48,7 @@ export class SearchD2Repository implements SearchRepository {
                     displayShortName: true,
                     domainType: true,
                     attributeValues: attributeValueFields,
-                    dataElementGroups: { id: true },
+                    dataElementGroups: { id: true, displayName: true },
                     dataSetElements: { dataSet: groupFields },
                 },
                 paging: false,
@@ -69,6 +69,7 @@ export class SearchD2Repository implements SearchRepository {
                     )?.value
                 ),
                 groupIds: dataElement.dataElementGroups.map(group => group.id),
+                groupNames: dataElement.dataElementGroups.map(group => group.displayName),
                 dataSets: dataElement.dataSetElements.map(({ dataSet }) => toGroup(dataSet)),
             }))
         );
@@ -117,6 +118,7 @@ export class SearchD2Repository implements SearchRepository {
                     expression: true,
                     filter: true,
                     programIndicatorGroups: { id: true, code: true, name: true },
+                    program: { displayName: true },
                 },
                 paging: false,
             })
@@ -126,6 +128,7 @@ export class SearchD2Repository implements SearchRepository {
                 name: programIndicator.displayName,
                 code: text(programIndicator.code),
                 shortName: text(programIndicator.displayShortName),
+                programName: text(programIndicator.program?.displayName),
                 formName: text(programIndicator.displayFormName),
                 description: text(programIndicator.displayDescription),
                 expression: text(programIndicator.expression),

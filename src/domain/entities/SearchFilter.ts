@@ -17,6 +17,8 @@ export type SearchColumn =
     | "objectGroup_id"
     | "objectGroup_code"
     | "objectGroup_name"
+    | "dataElementGroup_name"
+    | "program_name"
     | "service_id"
     | "service_code"
     | "service_name";

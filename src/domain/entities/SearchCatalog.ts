@@ -41,6 +41,8 @@ export type SearchObject = SearchObjectBase &
               domain: DataElementDomain;
               shortName: string;
               icd10: string;
+              dataElementGroupNames: string[];
+              programNames: string[];
               healthServices: HealthService[];
           }
         | {
@@ -53,6 +55,7 @@ export type SearchObject = SearchObjectBase &
         | {
               type: "programIndicator";
               shortName: string;
+              programName: string;
               expression: ProgramExpression;
               filter: ProgramExpression;
           }
@@ -70,6 +73,7 @@ export type SearchDataElementSource = NamedRef & {
     description: string;
     icd10: string;
     groupIds: Id[];
+    groupNames: string[];
     dataSets: SearchGroupSource[];
 };
 
@@ -91,6 +95,7 @@ export type SearchProgramIndicatorSource = NamedRef & {
     expression: string;
     filter: string;
     groups: SearchGroup[];
+    programName: string;
 };
 
 export type SearchProgramSource = SearchGroup & { dataElementIds: Id[] };
@@ -131,6 +136,9 @@ export class SearchCatalog extends Struct<SearchCatalogAttrs>() {
                 const dataSets = source.dataSets.filter(
                     dataSet => !settings.blacklist.dataSetIds.includes(dataSet.id)
                 );
+                const elementPrograms = programs.filter(program =>
+                    program.dataElementIds.includes(source.id)
+                );
 
                 return {
                     type: "dataElement",
@@ -141,10 +149,10 @@ export class SearchCatalog extends Struct<SearchCatalogAttrs>() {
                     // Aggregate elements belong to data sets, and tracker ones to programs
                     groups:
                         source.domain === "tracker"
-                            ? programs
-                                  .filter(program => program.dataElementIds.includes(source.id))
-                                  .map(toGroup)
+                            ? elementPrograms.map(toGroup)
                             : dataSets.map(toGroup),
+                    dataElementGroupNames: source.groupNames,
+                    programNames: elementPrograms.map(program => program.name),
                     healthServices: uniqueById(
                         dataSets.flatMap(dataSet =>
                             findServices(dataSetServiceValue(dataSet), servicesByKey)
@@ -180,6 +188,7 @@ export class SearchCatalog extends Struct<SearchCatalogAttrs>() {
                     type: "programIndicator",
                     ...getBase(source),
                     shortName: source.shortName,
+                    programName: source.programName,
                     expression: ProgramExpression.create({ expression: source.expression }),
                     filter: ProgramExpression.create({ expression: source.filter }),
                     groups: source.groups.map(toGroup),
@@ -223,6 +232,9 @@ export class SearchCatalog extends Struct<SearchCatalogAttrs>() {
                 objectGroup_id: joinValues(object.groups.map(group => group.id)),
                 objectGroup_code: joinValues(object.groups.map(group => group.code)),
                 objectGroup_name: joinValues(object.groups.map(group => group.name)),
+                dataElementGroup_name:
+                    object.type === "dataElement" ? joinValues(object.dataElementGroupNames) : "",
+                program_name: getProgramNames(object),
                 service_id: joinValues(services.map(service => service.id)),
                 service_code: joinValues(services.map(service => service.code)),
                 service_name: joinValues(services.map(service => service.name)),
@@ -239,6 +251,11 @@ export class SearchCatalog extends Struct<SearchCatalogAttrs>() {
     private formulaText(formula: IndicatorFormula | undefined): string {
         return formula ? formulaToPlainText(formula.resolve(this.lookup), this.tags) : "";
     }
+}
+
+function getProgramNames(object: SearchObject): string {
+    if (object.type === "programIndicator") return object.programName;
+    return object.type === "dataElement" ? joinValues(object.programNames) : "";
 }
 
 function getTypeLabel(object: SearchObject): string {

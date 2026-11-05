@@ -47,6 +47,8 @@ export const searchColumnDefs: SearchColumnDef[] = [
     def("objectGroup_id", "groupsBasics", "id", { advanced: true }),
     def("objectGroup_code", "groupsBasics", "code", { advanced: true }),
     def("objectGroup_name", "groupsBasics", "name"),
+    def("dataElementGroup_name", "groupsBasics", "dataElementGroups"),
+    def("program_name", "groupsBasics", "program"),
     def("service_id", "servicesBasics", "id", { advanced: true }),
     def("service_code", "servicesBasics", "code", { advanced: true }),
     def("service_name", "servicesBasics", "name", { defaultVisible: true }),

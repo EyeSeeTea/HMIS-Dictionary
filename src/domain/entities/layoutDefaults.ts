@@ -51,6 +51,8 @@ export const layoutDefaults: Record<LayoutView, LayoutSection[]> = {
             ["groupsBasics", "srch_SelectColumns_grpBasics", "everyone"],
             [
                 ["name", "objectGroup_name", "admin"],
+                ["dataElementGroups", "dataElementGroup_name", "everyone"],
+                ["program", "program_name", "everyone"],
                 ["id", "objectGroup_id", "admin"],
                 ["code", "objectGroup_code", "admin"],
             ]
