@@ -113,6 +113,7 @@ export class SearchD2Repository implements SearchRepository {
             this.api.models.programIndicators.get({
                 fields: {
                     ...baseFields,
+                    displayShortName: true,
                     expression: true,
                     filter: true,
                     programIndicatorGroups: { id: true, code: true, name: true },
@@ -124,6 +125,7 @@ export class SearchD2Repository implements SearchRepository {
                 id: programIndicator.id,
                 name: programIndicator.displayName,
                 code: text(programIndicator.code),
+                shortName: text(programIndicator.displayShortName),
                 formName: text(programIndicator.displayFormName),
                 description: text(programIndicator.displayDescription),
                 expression: text(programIndicator.expression),

@@ -129,6 +129,12 @@ describe("SearchCatalog", () => {
         expect(row?.columns.objectGroup_name).toBe("Line list");
     });
 
+    it("gives program indicators their short name", () => {
+        const row = catalog.rows().find(row => row.columns.object_id === "pi1");
+
+        expect(row?.columns.object_shortName).toBe("short");
+    });
+
     it("shows not-in-use objects to admins", () => {
         const adminCatalog = SearchCatalog.build(sources, healthServices, {
             user: admin,

@@ -50,7 +50,12 @@ export type SearchObject = SearchObjectBase &
               denominator: IndicatorFormula;
               healthServices: HealthService[];
           }
-        | { type: "programIndicator"; expression: ProgramExpression; filter: ProgramExpression }
+        | {
+              type: "programIndicator";
+              shortName: string;
+              expression: ProgramExpression;
+              filter: ProgramExpression;
+          }
     );
 
 export type DataElementDomain = "aggregate" | "tracker";
@@ -80,6 +85,7 @@ export type SearchIndicatorSource = NamedRef & {
 
 export type SearchProgramIndicatorSource = NamedRef & {
     code: string;
+    shortName: string;
     formName: string;
     description: string;
     expression: string;
@@ -173,6 +179,7 @@ export class SearchCatalog extends Struct<SearchCatalogAttrs>() {
                 (source): SearchObject => ({
                     type: "programIndicator",
                     ...getBase(source),
+                    shortName: source.shortName,
                     expression: ProgramExpression.create({ expression: source.expression }),
                     filter: ProgramExpression.create({ expression: source.filter }),
                     groups: source.groups.map(toGroup),
@@ -206,7 +213,7 @@ export class SearchCatalog extends Struct<SearchCatalogAttrs>() {
                 object_code: object.code,
                 object_ICD10: object.type === "dataElement" ? object.icd10 : "",
                 object_name: object.name,
-                object_shortName: object.type === "programIndicator" ? "" : object.shortName,
+                object_shortName: object.shortName,
                 object_form: object.formName,
                 object_description: object.description,
                 object_num_formula: this.formulaText(numerator),
