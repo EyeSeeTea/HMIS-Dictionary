@@ -41,10 +41,12 @@ describe("ProgramExpression", () => {
             expect(result.expression).toBe(`#{${stageA}.de1} == 'Yes'`);
         });
 
-        it("keeps longer codes, as the kept bug P11", () => {
+        it("replaces codes of any length", () => {
             const value = `#{${stageA}.de1} == '22'`;
 
-            expect(expression(value).withOptionNames([stage]).expression).toBe(value);
+            expect(expression(value).withOptionNames([stage]).expression).toBe(
+                `#{${stageA}.de1} == 'Twenty two'`
+            );
         });
 
         it("keeps it when the stage or the option are unknown", () => {
@@ -66,10 +68,12 @@ describe("ExpressionDescription", () => {
         expect(ok("a\\.b").toDisplayText("programIndicatorFilter", "x")).toBe("a.b");
     });
 
-    it("keeps filters with a program stage id as returned, as the kept bug P11", () => {
+    it("unescapes dots in filters with a program stage id too", () => {
         const text = "Program stage id == 'x\\.y'";
 
-        expect(ok(text).toDisplayText("programIndicatorFilter", "x")).toBe(text);
+        expect(ok(text).toDisplayText("programIndicatorFilter", "x")).toBe(
+            "Program stage id == 'x.y'"
+        );
     });
 
     it("shows errors with the expression", () => {

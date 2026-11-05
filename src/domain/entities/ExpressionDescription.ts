@@ -20,10 +20,7 @@ export class ExpressionDescription extends Struct<ExpressionDescriptionAttrs>() 
             case "programIndicatorFilter":
                 if (!result.ok)
                     return `${result.message}: ${result.description}\n Filter: ${expression}`;
-                // Stays as returned: bug P11, kept until the end
-                return result.text.includes("Program stage id")
-                    ? result.text
-                    : unescapeDots(result.text);
+                return unescapeDots(result.text);
         }
     }
 }

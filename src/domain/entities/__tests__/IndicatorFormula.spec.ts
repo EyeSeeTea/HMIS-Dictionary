@@ -69,9 +69,9 @@ describe("IndicatorFormula", () => {
         });
     });
 
-    it("referencesAnyDataElement only finds #{de.coc}, as the kept bug", () => {
+    it("referencesAnyDataElement finds #{de.coc} and #{de}", () => {
         expect(formula("#{de1.coc}").referencesAnyDataElement(["de1"])).toBe(true);
-        expect(formula("#{de1}").referencesAnyDataElement(["de1"])).toBe(false);
+        expect(formula("#{de1}").referencesAnyDataElement(["de1"])).toBe(true);
         expect(formula("#{de2.coc}").referencesAnyDataElement(["de1"])).toBe(false);
     });
 

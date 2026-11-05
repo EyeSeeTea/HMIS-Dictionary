@@ -55,10 +55,6 @@ test.describe("1. App shell and navigation", () => {
             page,
             context,
         }) => {
-            test.fixme(
-                true,
-                "Baseline problem P1: on v42 the ping gets a 401, so the app never reloads"
-            );
             await app.open("dossierIndicators");
             await expect(app.tab(tabIds.search)).toBeVisible();
             await context.clearCookies();

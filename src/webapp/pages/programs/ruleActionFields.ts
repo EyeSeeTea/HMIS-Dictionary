@@ -13,6 +13,7 @@ export function getActionFields(action: ProgramRuleAction): ActionField[] {
         ...field(t.dos_DataElement(), action.dataElement?.name),
         ...field(t.dos_TrackedEntityAttributes(), action.attribute?.name),
     ];
+    const widget = field(t.dos_DisplayWidget(), action.location);
     const contentAndData = (contentLabel: string) => [
         ...field(contentLabel, action.content),
         ...field(t.dos_Expression(), action.data),
@@ -22,10 +23,9 @@ export function getActionFields(action: ProgramRuleAction): ActionField[] {
         case "ASSIGN":
             return [...target, ...contentAndData(t.dos_ProgramRuleVariableAssign())];
         case "DISPLAYKEYVALUEPAIR":
-            // The widget (location) is not fetched: "Display Widget" never shows, bug P12 kept
-            return contentAndData(t.dos_KeyLabel());
+            return [...widget, ...contentAndData(t.dos_KeyLabel())];
         case "DISPLAYTEXT":
-            return contentAndData(t.dos_StaticText());
+            return [...widget, ...contentAndData(t.dos_StaticText())];
         case "ERRORONCOMPLETE":
         case "SHOWERROR":
         case "SHOWWARNING":

@@ -1,5 +1,5 @@
 import { expect, fixtures, test } from "../support/fixtures";
-import { env } from "../support/env";
+import { login } from "../support/login";
 import { t } from "../support/i18n";
 import { App, ProgramsPage, SearchPage } from "../support/pages";
 import { readXlsx } from "../support/xlsx";
@@ -109,9 +109,7 @@ test.describe("2. Translations", () => {
                 const context = await browser.newContext({
                     storageState: { cookies: [], origins: [] },
                 });
-                await context.request.post(`${env.dhis2Url}/api/auth/login`, {
-                    data: { username: env.username, password: env.password },
-                });
+                await login(context.request);
                 const page = await context.newPage();
                 const app = new App(page);
                 await app.open("dossiers");

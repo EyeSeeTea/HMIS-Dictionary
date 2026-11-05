@@ -93,6 +93,7 @@ export function createAction(attrs: Partial<ProgramRuleAction>): ProgramRuleActi
         templateName: "",
         content: "",
         data: "",
+        location: "",
         ...attrs,
     };
 }

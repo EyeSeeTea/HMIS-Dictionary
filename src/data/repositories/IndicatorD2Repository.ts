@@ -13,11 +13,11 @@ export class IndicatorD2Repository implements IndicatorRepository {
     constructor(private api: D2Api) {}
 
     getForIndicatorsScreen(): FutureData<Indicator[]> {
-        return this.get({ name: "name", description: "description" });
+        return this.get({ name: "displayName", description: "displayDescription" });
     }
 
     getForDataSets(): FutureData<Indicator[]> {
-        return this.get({ name: "displayName", description: "description" });
+        return this.get({ name: "displayName", description: "displayDescription" });
     }
 
     getForPrograms(): FutureData<Indicator[]> {

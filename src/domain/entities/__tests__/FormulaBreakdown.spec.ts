@@ -39,7 +39,7 @@ describe("FormulaBreakdown", () => {
         expect(build("A{p1.tea} + #{de1}").text).toBe("Program tea + Element");
     });
 
-    it("components only have the types of today", () => {
+    it("components have the types of today, and a constant is a number with the value of the constant", () => {
         const { components } = build(
             "#{de1.coc1} + D{p1.de1} + I{pi1} + G{g1} + 3 + N{ind1} + C{c1}"
         );
@@ -49,6 +49,7 @@ describe("FormulaBreakdown", () => {
             "trackerDataElement",
             "programIndicator",
             "orgUnitGroup",
+            "number",
             "number",
         ]);
         expect(components[0]?.dataSetNames).toEqual(["Data set A", "Data set B"]);

@@ -251,6 +251,14 @@ describe("SearchFilter", () => {
         expect(filter("nope").matches(malaria)).toBe(false);
     });
 
+    it("finds text without accents, in both directions", () => {
+        const cafe = row({ object_name: "Café" });
+
+        expect(filter("cafe").matches(cafe)).toBe(true);
+        expect(filter("CAFÉ").matches(row({ object_name: "cafe" }))).toBe(true);
+        expect(filter("", { object_name: "afe" }).matches(cafe)).toBe(true);
+    });
+
     it("global search also checks raw expressions", () => {
         expect(filter("rawUid").matches(malaria)).toBe(true);
     });

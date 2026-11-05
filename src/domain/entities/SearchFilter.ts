@@ -1,3 +1,4 @@
+import { deburr } from "$/utils/deburr";
 import { Struct } from "./generic/Struct";
 
 /** Also the translation keys of the Search columns. */
@@ -91,6 +92,7 @@ function getWords(text: string): string[] {
     return text.split(/[\s|&]+/).filter(Boolean);
 }
 
+/** Not case-sensitive, and "e" finds "é". */
 function includes(value: string, term: string): boolean {
-    return value.toLowerCase().includes(term.toLowerCase());
+    return deburr(value).toLowerCase().includes(deburr(term).toLowerCase());
 }

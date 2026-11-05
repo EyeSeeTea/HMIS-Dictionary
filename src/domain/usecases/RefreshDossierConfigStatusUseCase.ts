@@ -27,8 +27,7 @@ export class RefreshDossierConfigStatusUseCase {
             const status = DossierConfigStatus.build(settings, healthServices, attributes);
             const isComplete = status.isComplete();
 
-            // No write if the attribute check does not pass, so the flag can stay true (decision 6)
-            if (!status.healthServiceAttribute || isComplete === settings.dossierConfigComplete)
+            if (isComplete === settings.dossierConfigComplete)
                 return Future.success<Error, DossierConfigStatusResult>({ status, changed: false });
 
             return this.appSettingsRepository

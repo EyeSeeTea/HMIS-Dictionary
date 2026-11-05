@@ -42,6 +42,16 @@ export const DossierEditor: React.FC<{ service: HealthService }> = React.memo(({
 
     const isLoading = text?.type === "loading";
 
+    // The button stays disabled a moment after loading, as in the Angular app, so it cannot be
+    // pressed before the editor shows the new text
+    const [isSettling, setSettling] = React.useState(false);
+    React.useEffect(() => {
+        if (loadedHtml === undefined) return;
+        setSettling(true);
+        const timer = setTimeout(() => setSettling(false), 400);
+        return () => clearTimeout(timer);
+    }, [loadedHtml, service, language]);
+
     const save = () => {
         setSaveState("saving");
 
@@ -58,7 +68,7 @@ export const DossierEditor: React.FC<{ service: HealthService }> = React.memo(({
         saved: "btn-success",
         error: "btn-danger",
     }[saveState];
-    const saveDisabled = isLoading || html === undefined || saveState === "saving";
+    const saveDisabled = isLoading || isSettling || html === undefined || saveState === "saving";
 
     return (
         <div className={css.editor}>
@@ -113,7 +123,7 @@ export const DossierEditor: React.FC<{ service: HealthService }> = React.memo(({
                 <button
                     type="button"
                     id="saveButton"
-                    className={`${css.save} ${css[saveState]} ${saveClass}${saveDisabled ? " disabled" : ""}`}
+                    className={`${css.save} ${css[saveState] ?? ""} ${saveClass}${saveDisabled ? " disabled" : ""}`}
                     disabled={saveDisabled}
                     onClick={save}
                     data-test="save-description"

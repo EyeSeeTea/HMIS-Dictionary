@@ -18,3 +18,9 @@
     display: flex;
     gap: 8px;
 }
+
+.row h1 {
+    margin: 8px 0;
+    font-size: 28px;
+    font-weight: 500;
+}

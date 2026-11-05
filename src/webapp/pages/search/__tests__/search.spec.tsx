@@ -22,6 +22,14 @@ describe("splitByTerms", () => {
         ]);
     });
 
+    it("finds text without accents, and keeps the accents of the text", () => {
+        expect(splitByTerms("Café frío", ["cafe", "FRIO"])).toEqual([
+            { text: "Café", match: true },
+            { text: " ", match: false },
+            { text: "frío", match: true },
+        ]);
+    });
+
     it("returns the text as is without terms", () => {
         expect(splitByTerms("text", [])).toEqual([{ text: "text", match: false }]);
         expect(splitByTerms("text", [""])).toEqual([{ text: "text", match: false }]);

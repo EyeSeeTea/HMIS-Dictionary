@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-11-05T19:11:41.461Z\n"
-"PO-Revision-Date: 2026-11-05T19:11:41.461Z\n"
+"POT-Creation-Date: 2026-11-05T20:52:44.438Z\n"
+"PO-Revision-Date: 2026-11-05T20:52:44.438Z\n"
 
 msgid "No data"
 msgstr ""
@@ -265,7 +265,7 @@ msgstr ""
 msgid "Print selection"
 msgstr ""
 
-msgid "Table of contents"
+msgid "Table of Content"
 msgstr ""
 
 msgid "Go to Index"
@@ -576,9 +576,6 @@ msgid "Number of Indicators in Indicator Group"
 msgstr ""
 
 msgid "Comments"
-msgstr ""
-
-msgid "Metadata Dictionary"
 msgstr ""
 
 msgid "No Value"

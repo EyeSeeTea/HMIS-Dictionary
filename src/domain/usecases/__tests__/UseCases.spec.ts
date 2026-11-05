@@ -152,6 +152,33 @@ describe("DescribeProgramIndicatorsUseCase", () => {
         expect(result?.filterText).toBe("text of #{aaaaaaaaaaa.de1} == 'Yes'");
         expect(result?.expressionText).toBe("text of 1");
     });
+
+    it("shows the name of the stage in a filter of the stage, not its id", async () => {
+        const useCase = new DescribeProgramIndicatorsUseCase(
+            new DescribeExpressionsUseCase({
+                describe: () =>
+                    success(
+                        ExpressionDescription.create({
+                            result: {
+                                ok: true,
+                                text: "Program stage id =='aaaaaaaaaaa'  && x == 'bbbbbbbbbbb'",
+                            },
+                        })
+                    ),
+            } as ExpressionRepository)
+        );
+        const stage = createStage({ id: "aaaaaaaaaaa", name: "Consultation" });
+        const programIndicator = createProgramIndicator({
+            expression: ProgramExpression.create({ expression: "1" }),
+            filter: ProgramExpression.create({
+                expression: "V{program_stage_id} == 'aaaaaaaaaaa'",
+            }),
+        });
+
+        const [result] = await useCase.execute([programIndicator], [stage]).toPromise();
+
+        expect(result?.filterText).toBe("Program stage == 'Consultation'  && x == 'bbbbbbbbbbb'");
+    });
 });
 
 describe("GetLayoutSettingsUseCase", () => {
@@ -394,7 +421,7 @@ describe("GetDataSetsUseCase", () => {
 });
 
 describe("GetDataSetIndicatorsUseCase", () => {
-    it("keeps visible indicators using its elements through #{de.coc}, also outside sections", async () => {
+    it("keeps visible indicators using its elements, with or without category option combo, also outside sections", async () => {
         const dataSet = DataSet.create({
             id: "ds",
             name: "DS",
@@ -425,7 +452,7 @@ describe("GetDataSetIndicatorsUseCase", () => {
             .execute(dataSet, context)
             .toPromise();
 
-        expect(result.map(indicator => indicator.id)).toEqual(["yes", "assigned"]);
+        expect(result.map(indicator => indicator.id)).toEqual(["yes", "bare", "assigned"]);
     });
 });
 
@@ -576,15 +603,15 @@ describe("RefreshDossierConfigStatusUseCase", () => {
         expect(result.changed).toBe(true);
     });
 
-    it("does not write when the attribute check fails, so the flag can stay true", async () => {
+    it("writes false when the attribute check fails, so the flag does not stay true", async () => {
         const { update, result } = await run({
             attributes: [],
             healthServices: [healthService],
             flag: true,
         });
 
-        expect(update).not.toHaveBeenCalled();
-        expect(result.changed).toBe(false);
+        expect(update).toHaveBeenCalledWith({ dossierConfigComplete: false });
+        expect(result.changed).toBe(true);
     });
 
     it("does not write when nothing changes", async () => {
