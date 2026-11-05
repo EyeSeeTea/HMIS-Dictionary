@@ -61,8 +61,8 @@ export const ProgramsPage: React.FC = React.memo(() => {
     const { canSeeSection, canSeeColumn } = layout;
 
     const list = useFuture(
-        () => compositionRoot.programs.getAll.execute({ name }),
-        [compositionRoot, name]
+        () => compositionRoot.programs.getAll.execute(settings, { name }),
+        [compositionRoot, settings, name]
     );
     const programs: Program[] = React.useMemo(
         () => (list?.type === "success" ? list.data : []),

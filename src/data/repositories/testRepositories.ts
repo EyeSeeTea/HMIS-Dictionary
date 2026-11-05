@@ -51,6 +51,7 @@ export function getTestRepositories(): Repositories {
         },
         dataSetRepository: {
             getAll: empty,
+            getAllInOrgUnits: empty,
             getByName: empty,
             get: id =>
                 success(
@@ -75,6 +76,7 @@ export function getTestRepositories(): Repositories {
         },
         programRepository: {
             getAll: empty,
+            getAllInOrgUnits: empty,
             getByName: empty,
             getStages: empty,
             getAttributes: empty,
@@ -102,4 +104,5 @@ const emptySettings = AppSettings.create({
     },
     notInUse: { indicatorGroupIds: [], programIndicatorGroupIds: [], tag: "Not in Use" },
     legacy: { dataElementGroupIds: [], optionGroupIds: [] },
+    limitSelectorsToUserOrgUnits: false,
 });

@@ -141,6 +141,23 @@ export class ProgramD2Repository implements ProgramRepository {
         ).map(({ objects }) => objects.map(toProgram));
     }
 
+    getAllInOrgUnits(orgUnitIds: Id[]): FutureData<Program[]> {
+        return Future.parallel(
+            orgUnitIds.map(orgUnitId =>
+                apiToFuture(
+                    this.api.models.programs.get({
+                        fields: programFields,
+                        filter: { "organisationUnits.path": { like: orgUnitId } },
+                        paging: false,
+                    })
+                ).map(({ objects }) => objects.map(toProgram))
+            ),
+            { concurrency: 5 }
+        ).map(lists =>
+            Array.from(new Map(lists.flat().map(program => [program.id, program])).values())
+        );
+    }
+
     getByName(name: string): FutureData<Program[]> {
         return apiToFuture(
             this.api.models.programs.get({

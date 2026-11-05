@@ -17,6 +17,8 @@ export type AppSettingsAttrs = {
     };
     notInUse: { indicatorGroupIds: Id[]; programIndicatorGroupIds: Id[]; tag: string };
     legacy: { dataElementGroupIds: Id[]; optionGroupIds: Id[] };
+    /** The selectors of Data Sets and Programs only list items of the user's org units. */
+    limitSelectorsToUserOrgUnits: boolean;
 };
 
 export class AppSettings extends Struct<AppSettingsAttrs>() {

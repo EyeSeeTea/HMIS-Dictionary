@@ -54,6 +54,23 @@ export class DataSetD2Repository implements DataSetRepository {
         ).map(({ objects }) => objects.map(toNamedRef));
     }
 
+    getAllInOrgUnits(excludedIds: Id[], orgUnitIds: Id[]): FutureData<NamedRef[]> {
+        return Future.parallel(
+            orgUnitIds.map(orgUnitId =>
+                apiToFuture(
+                    this.api.get<{ dataSets: D2Combo[] }>("/dataSets", {
+                        fields: "id,displayName",
+                        filter: `organisationUnits.path:like:${orgUnitId}`,
+                        paging: false,
+                    })
+                ).map(({ dataSets }) => dataSets.map(toNamedRef))
+            ),
+            { concurrency: 5 }
+        ).map(lists =>
+            uniqueById(lists.flat()).filter(dataSet => !excludedIds.includes(dataSet.id))
+        );
+    }
+
     getByName(name: string): FutureData<NamedRef[]> {
         return apiToFuture(
             this.api.models.dataSets.get({
@@ -113,6 +130,10 @@ export class DataSetD2Repository implements DataSetRepository {
             }))
         );
     }
+}
+
+function uniqueById(items: NamedRef[]): NamedRef[] {
+    return Array.from(new Map(items.map(item => [item.id, item])).values());
 }
 
 export function toDataSet(dataSet: D2DataSet): DataSet {

@@ -24,6 +24,7 @@ export function createSettings(attrs: Partial<AppSettingsAttrs> = {}): AppSettin
             tag: "Not in Use",
         },
         legacy: { dataElementGroupIds: ["legacyDeg"], optionGroupIds: ["legacyOg"] },
+        limitSelectorsToUserOrgUnits: false,
         ...attrs,
     });
 }

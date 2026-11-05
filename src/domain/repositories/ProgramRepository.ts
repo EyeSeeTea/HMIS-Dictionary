@@ -7,6 +7,8 @@ import { Id } from "$/domain/entities/Ref";
 
 export interface ProgramRepository {
     getAll(): FutureData<Program[]>;
+    /** Only those assigned to one of these org units or to their descendants. */
+    getAllInOrgUnits(orgUnitIds: Id[]): FutureData<Program[]>;
     getByName(name: string): FutureData<Program[]>;
     getStages(ids: Id[]): FutureData<ProgramStage[]>;
     getAttributes(programId: Id): FutureData<ProgramAttribute[]>;

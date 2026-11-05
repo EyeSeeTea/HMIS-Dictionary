@@ -42,6 +42,7 @@ import { GetHealthServiceContentUseCase } from "$/domain/usecases/GetHealthServi
 import { GetHealthServicesUseCase } from "$/domain/usecases/GetHealthServicesUseCase";
 import { GetLayoutSettingsUseCase } from "$/domain/usecases/GetLayoutSettingsUseCase";
 import { GetProgramRelatedIndicatorsUseCase } from "$/domain/usecases/GetProgramRelatedIndicatorsUseCase";
+import { OrgUnitRepository } from "$/domain/repositories/OrgUnitRepository";
 import { GetProgramResourcesUseCase } from "$/domain/usecases/GetProgramResourcesUseCase";
 import { GetProgramRuleVariablesUseCase } from "$/domain/usecases/GetProgramRuleVariablesUseCase";
 import { GetProgramStagesUseCase } from "$/domain/usecases/GetProgramStagesUseCase";
@@ -341,10 +342,27 @@ describe("GetSearchCatalogUseCase", () => {
 });
 
 describe("GetDataSetsUseCase", () => {
+    it("limits the list to the org units of the user only when the setting is on", async () => {
+        const getAll = vi.fn(() => success([]));
+        const getAllInOrgUnits = vi.fn(() => success([]));
+        const useCase = new GetDataSetsUseCase(
+            fake<DataSetRepository>({ getAll, getAllInOrgUnits }),
+            fake<OrgUnitRepository>({ getUserRootIds: () => success(["root"]) })
+        );
+
+        await useCase.execute(createSettings({ limitSelectorsToUserOrgUnits: true })).toPromise();
+
+        expect(getAllInOrgUnits).toHaveBeenCalledWith(["blacklistedDs"], ["root"]);
+        expect(getAll).not.toHaveBeenCalled();
+    });
+
     it("excludes blacklisted data sets, unless linked by name", async () => {
         const getAll = vi.fn(() => success([]));
         const getByName = vi.fn(() => success([]));
-        const useCase = new GetDataSetsUseCase(fake<DataSetRepository>({ getAll, getByName }));
+        const useCase = new GetDataSetsUseCase(
+            fake<DataSetRepository>({ getAll, getByName }),
+            fake<OrgUnitRepository>({})
+        );
 
         await useCase.execute(settings).toPromise();
         expect(getAll).toHaveBeenCalledWith(["blacklistedDs"]);

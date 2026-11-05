@@ -23,6 +23,7 @@ type StoredKeys = {
     notInUse_tag: Maybe<string>;
     legacy_dataElementGroups: Maybe<string[]>;
     legacy_optionGroups: Maybe<string[]>;
+    selector_limitToUserOrgUnits: Maybe<{ value?: boolean }>;
 };
 
 type Key = keyof StoredKeys;
@@ -40,6 +41,7 @@ const keys: Key[] = [
     "notInUse_tag",
     "legacy_dataElementGroups",
     "legacy_optionGroups",
+    "selector_limitToUserOrgUnits",
 ];
 
 export class AppSettingsD2Repository implements AppSettingsRepository {
@@ -112,6 +114,7 @@ function toAppSettings(stored: StoredKeys): AppSettings {
             dataElementGroupIds: stored.legacy_dataElementGroups ?? [],
             optionGroupIds: stored.legacy_optionGroups ?? [],
         },
+        limitSelectorsToUserOrgUnits: Boolean(stored.selector_limitToUserOrgUnits?.value),
     });
 }
 
@@ -130,6 +133,7 @@ function toStoredKeys(settings: AppSettings): StoredKeys {
         notInUse_tag: settings.notInUse.tag,
         legacy_dataElementGroups: settings.legacy.dataElementGroupIds,
         legacy_optionGroups: settings.legacy.optionGroupIds,
+        selector_limitToUserOrgUnits: { value: settings.limitSelectorsToUserOrgUnits },
     };
 }
 

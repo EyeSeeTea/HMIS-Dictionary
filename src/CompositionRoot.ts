@@ -127,7 +127,10 @@ function getCompositionRoot(repositories: Repositories) {
             ),
         },
         dataSets: {
-            getAll: new GetDataSetsUseCase(repositories.dataSetRepository),
+            getAll: new GetDataSetsUseCase(
+                repositories.dataSetRepository,
+                repositories.orgUnitRepository
+            ),
             get: new GetDataSetUseCase(repositories.dataSetRepository),
             getCategoryCombos: new GetCategoryCombosUseCase(repositories.dataSetRepository),
             getIndicators: new GetDataSetIndicatorsUseCase(repositories.indicatorRepository),
@@ -137,7 +140,10 @@ function getCompositionRoot(repositories: Repositories) {
             getFormulaBreakdown: new GetFormulaBreakdownUseCase(repositories.formulaRepository),
         },
         programs: {
-            getAll: new GetProgramsUseCase(repositories.programRepository),
+            getAll: new GetProgramsUseCase(
+                repositories.programRepository,
+                repositories.orgUnitRepository
+            ),
             getLegacyOptionIds: new GetLegacyOptionIdsUseCase(repositories.programRepository),
             getStages: new GetProgramStagesUseCase(repositories.programRepository),
             getAttributes: new GetProgramAttributesUseCase(repositories.programRepository),

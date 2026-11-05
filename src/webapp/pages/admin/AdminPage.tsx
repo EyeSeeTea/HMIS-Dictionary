@@ -1,5 +1,5 @@
 import React from "react";
-import { NoticeBox } from "@dhis2/ui";
+import { Checkbox, NoticeBox } from "@dhis2/ui";
 import { DossierConfigStatus } from "$/domain/entities/DossierConfigStatus";
 import i18n from "$/utils/i18n";
 import { useAppContext } from "$/webapp/contexts/app-context";
@@ -381,6 +381,22 @@ export const AdminPage: React.FC = React.memo(() => {
                     </li>
                 </ul>
             </DetailsBox>
+
+            <div className={css.heading}>
+                <h3>{i18n.t("Selectors of Data Sets and Programs:")}</h3>
+            </div>
+            <div className={css.setting}>
+                <Checkbox
+                    name="LIMIT_ORG_UNITS"
+                    label={i18n.t(
+                        "Only list the data sets and programs assigned to the organisation units of the user, or to their descendants."
+                    )}
+                    checked={settings.limitSelectorsToUserOrgUnits}
+                    disabled={isSaving}
+                    onChange={({ checked }) => save({ limitSelectorsToUserOrgUnits: checked })}
+                    dataTest="limit-org-units"
+                />
+            </div>
         </>
     );
 });
