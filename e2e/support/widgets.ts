@@ -6,7 +6,7 @@ import { expect, Locator, Page } from "@playwright/test";
 
 type Root = Page | ReturnType<Page["frameLocator"]>;
 
-/** The Search table: sorting, column filters and pagination (ng-table today). */
+/** The Search table: sorting, column filters and pagination (the app's own table in React). */
 export class SearchTable {
     readonly table: Locator;
 
@@ -50,7 +50,7 @@ export class SearchTable {
     /** The values as sorted, keeping spaces at the start of a name that the browser does not display. */
     async columnSortValues(name: string): Promise<string[]> {
         const index = await this.columnIndex(name);
-        const cells = this.rows.locator(`td:nth-child(${index + 1}) > span`);
+        const cells = this.rows.locator(`td:nth-child(${index + 1})`);
         return cells.allTextContents();
     }
 
@@ -61,7 +61,7 @@ export class SearchTable {
 
     async sortBy(name: string) {
         const index = await this.columnIndex(name);
-        await this.headerCells.nth(index).click();
+        await this.headerCells.nth(index).getByRole("button").first().click();
     }
 
     filterInput(index: number) {
@@ -77,23 +77,25 @@ export class SearchTable {
     }
 
     pageSizeButton(size: number) {
-        return this.root.locator(".ng-table-counts button", {
+        return this.root.locator('[data-test="page-sizes"] button', {
             hasText: new RegExp(`^\\s*${size}\\s*$`),
         });
     }
 
     async setPageSize(size: number) {
         await this.pageSizeButton(size).click();
-        await expect(this.pageSizeButton(size)).toHaveClass(/active/);
+        await expect(this.pageSizeButton(size)).toHaveAttribute("aria-pressed", "true");
     }
 
     get activePage() {
-        return this.root.locator(".ng-table-pagination li.active");
+        return this.root.locator('[data-test="pages"] li.active');
     }
 
     pageButton(page: number) {
         return this.root
-            .locator(".ng-table-pagination li a", { hasText: new RegExp(`^\\s*${page}\\s*$`) })
+            .locator('[data-test="pages"] li button', {
+                hasText: new RegExp(`^\\s*${page}\\s*$`),
+            })
             .first();
     }
 
@@ -104,7 +106,7 @@ export class SearchTable {
 
     /** The number of the last page, or 1 when there is no pagination. */
     async pageCount(): Promise<number> {
-        const pager = this.root.locator(".ng-table-pagination li a");
+        const pager = this.root.locator('[data-test="pages"] li button');
         const numbers = (await pager.allInnerTexts())
             .map(Number)
             .filter(n => !Number.isNaN(n) && n > 0);
@@ -112,12 +114,12 @@ export class SearchTable {
     }
 }
 
-/** The dossier description editor (TinyMCE today). */
+/** The dossier description editor (TinyMCE). */
 export class RichTextEditor {
     constructor(private root: Root) {}
 
     private get frame() {
-        return this.root.frameLocator(".mce-edit-area iframe");
+        return this.root.frameLocator("iframe.tox-edit-area__iframe");
     }
 
     get body() {
@@ -157,12 +159,15 @@ export class RichTextEditor {
         await this.toolbarButton(name).click();
     }
 
+    /** TinyMCE 8 names two buttons differently from the old editor, and adds the current value. */
     toolbarButton(name: string) {
-        return this.root
-            .locator(
-                `.mce-toolbar [aria-label="${name}"], .mce-toolbar .mce-btn:has-text("${name}")`
-            )
-            .first();
+        const prefixes: Record<string, string> = { Formats: "Format", "Font Sizes": "Font size" };
+        const prefix = prefixes[name];
+        const selector = prefix
+            ? `.tox-toolbar [aria-label^="${prefix}"]`
+            : `.tox-toolbar [aria-label="${name}"], .tox-toolbar [title="${name}"]`;
+
+        return this.root.locator(selector).first();
     }
 
     /** TinyMCE syncs its content about 400ms after a change, so saving earlier loses it (P4). */

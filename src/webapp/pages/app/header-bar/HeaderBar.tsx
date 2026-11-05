@@ -13,7 +13,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = props => {
     if (!shouldRenderHeaderBar) return null;
 
     return (
-        <div className={styles.headerBarWrapper}>
+        <div id="header" className={`${styles.headerBarWrapper} no-print`}>
             <D2HeaderBar appName={appName} />
         </div>
     );

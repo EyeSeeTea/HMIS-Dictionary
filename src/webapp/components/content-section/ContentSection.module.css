@@ -1,0 +1,28 @@
+.section {
+    margin-bottom: 32px;
+    scroll-margin-top: 64px;
+}
+
+.heading {
+    margin: 0 0 4px;
+    padding-bottom: 4px;
+    border-bottom: 2px solid var(--colors-grey300);
+    font-weight: 500;
+    scroll-margin-top: 64px;
+}
+
+.count {
+    margin-inline-start: 8px;
+    color: var(--colors-grey700);
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.meta {
+    display: flex;
+    align-items: baseline;
+    gap: 24px;
+    margin: 0 0 12px;
+    color: var(--colors-grey800);
+    font-size: 14px;
+}

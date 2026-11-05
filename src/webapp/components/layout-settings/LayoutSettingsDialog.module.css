@@ -1,0 +1,75 @@
+.table {
+    margin-top: 16px;
+}
+
+.section {
+    font-weight: 500;
+}
+
+.child {
+    padding-inline-start: 24px;
+}
+
+.hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+}
+
+.dialog {
+    display: flex;
+    flex-direction: column;
+    max-height: 80vh;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px 0;
+}
+
+.header h4 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.x {
+    border: 0;
+    background: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.body {
+    padding: 16px 24px;
+    overflow-y: auto;
+}
+
+.groups {
+    display: block;
+    width: 100%;
+    height: 36px;
+    margin-top: 6px;
+    padding: 0 8px;
+    border: 1px solid var(--colors-grey500);
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+
+.invalid {
+    border-color: var(--colors-red500);
+}
+
+.error {
+    color: var(--colors-red700);
+    font-size: 13px;
+}
+
+.footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 12px 24px 16px;
+}

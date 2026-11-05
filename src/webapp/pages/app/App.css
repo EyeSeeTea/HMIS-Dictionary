@@ -16,3 +16,20 @@ a {
     color: initial;
     text-decoration: none;
 }
+
+@media print {
+    .no-print {
+        display: none !important;
+    }
+}
+
+@media print {
+    #headerDossierPanel {
+        display: none !important;
+    }
+}
+
+/* Visible even with no description, as the Angular page was */
+#dossierDescription {
+    min-height: 24px;
+}

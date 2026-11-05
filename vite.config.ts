@@ -68,6 +68,8 @@ function getProxy(env: Record<string, string>) {
             "/dhis2": {
                 target: targetUrl,
                 changeOrigin: true,
+                // DHIS2 answers POSTs with an empty body when the Origin is not its own
+                headers: { origin: new URL(targetUrl).origin },
                 auth: auth,
                 rewrite: path => path.replace(/^\/dhis2/, ""),
             },

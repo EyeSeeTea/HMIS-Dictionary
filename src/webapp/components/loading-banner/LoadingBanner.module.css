@@ -1,0 +1,11 @@
+.banner {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 12px;
+    margin: 8px 0;
+    border-radius: 4px;
+    background: var(--colors-blue050);
+    color: var(--colors-blue900);
+    font-size: 14px;
+}

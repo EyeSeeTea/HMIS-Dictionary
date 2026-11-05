@@ -1,6 +1,7 @@
 import { FutureData } from "$/domain/entities/generic/Future";
-import { UserGroup } from "$/domain/entities/UserGroup";
+import { Id, NamedRef } from "$/domain/entities/Ref";
 
 export interface UserGroupRepository {
-    getAll(): FutureData<UserGroup[]>;
+    getAll(): FutureData<NamedRef[]>;
+    exists(id: Id): FutureData<boolean>;
 }

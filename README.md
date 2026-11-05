@@ -1,4 +1,4 @@
-A DHIS2 + TypeScript + React app skeleton following best practices used at EyeSeeTea.
+HMIS Dictionary: a DHIS2 + TypeScript + React app, based on [dhis2-app-skeleton](https://github.com/EyeSeeTea/dhis2-app-skeleton).
 
 ## Getting Started
 
@@ -88,11 +88,7 @@ yarn localize
 
 ### CLI scripts
 
-App scripts live in `package.json` under `scripts`. Example:
-
-```sh
-yarn app:users-report --dhis2-url https://example.com --dhis2-auth user:pass
-```
+App scripts live in `src/scripts`, with their entries in `package.json` under `scripts`.
 
 ### Secrets scan
 

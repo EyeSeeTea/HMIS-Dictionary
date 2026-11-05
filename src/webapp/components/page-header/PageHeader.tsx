@@ -8,6 +8,8 @@ export type PageHeaderProps = React.PropsWithChildren<{
     title: string;
     onBackClick?: () => void;
     helpText?: string;
+    /** Buttons on the right: the layout settings gear, the print button. */
+    actions?: React.ReactNode;
 }>;
 
 const TooltipIconButton: React.FC<{
@@ -22,7 +24,7 @@ const TooltipIconButton: React.FC<{
 );
 
 export const PageHeader: React.FC<PageHeaderProps> = React.memo(props => {
-    const { title, onBackClick, helpText, children } = props;
+    const { title, onBackClick, helpText, actions, children } = props;
     const [helpOpen, setHelpOpen] = React.useState(false);
 
     return (
@@ -40,6 +42,8 @@ export const PageHeader: React.FC<PageHeaderProps> = React.memo(props => {
                 )}
 
                 <h2 data-test="page-header-title">{title}</h2>
+
+                {actions && <div className={css.actions}>{actions}</div>}
             </div>
 
             {helpText && <Button onClick={() => setHelpOpen(true)}>{i18n.t("Help")}</Button>}

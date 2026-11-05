@@ -3,7 +3,10 @@
 // form relies on a CJS deep path that the Vite 7 resolver no longer honours.
 import "@testing-library/jest-dom/vitest";
 import { afterEach } from "vitest";
-import { cleanup } from "@testing-library/react";
+import { cleanup, configure } from "@testing-library/react";
+
+// The @dhis2/ui components and this app use `data-test`, as DHIS2 apps do
+configure({ testIdAttribute: "data-test" });
 
 afterEach(() => {
     cleanup();

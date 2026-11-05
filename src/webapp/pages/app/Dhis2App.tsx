@@ -1,9 +1,11 @@
 import React from "react";
 import i18n from "@dhis2/d2-i18n";
 import { Provider } from "@dhis2/app-runtime";
-import { D2Api } from "$/types/d2-api";
+import { getD2Api } from "$/types/d2-api";
 import { App } from "./App";
 import { CompositionRoot, getWebappCompositionRoot } from "$/CompositionRoot";
+import { Locale } from "$/domain/entities/Shared";
+import { toSupportedLocale } from "$/webapp/utils/locale";
 
 export function Dhis2App() {
     const [compositionRootRes, setCompositionRootRes] = React.useState<CompositionRootResult>({
@@ -36,7 +38,7 @@ export function Dhis2App() {
             );
         }
         case "loaded": {
-            const { baseUrl, compositionRoot } = compositionRootRes.data;
+            const { baseUrl, compositionRoot, locale } = compositionRootRes.data;
             type ProviderProps = React.ComponentProps<typeof Provider>;
             const config: ProviderProps["config"] = { baseUrl, apiVersion: 30 };
 
@@ -48,7 +50,7 @@ export function Dhis2App() {
                     showAlertsInPlugin={false}
                     userInfo={undefined}
                 >
-                    <App compositionRoot={compositionRoot} />
+                    <App compositionRoot={compositionRoot} baseUrl={baseUrl} locale={locale} />
                 </Provider>
             );
         }
@@ -58,26 +60,41 @@ export function Dhis2App() {
 type Data = {
     compositionRoot: CompositionRoot;
     baseUrl: string;
+    locale: Locale;
 };
 
 async function getData(): Promise<CompositionRootResult> {
     const baseUrl = await getBaseUrl();
 
-    const auth = env["VITE_DHIS2_AUTH"];
-    const [username = "", password = ""] = auth.split(":");
-    const api = auth
-        ? new D2Api({ baseUrl: baseUrl, auth: { username, password } })
-        : new D2Api({ baseUrl: baseUrl });
-    const compositionRoot = getWebappCompositionRoot(api);
-
-    const userSettings = await api.get<{ keyUiLocale: string }>("/userSettings").getData();
-    configI18n(userSettings);
-
     try {
-        return { type: "loaded", data: { baseUrl, compositionRoot } };
+        const auth = env["VITE_DHIS2_AUTH"];
+        const [username = "", password = ""] = auth.split(":");
+        const api = await getD2Api(
+            auth ? { baseUrl: baseUrl, auth: { username, password } } : { baseUrl: baseUrl }
+        );
+        const compositionRoot = getWebappCompositionRoot(api);
+
+        const userSettings = await api.get<{ keyUiLocale: string }>("/userSettings").getData();
+        configI18n(userSettings);
+
+        return {
+            type: "loaded",
+            data: { baseUrl, compositionRoot, locale: toSupportedLocale(userSettings.keyUiLocale) },
+        };
     } catch (err) {
+        // Without a session, DHIS2 answers with its login page instead of data. Opening a page that
+        // needs one takes the browser there.
+        if (!isDev && isNotLoggedIn(err)) window.location.assign(`${baseUrl}/api/me`);
         return { type: "error", error: { baseUrl, error: err as Error } };
     }
+}
+
+function isNotLoggedIn(error: unknown): boolean {
+    const message = error instanceof Error ? error.message : "";
+    // A redirect to the login page from another origin is a network error with no message
+    return (
+        message === "" || /401|403|unauthori|JSON|Unexpected token|Failed to fetch/i.test(message)
+    );
 }
 
 const env = import.meta.env;

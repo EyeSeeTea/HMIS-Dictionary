@@ -150,7 +150,7 @@ test.describe("10. Admin", () => {
     });
 
     test("Attribute: error if missing or only on one", async ({ admin, page }) => {
-        await page.route(/\/api(\/\d+)?\/attributes\.json/, async route => {
+        await page.route(/\/api(\/\d+)?\/attributes(\.json)?(\?|$)/, async route => {
             const response = await route.fetch();
             const json = await response.json();
             json.attributes = json.attributes.map((a: any) =>

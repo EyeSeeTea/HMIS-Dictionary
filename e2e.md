@@ -534,6 +534,21 @@ Language tests set the real `keyUiLocale` user setting on a test user `[W]`, so 
 - [x] Full suite passes against the AngularJS app on v42, as the baseline
 - [ ] Full suite passes against the React app on v42, changing only `E2E_BASE_URL` and the isolated helpers (after the migration)
 - [ ] Differences between the two apps are documented, each with an accepted reason (after the migration)
+
+**First run on the React app (v42, instance 8098, app served same-origin with a session)**
+
+| Project | Passed | Failed | Skipped | Notes                                        |
+| ------- | ------ | ------ | ------- | -------------------------------------------- |
+| read    | 224    | 1      | 6       | 4 pass on retry (Search takes ~15 s to load) |
+| write   | 60     | 6      | 1       | instance state checked afterwards: unchanged |
+
+Differences, with their reason:
+
+- **Translations (5 write tests):** the React app is English only until the translations are imported (step 2 of the pending list). Not an app difference.
+- **Header title click (1 read test):** the default skeleton header, chosen on purpose, has a title that is not a link. Only its logo goes home.
+- **Setting the user group or group set (1 write test, intermittent):** passes alone and in most runs. Playwright sometimes reports the option as not enabled. Not understood yet.
+- **Spec changes:** two route mocks now also match the URL without `.json` (indicators and attributes), because React does not add it. `e2e/support/widgets.ts` was adapted for the table, its pagination and TinyMCE 8 (toolbar names).
+- **Behaviour kept from the contract, done differently:** the print button is disabled until something is selected. Empty values sort last in both directions. Tags in Admin are typed as JSON text (`"Tag"`), as in Angular.
 - [x] Smoke subset (one test per module, read-only) can run on its own, for use after deployments
 - [x] Search load time on 8098 is measured and recorded, for comparison with the React app
 
@@ -554,11 +569,14 @@ These are additions to "Known bugs", for the next iteration. The suite does not 
 - [ ] **P2. Selecting a service too early loses its data sets.** The Dossiers selector is usable before the data sets request finishes. Selecting then shows 0 data sets, with no message. Seen in the browser; the cause comes from reading the code. Tests wait for the network to be idle before selecting.
 - [ ] **P3. Event chart and event report resources disappear on v42.** The `metadata` endpoint returns them under `eventVisualizations`, but the app only reads `eventCharts` and `eventReports`. Confirmed through the API. Skipped test: section 7.
 - [ ] **P4. Saving right after typing loses the text, and reports success.** The editor syncs its content after a short delay (a debounce in `angular-ui-tinymce`). Clicking Save inside that window saves the old text and turns the button green. Seen in the browser. The test helper waits 700ms; React should not need this.
-- [ ] **P5. Search never loads if the service set key is missing while `setup_dossierConfigComplete` is true.** `TypeError` at `search.controllers.js:122`, and the loading indicator stays on. Confirmed in the browser.
+- [ ] **P5. Search never loads if the service set key is missing while `setup_dossierConfigComplete` is true.** `TypeError` at `search.controllers.js:122`, and the loading indicator stays on. Confirmed in the browser. Not carried over to the React app (`code-architecture.md`, decision 7).
 - [ ] **P6. Some rule action labels never appear.** "Option to Hide" only shows when the action has `content`, which no `HIDEOPTION` action on 8098 has. "Option Group to Hide" did not show either on a `HIDEOPTIONGROUP` action that has an option group. The tests only check the action type for these two.
 - [ ] **P7. Browser Back can leave the previous module on screen.** The URL changes to `#/datasets`, but the page stays on Admin. It happened in roughly 1 of 8 to 2 of 6 runs when going back right after switching modules. The cause is unknown. The test waits for the network to be idle first, so this is not covered when navigating quickly.
 - [ ] **P8. Program export does nothing when a sheet has no rows.** With every data element of a program hidden, no file is downloaded and no message is shown. Seen once in the browser; the likely cause is `Object.keys(data[0])` in the export code. No test covers this case.
 - [ ] **P9. Duplicate id on Programs.** Program indicators and indicators both use `id="indicators"`, so a link to the second can scroll to the first. Seen in the page, and the scroll itself is not tested.
+- [ ] **P10. The Visibility column for tracked entity attributes is always empty.** Its query asks for a `trackedEntityAttribute` field on the rule, and rules do not have one (0 of 151 with `ASSIGN` actions on v42). It also looks at `ASSIGN`, not at hiding actions. Fixing the query is not enough: the cell also reads `dataElement.visibility`, the wrong variable (`dossierPrograms.view.html:135`).
+- [ ] **P11. Program indicator filters keep `Program stage id == 'x'` instead of the stage name.** The regex in `dossierPrograms.controllers.js:760` cannot match it. The option regex next to it only matches one-character codes.
+- [ ] **P12. "Display Widget" never shows on rule actions.** The view and the export read `location`, but the rules query does not fetch it (`dossierPrograms.services.js`).
 
 ### Behaviour worth knowing
 

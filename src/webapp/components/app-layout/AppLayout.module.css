@@ -1,0 +1,22 @@
+.layout {
+    display: flex;
+    align-items: stretch;
+    min-height: calc(100vh - 48px);
+}
+
+.page {
+    flex: 1;
+    min-width: 0;
+    padding: 16px 24px;
+}
+
+.page h1 {
+    font-size: 26px;
+    font-weight: 500;
+    margin: 16px 0 8px;
+}
+
+.page > h4 {
+    font-weight: 400;
+    margin: 0 0 16px;
+}

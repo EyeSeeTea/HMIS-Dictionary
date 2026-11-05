@@ -1,29 +1,11 @@
-import { Id } from "$/domain/entities/Ref";
+import { NamedRef } from "$/domain/entities/Ref";
 import { User } from "$/domain/entities/User";
 
-export function createAdminUser(): User {
-    return createUser({ isAdmin: true });
-}
-
-export function createNonAdminUser(): User {
-    return createUser({ isAdmin: false });
-}
-
-export function createUser(options: {
-    id?: Id;
-    name?: string;
-    isAdmin?: boolean;
-    userGroupIds?: Id[];
-    userRoleIds?: Id[];
-    disabled?: boolean;
-}): User {
+export function createUser(options: { userGroups?: NamedRef[] } = {}): User {
     return new User({
-        id: options.id ?? "kQiwoyMYHBS",
-        name: options.name ?? "John Traore",
+        id: "kQiwoyMYHBS",
+        name: "John Traore",
         username: "user",
-        userRoleIds: options.userRoleIds ?? [],
-        userGroupIds: options.userGroupIds ?? [],
-        isAdmin: options.isAdmin ?? false,
-        disabled: options.disabled ?? false,
+        userGroups: options.userGroups ?? [],
     });
 }

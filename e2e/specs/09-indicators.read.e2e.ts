@@ -219,7 +219,7 @@ test.describe("9. Indicators", () => {
         await open(indicators, await byName(api, indicator.id));
         await expect(indicators.numeratorHeading).toBeVisible();
         await expect(indicators.denominatorHeading).toBeVisible();
-        await indicators.page.route(/\/api(\/\d+)?\/indicators\.json/, async route => {
+        await indicators.page.route(/\/api(\/\d+)?\/indicators(\.json)?(\?|$)/, async route => {
             const response = await route.fetch();
             const json = await response.json();
             json.indicators = json.indicators.map((i: any) =>

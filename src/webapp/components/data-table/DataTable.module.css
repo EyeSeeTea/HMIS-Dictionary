@@ -1,0 +1,18 @@
+.wrapper {
+    background: white;
+    overflow-x: auto;
+}
+
+.wrapper a {
+    color: var(--colors-blue700);
+}
+
+.wrapper a:hover {
+    text-decoration: underline;
+}
+
+.empty {
+    margin: 0;
+    padding: 12px 16px;
+    color: var(--colors-grey700);
+}
