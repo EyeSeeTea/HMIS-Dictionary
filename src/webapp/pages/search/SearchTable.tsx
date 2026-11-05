@@ -24,6 +24,7 @@ export type SearchTableProps = {
     showFilters: boolean;
     getText: (row: SearchTableRow, column: SearchColumn) => string;
     onPageRowsChange: (rows: SearchTableRow[]) => void;
+    onSortedRowsChange: (rows: SearchTableRow[]) => void;
 };
 
 type OpenFormula = { item: SearchTableRow; type: "numerator" | "denominator" };
@@ -39,6 +40,7 @@ export const SearchTable: React.FC<SearchTableProps> = React.memo(props => {
         showFilters,
         getText,
         onPageRowsChange,
+        onSortedRowsChange,
     } = props;
     const [openFormula, setOpenFormula] = React.useState<Maybe<OpenFormula>>();
 
@@ -110,6 +112,7 @@ export const SearchTable: React.FC<SearchTableProps> = React.memo(props => {
                     pageSizes={searchPageSizes}
                     isPriorityRow={isPriorityRow}
                     onPageRowsChange={onPageRowsChange}
+                    onSortedRowsChange={onSortedRowsChange}
                     emptyText={i18n.t("No results")}
                     filterRow={
                         showFilters

@@ -25,7 +25,7 @@ Items are grouped by priority and tagged by area and relative cost, from 1 (chea
 - [x] [programs] [cost: 3] **Hide programs from the selector:** data sets already have `blacklist.dataSetIds`, programs have nothing. HIS uses a hardcoded attribute (`AvNq8fW4evL`) that does not exist on our instance, so a setting like the data sets one fits better. **Decide.**
 - [x] [search] [cost: 1] **Short name of program indicators:** always empty in our table (`SearchCatalog.ts`).
 - [x] [search] [cost: 4] **Group column:** HIS shows data element groups for data elements (we show data sets), and the program for program indicators (we show program indicator groups). **Decide:** add columns rather than replace ours.
-- [ ] [search] [cost: 2] **Export:** keep the table's sort order, and disable the button when there are no rows.
+- [x] [search] [cost: 2] **Export:** keep the table's sort order, and disable the button when there are no rows.
 - [ ] [search] [cost: 1] **Help:** add the DHIS2 glossary (data element, indicator, program indicator, group, data set, program) and explain the new operators.
 - [ ] [datasets] [cost: 1] **Section description:** under the section title. 93 of 1893 sections have one.
 - [ ] [datasets] [cost: 2] **Aggregation Type column:** in the data elements table, with its layout settings entry.

@@ -40,6 +40,8 @@ export type DataTableProps<Row> = {
     tableClassName?: string;
     /** Called with the rows of the current page, when they change. */
     onPageRowsChange?: (rows: Row[]) => void;
+    /** Called with all the rows in the order they are shown, when it changes. */
+    onSortedRowsChange?: (rows: Row[]) => void;
     /** Rows that go on top, whatever the sorting of the columns. */
     isPriorityRow?: (row: Row) => boolean;
     /** Extra cells above the header, for filters. */
@@ -70,6 +72,7 @@ export function DataTable<Row>(props: DataTableProps<Row>): React.ReactElement {
         emptyText,
         filterRow,
         onPageRowsChange,
+        onSortedRowsChange,
         isPriorityRow,
         id,
         tableClassName,
@@ -111,6 +114,8 @@ export function DataTable<Row>(props: DataTableProps<Row>): React.ReactElement {
     React.useEffect(() => setPage(1), [rows]);
 
     useOnListChange(pageRows, onPageRowsChange);
+
+    useOnListChange(sortedRows, onSortedRowsChange);
 
     const toggleSort = (key: string) => {
         setSorting(prev =>

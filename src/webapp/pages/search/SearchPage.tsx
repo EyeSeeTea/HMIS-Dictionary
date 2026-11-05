@@ -46,6 +46,7 @@ export const SearchPage: React.FC = React.memo(() => {
     );
     const [showAdvanced, setShowAdvanced] = React.useState(false);
     const [pageRows, setPageRows] = React.useState<SearchTableRow[]>([]);
+    const sortedRows = React.useRef<SearchTableRow[]>([]);
     const [described, setDescribed] = React.useState<Map<string, string>>(new Map());
 
     const catalogLoader = useFuture(() => {
@@ -166,7 +167,9 @@ export const SearchPage: React.FC = React.memo(() => {
             {
                 name: "Search Data",
                 header: shownColumns.map(column => columnTexts[column].title()),
-                rows: filteredRows.map(item => shownColumns.map(column => getText(item, column))),
+                rows: sortedRows.current.map(item =>
+                    shownColumns.map(column => getText(item, column))
+                ),
             },
         ]);
     };
@@ -250,9 +253,18 @@ export const SearchPage: React.FC = React.memo(() => {
                         showFilters={showFilters}
                         getText={getText}
                         onPageRowsChange={setPageRows}
+                        onSortedRowsChange={rows => {
+                            sortedRows.current = rows;
+                        }}
                     />
 
-                    <Button small secondary onClick={exportToExcel} dataTest="export-excel">
+                    <Button
+                        small
+                        secondary
+                        disabled={filteredRows.length === 0}
+                        onClick={exportToExcel}
+                        dataTest="export-excel"
+                    >
                         {searchTexts.srch_exportToExcel()}
                     </Button>
                 </>
