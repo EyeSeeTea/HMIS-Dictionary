@@ -56,6 +56,6 @@ Twelve app problems found are listed in `e2e.md`, to fix once the migration is d
 - [ ] Run the v42 e2e suite on the React app until it matches the baseline
 - [ ] Use d2-api npm package @40 and @42 (with aliases)
 - [ ] Run the e2e suite on v40
-- [ ] Integrate the features of [msf-oca-his/dhis-dictionary](https://github.com/msf-oca-his/dhis-dictionary) that are not already in HMIS-Dictionary. For now this is only a note: the feature comparison is still to be done.
+- [x] Integrate the features of [msf-oca-his/dhis-dictionary](https://github.com/msf-oca-his/dhis-dictionary) that are not already in HMIS-Dictionary: see `his-integration.md`, on branch `feature/his-integration`.
 
 - [ ] When all is done, fix the known app problems in the React app (listed in `e2e.md`)

@@ -554,6 +554,8 @@ Differences, with their reason:
 
 ## Run notes and problems
 
+**HIS integration:** the specs `12-his-*` to `38-his-*` cover the features in `his-integration.md`. Run them with `yarn test:e2e`, like the rest.
+
 **Last full run:** 294 passed, 7 skipped, 0 failed, 0 flaky, in 10.8 minutes, on the AngularJS app at `http://localhost:8098`. Of the 7 skipped, 2 are P1 and P3, and 5 are read-only versions of scenarios that 8098 has no data for, which the write tests cover with temporary metadata.
 
 ### Not ticked

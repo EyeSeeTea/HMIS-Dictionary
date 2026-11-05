@@ -44,6 +44,22 @@ Items are grouped by priority and tagged by area and relative cost, from 1 (chea
 - [x] [general] [cost: 2] **Error boundaries:** a render error in one section shows a message instead of breaking the whole page. We have none.
 - [x] [general] [cost: 9] **Local cache:** HIS keeps Search and item data in IndexedDB, per language. **Decide:** only if Search is slow enough to need it, and with invalidation, as HIS never refreshes it.
 
+## Decisions taken
+
+- **Tracker data elements:** included in Search, with the type `dataElement (tracker)`.
+- **Selector limit:** an Admin setting, off by default (`selector_limitToUserOrgUnits`).
+- **Hide programs:** a list in Admin, like data sets (`blacklist_programs`).
+- **Group column:** two new columns, hidden by default. The group column stays as it was.
+- **Local cache:** built, for Search only, and refreshed when the metadata changes.
+- **Org unit tree:** starts from the item's own org units, instead of loading the whole hierarchy as HIS does.
+- **Link without access:** reads the program's `access.data.read`. The HIS analytics request fails for everyone when the analytics tables do not exist.
+
+## Result
+
+Full e2e suite on v42, on the installed app: 348 passed, 7 failed, 4 flaky, 6 skipped. The 65 new tests (`e2e/specs/12` to `38`) pass. The failures and flaky tests are the same ones as before the integration. Not run on v40.
+
+The 19 new Spanish and French strings without a match in HIS were translated by hand, and need a review by a native speaker.
+
 ## Considered covered
 
 - **Search:** global search, column selector, per-column filters, sorting, paging, highlighting, `|`, Excel export, and formulas with names and description tooltips. HIS searches only the visible columns, and ours searches all of them.
