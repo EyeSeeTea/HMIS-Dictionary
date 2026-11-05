@@ -6,7 +6,10 @@ import { D2Api } from "$/types/d2-api";
 export class SessionD2Repository implements SessionRepository {
     constructor(private api: D2Api) {}
 
-    /** Inactive only if the server answers something else, as a login page. */
+    /**
+     * Inactive when the server answers something else, as a login page, or says there is no
+     * session (401). A request that fails for other reasons says nothing about the session.
+     */
     isActive(): FutureData<boolean> {
         return apiToFuture(
             // Raw, because the answer says it is JSON but it is the plain text "pong"
@@ -18,8 +21,13 @@ export class SessionD2Repository implements SessionRepository {
         )
             .flatMap(blob => Future.fromComputation<Error, string>(readBlob(blob)))
             .map(response => response === "pong")
-            .flatMapError(() => Future.success(true)); // A 401 goes unnoticed: bug P1, kept
+            .flatMapError(error => Future.success(!isUnauthorized(error)));
     }
+}
+
+function isUnauthorized(error: Error): boolean {
+    const { response } = error as { response?: { status?: number } };
+    return response?.status === 401 || response?.status === 403;
 }
 
 function readBlob(blob: Blob) {

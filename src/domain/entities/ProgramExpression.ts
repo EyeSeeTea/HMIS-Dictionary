@@ -28,12 +28,9 @@ export class ProgramExpression extends Struct<ProgramExpressionAttrs>() {
         return unique(this.captures(/V\{program_stage_name\} *== *['"](.*?)['"]/g));
     }
 
-    /**
-     * Replaces option codes in #{stage.de} == 'code' by the option name. It only matches codes of
-     * one character on purpose: bug P11 is kept until the end, so do not "correct" this regex.
-     */
+    /** Replaces option codes in #{stage.de} == 'code' by the option name, whatever the length. */
     withOptionNames(stages: StageWithOptions[]): ProgramExpression {
-        const regex = /#\{(\w+).(\w+)\} *?(!=|==) ?'(.?)'/g;
+        const regex = /#\{(\w+).(\w+)\} *?(!=|==) ?'([^']*)'/g;
 
         const expression = this.expression.replaceAll(
             regex,

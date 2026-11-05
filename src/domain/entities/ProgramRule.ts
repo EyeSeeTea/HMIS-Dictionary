@@ -21,6 +21,8 @@ export type ProgramRuleAction = {
     templateName: string;
     content: string;
     data: string;
+    /** The widget where the action shows its value. */
+    location: string;
 };
 
 export type ProgramRuleAttrs = {
@@ -61,6 +63,15 @@ export class ProgramRuleSet extends Struct<ProgramRuleSetAttrs>() {
                 rule =>
                     rule.appliesToStage(stageId) &&
                     rule.affects("HIDEFIELD", action => action.dataElement?.id === dataElementId)
+            )
+            .map(rule => ({ type: "HIDEFIELD", ruleName: rule.name }));
+    }
+
+    /** Tracked entity attributes belong to the program, not to a stage: the rules of any stage. */
+    attributeVisibility(attributeId: Id): VisibilityRule[] {
+        return this.rules
+            .filter(rule =>
+                rule.affects("HIDEFIELD", action => action.attribute?.id === attributeId)
             )
             .map(rule => ({ type: "HIDEFIELD", ruleName: rule.name }));
     }

@@ -43,6 +43,7 @@ export class FormulaBreakdown extends Struct<FormulaBreakdownAttrs>() {
     }
 }
 
+/** The two constants the app has always known, if the constants cannot be read. */
 function constantValue(id: Id): string | undefined {
     if (id === hardcodedIds.constantZero) return "0";
     if (id === hardcodedIds.constantOne) return "1";
@@ -65,7 +66,7 @@ function operandText(token: FormulaToken, references: FormulaReferences): string
         case "programAttribute":
             return `${nameOf(token.programId, references)} ${nameOf(token.attributeId, references)}`;
         case "constant":
-            return constantValue(token.id) ?? nameOf(token.id, references);
+            return references.names.get(token.id) ?? constantValue(token.id) ?? token.id;
         case "number":
         case "operator":
             return token.value;
@@ -103,7 +104,8 @@ function toComponents(token: FormulaToken, references: FormulaReferences): Formu
         case "number":
             return [{ ...base, type: "number", name: token.value }];
         case "constant": {
-            const value = constantValue(token.id);
+            // The value comes from the constants; the two known ones are the fallback
+            const value = references.names.get(token.id) ?? constantValue(token.id);
             return value ? [{ ...base, type: "number", name: value }] : [];
         }
         default:

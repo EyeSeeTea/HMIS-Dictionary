@@ -43,12 +43,18 @@ describe("getActionFields", () => {
         expect(fields).toEqual([{ label: "Message Template", value: "Welcome" }]);
     });
 
-    it("never shows the display widget (bug P12 kept)", () => {
+    it("shows the display widget of the display actions", () => {
         const fields = getActionFields(
-            createAction({ type: "DISPLAYKEYVALUEPAIR", content: "Key", data: "x" })
+            createAction({
+                type: "DISPLAYKEYVALUEPAIR",
+                content: "Key",
+                data: "x",
+                location: "RIGHT_SIDE",
+            })
         );
 
-        expect(labels(fields)).not.toContain("Display Widget");
+        expect(fields[0]).toEqual({ label: "Display Widget", value: "RIGHT_SIDE" });
+        expect(labels(fields)).toContain("Key Label");
     });
 
     it("has nothing for unknown types and for actions without values", () => {

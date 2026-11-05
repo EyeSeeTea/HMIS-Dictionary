@@ -8,7 +8,7 @@ import { D2Api } from "$/types/d2-api";
 
 type Named = { id: Id; name: string };
 
-/** Untranslated names, as the Indicators screen reads them today (decision 5). */
+/** Translated names, so the links to Data Sets and Programs find them by display name. */
 export class FormulaD2Repository implements FormulaRepository {
     constructor(private api: D2Api) {}
 
@@ -24,7 +24,7 @@ export class FormulaD2Repository implements FormulaRepository {
                 "organisationUnitGroups",
                 ids.organisationUnitGroups
             ),
-            constants: this.getNames("constants", ids.constants),
+            constants: this.getConstants(ids.constants),
             programs: this.getNames("programs", ids.programs),
             attributes: this.getNames("trackedEntityAttributes", ids.attributes),
         }).map(({ dataElements, ...others }) => ({
@@ -42,22 +42,43 @@ export class FormulaD2Repository implements FormulaRepository {
 
         return apiToFuture(
             this.api.get<{
-                dataElements: (Named & {
-                    dataSetElements?: { dataSet: { name: string } }[];
-                })[];
+                dataElements: {
+                    id: Id;
+                    displayName: string;
+                    dataSetElements?: { dataSet: { displayName: string } }[];
+                }[];
             }>("/dataElements", {
                 filter: `id:in:[${ids.join(",")}]`,
-                fields: "id,name,dataSetElements[dataSet[name]]",
+                fields: "id,displayName,dataSetElements[dataSet[displayName]]",
                 paging: false,
             })
         ).map(({ dataElements }) =>
             dataElements.map(dataElement => ({
                 id: dataElement.id,
-                name: dataElement.name,
+                name: dataElement.displayName,
                 dataSetNames: (dataElement.dataSetElements ?? []).map(
-                    ({ dataSet }) => dataSet.name
+                    ({ dataSet }) => dataSet.displayName
                 ),
             }))
+        );
+    }
+
+    /** A constant shows as its value, so its "name" is the value. */
+    private getConstants(ids: Id[]): FutureData<Named[]> {
+        if (ids.length === 0) return Future.success([]);
+
+        return apiToFuture(
+            this.api.get<{ constants: { id: Id; value?: number }[] }>("/constants", {
+                filter: `id:in:[${ids.join(",")}]`,
+                fields: "id,value",
+                paging: false,
+            })
+        ).map(({ constants }) =>
+            constants.flatMap(constant =>
+                constant.value === undefined
+                    ? []
+                    : [{ id: constant.id, name: String(constant.value) }]
+            )
         );
     }
 
@@ -65,12 +86,14 @@ export class FormulaD2Repository implements FormulaRepository {
         if (ids.length === 0) return Future.success([]);
 
         return apiToFuture(
-            this.api.get<Record<string, Named[]>>(`/${model}`, {
+            this.api.get<Record<string, { id: Id; displayName: string }[]>>(`/${model}`, {
                 filter: `id:in:[${ids.join(",")}]`,
-                fields: "id,name",
+                fields: "id,displayName",
                 paging: false,
             })
-        ).map(response => response[model] ?? []);
+        ).map(response =>
+            (response[model] ?? []).map(item => ({ id: item.id, name: item.displayName }))
+        );
     }
 }
 

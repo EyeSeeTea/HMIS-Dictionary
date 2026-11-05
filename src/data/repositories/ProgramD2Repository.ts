@@ -24,6 +24,9 @@ const resourceTypes: ProgramResourceType[] = [
     "eventReports",
 ];
 
+/** The types of event visualization that are tables, which the old model called event reports. */
+const eventReportTypes = ["PIVOT_TABLE", "LINE_LIST"];
+
 const programFields = {
     id: true,
     displayName: true,
@@ -103,6 +106,7 @@ const ruleQuery = [
             "templateUid",
             "content",
             "data",
+            "location",
         ].join(",") +
         "]",
 ].join(",");
@@ -125,6 +129,7 @@ type D2Rule = {
         templateUid?: string;
         content?: string;
         data?: string;
+        location?: string;
     }[];
 };
 
@@ -193,7 +198,7 @@ export class ProgramD2Repository implements ProgramRepository {
                 aggregationType: text(tea.aggregationType),
                 optionSet: toOptionSet(tea.optionSet),
                 mandatory: mandatory,
-                visibility: [], // Always empty for now: bug P10, kept
+                visibility: [], // The use case fills it from the program rules
             }))
         );
     }
@@ -305,23 +310,51 @@ export class ProgramD2Repository implements ProgramRepository {
 
     /** Only reads these types, so v42's eventVisualizations are lost: bug P3, kept. */
     getResources(ids: Id[]): FutureData<ProgramResource[]> {
-        type D2Resource = { id: string; displayName: string; displayDescription?: string };
+        type D2Resource = {
+            id: string;
+            displayName: string;
+            displayDescription?: string;
+            type?: string;
+        };
+        type D2Metadata = Partial<
+            Record<ProgramResourceType | "eventVisualizations", D2Resource[]>
+        >;
 
         return apiToFuture(
-            this.api.get<Partial<Record<ProgramResourceType, D2Resource[]>>>("/metadata", {
+            this.api.get<D2Metadata>("/metadata", {
                 filter: `id:in:[${ids.join(",")}]`,
-                fields: "id,displayName,displayDescription",
+                fields: "id,displayName,displayDescription,type",
             })
-        ).map(metadata =>
-            resourceTypes.flatMap(type =>
-                (metadata[type] ?? []).map(resource => ({
-                    id: resource.id,
-                    name: resource.displayName,
-                    description: text(resource.displayDescription),
-                    type: type,
-                }))
-            )
-        );
+        ).map(metadata => {
+            // v42 returns event charts and reports together, as event visualizations
+            const eventVisualizations = (metadata.eventVisualizations ?? []).map(
+                (resource): [ProgramResourceType, D2Resource] => [
+                    eventReportTypes.includes(resource.type ?? "") ? "eventReports" : "eventCharts",
+                    resource,
+                ]
+            );
+
+            const resources = [
+                ...resourceTypes.flatMap(type =>
+                    (metadata[type] ?? []).map((resource): [ProgramResourceType, D2Resource] => [
+                        type,
+                        resource,
+                    ])
+                ),
+                ...eventVisualizations,
+            ];
+
+            return resourceTypes.flatMap(type =>
+                resources
+                    .filter(([resourceType]) => resourceType === type)
+                    .map(([, resource]) => ({
+                        id: resource.id,
+                        name: resource.displayName,
+                        description: text(resource.displayDescription),
+                        type: type,
+                    }))
+            );
+        });
     }
 
     getOptionIdsOfGroups(ids: Id[]): FutureData<Set<Id>> {
@@ -371,7 +404,9 @@ function toProgram(program: D2Program): Program {
         name: program.displayName,
         description: text(program.displayDescription),
         stageIds: program.programStages.map(stage => stage.id),
+        // Also the documented format, (ID1;ID2), with the parentheses
         resourceIds: (resources?.value ?? "")
+            .replace(/[()]/g, "")
             .split(";")
             .map(id => id.trim())
             .filter(Boolean),
@@ -441,6 +476,7 @@ function toProgramRule(rule: D2Rule, templateNames: Map<Id, string>): ProgramRul
             templateName: action.templateUid ? (templateNames.get(action.templateUid) ?? "") : "",
             content: text(action.content),
             data: text(action.data),
+            location: text(action.location),
         })),
     });
 }

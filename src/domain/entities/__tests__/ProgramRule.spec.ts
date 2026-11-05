@@ -44,6 +44,19 @@ describe("ProgramRuleSet", () => {
         expect(set.dataElementVisibility("de1", "other")).toHaveLength(2);
     });
 
+    it("attributeVisibility finds the rules hiding the attribute, in any stage", () => {
+        const hideAttribute = createRule({
+            name: "HideAttribute",
+            stage: otherStage,
+            actions: [createAction({ type: "HIDEFIELD", attribute: { id: "tea1", name: "TEA" } })],
+        });
+
+        expect(ruleSet(hideAttribute, hideField).attributeVisibility("tea1")).toEqual([
+            { type: "HIDEFIELD", ruleName: "HideAttribute" },
+        ]);
+        expect(ruleSet(hideAttribute).attributeVisibility("other")).toEqual([]);
+    });
+
     it("sectionVisibility finds HIDESECTION rules, whatever the condition", () => {
         const conditional = createRule({ name: "If", actions: hideSection.actions });
 

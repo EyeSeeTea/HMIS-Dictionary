@@ -152,6 +152,7 @@ describe("DossierEditor", () => {
         const editor = await view.findByLabelText("editor");
         const save = view.getByRole("button", { name: "Save" });
         expect(save).toHaveAttribute("data-state", "idle");
+        await waitFor(() => expect(save).toBeEnabled());
 
         fireEvent.change(editor, { target: { value: "<p>Changed</p>" } });
         expect(save).toHaveAttribute("data-state", "dirty");
@@ -168,8 +169,9 @@ describe("DossierEditor", () => {
         const { view } = setup(() => Future.error(new Error("fail")));
         const editor = await view.findByLabelText("editor");
 
-        fireEvent.change(editor, { target: { value: "x" } });
         const save = view.getByRole("button", { name: "Save" });
+        await waitFor(() => expect(save).toBeEnabled());
+        fireEvent.change(editor, { target: { value: "x" } });
         fireEvent.click(save);
 
         await waitFor(() => expect(save).toHaveAttribute("data-state", "error"));

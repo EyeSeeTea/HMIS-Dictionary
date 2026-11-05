@@ -17,7 +17,7 @@ export type ProgramAttribute = NamedRef & {
     aggregationType: string;
     optionSet: Maybe<OptionSet>;
     mandatory: boolean;
-    /** Always empty for now: bug P10, kept until the end. */
+    /** The rules that hide it. */
     visibility: VisibilityRule[];
 };
 

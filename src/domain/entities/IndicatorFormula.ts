@@ -136,13 +136,10 @@ export class IndicatorFormula extends Struct<IndicatorFormulaAttrs>() {
         return /N\{\w+\}/.test(this.expression);
     }
 
-    /** Only through #{de.coc}, not #{de}: the "Missed indicators" bug, kept until the end. */
+    /** Through #{de.coc} and also through #{de}. */
     referencesAnyDataElement(ids: Id[]): boolean {
         return this.tokens().some(
-            token =>
-                token.type === "dataElement" &&
-                token.categoryOptionComboId !== undefined &&
-                ids.includes(token.dataElementId)
+            token => token.type === "dataElement" && ids.includes(token.dataElementId)
         );
     }
 

@@ -40,10 +40,18 @@ export class DescribeProgramIndicatorsUseCase {
                         items.map(item =>
                             item.programIndicator.withTexts(
                                 expressionTexts.get(item.expression) ?? "",
-                                filterTexts.get(item.filter) ?? ""
+                                withStageNames(filterTexts.get(item.filter) ?? "", stages)
                             )
                         )
                     )
             );
     }
+}
+
+/** The API describes the stage of a filter by its id: "Program stage id == 'id'" -> the name. */
+function withStageNames(text: string, stages: { id: string; name: string }[]): string {
+    return text.replace(/Program stage id *== *'(\w{11})'/g, (match, id: string) => {
+        const stage = stages.find(stage => stage.id === id);
+        return stage ? `Program stage == '${stage.name}'` : match;
+    });
 }

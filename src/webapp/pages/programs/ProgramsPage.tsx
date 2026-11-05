@@ -90,13 +90,13 @@ export const ProgramsPage: React.FC = React.memo(() => {
 
     const attributes = useFuture(
         () =>
-            program && legacyOptionIds
-                ? compositionRoot.programs.getAttributes.execute(program, {
+            program && rulesData && legacyOptionIds
+                ? compositionRoot.programs.getAttributes.execute(program, rulesData, {
                       showLegacy,
                       legacyOptionIds,
                   })
                 : null,
-        [compositionRoot, program, legacyOptionIds, showLegacy]
+        [compositionRoot, program, rulesData, legacyOptionIds, showLegacy]
     );
 
     const programIndicators = useFuture(() => {
