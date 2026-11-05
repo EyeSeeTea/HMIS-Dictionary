@@ -149,17 +149,20 @@ test.describe("10. Admin", () => {
         });
     });
 
-    test("Attribute: error if missing or only on one", async ({ admin, page }) => {
-        await page.route(/\/api(\/\d+)?\/attributes(\.json)?(\?|$)/, async route => {
-            const response = await route.fetch();
-            const json = await response.json();
-            json.attributes = json.attributes.map((a: any) =>
-                a.name === "serviceCode" ? { ...a, indicatorGroupAttribute: false } : a
-            );
-            await route.fulfill({ response, json });
+    test("Attribute: error if missing or only on one", async ({ admin, page, api }) => {
+        // The app saves the result of the checks, so the flag is restored afterwards
+        await api.withKeys(["setup_dossierConfigComplete"], async () => {
+            await page.route(/\/api(\/\d+)?\/attributes(\.json)?(\?|$)/, async route => {
+                const response = await route.fetch();
+                const json = await response.json();
+                json.attributes = json.attributes.map((a: any) =>
+                    a.name === "serviceCode" ? { ...a, indicatorGroupAttribute: false } : a
+                );
+                await route.fulfill({ response, json });
+            });
+            await admin.load();
+            await expect(admin.check("divA")).toHaveClass(/alert-danger/);
         });
-        await admin.load();
-        await expect(admin.check("divA")).toHaveClass(/alert-danger/);
     });
 
     test("Setting the user group works when the key is missing and when it is present, read back through the API", async ({

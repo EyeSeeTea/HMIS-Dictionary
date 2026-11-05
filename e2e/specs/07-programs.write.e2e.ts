@@ -427,10 +427,6 @@ test.describe("7. Programs", () => {
             programs,
             api,
         }) => {
-            test.fixme(
-                true,
-                "Baseline problem P3: on v42 the API returns these as eventVisualizations, which the app ignores"
-            );
             await withResources(
                 api,
                 async resources => {
