@@ -168,6 +168,9 @@ export function toDataSet(dataSet: D2DataSet): DataSet {
     };
 
     const hasRealSections = dataSet.sections.length > 0;
+    const dataElementIds = new Set(
+        dataSet.dataSetElements.map(({ dataElement }) => dataElement.id)
+    );
 
     return DataSet.create({
         id: dataSet.id,
@@ -179,7 +182,10 @@ export function toDataSet(dataSet: D2DataSet): DataSet {
                   id: section.id,
                   name: section.displayName,
                   description: text(section.description),
-                  dataElements: section.dataElements.map(toElement),
+                  // A section can keep elements that are no longer in the data set
+                  dataElements: section.dataElements
+                      .filter(element => dataElementIds.has(element.id))
+                      .map(toElement),
               }))
             : [
                   {

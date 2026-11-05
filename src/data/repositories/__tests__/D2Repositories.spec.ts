@@ -128,6 +128,19 @@ describe("Data set mapping", () => {
         expect(dataSet.dataElementIds).toEqual(["a", "b", "outside"]);
     });
 
+    it("leaves out the elements of a section that are no longer in the data set", () => {
+        const dataSet = toDataSet({
+            id: "ds",
+            displayName: "DS",
+            sections: [
+                { id: "s", displayName: "S", dataElements: [element("a"), element("orphan")] },
+            ],
+            dataSetElements: [{ dataElement: element("a") }],
+        });
+
+        expect(dataSet.sections[0]?.dataElements.map(de => de.id)).toEqual(["a"]);
+    });
+
     it("uses a virtual section when there are none", () => {
         const dataSet = toDataSet({
             id: "ds",
