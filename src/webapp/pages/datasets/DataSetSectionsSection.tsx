@@ -2,6 +2,10 @@ import React from "react";
 import { DataSet, DataSetElement } from "$/domain/entities/DataSet";
 import i18n from "$/utils/i18n";
 import { ContentSection } from "$/webapp/components/content-section/ContentSection";
+import {
+    PrintableBlock,
+    usePrintSelection,
+} from "$/webapp/components/print-selection/PrintSelection";
 import { DataTable, withColumnAccess } from "$/webapp/components/data-table/DataTable";
 import { getLayoutLabel } from "$/webapp/components/layout-settings/layoutLabels";
 import { scrollToId } from "$/webapp/components/table-of-contents/TableOfContents";
@@ -15,6 +19,7 @@ type Props = {
 
 export const DataSetSectionsSection: React.FC<Props> = React.memo(props => {
     const { dataSet, canSeeSection, canSeeColumn } = props;
+    const print = usePrintSelection();
     if (!canSeeSection) return null;
 
     const columns = withColumnAccess<DataSetElement>(
@@ -83,27 +88,29 @@ export const DataSetSectionsSection: React.FC<Props> = React.memo(props => {
                 sortValue: element => element.categoryCombo.name,
             },
         ],
-        canSeeColumn
+        canSeeColumn,
+        column => print.isColumnPrinted("sections", column)
     );
 
     return (
         <div id="sectionContainer">
             {dataSet.sections.map(section => (
-                <ContentSection
-                    key={section.id}
-                    id={section.id}
-                    title={section.name}
-                    count={section.dataElements.length}
-                    countLabel={i18n.t("Number of Elements in Section")}
-                    helpText={helpTexts.datasets_sec_description()}
-                >
-                    <DataTable
-                        rows={section.dataElements}
-                        columns={columns}
-                        getRowId={element => element.id}
-                        emptyText={i18n.t("No data elements")}
-                    />
-                </ContentSection>
+                <PrintableBlock key={section.id} section={section.id}>
+                    <ContentSection
+                        id={section.id}
+                        title={section.name}
+                        count={section.dataElements.length}
+                        countLabel={i18n.t("Number of Elements in Section")}
+                        helpText={helpTexts.datasets_sec_description()}
+                    >
+                        <DataTable
+                            rows={section.dataElements}
+                            columns={columns}
+                            getRowId={element => element.id}
+                            emptyText={i18n.t("No data elements")}
+                        />
+                    </ContentSection>
+                </PrintableBlock>
             ))}
         </div>
     );

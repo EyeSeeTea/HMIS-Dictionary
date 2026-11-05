@@ -1,6 +1,7 @@
 import React from "react";
 import { Indicator } from "$/domain/entities/Indicator";
 import { ContentSection } from "$/webapp/components/content-section/ContentSection";
+import { usePrintSelection } from "$/webapp/components/print-selection/PrintSelection";
 import { DataTable, withColumnAccess } from "$/webapp/components/data-table/DataTable";
 import { getLayoutLabel } from "$/webapp/components/layout-settings/layoutLabels";
 import { helpTexts } from "$/webapp/pages/datasets/helpTexts";
@@ -14,6 +15,7 @@ type Props = {
 
 export const DataSetIndicatorsSection: React.FC<Props> = React.memo(props => {
     const { indicators, canSeeSection, canSeeColumn } = props;
+    const print = usePrintSelection();
     if (!canSeeSection || indicators.length === 0) return null;
 
     const columns = withColumnAccess<Indicator>(
@@ -61,7 +63,8 @@ export const DataSetIndicatorsSection: React.FC<Props> = React.memo(props => {
                 render: indicator => indicator.denominatorDescription,
             },
         ],
-        canSeeColumn
+        canSeeColumn,
+        column => print.isColumnPrinted("indicators", column)
     );
 
     return (

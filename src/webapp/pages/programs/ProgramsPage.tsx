@@ -19,6 +19,14 @@ import { ProgressBar } from "$/webapp/components/progress-bar/ProgressBar";
 import { HtmlContent } from "$/webapp/components/html-content/HtmlContent";
 import { LayoutSettingsButton } from "$/webapp/components/layout-settings/LayoutSettingsButton";
 import { OrgUnitTreePanel } from "$/webapp/components/org-unit-tree/OrgUnitTreePanel";
+import {
+    getColumnGroups,
+    hasPrintedSection,
+    PrintableBlock,
+    PrintSelectionPanel,
+    PrintSelectionProvider,
+    useNewPrintSelection,
+} from "$/webapp/components/print-selection/PrintSelection";
 import { TableOfContents, TocItem } from "$/webapp/components/table-of-contents/TableOfContents";
 import { HelpIcon } from "$/webapp/components/help-icon/HelpIcon";
 import { downloadExcel } from "$/webapp/utils/excel";
@@ -28,7 +36,11 @@ import { ProgramRulesSection } from "$/webapp/pages/programs/ProgramRulesSection
 import { RelatedIndicatorsSection } from "$/webapp/pages/programs/RelatedIndicatorsSection";
 import { ResourcesSection } from "$/webapp/pages/programs/ResourcesSection";
 import { RuleVariablesSection } from "$/webapp/pages/programs/RuleVariablesSection";
-import { getSectionAnchor, StagesSection } from "$/webapp/pages/programs/StagesSection";
+import {
+    getSectionAnchor,
+    getStageSectionPrintKey,
+    StagesSection,
+} from "$/webapp/pages/programs/StagesSection";
 import { buildProgramSheets, getProgramFilename } from "$/webapp/pages/programs/programExport";
 import { programHelp as help, programTexts as t } from "$/webapp/pages/programs/programTexts";
 import { compareNames } from "$/webapp/utils/compare";
@@ -192,6 +204,46 @@ export const ProgramsPage: React.FC = React.memo(() => {
     };
 
     const showDescription = Boolean(program?.description) && canSeeSection("programDescription");
+    const print = useNewPrintSelection(selectedId);
+    const printOtherSections = [
+        ...(showDescription
+            ? [{ key: "programDescription", label: t.dos_DescriptionOfProgram() }]
+            : []),
+        ...(canSeeSection("trackedEntityAttributes") && attributesData.length > 0
+            ? [{ key: "trackedEntityAttributes", label: t.dos_TrackedEntityAttributes() }]
+            : []),
+        ...(canSeeSection("programIndicators") && (programIndicatorsData?.length ?? 0) > 0
+            ? [{ key: "programIndicators", label: t.dos_ProgramIndicators() }]
+            : []),
+        ...(canSeeSection("indicators") && (relatedData?.length ?? 0) > 0
+            ? [{ key: "indicators", label: t.dos_Indicators() }]
+            : []),
+        ...(canSeeSection("programRules") && (rulesData?.length ?? 0) > 0
+            ? [{ key: "programRules", label: t.dos_ProgramRules() }]
+            : []),
+        ...(canSeeSection("programRuleVariables") && ruleVariablesData.length > 0
+            ? [{ key: "programRuleVariables", label: t.dos_ProgramRuleVariables() }]
+            : []),
+    ];
+    const printSections = [
+        ...(canSeeSection("programStages") ? (stagesData ?? []) : []).map(stage => ({
+            title: stage.name,
+            options: stage.sections.map(section => ({
+                key: getStageSectionPrintKey(stage.id, section.id),
+                label: section.name,
+            })),
+        })),
+        { title: i18n.t("Other sections"), options: printOtherSections },
+    ];
+    const printColumns = getColumnGroups(layout, [
+        { table: "programStages", title: i18n.t("Data Elements Columns") },
+        { table: "trackedEntityAttributes", title: i18n.t("Tracked Entity Attribute Columns") },
+        { table: "programIndicators", title: i18n.t("Program Indicator Columns") },
+        { table: "indicators", title: i18n.t("Indicator Columns") },
+        { table: "programRules", title: i18n.t("Program Rule Columns") },
+        { table: "programRuleVariables", title: i18n.t("Program Rule Variable Columns") },
+    ]);
+
     const toc = getToc({
         showDescription,
         hasAttributes: canSeeSection("trackedEntityAttributes") && attributesData.length > 0,
@@ -212,7 +264,13 @@ export const ProgramsPage: React.FC = React.memo(() => {
                     actions={
                         <>
                             <LayoutSettingsButton view="programs" layout={layout.loader} />
-                            <PrintButton disabled={isLoading || !program} />
+                            <PrintButton
+                                disabled={
+                                    isLoading ||
+                                    !program ||
+                                    !hasPrintedSection(print, printSections)
+                                }
+                            />
                         </>
                     }
                 />
@@ -239,7 +297,7 @@ export const ProgramsPage: React.FC = React.memo(() => {
             </div>
 
             {program && (
-                <>
+                <PrintSelectionProvider value={print}>
                     <div id="DossierTitleContainer">
                         <h1>{program.name}</h1>
                     </div>
@@ -250,54 +308,71 @@ export const ProgramsPage: React.FC = React.memo(() => {
                     />
                     <TableOfContents items={toc} />
                     <OrgUnitTreePanel ownerType="programs" ownerId={program.id} />
+                    <PrintSelectionPanel
+                        selection={print}
+                        sectionGroups={printSections}
+                        columnGroups={printColumns}
+                    />
 
                     {showDescription && (
-                        <div id="DossierTextTitleContainer">
-                            <h2>
-                                {t.dos_DescriptionOfProgram()}
-                                <HelpIcon
-                                    text={`${help.program_description_help()} ${help.programs_description_description()}`}
-                                />
-                            </h2>
-                            <HtmlContent html={program.description} />
-                        </div>
+                        <PrintableBlock section="programDescription">
+                            <div id="DossierTextTitleContainer">
+                                <h2>
+                                    {t.dos_DescriptionOfProgram()}
+                                    <HelpIcon
+                                        text={`${help.program_description_help()} ${help.programs_description_description()}`}
+                                    />
+                                </h2>
+                                <HtmlContent html={program.description} />
+                            </div>
+                        </PrintableBlock>
                     )}
 
-                    <ProgramAttributesSection
-                        attributes={attributesData}
-                        canSeeSection={canSeeSection("trackedEntityAttributes")}
-                        canSeeColumn={column => canSeeColumn("trackedEntityAttributes", column)}
-                    />
+                    <PrintableBlock section="trackedEntityAttributes">
+                        <ProgramAttributesSection
+                            attributes={attributesData}
+                            canSeeSection={canSeeSection("trackedEntityAttributes")}
+                            canSeeColumn={column => canSeeColumn("trackedEntityAttributes", column)}
+                        />
+                    </PrintableBlock>
                     <StagesSection
                         stages={stagesData ?? []}
                         canSeeSection={canSeeSection("programStages")}
                         canSeeColumn={column => canSeeColumn("programStages", column)}
                     />
-                    <ProgramIndicatorsSection
-                        programIndicators={programIndicatorsData ?? []}
-                        stages={stagesData ?? []}
-                        canSeeSection={canSeeSection("programIndicators")}
-                        canSeeColumn={column => canSeeColumn("programIndicators", column)}
-                    />
-                    <RelatedIndicatorsSection
-                        indicators={relatedData ?? []}
-                        stages={stagesData ?? []}
-                        programIndicators={programIndicatorsData ?? []}
-                        canSeeSection={canSeeSection("indicators")}
-                        canSeeColumn={column => canSeeColumn("indicators", column)}
-                    />
-                    <ProgramRulesSection
-                        rules={rulesData ?? []}
-                        canSeeSection={canSeeSection("programRules")}
-                        canSeeColumn={column => canSeeColumn("programRules", column)}
-                    />
-                    <RuleVariablesSection
-                        variables={ruleVariablesData}
-                        canSeeSection={canSeeSection("programRuleVariables")}
-                        canSeeColumn={column => canSeeColumn("programRuleVariables", column)}
-                    />
+                    <PrintableBlock section="programIndicators">
+                        <ProgramIndicatorsSection
+                            programIndicators={programIndicatorsData ?? []}
+                            stages={stagesData ?? []}
+                            canSeeSection={canSeeSection("programIndicators")}
+                            canSeeColumn={column => canSeeColumn("programIndicators", column)}
+                        />
+                    </PrintableBlock>
+                    <PrintableBlock section="indicators">
+                        <RelatedIndicatorsSection
+                            indicators={relatedData ?? []}
+                            stages={stagesData ?? []}
+                            programIndicators={programIndicatorsData ?? []}
+                            canSeeSection={canSeeSection("indicators")}
+                            canSeeColumn={column => canSeeColumn("indicators", column)}
+                        />
+                    </PrintableBlock>
+                    <PrintableBlock section="programRules">
+                        <ProgramRulesSection
+                            rules={rulesData ?? []}
+                            canSeeSection={canSeeSection("programRules")}
+                            canSeeColumn={column => canSeeColumn("programRules", column)}
+                        />
+                    </PrintableBlock>
+                    <PrintableBlock section="programRuleVariables">
+                        <RuleVariablesSection
+                            variables={ruleVariablesData}
+                            canSeeSection={canSeeSection("programRuleVariables")}
+                            canSeeColumn={column => canSeeColumn("programRuleVariables", column)}
+                        />
+                    </PrintableBlock>
                     <ResourcesSection resources={resourcesData} />
-                </>
+                </PrintSelectionProvider>
             )}
         </>
     );

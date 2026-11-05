@@ -23,6 +23,8 @@ export type DataTableColumn<Row> = {
     helpText?: string;
     /** Columns hidden by layout permissions or the column selector. Default: true. */
     visible?: boolean;
+    /** The column stays on screen, but it does not go on paper. */
+    hiddenOnPrint?: boolean;
 };
 
 export type DataTableProps<Row> = {
@@ -45,9 +47,14 @@ export type DataTableProps<Row> = {
 /** Hides the columns the user may not see, by layout permissions. */
 export function withColumnAccess<Row>(
     columns: DataTableColumn<Row>[],
-    canSeeColumn: (key: string) => boolean
+    canSeeColumn: (key: string) => boolean,
+    isPrinted: (key: string) => boolean = () => true
 ): DataTableColumn<Row>[] {
-    return columns.map(column => ({ ...column, visible: canSeeColumn(column.key) }));
+    return columns.map(column => ({
+        ...column,
+        visible: canSeeColumn(column.key),
+        hiddenOnPrint: !isPrinted(column.key),
+    }));
 }
 
 type Sorting = { key: string; direction: "asc" | "desc" };
@@ -114,6 +121,7 @@ export function DataTable<Row>(props: DataTableProps<Row>): React.ReactElement {
                         {visibleColumns.map(column => (
                             <DataTableColumnHeader
                                 key={column.key}
+                                className={printClass(column)}
                                 name={column.key}
                                 sortDirection={
                                     column.sortValue
@@ -135,7 +143,10 @@ export function DataTable<Row>(props: DataTableProps<Row>): React.ReactElement {
                     {filterRow && (
                         <DataTableRow>
                             {visibleColumns.map(column => (
-                                <DataTableColumnHeader key={column.key}>
+                                <DataTableColumnHeader
+                                    key={column.key}
+                                    className={printClass(column)}
+                                >
                                     {filterRow(column)}
                                 </DataTableColumnHeader>
                             ))}
@@ -146,7 +157,9 @@ export function DataTable<Row>(props: DataTableProps<Row>): React.ReactElement {
                     {pageRows.map(row => (
                         <DataTableRow key={getRowId(row)}>
                             {visibleColumns.map(column => (
-                                <DataTableCell key={column.key}>{column.render(row)}</DataTableCell>
+                                <DataTableCell key={column.key} className={printClass(column)}>
+                                    {column.render(row)}
+                                </DataTableCell>
                             ))}
                         </DataTableRow>
                     ))}
@@ -171,6 +184,10 @@ export function DataTable<Row>(props: DataTableProps<Row>): React.ReactElement {
             )}
         </div>
     );
+}
+
+function printClass<Row>(column: DataTableColumn<Row>): string | undefined {
+    return column.hiddenOnPrint ? "no-print" : undefined;
 }
 
 function compare(a: string | number, b: string | number): number {

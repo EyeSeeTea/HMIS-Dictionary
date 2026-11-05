@@ -15,6 +15,14 @@ import { LoadingBanner } from "$/webapp/components/loading-banner/LoadingBanner"
 import { LayoutSettingsButton } from "$/webapp/components/layout-settings/LayoutSettingsButton";
 import { ProgressBar } from "$/webapp/components/progress-bar/ProgressBar";
 import { OrgUnitTreePanel } from "$/webapp/components/org-unit-tree/OrgUnitTreePanel";
+import {
+    getColumnGroups,
+    hasPrintedSection,
+    PrintableBlock,
+    PrintSelectionPanel,
+    PrintSelectionProvider,
+    useNewPrintSelection,
+} from "$/webapp/components/print-selection/PrintSelection";
 import { TableOfContents, TocItem } from "$/webapp/components/table-of-contents/TableOfContents";
 import { DataSetSectionsSection } from "$/webapp/pages/datasets/DataSetSectionsSection";
 import { CategoryCombosSection } from "$/webapp/pages/datasets/CategoryCombosSection";
@@ -71,6 +79,28 @@ export const DataSetsPage: React.FC = React.memo(() => {
         [indicators]
     );
 
+    const print = useNewPrintSelection(selectedId);
+    const printSections = [
+        {
+            title: "",
+            options: [
+                ...(layout.canSeeSection("sections") ? (dataSetValue?.sections ?? []) : []).map(
+                    section => ({ key: section.id, label: section.name })
+                ),
+                ...(layout.canSeeSection("categoryCombinations")
+                    ? [{ key: "categoryCombinations", label: i18n.t("Category Combinations") }]
+                    : []),
+                ...(layout.canSeeSection("indicators") && sortedIndicators.length > 0
+                    ? [{ key: "indicators", label: i18n.t("Indicators") }]
+                    : []),
+            ],
+        },
+    ];
+    const printColumns = getColumnGroups(layout, [
+        { table: "sections", title: i18n.t("Data Elements Columns") },
+        { table: "indicators", title: i18n.t("Indicator Columns") },
+    ]);
+
     const toc = getToc({
         hasSections: layout.canSeeSection("sections"),
         hasCombos: layout.canSeeSection("categoryCombinations"),
@@ -86,7 +116,13 @@ export const DataSetsPage: React.FC = React.memo(() => {
                     actions={
                         <>
                             <LayoutSettingsButton view="datasets" layout={layout.loader} />
-                            <PrintButton disabled={isLoading || !dataSetValue} />
+                            <PrintButton
+                                disabled={
+                                    isLoading ||
+                                    !dataSetValue ||
+                                    !hasPrintedSection(print, printSections)
+                                }
+                            />
                         </>
                     }
                 />
@@ -105,29 +141,40 @@ export const DataSetsPage: React.FC = React.memo(() => {
             </div>
 
             {dataSetValue && (
-                <>
+                <PrintSelectionProvider value={print}>
                     <div id="DossierTitleContainer">
                         <h1>{dataSetValue.name}</h1>
                     </div>
                     <TableOfContents items={toc} />
                     <OrgUnitTreePanel ownerType="dataSets" ownerId={dataSetValue.id} />
+                    <PrintSelectionPanel
+                        selection={print}
+                        sectionGroups={printSections}
+                        columnGroups={printColumns}
+                    />
 
                     <DataSetSectionsSection
                         dataSet={dataSetValue}
                         canSeeSection={layout.canSeeSection("sections")}
                         canSeeColumn={column => layout.canSeeColumn("sections", column)}
                     />
-                    <CategoryCombosSection
-                        combos={combos}
-                        canSeeSection={layout.canSeeSection("categoryCombinations")}
-                        canSeeColumn={column => layout.canSeeColumn("categoryCombinations", column)}
-                    />
-                    <DataSetIndicatorsSection
-                        indicators={sortedIndicators}
-                        canSeeSection={layout.canSeeSection("indicators")}
-                        canSeeColumn={column => layout.canSeeColumn("indicators", column)}
-                    />
-                </>
+                    <PrintableBlock section="categoryCombinations">
+                        <CategoryCombosSection
+                            combos={combos}
+                            canSeeSection={layout.canSeeSection("categoryCombinations")}
+                            canSeeColumn={column =>
+                                layout.canSeeColumn("categoryCombinations", column)
+                            }
+                        />
+                    </PrintableBlock>
+                    <PrintableBlock section="indicators">
+                        <DataSetIndicatorsSection
+                            indicators={sortedIndicators}
+                            canSeeSection={layout.canSeeSection("indicators")}
+                            canSeeColumn={column => layout.canSeeColumn("indicators", column)}
+                        />
+                    </PrintableBlock>
+                </PrintSelectionProvider>
             )}
         </>
     );

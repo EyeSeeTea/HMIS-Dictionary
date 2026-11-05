@@ -1,6 +1,10 @@
 import React from "react";
 import { ProgramStage, StageDataElement } from "$/domain/entities/ProgramStage";
 import { ContentSection } from "$/webapp/components/content-section/ContentSection";
+import {
+    PrintableBlock,
+    usePrintSelection,
+} from "$/webapp/components/print-selection/PrintSelection";
 import { DataTable, withColumnAccess } from "$/webapp/components/data-table/DataTable";
 import { HtmlContent } from "$/webapp/components/html-content/HtmlContent";
 import { OptionSetCell } from "$/webapp/pages/programs/OptionSetCell";
@@ -19,8 +23,13 @@ export function getSectionAnchor(sectionId: string): string {
     return sectionId;
 }
 
+export function getStageSectionPrintKey(stageId: string, sectionId: string): string {
+    return `${stageId}.${sectionId}`;
+}
+
 export const StagesSection: React.FC<Props> = React.memo(props => {
     const { stages, canSeeSection, canSeeColumn } = props;
+    const print = usePrintSelection();
     if (!canSeeSection) return null;
 
     const columns = withColumnAccess<StageDataElement>(
@@ -92,13 +101,23 @@ export const StagesSection: React.FC<Props> = React.memo(props => {
                 render: e => <OptionSetCell optionSet={e.optionSet} />,
             },
         ],
-        canSeeColumn
+        canSeeColumn,
+        column => print.isColumnPrinted("programStages", column)
     );
 
     return (
         <div id="stageContainer">
             {stages.map(stage => (
-                <div key={stage.id}>
+                <div
+                    key={stage.id}
+                    className={
+                        stage.sections.some(section =>
+                            print.isSectionPrinted(getStageSectionPrintKey(stage.id, section.id))
+                        )
+                            ? ""
+                            : "no-print"
+                    }
+                >
                     <h2 id={stage.id} className="stage">
                         {stage.name}
                     </h2>
@@ -110,19 +129,23 @@ export const StagesSection: React.FC<Props> = React.memo(props => {
                     )}
 
                     {stage.sections.map(section => (
-                        <ContentSection
+                        <PrintableBlock
                             key={section.id}
-                            id={getSectionAnchor(section.id)}
-                            title={section.name}
-                            count={section.dataElements.length}
-                            countLabel={t.dos_NumberElementsSection()}
+                            section={getStageSectionPrintKey(stage.id, section.id)}
                         >
-                            <DataTable
-                                rows={section.dataElements}
-                                columns={columns}
-                                getRowId={element => element.id}
-                            />
-                        </ContentSection>
+                            <ContentSection
+                                id={getSectionAnchor(section.id)}
+                                title={section.name}
+                                count={section.dataElements.length}
+                                countLabel={t.dos_NumberElementsSection()}
+                            >
+                                <DataTable
+                                    rows={section.dataElements}
+                                    columns={columns}
+                                    getRowId={element => element.id}
+                                />
+                            </ContentSection>
+                        </PrintableBlock>
                     ))}
                 </div>
             ))}

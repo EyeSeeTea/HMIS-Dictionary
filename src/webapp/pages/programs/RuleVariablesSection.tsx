@@ -1,6 +1,7 @@
 import React from "react";
 import { ProgramRuleVariable } from "$/domain/entities/ProgramRule";
 import { ContentSection } from "$/webapp/components/content-section/ContentSection";
+import { usePrintSelection } from "$/webapp/components/print-selection/PrintSelection";
 import { DataTable, withColumnAccess } from "$/webapp/components/data-table/DataTable";
 import { programHelp as help, programTexts as t } from "$/webapp/pages/programs/programTexts";
 
@@ -12,6 +13,7 @@ type Props = {
 
 export const RuleVariablesSection: React.FC<Props> = React.memo(props => {
     const { variables, canSeeSection, canSeeColumn } = props;
+    const print = usePrintSelection();
     if (!canSeeSection || variables.length === 0) return null;
 
     const columns = withColumnAccess<ProgramRuleVariable>(
@@ -59,7 +61,8 @@ export const RuleVariablesSection: React.FC<Props> = React.memo(props => {
                 ),
             },
         ],
-        canSeeColumn
+        canSeeColumn,
+        column => print.isColumnPrinted("programRuleVariables", column)
     );
 
     return (

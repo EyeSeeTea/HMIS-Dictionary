@@ -2,6 +2,7 @@ import React from "react";
 import { Indicator, StageWithDataElements } from "$/domain/entities/Indicator";
 import { ProgramIndicator } from "$/domain/entities/ProgramIndicator";
 import { ContentSection } from "$/webapp/components/content-section/ContentSection";
+import { usePrintSelection } from "$/webapp/components/print-selection/PrintSelection";
 import { DataTable, withColumnAccess } from "$/webapp/components/data-table/DataTable";
 import { VisualizationLink } from "$/webapp/components/visualization-link/VisualizationLink";
 import { programHelp as help, programTexts as t } from "$/webapp/pages/programs/programTexts";
@@ -18,6 +19,7 @@ type Props = {
 /** Indicators that reference the program through D{}, A{} or I{}. */
 export const RelatedIndicatorsSection: React.FC<Props> = React.memo(props => {
     const { indicators, stages, programIndicators, canSeeSection, canSeeColumn } = props;
+    const print = usePrintSelection();
     if (!canSeeSection || indicators.length === 0) return null;
 
     const columns = withColumnAccess<Indicator>(
@@ -71,7 +73,8 @@ export const RelatedIndicatorsSection: React.FC<Props> = React.memo(props => {
                 render: i => <VisualizationLink source={i} variant="link" />,
             },
         ],
-        canSeeColumn
+        canSeeColumn,
+        column => print.isColumnPrinted("indicators", column)
     );
 
     return (

@@ -1,6 +1,7 @@
 import React from "react";
 import { ProgramAttribute } from "$/domain/entities/Program";
 import { ContentSection } from "$/webapp/components/content-section/ContentSection";
+import { usePrintSelection } from "$/webapp/components/print-selection/PrintSelection";
 import { DataTable, withColumnAccess } from "$/webapp/components/data-table/DataTable";
 import { OptionSetCell } from "$/webapp/pages/programs/OptionSetCell";
 import { visibilityText } from "$/webapp/pages/programs/programFormat";
@@ -14,6 +15,7 @@ type Props = {
 
 export const ProgramAttributesSection: React.FC<Props> = React.memo(props => {
     const { attributes, canSeeSection, canSeeColumn } = props;
+    const print = usePrintSelection();
     if (!canSeeSection || attributes.length === 0) return null;
 
     const columns = withColumnAccess<ProgramAttribute>(
@@ -73,7 +75,8 @@ export const ProgramAttributesSection: React.FC<Props> = React.memo(props => {
                 render: a => <OptionSetCell optionSet={a.optionSet} />,
             },
         ],
-        canSeeColumn
+        canSeeColumn,
+        column => print.isColumnPrinted("trackedEntityAttributes", column)
     );
 
     return (
