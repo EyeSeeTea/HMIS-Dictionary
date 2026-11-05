@@ -32,17 +32,17 @@ export type SearchFilterAttrs = {
     columns: Partial<Record<SearchColumn, string>>;
 };
 
-/** "a|b" is OR inside a filter, and filters combine with AND. Not case-sensitive. */
+/**
+ * The global search: "a|b" finds any of the terms, and "a b" finds all the words, in any order and
+ * in any column. Column filters are "a|b" too. Filters combine with AND. Not case-sensitive.
+ */
 export class SearchFilter extends Struct<SearchFilterAttrs>() {
     matches(row: SearchRow): boolean {
-        const globalTerms = getTerms(this.global);
         const values = [...Object.values(row.columns), ...Object.values(row.raw)];
-        const matchesGlobal =
-            globalTerms.length === 0 ||
-            globalTerms.some(term => values.some(value => includes(value, term)));
+        const isInRow = (term: string) => values.some(value => includes(value, term));
 
         return (
-            matchesGlobal &&
+            matchesGlobal(this.global, isInRow) &&
             Object.entries(this.columns).every(([column, filter]) => {
                 const terms = getTerms(filter);
                 const value = row.columns[column as SearchColumn];
@@ -52,8 +52,17 @@ export class SearchFilter extends Struct<SearchFilterAttrs>() {
     }
 
     highlightTerms(column: SearchColumn): string[] {
-        return [...getTerms(this.global), ...getTerms(this.columns[column] ?? "")];
+        return [...getWords(this.global), ...getTerms(this.columns[column] ?? "")];
     }
+}
+
+function matchesGlobal(global: string, isInRow: (term: string) => boolean): boolean {
+    if (global.includes("|")) {
+        const terms = getTerms(global);
+        return terms.length === 0 || terms.some(isInRow);
+    }
+
+    return getWords(global).every(isInRow);
 }
 
 function getTerms(filter: string): string[] {
@@ -61,6 +70,10 @@ function getTerms(filter: string): string[] {
         .split("|")
         .map(term => term.trim())
         .filter(Boolean);
+}
+
+function getWords(text: string): string[] {
+    return text.split(/[\s|]+/).filter(Boolean);
 }
 
 function includes(value: string, term: string): boolean {

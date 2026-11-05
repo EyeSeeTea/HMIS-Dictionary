@@ -250,3 +250,37 @@ describe("SearchFilter", () => {
         expect(filter("a", { object_name: "c" }).highlightTerms("object_id")).toEqual(["a"]);
     });
 });
+
+describe("SearchFilter, global search", () => {
+    const row = (values: Partial<Record<SearchColumn, string>>): SearchRow =>
+        ({
+            columns: values,
+            raw: { numerator: "", denominator: "", expression: "", filter: "" },
+        }) as SearchRow;
+    const malaria = row({ object_name: "Malaria cases confirmed", object_type: "indicator" });
+
+    it("finds all the words, in any order and in any column", () => {
+        const find = (global: string) =>
+            SearchFilter.create({ global, columns: {} }).matches(malaria);
+
+        expect(find("confirmed malaria")).toBe(true);
+        expect(find("malaria indicator")).toBe(true);
+        expect(find("  CASES   malaria  ")).toBe(true);
+        expect(find("malaria dengue")).toBe(false);
+        expect(find("   ")).toBe(true);
+    });
+
+    it("keeps | as OR", () => {
+        const find = (global: string) =>
+            SearchFilter.create({ global, columns: {} }).matches(malaria);
+
+        expect(find("dengue|malaria")).toBe(true);
+        expect(find("dengue|cholera")).toBe(false);
+    });
+
+    it("highlights each word", () => {
+        const filter = SearchFilter.create({ global: "confirmed malaria", columns: {} });
+
+        expect(filter.highlightTerms("object_name")).toEqual(["confirmed", "malaria"]);
+    });
+});
