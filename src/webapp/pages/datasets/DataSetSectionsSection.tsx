@@ -11,6 +11,8 @@ import { getLayoutLabel } from "$/webapp/components/layout-settings/layoutLabels
 import { scrollToId } from "$/webapp/components/table-of-contents/TableOfContents";
 import { helpTexts } from "$/webapp/pages/datasets/helpTexts";
 
+import css from "./LongCell.module.css";
+
 type Props = {
     dataSet: DataSet;
     canSeeSection: boolean;
@@ -70,7 +72,7 @@ export const DataSetSectionsSection: React.FC<Props> = React.memo(props => {
                 header: getLayoutLabel("dos_Options"),
                 helpText: helpTexts.datasets_sec_options_help(),
                 render: element => (
-                    <ul>
+                    <ul className={css.longCell} data-test="options-cell">
                         {element.optionNames.map((option, index) => (
                             <li key={index}>{option || "-"}</li>
                         ))}

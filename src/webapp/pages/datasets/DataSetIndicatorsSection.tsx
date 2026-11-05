@@ -6,6 +6,8 @@ import { DataTable, withColumnAccess } from "$/webapp/components/data-table/Data
 import { getLayoutLabel } from "$/webapp/components/layout-settings/layoutLabels";
 import { helpTexts } from "$/webapp/pages/datasets/helpTexts";
 
+import css from "./LongCell.module.css";
+
 type Props = {
     /** Already sorted by name. */
     indicators: Indicator[];
@@ -42,7 +44,11 @@ export const DataSetIndicatorsSection: React.FC<Props> = React.memo(props => {
                 key: "numerator",
                 header: getLayoutLabel("dos_NumeratorIndicator"),
                 helpText: helpTexts.datasets_ind_numerator_help(),
-                render: indicator => indicator.numeratorText,
+                render: indicator => (
+                    <div className={css.longCell} data-test="formula-cell">
+                        {indicator.numeratorText}
+                    </div>
+                ),
             },
             {
                 key: "numeratorDescription",
@@ -54,7 +60,11 @@ export const DataSetIndicatorsSection: React.FC<Props> = React.memo(props => {
                 key: "denominator",
                 header: getLayoutLabel("dos_DenominatorIndicator"),
                 helpText: helpTexts.datasets_ind_denominator_help(),
-                render: indicator => indicator.denominatorText,
+                render: indicator => (
+                    <div className={css.longCell} data-test="formula-cell">
+                        {indicator.denominatorText}
+                    </div>
+                ),
             },
             {
                 key: "denominatorDescription",
