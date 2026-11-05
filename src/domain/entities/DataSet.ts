@@ -11,7 +11,7 @@ export type DataSetElement = NamedRef & {
     categoryCombo: NamedRef;
 };
 
-export type DataSetSection = NamedRef & { dataElements: DataSetElement[] };
+export type DataSetSection = NamedRef & { description: string; dataElements: DataSetElement[] };
 
 export type CategoryCombo = NamedRef & { categories: { name: string; items: string[] }[] };
 

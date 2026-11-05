@@ -23,8 +23,8 @@ const dataSet = new DataSet({
     hasRealSections: true,
     dataElementIds: ["a", "b"],
     sections: [
-        { id: "s1", name: "Section 1", dataElements: [element("a")] },
-        { id: "s2", name: "Section 2", dataElements: [] },
+        { id: "s1", name: "Section 1", description: "", dataElements: [element("a")] },
+        { id: "s2", name: "Section 2", description: "", dataElements: [] },
     ],
 });
 

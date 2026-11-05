@@ -103,6 +103,11 @@ export const DataSetSectionsSection: React.FC<Props> = React.memo(props => {
                         countLabel={i18n.t("Number of Elements in Section")}
                         helpText={helpTexts.datasets_sec_description()}
                     >
+                        {section.description && (
+                            <p data-test={`section-description-${section.id}`}>
+                                {section.description}
+                            </p>
+                        )}
                         <DataTable
                             rows={section.dataElements}
                             columns={columns}

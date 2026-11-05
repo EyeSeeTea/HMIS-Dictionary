@@ -37,7 +37,12 @@ export type D2DataSet = {
     id: string;
     displayName: string;
     displayDescription?: string;
-    sections: { id: string; displayName: string; dataElements: D2DataElement[] }[];
+    sections: {
+        id: string;
+        displayName: string;
+        description?: string;
+        dataElements: D2DataElement[];
+    }[];
     dataSetElements: { categoryCombo?: D2Combo; dataElement: D2DataElement }[];
 };
 
@@ -88,7 +93,12 @@ export class DataSetD2Repository implements DataSetRepository {
                     id: true,
                     displayName: true,
                     displayDescription: true,
-                    sections: { id: true, displayName: true, dataElements: elementFields },
+                    sections: {
+                        id: true,
+                        displayName: true,
+                        description: true,
+                        dataElements: elementFields,
+                    },
                     dataSetElements: {
                         categoryCombo: comboFields,
                         dataElement: elementFields,
@@ -165,12 +175,14 @@ export function toDataSet(dataSet: D2DataSet): DataSet {
             ? dataSet.sections.map(section => ({
                   id: section.id,
                   name: section.displayName,
+                  description: text(section.description),
                   dataElements: section.dataElements.map(toElement),
               }))
             : [
                   {
                       id: "DataElements",
                       name: "Data Elements",
+                      description: "",
                       dataElements: dataSet.dataSetElements.map(({ dataElement }) =>
                           toElement(dataElement)
                       ),

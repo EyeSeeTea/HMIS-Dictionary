@@ -185,7 +185,12 @@ describe("DataSet", () => {
             name: "DS",
             description: "",
             sections: [
-                { id: "s", name: "S", dataElements: [element("a"), element("a"), element("b")] },
+                {
+                    id: "s",
+                    name: "S",
+                    description: "",
+                    dataElements: [element("a"), element("a"), element("b")],
+                },
             ],
             hasRealSections: true,
             dataElementIds: [],
