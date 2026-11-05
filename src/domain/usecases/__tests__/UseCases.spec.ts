@@ -18,7 +18,7 @@ import { HealthServiceTranslations } from "$/domain/entities/HealthServiceTransl
 import { IndicatorFormula } from "$/domain/entities/IndicatorFormula";
 import { IndicatorVisualization } from "$/domain/entities/IndicatorVisualization";
 import { LayoutSettings } from "$/domain/entities/LayoutSettings";
-import { Program } from "$/domain/entities/Program";
+import { Program, ProgramResource } from "$/domain/entities/Program";
 import { ProgramExpression } from "$/domain/entities/ProgramExpression";
 import { AppSettingsRepository } from "$/domain/repositories/AppSettingsRepository";
 import { AttributeRepository } from "$/domain/repositories/AttributeRepository";
@@ -450,11 +450,33 @@ describe("Programs", () => {
 
     it("GetProgramResources makes no request without resources", async () => {
         const getResources = vi.fn(() => success([]));
-        const repository = fake<ProgramRepository>({ getResources });
+        const getEventResources = vi.fn(() => success([]));
+        const repository = fake<ProgramRepository>({ getResources, getEventResources });
 
         await new GetProgramResourcesUseCase(repository).execute(program).toPromise();
 
         expect(getResources).not.toHaveBeenCalled();
+    });
+
+    it("GetProgramResources lists the chosen ones first, without repeating them", async () => {
+        const resource = (id: string, type: ProgramResource["type"]): ProgramResource => ({
+            id,
+            name: id,
+            description: "",
+            type,
+        });
+        const repository = fake<ProgramRepository>({
+            getResources: () =>
+                success([resource("dash", "dashboards"), resource("chart", "eventCharts")]),
+            getEventResources: () =>
+                success([resource("chart", "eventCharts"), resource("report", "eventReports")]),
+        });
+
+        const resources = await new GetProgramResourcesUseCase(repository)
+            .execute({ ...program, resourceIds: ["dash", "chart"] })
+            .toPromise();
+
+        expect(resources.map(({ id }) => id)).toEqual(["dash", "chart", "report"]);
     });
 });
 

@@ -81,6 +81,7 @@ export function getTestRepositories(): Repositories {
             getRules: empty,
             getRuleVariables: empty,
             getResources: empty,
+            getEventResources: empty,
             getOptionIdsOfGroups: () => success(new Set()),
         },
         visualizationRepository: { save: () => success("visualizationId") },

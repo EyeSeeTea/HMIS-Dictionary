@@ -1024,7 +1024,13 @@ test.describe("7. Programs", () => {
     });
 
     test.describe("Resources", () => {
-        test("Program with no attribute value has no block or entry", async ({ programs }) => {
+        test("Program with no attribute value and no event charts or reports has no block or entry", async ({
+            programs,
+            page,
+        }) => {
+            await page.route(/\/api(\/\d+)?\/event(Charts|Reports)(\.json)?\?/, route =>
+                route.fulfill({ json: { eventCharts: [], eventReports: [] } })
+            );
             await select(programs, ambulances.name);
             await expect(programs.resourcesHeading).toHaveCount(0);
             await expect(programs.tocLink("Program Resources")).toHaveCount(0);

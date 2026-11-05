@@ -14,5 +14,6 @@ export interface ProgramRepository {
     getRules(programId: Id): FutureData<ProgramRule[]>;
     getRuleVariables(programId: Id): FutureData<ProgramRuleVariable[]>;
     getResources(ids: Id[]): FutureData<ProgramResource[]>;
+    getEventResources(programId: Id): FutureData<ProgramResource[]>;
     getOptionIdsOfGroups(ids: Id[]): FutureData<Set<Id>>;
 }

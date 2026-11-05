@@ -128,6 +128,10 @@ type D2Rule = {
     }[];
 };
 
+type D2Resource = { id: string; displayName: string; displayDescription?: string; type?: string };
+
+type D2Resources = Partial<Record<ProgramResourceType | "eventVisualizations", D2Resource[]>>;
+
 export class ProgramD2Repository implements ProgramRepository {
     constructor(private api: D2Api) {}
 
@@ -305,23 +309,39 @@ export class ProgramD2Repository implements ProgramRepository {
 
     /** Only reads these types, so v42's eventVisualizations are lost: bug P3, kept. */
     getResources(ids: Id[]): FutureData<ProgramResource[]> {
-        type D2Resource = { id: string; displayName: string; displayDescription?: string };
-
         return apiToFuture(
-            this.api.get<Partial<Record<ProgramResourceType, D2Resource[]>>>("/metadata", {
+            this.api.get<D2Resources>("/metadata", {
                 filter: `id:in:[${ids.join(",")}]`,
-                fields: "id,displayName,displayDescription",
+                fields: "id,displayName,displayDescription,type",
             })
-        ).map(metadata =>
-            resourceTypes.flatMap(type =>
-                (metadata[type] ?? []).map(resource => ({
-                    id: resource.id,
-                    name: resource.displayName,
-                    description: text(resource.displayDescription),
-                    type: type,
-                }))
-            )
-        );
+        ).map(metadata => [
+            ...resourceTypes.flatMap(type =>
+                (metadata[type] ?? []).map(resource => toResource(resource, type))
+            ),
+            // Recent versions of DHIS2 return event charts and reports all together under this name
+            ...(metadata.eventVisualizations ?? []).map(resource =>
+                toResource(resource, getEventVisualizationType(resource))
+            ),
+        ]);
+    }
+
+    getEventResources(programId: Id): FutureData<ProgramResource[]> {
+        const eventTypes: ("eventCharts" | "eventReports")[] = ["eventCharts", "eventReports"];
+
+        return Future.parallel(
+            eventTypes.map(type =>
+                apiToFuture(
+                    this.api.get<Partial<Record<typeof type, D2Resource[]>>>(`/${type}`, {
+                        filter: `program.id:eq:${programId}`,
+                        fields: "id,displayName,displayDescription",
+                        paging: false,
+                    })
+                ).map(response =>
+                    (response[type] ?? []).map(resource => toResource(resource, type))
+                )
+            ),
+            { concurrency: eventTypes.length }
+        ).map(resources => resources.flat());
     }
 
     getOptionIdsOfGroups(ids: Id[]): FutureData<Set<Id>> {
@@ -443,4 +463,19 @@ function toProgramRule(rule: D2Rule, templateNames: Map<Id, string>): ProgramRul
             data: text(action.data),
         })),
     });
+}
+
+function toResource(resource: D2Resource, type: ProgramResourceType): ProgramResource {
+    return {
+        id: resource.id,
+        name: resource.displayName,
+        description: text(resource.displayDescription),
+        type: type,
+    };
+}
+
+function getEventVisualizationType(resource: D2Resource): ProgramResourceType {
+    return resource.type === "PIVOT_TABLE" || resource.type === "LINE_LIST"
+        ? "eventReports"
+        : "eventCharts";
 }

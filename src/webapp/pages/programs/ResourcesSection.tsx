@@ -5,6 +5,8 @@ import { DataTable } from "$/webapp/components/data-table/DataTable";
 import { useAppContext } from "$/webapp/contexts/app-context";
 import { programTexts as t } from "$/webapp/pages/programs/programTexts";
 
+import css from "./ResourcesSection.module.css";
+
 type Props = { resources: ProgramResource[] };
 
 /** Where each type of resource opens in DHIS2. */
@@ -39,36 +41,38 @@ export const ResourcesSection: React.FC<Props> = React.memo(({ resources }) => {
                 count={resources.length}
                 countLabel={t.dos_ResourcesNumber()}
             >
-                <DataTable
-                    rows={resources}
-                    getRowId={resource => `${resource.type}-${resource.id}`}
-                    columns={[
-                        { key: "name", header: t.dos_NameElement(), render: r => r.name },
-                        {
-                            key: "description",
-                            header: t.dos_DescriptionElement(),
-                            render: r => r.description,
-                        },
-                        {
-                            key: "type",
-                            header: t.dos_ResourceType(),
-                            render: r => typeLabels[r.type],
-                        },
-                        {
-                            key: "link",
-                            header: t.dos_Link(),
-                            render: r => (
-                                <a
-                                    href={getResourceUrl(baseUrl, r)}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                >
-                                    {r.name}
-                                </a>
-                            ),
-                        },
-                    ]}
-                />
+                <div className={css.scroll}>
+                    <DataTable
+                        rows={resources}
+                        getRowId={resource => `${resource.type}-${resource.id}`}
+                        columns={[
+                            { key: "name", header: t.dos_NameElement(), render: r => r.name },
+                            {
+                                key: "description",
+                                header: t.dos_DescriptionElement(),
+                                render: r => r.description,
+                            },
+                            {
+                                key: "type",
+                                header: t.dos_ResourceType(),
+                                render: r => typeLabels[r.type],
+                            },
+                            {
+                                key: "link",
+                                header: t.dos_Link(),
+                                render: r => (
+                                    <a
+                                        href={getResourceUrl(baseUrl, r)}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                    >
+                                        {r.name}
+                                    </a>
+                                ),
+                            },
+                        ]}
+                    />
+                </div>
             </ContentSection>
         </div>
     );

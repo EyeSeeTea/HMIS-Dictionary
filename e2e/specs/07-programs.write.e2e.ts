@@ -410,15 +410,19 @@ test.describe("7. Programs", () => {
             programs,
             api,
         }) => {
+            const filter = `program.id:eq:${boat.id}`;
+            const events = [
+                ...(await api.list("eventCharts", { fields: "id", filter })),
+                ...(await api.list("eventReports", { fields: "id", filter })),
+            ];
             await withResources(api, async resources => {
+                const total = resources.length + events.length;
                 await select(programs, boat.name);
                 await expect(programs.resourcesHeading).toBeVisible();
                 await expect(programs.pageText).toContainText(
-                    `${t("dos_ResourcesNumber")}: ${resources.length}`
+                    `${t("dos_ResourcesNumber")}: ${total}`
                 );
-                await expect(rowsOf(tableAfter(programs.resourcesHeading))).toHaveCount(
-                    resources.length
-                );
+                await expect(rowsOf(tableAfter(programs.resourcesHeading))).toHaveCount(total);
                 await expect(programs.tocLink("Program Resources")).toBeVisible();
             });
         });
@@ -427,10 +431,6 @@ test.describe("7. Programs", () => {
             programs,
             api,
         }) => {
-            test.fixme(
-                true,
-                "Baseline problem P3: on v42 the API returns these as eventVisualizations, which the app ignores"
-            );
             await withResources(
                 api,
                 async resources => {

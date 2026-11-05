@@ -224,6 +224,7 @@ export const ProgramsPage: React.FC = React.memo(() => {
         ...(canSeeSection("programRuleVariables") && ruleVariablesData.length > 0
             ? [{ key: "programRuleVariables", label: t.dos_ProgramRuleVariables() }]
             : []),
+        ...(resourcesData.length > 0 ? [{ key: "resources", label: t.dos_Resources() }] : []),
     ];
     const printSections = [
         ...(canSeeSection("programStages") ? (stagesData ?? []) : []).map(stage => ({
@@ -371,7 +372,9 @@ export const ProgramsPage: React.FC = React.memo(() => {
                             canSeeColumn={column => canSeeColumn("programRuleVariables", column)}
                         />
                     </PrintableBlock>
-                    <ResourcesSection resources={resourcesData} />
+                    <PrintableBlock section="resources">
+                        <ResourcesSection resources={resourcesData} />
+                    </PrintableBlock>
                 </PrintSelectionProvider>
             )}
         </>
