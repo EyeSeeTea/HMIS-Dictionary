@@ -296,6 +296,18 @@ describe("SearchFilter, global search", () => {
         expect(filter.highlightTerms("object_name")).toEqual(["malaria", "cases", "indicator"]);
     });
 
+    it("recognises the rows that have the whole text of a plain search", () => {
+        const has = (global: string) =>
+            SearchFilter.create({ global, columns: {} }).hasWholeSearch(malaria);
+
+        expect(has("cases confirmed")).toBe(true);
+        expect(has("  CASES CONFIRMED ")).toBe(true);
+        expect(has("confirmed cases")).toBe(false);
+        expect(has("")).toBe(false);
+        expect(has("cases | confirmed")).toBe(false);
+        expect(has("cases & confirmed")).toBe(false);
+    });
+
     it("highlights each word", () => {
         const filter = SearchFilter.create({ global: "confirmed malaria", columns: {} });
 

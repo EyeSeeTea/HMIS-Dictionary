@@ -40,6 +40,8 @@ export type DataTableProps<Row> = {
     tableClassName?: string;
     /** Called with the rows of the current page, when they change. */
     onPageRowsChange?: (rows: Row[]) => void;
+    /** Rows that go on top, whatever the sorting of the columns. */
+    isPriorityRow?: (row: Row) => boolean;
     /** Extra cells above the header, for filters. */
     filterRow?: (column: DataTableColumn<Row>) => React.ReactNode;
 };
@@ -68,6 +70,7 @@ export function DataTable<Row>(props: DataTableProps<Row>): React.ReactElement {
         emptyText,
         filterRow,
         onPageRowsChange,
+        isPriorityRow,
         id,
         tableClassName,
     } = props;
@@ -79,17 +82,24 @@ export function DataTable<Row>(props: DataTableProps<Row>): React.ReactElement {
 
     const sortedRows = React.useMemo(() => {
         const column = columns.find(column => column.key === sorting?.key);
-        if (!sorting || !column?.sortValue) return rows;
-        const getValue = column.sortValue;
-        const factor = sorting.direction === "asc" ? 1 : -1;
+        const getValue = sorting && column?.sortValue;
+        const factor = sorting?.direction === "asc" ? 1 : -1;
 
         // Empty values go last in both directions, so a sorted page shows values first
-        return [...rows].sort((a, b) => {
-            const [x, y] = [getValue(a), getValue(b)];
-            if (x === "" || y === "") return x === y ? 0 : x === "" ? 1 : -1;
-            return compare(x, y) * factor;
-        });
-    }, [rows, columns, sorting]);
+        const byColumn = getValue
+            ? [...rows].sort((a, b) => {
+                  const [x, y] = [getValue(a), getValue(b)];
+                  if (x === "" || y === "") return x === y ? 0 : x === "" ? 1 : -1;
+                  return compare(x, y) * factor;
+              })
+            : rows;
+        if (!isPriorityRow) return byColumn;
+
+        return [
+            ...byColumn.filter(row => isPriorityRow(row)),
+            ...byColumn.filter(row => !isPriorityRow(row)),
+        ];
+    }, [rows, columns, sorting, isPriorityRow]);
 
     const pageCount = pageSizes ? Math.max(1, Math.ceil(sortedRows.length / pageSize)) : 1;
     const currentPage = Math.min(page, pageCount);
@@ -100,10 +110,7 @@ export function DataTable<Row>(props: DataTableProps<Row>): React.ReactElement {
     // A new list of rows (for example after filtering) starts again from the first page
     React.useEffect(() => setPage(1), [rows]);
 
-    React.useEffect(() => {
-        onPageRowsChange?.(pageRows);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [sortedRows, currentPage, pageSize, pageSizes]);
+    useOnListChange(pageRows, onPageRowsChange);
 
     const toggleSort = (key: string) => {
         setSorting(prev =>
@@ -184,6 +191,25 @@ export function DataTable<Row>(props: DataTableProps<Row>): React.ReactElement {
             )}
         </div>
     );
+}
+
+/**
+ * Tells about a list only when its items change. The columns of a table are usually a new array on
+ * each render, and that recalculates the rows: telling about them every time would make whoever
+ * listens render again, and cancel what it was loading for them.
+ */
+function useOnListChange<Item>(list: Item[], onChange: Maybe<(list: Item[]) => void>): void {
+    const previous = React.useRef<Maybe<Item[]>>(undefined);
+
+    React.useEffect(() => {
+        const last = previous.current;
+        const isSame =
+            last?.length === list.length && last.every((item, index) => item === list[index]);
+        if (isSame) return;
+
+        previous.current = list;
+        onChange?.(list);
+    });
 }
 
 function printClass<Row>(column: DataTableColumn<Row>): string | undefined {

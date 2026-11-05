@@ -52,6 +52,16 @@ export class SearchFilter extends Struct<SearchFilterAttrs>() {
         );
     }
 
+    /** Rows with the whole text of a plain search go first. It says nothing with operators. */
+    hasWholeSearch(row: SearchRow): boolean {
+        const search = this.global.trim();
+        if (!search || /[|&]/.test(search)) return false;
+
+        return [...Object.values(row.columns), ...Object.values(row.raw)].some(value =>
+            includes(value, search)
+        );
+    }
+
     highlightTerms(column: SearchColumn): string[] {
         return [...getWords(this.global), ...getTerms(this.columns[column] ?? "")];
     }

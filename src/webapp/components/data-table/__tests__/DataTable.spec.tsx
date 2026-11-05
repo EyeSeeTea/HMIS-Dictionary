@@ -1,5 +1,5 @@
 import { fireEvent, render, within } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { DataTable, DataTableColumn } from "$/webapp/components/data-table/DataTable";
 
 type Row = { id: string; name: string; size: number };
@@ -67,5 +67,41 @@ describe("DataTable", () => {
         );
 
         expect(bodyNames(view)).toEqual(["Charlie", "alpha"]);
+    });
+
+    describe("priority rows and changes of rows", () => {
+        const isCharlie = (row: Row) => row.id === "1";
+
+        const table = (
+            onPageRowsChange: (rows: Row[]) => void,
+            isPriorityRow?: typeof isCharlie
+        ) => (
+            <DataTable
+                rows={rows}
+                // A new array of columns each time, as pages do
+                columns={[...columns]}
+                getRowId={row => row.id}
+                isPriorityRow={isPriorityRow}
+                onPageRowsChange={onPageRowsChange}
+            />
+        );
+
+        it("keeps the priority rows on top, also when sorting by a column", () => {
+            const view = render(table(() => {}, isCharlie));
+
+            fireEvent.click(sortButton(view, 0));
+
+            expect(bodyNames(view)).toEqual(["Charlie", "alpha", "Bravo"]);
+        });
+
+        it("does not report the rows again when only the array of columns is new", () => {
+            const onPageRowsChange = vi.fn();
+            const view = render(table(onPageRowsChange, isCharlie));
+            const calls = onPageRowsChange.mock.calls.length;
+
+            view.rerender(table(onPageRowsChange, isCharlie));
+
+            expect(onPageRowsChange).toHaveBeenCalledTimes(calls);
+        });
     });
 });

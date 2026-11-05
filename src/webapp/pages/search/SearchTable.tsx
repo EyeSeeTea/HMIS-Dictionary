@@ -94,6 +94,10 @@ export const SearchTable: React.FC<SearchTableProps> = React.memo(props => {
     }));
 
     const dialogObject = openFormula?.item.object;
+    const isPriorityRow = React.useCallback(
+        (item: SearchTableRow) => filter.hasWholeSearch(item.row),
+        [filter]
+    );
 
     return (
         <>
@@ -104,6 +108,7 @@ export const SearchTable: React.FC<SearchTableProps> = React.memo(props => {
                     columns={tableColumns}
                     getRowId={item => item.id}
                     pageSizes={searchPageSizes}
+                    isPriorityRow={isPriorityRow}
                     onPageRowsChange={onPageRowsChange}
                     emptyText={i18n.t("No results")}
                     filterRow={
