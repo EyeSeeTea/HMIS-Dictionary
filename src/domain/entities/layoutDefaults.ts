@@ -135,6 +135,7 @@ export const layoutDefaults: Record<LayoutView, LayoutSection[]> = {
             ["trackedEntityAttributes", "dos_TrackedEntityAttributes", "everyone"],
             [
                 ["name", "dos_NameElement", "everyone"],
+                ["shortName", "dos_ShortNameElement", "everyone"],
                 ["formName", "dos_FormNameElement", "everyone"],
                 ["description", "dos_DescriptionElement", "everyone"],
                 ["valueType", "dos_ValueType", "advanced"],
@@ -149,6 +150,7 @@ export const layoutDefaults: Record<LayoutView, LayoutSection[]> = {
             ["programStages", "dos_ProgramStages", "everyone"],
             [
                 ["name", "dos_NameElement", "everyone"],
+                ["shortName", "dos_ShortNameElement", "everyone"],
                 ["formName", "dos_FormNameElement", "everyone"],
                 ["description", "dos_DescriptionElement", "everyone"],
                 ["valueType", "dos_ValueType", "advanced"],

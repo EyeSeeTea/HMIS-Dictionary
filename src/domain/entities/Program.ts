@@ -11,6 +11,7 @@ export type Program = NamedRef & {
 };
 
 export type ProgramAttribute = NamedRef & {
+    shortName: string;
     formName: string;
     description: string;
     valueType: string;

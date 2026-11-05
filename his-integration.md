@@ -30,7 +30,7 @@ Items are grouped by priority and tagged by area and relative cost, from 1 (chea
 - [x] [datasets] [cost: 1] **Section description:** under the section title. 93 of 1893 sections have one.
 - [x] [datasets] [cost: 2] **Aggregation Type column:** in the data elements table, with its layout settings entry.
 - [x] [datasets] [cost: 1] **Skip orphaned data elements:** do not show elements that are in a section but no longer in the data set. This also corrects the section count.
-- [ ] [programs] [cost: 2] **Short Name column:** in stage data elements and attributes. Not fetched today.
+- [x] [programs] [cost: 2] **Short Name column:** in stage data elements and attributes. Not fetched today.
 - [ ] [programs] [cost: 2] **Related indicators columns:** add Short Name, Numerator description and Denominator description. The entity already has them.
 - [ ] [general] [cost: 3] **Translations:** use the HIS `es.po` and `fr.po` as a source for the new strings. We have no `fr.po` yet, as `migration.md` already tracks.
 

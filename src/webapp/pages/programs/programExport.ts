@@ -47,6 +47,10 @@ export function buildProgramSheets(data: ProgramExportData, access: Access): Exc
                             t.dos_NameElement(),
                             element.name,
                         ]),
+                        ...only(column("programStages", "shortName"), [
+                            t.dos_ShortNameElement(),
+                            element.shortName,
+                        ]),
                         ...only(column("programStages", "formName"), [
                             t.dos_FormNameElement(),
                             element.formName,
@@ -82,6 +86,10 @@ export function buildProgramSheets(data: ProgramExportData, access: Access): Exc
                 ...only(column("trackedEntityAttributes", "name"), [
                     t.dos_NameElement(),
                     attribute.name,
+                ]),
+                ...only(column("trackedEntityAttributes", "shortName"), [
+                    t.dos_ShortNameElement(),
+                    attribute.shortName,
                 ]),
                 ...only(column("trackedEntityAttributes", "formName"), [
                     t.dos_FormNameElement(),

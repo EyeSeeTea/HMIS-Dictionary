@@ -1,3 +1,4 @@
+import i18n from "$/utils/i18n";
 import React from "react";
 import { ProgramAttribute } from "$/domain/entities/Program";
 import { ContentSection } from "$/webapp/components/content-section/ContentSection";
@@ -25,6 +26,12 @@ export const ProgramAttributesSection: React.FC<Props> = React.memo(props => {
                 header: t.dos_NameElement(),
                 helpText: help.programs_tei_name_help(),
                 render: a => a.name,
+            },
+            {
+                key: "shortName",
+                header: t.dos_ShortNameElement(),
+                helpText: i18n.t("Defines the short name, used in compact displays and analytics."),
+                render: a => a.shortName,
             },
             {
                 key: "formName",

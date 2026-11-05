@@ -103,6 +103,7 @@ export function createStageDataElement(attrs: Partial<StageDataElement> = {}): S
         name: "Data element",
         formName: "Data element",
         description: "",
+        shortName: "",
         valueType: "TEXT",
         optionSet: undefined,
         groupIds: [],

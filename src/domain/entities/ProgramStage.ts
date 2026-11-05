@@ -6,6 +6,7 @@ import { CalculationMode, ProgramRuleSet, VisibilityRule } from "./ProgramRule";
 import { Id, NamedRef } from "./Ref";
 
 export type StageDataElement = NamedRef & {
+    shortName: string;
     formName: string;
     description: string;
     valueType: string;

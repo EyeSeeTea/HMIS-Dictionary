@@ -265,6 +265,7 @@ test.describe("7. Programs", () => {
             expect(await headersOf(table)).toEqual(
                 tableHeaders([
                     "dos_NameElement",
+                    "dos_ShortNameElement",
                     "dos_FormNameElement",
                     "dos_DescriptionElement",
                     "dos_ValueType",
@@ -287,7 +288,7 @@ test.describe("7. Programs", () => {
                     programStages[0].programStageDataElements[0];
                 await select(programs, name);
                 const row = await rowWith(programs.stageContainer, element.dataElement.displayName);
-                await expect(row.locator("td").nth(5)).toHaveText(String(element.compulsory));
+                await expect(row.locator("td").nth(6)).toHaveText(String(element.compulsory));
             }
         });
 
@@ -315,7 +316,7 @@ test.describe("7. Programs", () => {
             );
             await select(programs, rule.program.displayName);
             const row = await rowWith(programs.stageContainer, action.dataElement.displayName);
-            await expect(row.locator("td").nth(4)).toContainText(rule.name);
+            await expect(row.locator("td").nth(5)).toContainText(rule.name);
             await expect(
                 programs.stageContainer.locator("tbody tr td:nth-child(5)").first()
             ).not.toBeEmpty();
@@ -340,7 +341,7 @@ test.describe("7. Programs", () => {
             );
             await select(programs, ambulances.name);
             const row = await rowWith(programs.stageContainer, action.dataElement.displayName);
-            await expect(row.locator("td").nth(6)).toContainText(rule.name);
+            await expect(row.locator("td").nth(7)).toContainText(rule.name);
         });
 
         test("Option set selector lists the options, and is absent when there is none", async ({
@@ -537,13 +538,14 @@ test.describe("7. Programs", () => {
             await expect(programs.attributesHeading).toBeHidden();
         });
 
-        test("Columns: name, form name, description, value type, aggregation type, mandatory, visibility, option set", async ({
+        test("Columns: name, short name, form name, description, value type, aggregation type, mandatory, visibility, option set", async ({
             programs,
         }) => {
             await select(programs, mentalGroup.name);
             expect(await headersOf(tableAfter(programs.attributesHeading))).toEqual(
                 tableHeaders([
                     "dos_NameElement",
+                    "dos_ShortNameElement",
                     "dos_FormNameElement",
                     "dos_DescriptionElement",
                     "dos_ValueType",

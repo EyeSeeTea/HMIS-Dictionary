@@ -1,3 +1,4 @@
+import i18n from "$/utils/i18n";
 import React from "react";
 import { ProgramStage, StageDataElement } from "$/domain/entities/ProgramStage";
 import { ContentSection } from "$/webapp/components/content-section/ContentSection";
@@ -39,6 +40,12 @@ export const StagesSection: React.FC<Props> = React.memo(props => {
                 header: t.dos_NameElement(),
                 helpText: help.programs_ps_name_help(),
                 render: e => e.name,
+            },
+            {
+                key: "shortName",
+                header: t.dos_ShortNameElement(),
+                helpText: i18n.t("Defines the short name, used in compact displays and analytics."),
+                render: e => e.shortName,
             },
             {
                 key: "formName",

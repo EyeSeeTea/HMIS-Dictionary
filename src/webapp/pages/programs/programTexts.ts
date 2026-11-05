@@ -30,6 +30,7 @@ export const programTexts = {
     dos_Mandatory: () => i18n.t("Mandatory"),
     dos_MessageTemplate: () => i18n.t("Message Template"),
     dos_NameElement: () => i18n.t("Name"),
+    dos_ShortNameElement: () => i18n.t("Short Name"),
     dos_NumberElementsSection: () => i18n.t("Number of Data Elements in Section"),
     dos_NumberOfIndicators: () => i18n.t("Number of Indicators"),
     dos_NumberOfProgramIndicators: () => i18n.t("Number of Program Indicators"),

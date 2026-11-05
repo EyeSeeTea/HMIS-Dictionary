@@ -43,6 +43,7 @@ type D2Program = {
 export type D2StageDataElement = {
     id: string;
     displayName: string;
+    displayShortName?: string;
     displayFormName?: string;
     displayDescription?: string;
     valueType: string;
@@ -67,6 +68,7 @@ export type D2Stage = {
 const dataElementQuery = [
     "id",
     "displayName",
+    "displayShortName",
     "displayFormName",
     "displayDescription",
     "valueType",
@@ -190,6 +192,7 @@ export class ProgramD2Repository implements ProgramRepository {
                     trackedEntityAttribute: {
                         id: string;
                         displayName: string;
+                        displayShortName?: string;
                         displayFormName?: string;
                         displayDescription?: string;
                         valueType: string;
@@ -199,7 +202,7 @@ export class ProgramD2Repository implements ProgramRepository {
                 }[];
             }>(`/programs/${programId}`, {
                 fields:
-                    "programTrackedEntityAttributes[mandatory,trackedEntityAttribute[id,displayName," +
+                    "programTrackedEntityAttributes[mandatory,trackedEntityAttribute[id,displayName,displayShortName," +
                     "displayFormName,displayDescription,optionSet[displayName,options[id,displayName]]," +
                     "valueType,aggregationType]]",
                 paging: false,
@@ -208,6 +211,7 @@ export class ProgramD2Repository implements ProgramRepository {
             programTrackedEntityAttributes.map(({ mandatory, trackedEntityAttribute: tea }) => ({
                 id: tea.id,
                 name: tea.displayName,
+                shortName: text(tea.displayShortName),
                 formName: text(tea.displayFormName),
                 description: text(tea.displayDescription),
                 valueType: tea.valueType,
@@ -419,6 +423,7 @@ export function toProgramStage(stage: D2Stage): ProgramStage {
     const toElement = (element: D2StageDataElement): StageDataElement => ({
         id: element.id,
         name: element.displayName,
+        shortName: text(element.displayShortName),
         formName: text(element.displayFormName),
         description: text(element.displayDescription),
         valueType: element.valueType,
