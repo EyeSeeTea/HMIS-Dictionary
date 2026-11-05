@@ -5,9 +5,10 @@ import { DataTable } from "$/webapp/components/data-table/DataTable";
 import { useAppContext } from "$/webapp/contexts/app-context";
 import { programTexts as t } from "$/webapp/pages/programs/programTexts";
 
+import i18n from "$/utils/i18n";
 import css from "./ResourcesSection.module.css";
 
-type Props = { resources: ProgramResource[] };
+type Props = { resources: ProgramResource[]; canReadData: boolean };
 
 /** Where each type of resource opens in DHIS2. */
 const urlByType: Record<ProgramResourceType, string> = {
@@ -25,11 +26,15 @@ const typeLabels: Record<ProgramResourceType, string> = {
     eventReports: "Event Reports",
 };
 
+function isEventResource(resource: ProgramResource): boolean {
+    return resource.type === "eventCharts" || resource.type === "eventReports";
+}
+
 export function getResourceUrl(baseUrl: string, resource: ProgramResource): string {
     return `${baseUrl}/${urlByType[resource.type]}${resource.id}`;
 }
 
-export const ResourcesSection: React.FC<Props> = React.memo(({ resources }) => {
+export const ResourcesSection: React.FC<Props> = React.memo(({ resources, canReadData }) => {
     const { baseUrl } = useAppContext();
     if (resources.length === 0) return null;
 
@@ -60,15 +65,27 @@ export const ResourcesSection: React.FC<Props> = React.memo(({ resources }) => {
                             {
                                 key: "link",
                                 header: t.dos_Link(),
-                                render: r => (
-                                    <a
-                                        href={getResourceUrl(baseUrl, r)}
-                                        target="_blank"
-                                        rel="noreferrer"
-                                    >
-                                        {r.name}
-                                    </a>
-                                ),
+                                render: r =>
+                                    canReadData || !isEventResource(r) ? (
+                                        <a
+                                            href={getResourceUrl(baseUrl, r)}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                        >
+                                            {r.name}
+                                        </a>
+                                    ) : (
+                                        <span
+                                            className={css.noAccess}
+                                            title={i18n.t(
+                                                "You have no access to the data of this program"
+                                            )}
+                                            aria-disabled="true"
+                                            data-test="resource-no-access"
+                                        >
+                                            {r.name}
+                                        </span>
+                                    ),
                             },
                         ]}
                     />

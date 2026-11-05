@@ -77,6 +77,7 @@ const program: Program = {
     description: "",
     stageIds: ["stage1"],
     resourceIds: [],
+    canReadData: true,
 };
 
 const describing = () => {

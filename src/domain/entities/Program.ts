@@ -8,6 +8,8 @@ export type Program = NamedRef & {
     stageIds: Id[];
     /** From the attribute with code HMIS-Dict_Resources, split by ";". */
     resourceIds: Id[];
+    /** Whether the user can read its data, which its event charts and reports need. */
+    canReadData: boolean;
 };
 
 export type ProgramAttribute = NamedRef & {

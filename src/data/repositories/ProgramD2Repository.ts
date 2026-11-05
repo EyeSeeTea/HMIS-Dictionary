@@ -30,6 +30,7 @@ const programFields = {
     displayDescription: true,
     programStages: { id: true },
     attributeValues: { value: true, attribute: { code: true } },
+    access: { data: { read: true } },
 } as const;
 
 type D2Program = {
@@ -38,6 +39,7 @@ type D2Program = {
     displayDescription?: string;
     programStages: { id: string }[];
     attributeValues: { value: string; attribute: { code?: string } }[];
+    access?: { data?: { read?: boolean } };
 };
 
 export type D2StageDataElement = {
@@ -412,6 +414,7 @@ function toProgram(program: D2Program): Program {
         name: program.displayName,
         description: text(program.displayDescription),
         stageIds: program.programStages.map(stage => stage.id),
+        canReadData: program.access?.data?.read ?? true,
         resourceIds: (resources?.value ?? "")
             .split(";")
             .map(id => id.trim())

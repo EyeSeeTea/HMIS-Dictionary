@@ -10,3 +10,8 @@
         overflow: visible;
     }
 }
+
+.noAccess {
+    color: var(--colors-grey600);
+    cursor: not-allowed;
+}

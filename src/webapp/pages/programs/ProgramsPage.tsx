@@ -373,7 +373,10 @@ export const ProgramsPage: React.FC = React.memo(() => {
                         />
                     </PrintableBlock>
                     <PrintableBlock section="resources">
-                        <ResourcesSection resources={resourcesData} />
+                        <ResourcesSection
+                            resources={resourcesData}
+                            canReadData={program.canReadData}
+                        />
                     </PrintableBlock>
                 </PrintSelectionProvider>
             )}
