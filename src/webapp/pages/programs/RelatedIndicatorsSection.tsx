@@ -4,6 +4,8 @@ import { ProgramIndicator } from "$/domain/entities/ProgramIndicator";
 import { ContentSection } from "$/webapp/components/content-section/ContentSection";
 import { usePrintSelection } from "$/webapp/components/print-selection/PrintSelection";
 import { DataTable, withColumnAccess } from "$/webapp/components/data-table/DataTable";
+import { getLayoutLabel } from "$/webapp/components/layout-settings/layoutLabels";
+import { helpTexts as datasetHelp } from "$/webapp/pages/datasets/helpTexts";
 import { VisualizationLink } from "$/webapp/components/visualization-link/VisualizationLink";
 import { programHelp as help, programTexts as t } from "$/webapp/pages/programs/programTexts";
 
@@ -31,6 +33,12 @@ export const RelatedIndicatorsSection: React.FC<Props> = React.memo(props => {
                 render: i => i.name,
             },
             {
+                key: "shortName",
+                header: t.dos_ShortNameElement(),
+                helpText: datasetHelp.datasets_ind_shortName_help(),
+                render: i => i.shortName,
+            },
+            {
                 key: "description",
                 header: t.dos_DescriptionElement(),
                 helpText: help.programs_i_description_help(),
@@ -49,10 +57,22 @@ export const RelatedIndicatorsSection: React.FC<Props> = React.memo(props => {
                 render: i => i.numeratorText,
             },
             {
+                key: "numeratorDescription",
+                header: getLayoutLabel("dos_NumeratorIndicatorDescription"),
+                helpText: datasetHelp.datasets_ind_numeratorDescription_help(),
+                render: i => i.numeratorDescription,
+            },
+            {
                 key: "denominator",
                 header: t.dos_DenominatorIndicator(),
                 helpText: help.programs_i_denominator_help(),
                 render: i => i.denominatorText,
+            },
+            {
+                key: "denominatorDescription",
+                header: getLayoutLabel("dos_DenominatorIndicatorDescription"),
+                helpText: datasetHelp.datasets_ind_denominatorDescription_help(),
+                render: i => i.denominatorDescription,
             },
             {
                 key: "stagesReferenced",

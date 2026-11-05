@@ -817,10 +817,13 @@ test.describe("7. Programs", () => {
             expect(await headersOf(tableAfter(programs.indicatorsHeading))).toEqual(
                 tableHeaders([
                     "dos_NameElement",
+                    "dos_ShortNameIndicator",
                     "dos_DescriptionElement",
                     "dos_Type",
                     "dos_NumeratorIndicator",
+                    "dos_NumeratorIndicatorDescription",
                     "dos_DenominatorIndicator",
+                    "dos_DenominatorIndicatorDescription",
                     "dos_StagesReferenced",
                     "dos_Visualization",
                 ])
@@ -834,9 +837,9 @@ test.describe("7. Programs", () => {
             const row = rowsOf(tableAfter(programs.indicatorsHeading))
                 .filter({ hasText: found!.indicator.displayName })
                 .first();
-            await expect(row.locator("td").nth(3)).not.toContainText("I{");
             await expect(row.locator("td").nth(4)).not.toContainText("I{");
-            await expect(row.locator("td").nth(3)).not.toBeEmpty();
+            await expect(row.locator("td").nth(6)).not.toContainText("I{");
+            await expect(row.locator("td").nth(4)).not.toBeEmpty();
         });
 
         test("Program with no indicators has no block or entry", async ({ programs }) => {

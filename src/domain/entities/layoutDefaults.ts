@@ -180,10 +180,13 @@ export const layoutDefaults: Record<LayoutView, LayoutSection[]> = {
             ["indicators", "dos_Indicators", "everyone"],
             [
                 ["name", "dos_NameElement", "everyone"],
+                ["shortName", "dos_ShortNameIndicator", "everyone"],
                 ["description", "dos_DescriptionElement", "everyone"],
                 ["type", "dos_Type", "everyone"],
                 ["numerator", "dos_NumeratorIndicator", "everyone"],
+                ["numeratorDescription", "dos_NumeratorIndicatorDescription", "everyone"],
                 ["denominator", "dos_DenominatorIndicator", "everyone"],
+                ["denominatorDescription", "dos_DenominatorIndicatorDescription", "everyone"],
                 ["stagesReferenced", "dos_StagesReferenced", "everyone"],
                 ["visualization", "dos_Visualization", "everyone"],
             ]

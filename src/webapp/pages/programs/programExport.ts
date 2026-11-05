@@ -4,6 +4,7 @@ import { ProgramIndicator } from "$/domain/entities/ProgramIndicator";
 import { ProgramRule, ProgramRuleVariable } from "$/domain/entities/ProgramRule";
 import { ProgramStage } from "$/domain/entities/ProgramStage";
 import { Maybe } from "$/utils/ts-utils";
+import { getLayoutLabel } from "$/webapp/components/layout-settings/layoutLabels";
 import { ExcelSheet, sanitizeFilename } from "$/webapp/utils/excel";
 import { boundaryLines, calculationModeText } from "$/webapp/pages/programs/programFormat";
 import { getActionFields } from "$/webapp/pages/programs/ruleActionFields";
@@ -122,6 +123,10 @@ export function buildProgramSheets(data: ProgramExportData, access: Access): Exc
             section("indicators"),
             data.indicators.map((indicator): Cell[] => [
                 ...only(column("indicators", "name"), [t.dos_NameElement(), indicator.name]),
+                ...only(column("indicators", "shortName"), [
+                    t.dos_ShortNameElement(),
+                    indicator.shortName,
+                ]),
                 ...only(column("indicators", "description"), [
                     t.dos_DescriptionElement(),
                     indicator.description,
@@ -131,9 +136,17 @@ export function buildProgramSheets(data: ProgramExportData, access: Access): Exc
                     t.dos_NumeratorIndicator(),
                     indicator.numeratorText,
                 ]),
+                ...only(column("indicators", "numeratorDescription"), [
+                    getLayoutLabel("dos_NumeratorIndicatorDescription"),
+                    indicator.numeratorDescription,
+                ]),
                 ...only(column("indicators", "denominator"), [
                     t.dos_DenominatorIndicator(),
                     indicator.denominatorText,
+                ]),
+                ...only(column("indicators", "denominatorDescription"), [
+                    getLayoutLabel("dos_DenominatorIndicatorDescription"),
+                    indicator.denominatorDescription,
                 ]),
                 ...only(column("indicators", "stagesReferenced"), [
                     t.dos_StagesReferenced(),
