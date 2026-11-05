@@ -12,6 +12,7 @@ const element = (name: string) => ({
     formName: `${name} form`,
     description: "",
     valueType: "NUMBER",
+    aggregationType: "SUM",
     optionNames: ["Yes", ""],
     categoryCombo: { id: "cc1", name: "Combo 1" },
 });

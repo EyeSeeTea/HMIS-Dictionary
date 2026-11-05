@@ -6,6 +6,7 @@ export type DataSetElement = NamedRef & {
     formName: string;
     description: string;
     valueType: string;
+    aggregationType: string;
     optionNames: string[];
     /** The data set's override, or else the data element's own. */
     categoryCombo: NamedRef;

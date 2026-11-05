@@ -19,6 +19,7 @@ const sectionHeaders = [
     "dos_ShortNameElement",
     "dos_DescriptionElement",
     "dos_DataTypeElement",
+    "dos_AggregationType",
     "dos_Options",
     "dos_CategoryCombination",
 ].map(key => t(key));

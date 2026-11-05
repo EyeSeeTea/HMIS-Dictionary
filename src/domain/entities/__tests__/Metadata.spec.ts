@@ -177,6 +177,7 @@ describe("DataSet", () => {
             formName: "",
             description: "",
             valueType: "",
+            aggregationType: "",
             optionNames: [],
             categoryCombo: { id: combo, name: combo },
         });

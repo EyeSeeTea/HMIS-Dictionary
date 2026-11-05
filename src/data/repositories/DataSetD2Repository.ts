@@ -16,6 +16,7 @@ const elementFields = {
     displayFormName: true,
     displayDescription: true,
     valueType: true,
+    aggregationType: true,
     optionSet: { options: { displayName: true } },
     categoryCombo: comboFields,
 } as const;
@@ -29,6 +30,7 @@ export type D2DataElement = {
     displayFormName?: string;
     displayDescription?: string;
     valueType: string;
+    aggregationType?: string;
     optionSet?: { options: { displayName: string }[] };
     categoryCombo: D2Combo;
 };
@@ -159,6 +161,7 @@ export function toDataSet(dataSet: D2DataSet): DataSet {
             formName: text(element.displayFormName),
             description: text(element.displayDescription),
             valueType: element.valueType,
+            aggregationType: text(element.aggregationType),
             optionNames: (element.optionSet?.options ?? []).map(option => option.displayName),
             categoryCombo: toNamedRef(override ?? element.categoryCombo),
         };

@@ -59,6 +59,13 @@ export const DataSetSectionsSection: React.FC<Props> = React.memo(props => {
                 sortValue: element => element.valueType,
             },
             {
+                key: "aggregationType",
+                header: getLayoutLabel("dos_AggregationType"),
+                helpText: i18n.t("Defines how the values of the data element are aggregated."),
+                render: element => element.aggregationType,
+                sortValue: element => element.aggregationType,
+            },
+            {
                 key: "options",
                 header: getLayoutLabel("dos_Options"),
                 helpText: helpTexts.datasets_sec_options_help(),

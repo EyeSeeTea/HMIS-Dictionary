@@ -77,6 +77,7 @@ export const layoutDefaults: Record<LayoutView, LayoutSection[]> = {
                 ["shortName", "dos_ShortNameElement", "everyone"],
                 ["description", "dos_DescriptionElement", "everyone"],
                 ["dataTypeElement", "dos_DataTypeElement", "admin"],
+                ["aggregationType", "dos_AggregationType", "everyone"],
                 ["options", "dos_Options", "admin"],
                 ["categoryCombination", "dos_CategoryCombination", "admin"],
             ]
