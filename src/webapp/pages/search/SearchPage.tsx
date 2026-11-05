@@ -21,7 +21,12 @@ import { ColumnSelectorPanel } from "$/webapp/pages/search/ColumnSelectorPanel";
 import { SearchTable } from "$/webapp/pages/search/SearchTable";
 import { defaultVisibleColumns, searchColumnDefs } from "$/webapp/pages/search/searchColumns";
 import { getTableRows, SearchTableRow } from "$/webapp/pages/search/searchRows";
-import { columnTexts, searchHelpHtml, searchTexts } from "$/webapp/pages/search/searchTexts";
+import {
+    columnTexts,
+    searchGuideHtml,
+    searchHelpHtml,
+    searchTexts,
+} from "$/webapp/pages/search/searchTexts";
 
 const steps = [
     "dataElements",
@@ -224,6 +229,7 @@ export const SearchPage: React.FC = React.memo(() => {
 
                 <CollapsiblePanel title={searchTexts.srch_Help()} bodyId="collapseThree">
                     <HtmlContent html={searchHelpHtml()} />
+                    <HtmlContent html={searchGuideHtml()} />
                 </CollapsiblePanel>
             </div>
 

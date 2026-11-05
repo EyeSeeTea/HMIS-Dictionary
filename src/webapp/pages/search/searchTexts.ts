@@ -144,6 +144,13 @@ export const searchTexts = {
 };
 
 /** Rich text: rendered as sanitized HTML. */
+/** How to combine terms, and what the words of DHIS2 mean. */
+export const searchGuideHtml = () =>
+    i18n.t(
+        "<p><b>Combining terms in the search:</b></p><ul><li><code>a b</code>: rows with all the words, in any order and in any column. Rows with the exact phrase go first.</li><li><code>a &amp; b</code>: rows with all the terms.</li><li><code>a | b</code>: rows with any of the terms.</li></ul><p><b>DHIS2 terminology:</b></p><ul><li><b>Data Element:</b> an item of counted data or raw data.</li><li><b>Indicator:</b> combined data or calculations the system does using data elements. These could be totals, percentages, rates, etc.</li><li><b>Program Indicator:</b> a calculation or filtering of individual level data (recorded in Programs). Some program indicators may be a building block for an indicator (used in its numerator or denominator).</li><li><b>Group:</b> data elements of the same data set, entirely or in part, are grouped in a data element group. Related indicators are grouped in an indicator group.</li><li><b>Data Set:</b> made up of data elements to collect aggregate data or total numbers for a specific medical service.</li><li><b>Program:</b> made up of data elements to collect individual patient data for a particular medical service.</li></ul>",
+        { nsSeparator: false }
+    );
+
 export const searchHelpHtml = () =>
     i18n.t(
         "<p>This interface is made to simplify user access the terminology associated with information collected with HMIS.<br><ul><li>Via the <b>Search</b> tab, you can directly search for a term in all the columns of the table. You can display column filters as well, which allow you to search for information in one specific column. Use 'Clear filters' to reset all the filters. <i>Expert users can use the key word '|' (OR) to search multiple objects.</i></li><li>Via the <b>Manage Columns</b> tab, you can select columns to be displayed in the table. <i>Expert users can use the advanced columns to perform detailed researches via IDs.</i></li></ul>You can finally export the results of your search to Excel (page by page, and do not forget to save as .xls).</p>"
