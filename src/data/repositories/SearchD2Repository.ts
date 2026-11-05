@@ -109,6 +109,29 @@ export class SearchD2Repository implements SearchRepository {
         ).map(({ objects }) => objects.map(toNamedRef));
     }
 
+    getDataElementGroups(): FutureData<(NamedRef & { description: string })[]> {
+        return apiToFuture(
+            this.api.models.dataElementGroups.get({
+                fields: { id: true, displayName: true, displayDescription: true },
+                paging: false,
+            })
+        ).map(({ objects }) =>
+            objects.map(group => ({
+                ...toNamedRef(group),
+                description: text(group.displayDescription),
+            }))
+        );
+    }
+
+    getCategoryOptions(): FutureData<NamedRef[]> {
+        return apiToFuture(
+            this.api.models.categoryOptions.get({
+                fields: { id: true, displayName: true },
+                paging: false,
+            })
+        ).map(({ objects }) => objects.map(toNamedRef));
+    }
+
     getProgramIndicators(): FutureData<SearchProgramIndicatorSource[]> {
         return apiToFuture(
             this.api.models.programIndicators.get({

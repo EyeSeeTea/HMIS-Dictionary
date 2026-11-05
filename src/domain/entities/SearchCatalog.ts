@@ -104,6 +104,9 @@ export type SearchSources = {
     dataElements: SearchDataElementSource[];
     programs: SearchProgramSource[];
     categoryOptionCombos: NamedRef[];
+    /** Only loaded when some formula uses them. */
+    dataElementGroups: (NamedRef & { description: string })[];
+    categoryOptions: NamedRef[];
     programIndicators: SearchProgramIndicatorSource[];
     indicators: SearchIndicatorSource[];
 };
@@ -349,6 +352,10 @@ function buildLookup(sources: SearchSources, settings: AppSettings): FormulaLook
             })
         ),
         categoryOptionCombos: toMap(sources.categoryOptionCombos),
+        dataElementGroups: toMap(
+            sources.dataElementGroups.map(source => toObject(source, "active"))
+        ),
+        categoryOptions: toMap(sources.categoryOptions),
     };
 }
 

@@ -5,6 +5,7 @@ import {
     FormulaObject,
     IndicatorFormula,
     formulaToPlainText,
+    usesRareTokens,
     getFormulaLegend,
 } from "$/domain/entities/IndicatorFormula";
 
@@ -36,6 +37,10 @@ const lookup: FormulaLookup = {
         ["ind3", indicator("ind3", "N{ind2}", "1")],
     ]),
     categoryOptionCombos: new Map([["coc1", { id: "coc1", name: "Under 5" }]]),
+    dataElementGroups: new Map([
+        ["deg1", { id: "deg1", name: "Group one", description: "", status: "active" }],
+    ]),
+    categoryOptions: new Map([["co1", { id: "co1", name: "Female" }]]),
 };
 
 const text = (expression: string) => formulaToPlainText(formula(expression).resolve(lookup), tags);
@@ -163,5 +168,31 @@ describe("IndicatorFormula", () => {
             expect(result).toContain("[cyclic indicator reference: name-ind3]");
             expect(result).toContain("name-de1");
         });
+    });
+});
+
+describe("IndicatorFormula, other tokens", () => {
+    const resolved = (expression: string) =>
+        formulaToPlainText(formula(expression).resolve(lookup), { blacklist: "B", notInUse: "N" });
+
+    it("resolves data element groups, with and without a category", () => {
+        expect(resolved("#{deGroup:deg1}")).toBe("Group one");
+        expect(resolved("#{deGroup:deg1.co:co1}")).toBe("Group one (Female)");
+        expect(resolved("#{deGroup:deg1.coc1}")).toBe("Group one (Under 5)");
+    });
+
+    it("resolves category options of a data element", () => {
+        expect(resolved("#{de1.co:co1}")).toBe("name-de1 (Female)");
+    });
+
+    it("resolves program data elements, and leaves them raw when unknown", () => {
+        expect(resolved("D{p.de1}")).toBe("name-de1");
+        expect(resolved("D{p.unknown}")).toBe("D{p.unknown}");
+    });
+
+    it("knows which formulas need the objects of the rare tokens", () => {
+        expect(usesRareTokens("#{deGroup:a}")).toBe(true);
+        expect(usesRareTokens("#{a.co:b}")).toBe(true);
+        expect(usesRareTokens("#{a.b} + D{c.d}")).toBe(false);
     });
 });

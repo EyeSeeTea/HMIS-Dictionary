@@ -58,6 +58,8 @@ const sources: SearchSources = {
         },
     ],
     categoryOptionCombos: [{ id: "coc1", name: "Under 5" }],
+    dataElementGroups: [],
+    categoryOptions: [],
     programIndicators: [
         {
             ...base,

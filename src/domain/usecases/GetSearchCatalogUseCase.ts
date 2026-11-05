@@ -1,7 +1,12 @@
 import { AccessContext } from "$/domain/entities/AppSettings";
 import { Future, FutureData } from "$/domain/entities/generic/Future";
 import { HealthService } from "$/domain/entities/HealthService";
-import { SearchCatalog } from "$/domain/entities/SearchCatalog";
+import { usesRareTokens } from "$/domain/entities/IndicatorFormula";
+import {
+    SearchCatalog,
+    SearchIndicatorSource,
+    SearchSources,
+} from "$/domain/entities/SearchCatalog";
 import { HealthServiceRepository } from "$/domain/repositories/HealthServiceRepository";
 import { SearchRepository } from "$/domain/repositories/SearchRepository";
 
@@ -39,18 +44,21 @@ export class GetSearchCatalogUseCase {
                         step("programIndicators", () =>
                             searchRepository.getProgramIndicators()
                         ).flatMap(programIndicators =>
-                            step("indicators", () => searchRepository.getIndicators()).map(
+                            step("indicators", () => searchRepository.getIndicators()).flatMap(
                                 indicators =>
-                                    SearchCatalog.build(
-                                        {
-                                            dataElements,
-                                            programs,
-                                            categoryOptionCombos,
-                                            programIndicators,
-                                            indicators,
-                                        },
-                                        healthServices,
-                                        context
+                                    this.getRareTokenSources(indicators).map(rareTokenSources =>
+                                        SearchCatalog.build(
+                                            {
+                                                dataElements,
+                                                programs,
+                                                categoryOptionCombos,
+                                                programIndicators,
+                                                indicators,
+                                                ...rareTokenSources,
+                                            },
+                                            healthServices,
+                                            context
+                                        )
                                     )
                             )
                         )
@@ -58,6 +66,24 @@ export class GetSearchCatalogUseCase {
                 )
             )
         );
+    }
+
+    private getRareTokenSources(
+        indicators: SearchIndicatorSource[]
+    ): FutureData<Pick<SearchSources, "dataElementGroups" | "categoryOptions">> {
+        const isUsed = indicators.some(
+            indicator =>
+                usesRareTokens(indicator.numerator) || usesRareTokens(indicator.denominator)
+        );
+        if (!isUsed) return Future.success({ dataElementGroups: [], categoryOptions: [] });
+
+        return this.searchRepository
+            .getDataElementGroups()
+            .flatMap(dataElementGroups =>
+                this.searchRepository
+                    .getCategoryOptions()
+                    .map(categoryOptions => ({ dataElementGroups, categoryOptions }))
+            );
     }
 
     private getHealthServices(context: AccessContext): FutureData<HealthService[]> {

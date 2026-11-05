@@ -28,6 +28,8 @@ export type FormulaLookup = {
     programIndicators: Map<Id, FormulaObject>;
     indicators: Map<Id, FormulaIndicator>;
     categoryOptionCombos: Map<Id, NamedRef>;
+    dataElementGroups: Map<Id, FormulaObject>;
+    categoryOptions: Map<Id, NamedRef>;
 };
 
 export type FormulaOptions = {
@@ -67,11 +69,29 @@ export type FormulaTags = { blacklist: string; notInUse: string };
 const tokenRegex = /([#IDAGCN])\{([^}]*)\}|(\d+(?:\.\d+)?)|([+\-*/])/g;
 
 /**
- * Only #{}, I{} and N{} are replaced. An operator is only recognised after a closing brace and
- * before #, I or N. All the rest, as parentheses or D{}, stays as raw text.
+ * Replaced: #{de}, #{de.coc}, #{de.co:id}, #{deGroup:id} (also followed by a category), I{}, N{} and
+ * D{program.de}. An operator is only recognised after a closing brace and before #, I or N. All the
+ * rest, as parentheses, stays as raw text.
  */
-const resolveRegex =
-    /(?<=\})\s*([+\-*])\s*(?=[#IN])|#\{(\w*)\}|#\{(\w*)\.(\w*)\}|I\{(\w*)\}|N\{(\w*)\}/g;
+const resolveRegex = new RegExp(
+    [
+        String.raw`(?<=\})\s*(?<operator>[+\-*])\s*(?=[#IN])`,
+        String.raw`#\{(?<dataElement>\w*)\}`,
+        String.raw`#\{(?<comboDataElement>\w*)\.(?:co:)?(?<combo>\w*)\}`,
+        String.raw`#\{deGroup:(?<group>\w*)(?:\.(?:co:)?(?<groupCombo>\w*))?\}`,
+        String.raw`I\{(?<programIndicator>\w*)\}`,
+        String.raw`N\{(?<indicator>\w*)\}`,
+        String.raw`D\{\w*\.(?<programDataElement>\w*)\}`,
+    ].join("|"),
+    "g"
+);
+
+/** Tokens whose objects are only loaded when some formula uses them, as they are rare. */
+const rareTokensRegex = /deGroup:|\.co:/;
+
+export function usesRareTokens(expression: string): boolean {
+    return rareTokensRegex.test(expression);
+}
 
 export type IndicatorFormulaAttrs = { expression: string };
 
@@ -195,19 +215,31 @@ function resolveExpression(
         const before = expression.slice(position, match.index);
         if (before) nodes.push({ type: "text", value: before });
 
-        const [full, operator, dataElementId, comboDataElementId, comboId, piId, indicatorId] =
-            match;
+        const [full] = match;
+        const groups = match.groups ?? {};
 
-        if (operator !== undefined) {
-            nodes.push({ type: "operator", value: operator });
-        } else if (dataElementId !== undefined) {
-            nodes.push(objectNode(lookup.dataElements.get(dataElementId), dataElementId));
-        } else if (comboDataElementId !== undefined) {
-            nodes.push(comboNode(comboDataElementId, comboId ?? "", lookup));
-        } else if (piId !== undefined) {
-            nodes.push(objectNode(lookup.programIndicators.get(piId), piId, "programIndicator"));
-        } else if (indicatorId !== undefined) {
-            nodes.push(indicatorNode(indicatorId, lookup, context));
+        if (groups.operator !== undefined) {
+            nodes.push({ type: "operator", value: groups.operator });
+        } else if (groups.dataElement !== undefined) {
+            nodes.push(objectNode(lookup.dataElements.get(groups.dataElement), groups.dataElement));
+        } else if (groups.comboDataElement !== undefined) {
+            nodes.push(comboNode(groups.comboDataElement, groups.combo ?? "", lookup));
+        } else if (groups.group !== undefined) {
+            nodes.push(groupNode(groups.group, groups.groupCombo, lookup));
+        } else if (groups.programIndicator !== undefined) {
+            const { programIndicator } = groups;
+            nodes.push(
+                objectNode(
+                    lookup.programIndicators.get(programIndicator),
+                    programIndicator,
+                    "programIndicator"
+                )
+            );
+        } else if (groups.indicator !== undefined) {
+            nodes.push(indicatorNode(groups.indicator, lookup, context));
+        } else if (groups.programDataElement !== undefined) {
+            const object = lookup.dataElements.get(groups.programDataElement);
+            nodes.push(object ? objectNode(object, object.id) : { type: "text", value: full });
         }
 
         position = match.index + full.length;
@@ -229,8 +261,26 @@ function objectNode(
         : { type: "text", value: id };
 }
 
+/** The second part of a token can be a category option combo or a category option. */
+function getComboName(comboId: Id, lookup: FormulaLookup): string {
+    return (
+        lookup.categoryOptionCombos.get(comboId)?.name ??
+        lookup.categoryOptions.get(comboId)?.name ??
+        comboId
+    );
+}
+
+function groupNode(groupId: Id, comboId: Id | undefined, lookup: FormulaLookup): FormulaNode {
+    const object = lookup.dataElementGroups.get(groupId);
+    const comboName = comboId ? getComboName(comboId, lookup) : undefined;
+
+    return object
+        ? { type: "object", object, tag: undefined, categoryOptionCombo: comboName }
+        : { type: "text", value: comboName ? `${groupId} (${comboName})` : groupId };
+}
+
 function comboNode(dataElementId: Id, comboId: Id, lookup: FormulaLookup): FormulaNode {
-    const comboName = lookup.categoryOptionCombos.get(comboId)?.name ?? comboId;
+    const comboName = getComboName(comboId, lookup);
     const object = lookup.dataElements.get(dataElementId);
 
     return object
