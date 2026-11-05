@@ -37,7 +37,7 @@ Items are grouped by priority and tagged by area and relative cost, from 1 (chea
 ## Low
 
 - [x] [search] [cost: 4] **More formula tokens:** resolve `#{deGroup:id}`, `.co:id` (category option) and `D{program.dataElement}`, which we leave as raw text. Rarely used here: 0, 1 and 0 of 1947 indicators.
-- [ ] [search] [cost: 3] **Flag broken formulas:** mark ids not found (HIS: `DE:id`, `PI:id` in error style) and `sum(` expressions ("not well-formed"). We show the plain id or the raw text.
+- [x] [search] [cost: 3] **Flag broken formulas:** mark ids not found (HIS: `DE:id`, `PI:id` in error style) and `sum(` expressions ("not well-formed"). We show the plain id or the raw text.
 - [ ] [datasets] [cost: 2] **Indicators assigned to the data set:** also read `dataSet.indicators`. We only find them by formula reference, and only through `#{de.coc}` (the "Missed indicators" bug). Only 1 of 202 data sets has assigned indicators.
 - [ ] [datasets] [cost: 1] **Scrollable long cells:** limit options and formula cells to 170px high, and show them in full when printing.
 - [ ] [programs] [cost: 3] **Link without access:** grey out "Open" with a tooltip when the user cannot read the program's analytics.

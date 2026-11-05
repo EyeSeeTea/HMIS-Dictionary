@@ -38,3 +38,8 @@
 .object:hover .tooltip {
     display: block;
 }
+
+.broken {
+    color: var(--colors-red700);
+    font-weight: 500;
+}

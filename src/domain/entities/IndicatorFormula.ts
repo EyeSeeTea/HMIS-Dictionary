@@ -49,6 +49,7 @@ export type FormulaLegendItem = {
 
 export type FormulaNode =
     | { type: "text"; value: string }
+    | { type: "broken"; value: string }
     | { type: "operator"; value: string }
     | {
           type: "object";
@@ -208,6 +209,10 @@ function resolveExpression(
     lookup: FormulaLookup,
     context: ResolveContext
 ): FormulaNode[] {
+    if (/^\s*sum\(/i.test(expression)) {
+        return [{ type: "broken", value: "Expression is not well-formed" }];
+    }
+
     const nodes: FormulaNode[] = [];
     let position = 0;
 
@@ -239,7 +244,7 @@ function resolveExpression(
             nodes.push(indicatorNode(groups.indicator, lookup, context));
         } else if (groups.programDataElement !== undefined) {
             const object = lookup.dataElements.get(groups.programDataElement);
-            nodes.push(object ? objectNode(object, object.id) : { type: "text", value: full });
+            nodes.push(objectNode(object, groups.programDataElement));
         }
 
         position = match.index + full.length;
@@ -251,6 +256,8 @@ function resolveExpression(
     return nodes;
 }
 
+const brokenLabels = { dataElement: "DE", programIndicator: "PI", indicator: "IND" } as const;
+
 function objectNode(
     object: Maybe<FormulaObject>,
     id: Id,
@@ -258,7 +265,7 @@ function objectNode(
 ): FormulaNode {
     return object
         ? { type: "object", object, tag, categoryOptionCombo: undefined }
-        : { type: "text", value: id };
+        : { type: "broken", value: `${brokenLabels[tag ?? "dataElement"]}:${id}` };
 }
 
 /** The second part of a token can be a category option combo or a category option. */
@@ -276,7 +283,7 @@ function groupNode(groupId: Id, comboId: Id | undefined, lookup: FormulaLookup):
 
     return object
         ? { type: "object", object, tag: undefined, categoryOptionCombo: comboName }
-        : { type: "text", value: comboName ? `${groupId} (${comboName})` : groupId };
+        : { type: "broken", value: `DEG:${groupId}` };
 }
 
 function comboNode(dataElementId: Id, comboId: Id, lookup: FormulaLookup): FormulaNode {
@@ -285,7 +292,7 @@ function comboNode(dataElementId: Id, comboId: Id, lookup: FormulaLookup): Formu
 
     return object
         ? { type: "object", object, tag: undefined, categoryOptionCombo: comboName }
-        : { type: "text", value: `${dataElementId} (${comboName})` };
+        : { type: "broken", value: `DE:${dataElementId} (${comboName})` };
 }
 
 function indicatorNode(id: Id, lookup: FormulaLookup, context: ResolveContext): FormulaNode {
@@ -353,6 +360,7 @@ export function formulaToPlainText(nodes: FormulaNode[], tags: FormulaTags): str
 function nodeToPlainText(node: FormulaNode, tags: FormulaTags): string {
     switch (node.type) {
         case "text":
+        case "broken":
             return node.value;
         case "operator":
             return `\n${node.value} `;

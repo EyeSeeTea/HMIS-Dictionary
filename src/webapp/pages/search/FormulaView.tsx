@@ -27,6 +27,8 @@ const FormulaNodeView: React.FC<{ node: FormulaNode; tags: FormulaTags }> = ({ n
     switch (node.type) {
         case "text":
             return <>{node.value}</>;
+        case "broken":
+            return <span className={css.broken}>{i18n.t(node.value)}</span>;
         case "operator":
             return (
                 <>

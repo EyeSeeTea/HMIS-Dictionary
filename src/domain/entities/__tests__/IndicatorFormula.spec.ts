@@ -96,16 +96,16 @@ describe("IndicatorFormula", () => {
     describe("resolve", () => {
         it("keeps parentheses and everything it does not replace", () => {
             expect(text("(#{de1} / 2) + D{p.de} + G{g} + C{c}")).toBe(
-                "(name-de1 / 2) + D{p.de} + G{g} + C{c}"
+                "(name-de1 / 2) + DE:de + G{g} + C{c}"
             );
         });
 
-        it("shows the id of unknown references", () => {
-            expect(text("#{nope}")).toBe("nope");
-            expect(text("#{nope.coc1}")).toBe("nope (Under 5)");
+        it("flags unknown references, with their kind and id", () => {
+            expect(text("#{nope}")).toBe("DE:nope");
+            expect(text("#{nope.coc1}")).toBe("DE:nope (Under 5)");
             expect(text("#{de1.nope}")).toBe("name-de1 (nope)");
-            expect(text("I{nope}")).toBe("nope");
-            expect(text("N{nope}")).toBe("nope");
+            expect(text("I{nope}")).toBe("PI:nope");
+            expect(text("N{nope}")).toBe("IND:nope");
         });
 
         it("puts + - * on a new line only between a reference and #, I or N", () => {
@@ -113,7 +113,7 @@ describe("IndicatorFormula", () => {
             expect(text("#{de1} * I{pi1}")).toContain("\n* ");
             expect(text("#{de1} / #{de1}")).toBe("name-de1 / name-de1");
             expect(text("#{de1} + 2")).toBe("name-de1 + 2");
-            expect(text("#{de1} + D{p.de}")).toBe("name-de1 + D{p.de}");
+            expect(text("#{de1} + D{p.de}")).toBe("name-de1 + DE:de");
         });
 
         it("adds the tags and the kind of object", () => {
@@ -185,9 +185,15 @@ describe("IndicatorFormula, other tokens", () => {
         expect(resolved("#{de1.co:co1}")).toBe("name-de1 (Female)");
     });
 
-    it("resolves program data elements, and leaves them raw when unknown", () => {
+    it("resolves program data elements, and flags them when unknown", () => {
         expect(resolved("D{p.de1}")).toBe("name-de1");
-        expect(resolved("D{p.unknown}")).toBe("D{p.unknown}");
+        expect(resolved("D{p.unknown}")).toBe("DE:unknown");
+    });
+
+    it("flags sum() expressions as not well-formed", () => {
+        expect(resolved("sum(#{de1})")).toBe("Expression is not well-formed");
+        expect(resolved("SUM(1)")).toBe("Expression is not well-formed");
+        expect(resolved("#{de1}")).toBe("name-de1");
     });
 
     it("knows which formulas need the objects of the rare tokens", () => {
