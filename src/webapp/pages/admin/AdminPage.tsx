@@ -235,6 +235,19 @@ export const AdminPage: React.FC = React.memo(() => {
                         }))}
                     />
                     <TextSetting
+                        name="PROGRAM_UIDs"
+                        submitId="submitPrograms"
+                        label={i18n.t(
+                            "[Optional] An array of programs UIDs to blacklist from the panels."
+                        )}
+                        value={stringifyIds(blacklist.programIds)}
+                        validate={validateIds}
+                        disabled={isSaving}
+                        onSubmit={saveIds(ids => ({
+                            blacklist: { ...blacklist, programIds: ids },
+                        }))}
+                    />
+                    <TextSetting
                         name="IG_UIDs"
                         submitId="submitIG"
                         label={i18n.t(

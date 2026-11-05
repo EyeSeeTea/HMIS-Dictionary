@@ -113,7 +113,11 @@ export class SearchCatalog extends Struct<SearchCatalogAttrs>() {
         const { settings, user } = context;
         const servicesByKey = new Map(healthServices.map(service => [service.key(), service]));
 
-        const programs = sources.programs.filter(program => !isHiddenProgramName(program.name));
+        const programs = sources.programs.filter(
+            program =>
+                !isHiddenProgramName(program.name) &&
+                !settings.blacklist.programIds.includes(program.id)
+        );
 
         const dataElements = sources.dataElements
             .filter(source => !settings.isDataElementBlacklisted(source.groupIds))

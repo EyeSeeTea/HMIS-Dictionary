@@ -99,6 +99,7 @@ const emptySettings = AppSettings.create({
     blacklist: {
         dataElementGroupIds: [],
         dataSetIds: [],
+        programIds: [],
         indicatorGroupIds: [],
         tag: "Blacklisted",
     },

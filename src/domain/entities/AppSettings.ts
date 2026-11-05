@@ -12,6 +12,7 @@ export type AppSettingsAttrs = {
     blacklist: {
         dataElementGroupIds: Id[];
         dataSetIds: Id[];
+        programIds: Id[];
         indicatorGroupIds: Id[];
         tag: string;
     };

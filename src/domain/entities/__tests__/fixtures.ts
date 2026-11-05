@@ -15,6 +15,7 @@ export function createSettings(attrs: Partial<AppSettingsAttrs> = {}): AppSettin
         blacklist: {
             dataElementGroupIds: ["blacklistedDeg"],
             dataSetIds: ["blacklistedDs"],
+            programIds: ["blacklistedProgram"],
             indicatorGroupIds: ["blacklistedIg"],
             tag: "Blacklisted",
         },

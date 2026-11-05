@@ -14,10 +14,14 @@ export class GetProgramsUseCase {
     execute(settings: AppSettings, options: { name?: Maybe<string> } = {}): FutureData<Program[]> {
         if (options.name) return this.programRepository.getByName(options.name);
 
-        return settings.limitSelectorsToUserOrgUnits
+        const programs = settings.limitSelectorsToUserOrgUnits
             ? this.orgUnitRepository
                   .getUserRootIds()
                   .flatMap(rootIds => this.programRepository.getAllInOrgUnits(rootIds))
             : this.programRepository.getAll();
+
+        return programs.map(all =>
+            all.filter(program => !settings.blacklist.programIds.includes(program.id))
+        );
     }
 }

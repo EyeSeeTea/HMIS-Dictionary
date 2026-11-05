@@ -16,6 +16,7 @@ type StoredKeys = {
     setup_dossierConfigComplete: Maybe<{ value?: boolean }>;
     blacklist_dataElementGroups: Maybe<string[]>;
     blacklist_dataSets: Maybe<string[]>;
+    blacklist_programs: Maybe<string[]>;
     blacklist_indicatorGroups: Maybe<string[]>;
     blacklist_tag: Maybe<string>;
     notInUse_indicatorGroups: Maybe<string[]>;
@@ -34,6 +35,7 @@ const keys: Key[] = [
     "setup_dossierConfigComplete",
     "blacklist_dataElementGroups",
     "blacklist_dataSets",
+    "blacklist_programs",
     "blacklist_indicatorGroups",
     "blacklist_tag",
     "notInUse_indicatorGroups",
@@ -102,6 +104,7 @@ function toAppSettings(stored: StoredKeys): AppSettings {
         blacklist: {
             dataElementGroupIds: stored.blacklist_dataElementGroups ?? [],
             dataSetIds: stored.blacklist_dataSets ?? [],
+            programIds: stored.blacklist_programs ?? [],
             indicatorGroupIds: stored.blacklist_indicatorGroups ?? [],
             tag: stored.blacklist_tag || defaultTags.blacklist,
         },
@@ -126,6 +129,7 @@ function toStoredKeys(settings: AppSettings): StoredKeys {
         setup_dossierConfigComplete: { value: settings.dossierConfigComplete },
         blacklist_dataElementGroups: settings.blacklist.dataElementGroupIds,
         blacklist_dataSets: settings.blacklist.dataSetIds,
+        blacklist_programs: settings.blacklist.programIds,
         blacklist_indicatorGroups: settings.blacklist.indicatorGroupIds,
         blacklist_tag: settings.blacklist.tag,
         notInUse_indicatorGroups: settings.notInUse.indicatorGroupIds,

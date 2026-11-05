@@ -43,6 +43,7 @@ import { GetHealthServicesUseCase } from "$/domain/usecases/GetHealthServicesUse
 import { GetLayoutSettingsUseCase } from "$/domain/usecases/GetLayoutSettingsUseCase";
 import { GetProgramRelatedIndicatorsUseCase } from "$/domain/usecases/GetProgramRelatedIndicatorsUseCase";
 import { OrgUnitRepository } from "$/domain/repositories/OrgUnitRepository";
+import { GetProgramsUseCase } from "$/domain/usecases/GetProgramsUseCase";
 import { GetProgramResourcesUseCase } from "$/domain/usecases/GetProgramResourcesUseCase";
 import { GetProgramRuleVariablesUseCase } from "$/domain/usecases/GetProgramRuleVariablesUseCase";
 import { GetProgramStagesUseCase } from "$/domain/usecases/GetProgramStagesUseCase";
@@ -338,6 +339,25 @@ describe("GetSearchCatalogUseCase", () => {
         expect(await run({})).toBe(1);
         expect(await run({ dossierConfigComplete: false })).toBe(0);
         expect(await run({ healthServiceGroupSet: undefined })).toBe(0);
+    });
+});
+
+describe("GetProgramsUseCase", () => {
+    it("leaves out blacklisted programs, unless linked by name", async () => {
+        const listed = [program, { ...program, id: "blacklistedProgram" }];
+        const useCase = new GetProgramsUseCase(
+            fake<ProgramRepository>({
+                getAll: () => success(listed),
+                getByName: () => success(listed),
+            }),
+            fake<OrgUnitRepository>({})
+        );
+
+        const all = await useCase.execute(settings).toPromise();
+        expect(all.map(({ id }) => id)).toEqual([program.id]);
+
+        const linked = await useCase.execute(settings, { name: "Linked" }).toPromise();
+        expect(linked).toHaveLength(2);
     });
 });
 
