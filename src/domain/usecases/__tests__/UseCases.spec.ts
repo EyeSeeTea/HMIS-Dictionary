@@ -359,6 +359,7 @@ describe("GetDataSetIndicatorsUseCase", () => {
         const dataSet = DataSet.create({
             id: "ds",
             name: "DS",
+            description: "",
             sections: [],
             hasRealSections: false,
             dataElementIds: ["outside"],

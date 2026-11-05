@@ -16,7 +16,7 @@ Items are grouped by priority and tagged by area and relative cost, from 1 (chea
 - [x] [search] [cost: 2] **Multi-word search:** `a b` finds rows with both words, in any order and in any column. Each word is highlighted. Today we search for the exact phrase.
 - [x] [search] [cost: 1] **`&` operator:** `a & b` means AND, next to the `|` we have.
 - [x] [search] [cost: 3] **Exact phrase first:** rows containing the whole phrase go on top, before any other sorting.
-- [ ] [datasets] [cost: 1] **Data set description:** under the title. 163 of 202 data sets have one.
+- [x] [datasets] [cost: 1] **Data set description:** under the title. 163 of 202 data sets have one.
 - [x] [programs] [cost: 5] **Event reports and charts by program:** list them automatically (`program.id` filter), with description, count and link. We only list the ones in the `HMIS-Dict_Resources` attribute, and they disappear on v42 (P3 in `e2e.md`). To check: the `program.id` filter and the `dhis-web-event-*` links on v42.
 
 ## Medium

@@ -183,6 +183,7 @@ describe("DataSet", () => {
         const dataSet = DataSet.create({
             id: "ds",
             name: "DS",
+            description: "",
             sections: [
                 { id: "s", name: "S", dataElements: [element("a"), element("a"), element("b")] },
             ],

@@ -57,6 +57,7 @@ export function getTestRepositories(): Repositories {
                     DataSet.create({
                         id,
                         name: "",
+                        description: "",
                         sections: [],
                         hasRealSections: false,
                         dataElementIds: [],

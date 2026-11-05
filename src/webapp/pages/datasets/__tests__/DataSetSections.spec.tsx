@@ -19,6 +19,7 @@ const element = (name: string) => ({
 const dataSet = new DataSet({
     id: "ds",
     name: "Data set",
+    description: "",
     hasRealSections: true,
     dataElementIds: ["a", "b"],
     sections: [

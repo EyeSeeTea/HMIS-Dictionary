@@ -18,6 +18,7 @@ export type CategoryCombo = NamedRef & { categories: { name: string; items: stri
 export type DataSetAttrs = {
     id: Id;
     name: string;
+    description: string;
     /** If there are none, one virtual section with id "DataElements". */
     sections: DataSetSection[];
     hasRealSections: boolean;

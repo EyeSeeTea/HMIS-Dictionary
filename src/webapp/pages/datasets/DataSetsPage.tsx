@@ -145,6 +145,9 @@ export const DataSetsPage: React.FC = React.memo(() => {
                     <div id="DossierTitleContainer">
                         <h1>{dataSetValue.name}</h1>
                     </div>
+                    {dataSetValue.description && (
+                        <p id="dataSetDescription">{dataSetValue.description}</p>
+                    )}
                     <TableOfContents items={toc} />
                     <OrgUnitTreePanel ownerType="dataSets" ownerId={dataSetValue.id} />
                     <PrintSelectionPanel
