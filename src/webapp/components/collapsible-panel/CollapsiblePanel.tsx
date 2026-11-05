@@ -1,4 +1,5 @@
 import React from "react";
+import { ErrorBoundary } from "$/webapp/components/error-boundary/ErrorBoundary";
 import css from "./CollapsiblePanel.module.css";
 
 export type CollapsiblePanelProps = {
@@ -27,7 +28,7 @@ export const CollapsiblePanel: React.FC<CollapsiblePanelProps> = React.memo(prop
             </button>
             {open && (
                 <div id={bodyId} className={css.body}>
-                    {children}
+                    <ErrorBoundary>{children}</ErrorBoundary>
                 </div>
             )}
         </section>

@@ -1,7 +1,8 @@
-import { HashRouter, Redirect, Route, Switch } from "react-router-dom";
+import { HashRouter, Redirect, Route, Switch, useLocation } from "react-router-dom";
 import { useAppContext } from "$/webapp/contexts/app-context";
 import { useSessionCheck } from "$/webapp/hooks/useSessionCheck";
 import { appRoutes, AppRouteKey, isRouteAvailable } from "$/webapp/routes";
+import { ErrorBoundary } from "$/webapp/components/error-boundary/ErrorBoundary";
 import { AppLayout } from "$/webapp/components/app-layout/AppLayout";
 import { DataSetsPage } from "$/webapp/pages/datasets/DataSetsPage";
 import { IndicatorsPage } from "$/webapp/pages/indicators/IndicatorsPage";
@@ -24,6 +25,7 @@ export function Router() {
 
 function Routes() {
     const { settings, currentUser } = useAppContext();
+    const { pathname } = useLocation();
     useSessionCheck();
 
     // Pages that are hidden in the menu are also hidden when opened by URL. Several routes can
@@ -45,15 +47,17 @@ function Routes() {
     );
 
     return (
-        <Switch>
-            {guarded(["search"], <SearchPage />)}
-            {guarded(["dossiers", "dossiersEditor"], <DossiersPage />)}
-            {guarded(["programs"], <ProgramsPage />)}
-            {guarded(["dataSets"], <DataSetsPage />)}
-            {guarded(["indicators"], <IndicatorsPage />)}
-            {guarded(["admin"], <AdminPage />)}
+        <ErrorBoundary key={pathname.split("/")[1]}>
+            <Switch>
+                {guarded(["search"], <SearchPage />)}
+                {guarded(["dossiers", "dossiersEditor"], <DossiersPage />)}
+                {guarded(["programs"], <ProgramsPage />)}
+                {guarded(["dataSets"], <DataSetsPage />)}
+                {guarded(["indicators"], <IndicatorsPage />)}
+                {guarded(["admin"], <AdminPage />)}
 
-            <Redirect to={appRoutes.search.path} />
-        </Switch>
+                <Redirect to={appRoutes.search.path} />
+            </Switch>
+        </ErrorBoundary>
     );
 }

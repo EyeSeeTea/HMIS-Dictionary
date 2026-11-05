@@ -2,6 +2,7 @@ import React from "react";
 import { CircularLoader, NoticeBox } from "@dhis2/ui";
 import { Maybe } from "$/utils/ts-utils";
 import { GoToIndexLink } from "$/webapp/components/table-of-contents/TableOfContents";
+import { ErrorBoundary } from "$/webapp/components/error-boundary/ErrorBoundary";
 import { HelpIcon } from "$/webapp/components/help-icon/HelpIcon";
 import { Loader } from "$/webapp/utils/Loader";
 import css from "./ContentSection.module.css";
@@ -68,7 +69,9 @@ export const ContentSection: React.FC<ContentSectionProps> = React.memo(props =>
                     {loader.error.message}
                 </NoticeBox>
             )}
-            {loader?.type !== "loading" && loader?.type !== "error" && children}
+            {loader?.type !== "loading" && loader?.type !== "error" && (
+                <ErrorBoundary>{children}</ErrorBoundary>
+            )}
         </>
     );
 
