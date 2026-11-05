@@ -5,25 +5,16 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-11-05T10:47:00.615Z\n"
-"PO-Revision-Date: 2026-11-05T10:47:00.615Z\n"
+"POT-Creation-Date: 2026-11-05T20:36:55.795Z\n"
+"PO-Revision-Date: 2026-11-05T20:36:55.795Z\n"
 
 msgid "No data"
 msgstr ""
 
-msgid "Select..."
-msgstr ""
-
-msgid "No matches"
-msgstr ""
-
-msgid "Search"
-msgstr ""
-
-msgid "Clear"
-msgstr ""
-
 msgid "Settings"
+msgstr ""
+
+msgid "Close"
 msgstr ""
 
 msgid ""
@@ -38,9 +29,6 @@ msgid "Advanced User"
 msgstr ""
 
 msgid "Normal User"
-msgstr ""
-
-msgid "Close"
 msgstr ""
 
 msgid "Restore changes"
@@ -256,16 +244,22 @@ msgstr ""
 msgid "Print"
 msgstr ""
 
-msgid "Table of contents"
+msgid "Table of Content"
 msgstr ""
 
-msgid "Go to index"
+msgid "Go to Index"
 msgstr ""
 
-msgid "Back to top"
+msgid "Back to Top"
 msgstr ""
 
-msgid "View table"
+msgid "Previous page"
+msgstr ""
+
+msgid "Next page"
+msgstr ""
+
+msgid "View Table"
 msgstr ""
 
 msgid "About this version"
@@ -384,7 +378,13 @@ msgid ""
 "and their translations."
 msgstr ""
 
+msgid "Select..."
+msgstr ""
+
 msgid "Submit"
+msgstr ""
+
+msgid "Number of Elements in Section"
 msgstr ""
 
 msgid "No data elements"
@@ -399,7 +399,10 @@ msgstr ""
 msgid "Describing indicators"
 msgstr ""
 
-msgid "Data Elements"
+msgid "Data elements"
+msgstr ""
+
+msgid "Category combinations"
 msgstr ""
 
 msgid "Defines the categories assigned for that dataset."
@@ -483,10 +486,10 @@ msgid ""
 "analytics."
 msgstr ""
 
-msgid "Back to reader"
+msgid "Save"
 msgstr ""
 
-msgid "Save"
+msgid "Back to reader"
 msgstr ""
 
 msgid "Edit"
@@ -531,13 +534,7 @@ msgstr ""
 msgid "Number of Indicators in Indicator Group"
 msgstr ""
 
-msgid "Back to Top"
-msgstr ""
-
 msgid "Comments"
-msgstr ""
-
-msgid "Metadata Dictionary"
 msgstr ""
 
 msgid "No Value"
@@ -600,6 +597,9 @@ msgid ""
 "calculates"
 msgstr ""
 
+msgid "Number of Rules in Program"
+msgstr ""
+
 msgid "Select a program"
 msgstr ""
 
@@ -610,6 +610,9 @@ msgid "Stage"
 msgstr ""
 
 msgid "Repeatable"
+msgstr ""
+
+msgid "Program Resources"
 msgstr ""
 
 msgid "Actions Types"
@@ -637,9 +640,6 @@ msgid "Display Widget"
 msgstr ""
 
 msgid "Expression"
-msgstr ""
-
-msgid "Go to Index"
 msgstr ""
 
 msgid "Key Label"
@@ -939,6 +939,9 @@ msgid ""
 msgstr ""
 
 msgid "Show / Hide advanced columns"
+msgstr ""
+
+msgid "Search"
 msgstr ""
 
 msgid "Loading search data"

@@ -41,7 +41,7 @@ export const PageHeader: React.FC<PageHeaderProps> = React.memo(props => {
                     </div>
                 )}
 
-                <h2 data-test="page-header-title">{title}</h2>
+                <h1 data-test="page-header-title">{title}</h1>
 
                 {actions && <div className={css.actions}>{actions}</div>}
             </div>

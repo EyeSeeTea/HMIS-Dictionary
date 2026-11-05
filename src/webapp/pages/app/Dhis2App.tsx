@@ -138,9 +138,11 @@ const isLangRTL = (code: string) => {
     return langs.includes(code) || prefixed.filter(c => code && code.startsWith(c)).length > 0;
 };
 
+/** "pt_BR" is Portuguese, and a language with no translations is English. */
 const configI18n = ({ keyUiLocale }: { keyUiLocale: string }) => {
-    i18n.changeLanguage(keyUiLocale);
-    document.documentElement.setAttribute("dir", isLangRTL(keyUiLocale) ? "rtl" : "ltr");
+    const locale = toSupportedLocale(keyUiLocale);
+    i18n.changeLanguage(locale);
+    document.documentElement.setAttribute("dir", isLangRTL(locale) ? "rtl" : "ltr");
 };
 
 type Result<Data, E> =

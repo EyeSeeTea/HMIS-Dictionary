@@ -29,9 +29,11 @@ export const AdminPage: React.FC = React.memo(() => {
         [compositionRoot, settings]
     );
 
+    // The page reloads when the flag changed, and stays "loading" until then
+    const willReload = refresh?.type === "success" && refresh.data.changed;
     React.useEffect(() => {
-        if (refresh?.type === "success" && refresh.data.changed) window.location.reload();
-    }, [refresh]);
+        if (willReload) window.location.reload();
+    }, [willReload]);
 
     const status: Partial<DossierConfigStatus> =
         refresh?.type === "success" ? refresh.data.status : {};
@@ -69,8 +71,10 @@ export const AdminPage: React.FC = React.memo(() => {
 
     return (
         <>
-            <PageHeader title={i18n.t("Admin")} />
-            <LoadingBanner visible={isSelectionLoading(true, [options, refresh])} />
+            <div id="headerPanel">
+                <PageHeader title={i18n.t("Admin")} />
+            </div>
+            <LoadingBanner visible={isSelectionLoading(true, [options, refresh]) || willReload} />
 
             <div className={`${css.info} alert-info`}>
                 <NoticeBox title={i18n.t("About this version")}>

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2026-11-05T10:47:00.615Z\n"
+"POT-Creation-Date: 2026-11-05T20:36:55.795Z\n"
 "PO-Revision-Date: 2026-08-18T08:31:01.792Z\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -9,22 +9,13 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 msgid "No data"
-msgstr ""
-
-msgid "Select..."
-msgstr ""
-
-msgid "No matches"
-msgstr ""
-
-msgid "Search"
-msgstr ""
-
-msgid "Clear"
-msgstr ""
+msgstr "Sin datos"
 
 msgid "Settings"
 msgstr ""
+
+msgid "Close"
+msgstr "Cerrar"
 
 msgid ""
 "User group ids (JSON array) whose users are Advanced Users, for example "
@@ -35,43 +26,40 @@ msgid "Admin"
 msgstr ""
 
 msgid "Advanced User"
-msgstr ""
+msgstr "Usuario avanzado"
 
 msgid "Normal User"
-msgstr ""
-
-msgid "Close"
-msgstr ""
+msgstr "Usuario normal"
 
 msgid "Restore changes"
-msgstr ""
+msgstr "Restaurar cambios"
 
 msgid "Apply changes"
-msgstr ""
+msgstr "Aplicar cambios"
 
 msgid "Invalid array format"
-msgstr ""
+msgstr "Formato de lista no válido"
 
 msgid "All UID's must be a valid userGroup"
-msgstr ""
+msgstr "Todos los UID deben ser grupos de usuarios válidos"
 
 msgid "The settings could not be saved"
-msgstr ""
+msgstr "No se pudo guardar la configuración"
 
 msgid "Aggregation Type"
-msgstr ""
+msgstr "Tipo de Agregación"
 
 msgid "Associated Program Rules"
-msgstr ""
+msgstr "Reglas del Programa Asociadas"
 
 msgid "Boundaries"
-msgstr ""
+msgstr "Límites"
 
 msgid "Calculation"
-msgstr ""
+msgstr "Cálculo"
 
 msgid "Calculation Mode"
-msgstr ""
+msgstr "Modo de cálculo"
 
 msgid "Categories"
 msgstr ""
@@ -80,13 +68,13 @@ msgid "Category Combination"
 msgstr ""
 
 msgid "Category Combinations"
-msgstr ""
+msgstr "Combinaciones de categorías"
 
 msgid "Condition"
-msgstr ""
+msgstr "Condición"
 
 msgid "Data Element"
-msgstr ""
+msgstr "Elemento de datos"
 
 msgid "DataSets"
 msgstr ""
@@ -95,157 +83,157 @@ msgid "DataTypeElement"
 msgstr ""
 
 msgid "Denominator"
-msgstr ""
+msgstr "Denominador"
 
 msgid "Denominator description"
 msgstr ""
 
 msgid "Description"
-msgstr ""
+msgstr "Descripción"
 
 msgid "Program Description"
-msgstr ""
+msgstr "Descripción del programa"
 
 msgid "Filter"
-msgstr ""
+msgstr "Filtro"
 
 msgid "Form Name"
-msgstr ""
+msgstr "Nombre en el Formulario"
 
 msgid "Formula of Indicator"
-msgstr ""
+msgstr "Fórmula del indicador"
 
 msgid "Indicators"
-msgstr ""
+msgstr "Indicadores"
 
 msgid "Items"
 msgstr ""
 
 msgid "Mandatory"
-msgstr ""
+msgstr "Obligatorio"
 
 msgid "Name"
 msgstr "Nombre"
 
 msgid "Numerator"
-msgstr ""
+msgstr "Numerador"
 
 msgid "Numerator Description"
-msgstr ""
+msgstr "Descripción del numerador"
 
 msgid "Option Set"
-msgstr ""
+msgstr "Conjunto de opciones"
 
 msgid "Options"
-msgstr ""
+msgstr "Opciones"
 
 msgid "Program"
 msgstr ""
 
 msgid "Program Indicators"
-msgstr ""
+msgstr "Indicadores del programa"
 
 msgid "Program Rule Actions"
-msgstr ""
+msgstr "Acciones de la regla del programa"
 
 msgid "Program Rule Variables"
-msgstr ""
+msgstr "Variables de reglas del programa"
 
 msgid "Program Rules"
-msgstr ""
+msgstr "Reglas del programa"
 
 msgid "Program Stage"
-msgstr ""
+msgstr "Etapa del programa"
 
 msgid "Program Stages"
-msgstr ""
+msgstr "Etapas del programa"
 
 msgid "Sections"
-msgstr ""
+msgstr "Secciones"
 
 msgid "Short Name"
-msgstr ""
+msgstr "Nombre Corto"
 
 msgid "Source Type"
-msgstr ""
+msgstr "Tipo de Fuente"
 
 msgid "Stage(s) Referenced"
-msgstr ""
+msgstr "Etapa(s) referenciada(s)"
 
 msgid "Tracked Entity Attributes"
-msgstr ""
+msgstr "Atributos de la entidad rastreada"
 
 msgid "Type"
-msgstr ""
+msgstr "Tipo"
 
 msgid "Type of Program Indicator"
-msgstr ""
+msgstr "Tipo de Indicador de Programa"
 
 msgid "Value Type"
-msgstr ""
+msgstr "Tipo de valor"
 
 msgid "Visibility in Data Entry"
-msgstr ""
+msgstr "Visibilidad en Entrada de Datos"
 
 msgid "Visualization"
-msgstr ""
+msgstr "Visualización"
 
 msgid "Group Code"
-msgstr ""
+msgstr "Código de Grupo"
 
 msgid "Group ID"
-msgstr ""
+msgstr "ID de Grupo"
 
 msgid "Group Name"
-msgstr ""
+msgstr "Conjunto de Datos/Grupo de Indicadores"
 
 msgid "ICD10"
 msgstr ""
 
 msgid "Code"
-msgstr ""
+msgstr "Código"
 
 msgid "Denominator Formula (ind. only)"
-msgstr ""
+msgstr "Fórmula Denominador (solo ind.)"
 
 msgid "Expression Formula (prog. ind. only)"
-msgstr ""
+msgstr "Fórmula de Expresión (solo ind. prog.)"
 
 msgid "Filter Formula (prog. ind. only)"
-msgstr ""
+msgstr "Fórmula de Filtro (solo ind. prog.)"
 
 msgid "Form name (datae. only)"
-msgstr ""
+msgstr "Nombre en el Formulario (solo datae.)"
 
 msgid "ID"
 msgstr ""
 
 msgid "Numerator Formula (ind. only)"
-msgstr ""
+msgstr "Fórmula Numerador (solo ind.)"
 
 msgid "Service Code"
-msgstr ""
+msgstr "Código de Servicio"
 
 msgid "Service ID"
-msgstr ""
+msgstr "ID de Servicio"
 
 msgid "Service Name"
-msgstr ""
+msgstr "Nombre de Servicio"
 
 msgid "Data Elements or Indicators Groups - Basics"
-msgstr ""
+msgstr "Grupos de elementos de datos o indicadores - Conceptos básicos"
 
 msgid "Data Elements or Indicators - Basics"
-msgstr ""
+msgstr "Elementos de datos o indicadores - Conceptos básicos"
 
 msgid "Data Elements or Indicators - Descriptions"
-msgstr ""
+msgstr "Elementos de datos o indicadores - Descripciones"
 
 msgid "Services - Basics"
-msgstr ""
+msgstr "Servicios - Conceptos básicos"
 
 msgid "Loading..."
-msgstr ""
+msgstr "Cargando..."
 
 msgid "Back"
 msgstr "Volver"
@@ -254,25 +242,31 @@ msgid "Help"
 msgstr "Ayuda"
 
 msgid "Print"
-msgstr ""
+msgstr "Imprimir"
 
-msgid "Table of contents"
-msgstr ""
+msgid "Table of Content"
+msgstr "Tabla de Contenidos"
 
-msgid "Go to index"
-msgstr ""
+msgid "Go to Index"
+msgstr "Volver al Índice"
 
-msgid "Back to top"
-msgstr ""
+msgid "Back to Top"
+msgstr "Inicio de Página"
 
-msgid "View table"
+msgid "Previous page"
+msgstr "Página anterior"
+
+msgid "Next page"
+msgstr "Página siguiente"
+
+msgid "View Table"
 msgstr ""
 
 msgid "About this version"
 msgstr ""
 
 msgid "The setting could not be saved"
-msgstr ""
+msgstr "No se pudo guardar el ajuste"
 
 msgid "User group"
 msgstr ""
@@ -384,161 +378,192 @@ msgid ""
 "and their translations."
 msgstr ""
 
+msgid "Select..."
+msgstr "Seleccionar..."
+
 msgid "Submit"
+msgstr "Enviar"
+
+msgid "Number of Elements in Section"
 msgstr ""
 
 msgid "No data elements"
-msgstr ""
+msgstr "Sin elementos de datos"
 
 msgid "Data Sets"
-msgstr ""
+msgstr "Set de datos"
 
 msgid "Select a Data Set"
-msgstr ""
+msgstr "Seleccione un conjunto de datos"
 
 msgid "Describing indicators"
+msgstr "Describiendo indicadores"
+
+msgid "Data elements"
 msgstr ""
 
-msgid "Data Elements"
+msgid "Category combinations"
 msgstr ""
 
 msgid "Defines the categories assigned for that dataset."
-msgstr ""
+msgstr "Define las categorías asignadas para ese conjunto de datos."
 
 msgid ""
 "Defines the category combination name for the category combo used for that "
 "dataset."
 msgstr ""
+"Define el nombre de la combinación de categorías utilizada para ese "
+"conjunto de datos."
 
 msgid ""
 "Define dimensions that allow users to break down data elements by multiple "
 "attributes for data collection and analysis."
 msgstr ""
+"Define dimensiones que permitan a los usuarios desglosar los elementos de "
+"datos por atributos múltiples para la recopilación y el análisis de datos."
 
 msgid ""
 "Defines the specific disaggregation item that can be used to disaggregate "
 "the data collected by the dataset."
 msgstr ""
+"Define el elemento de desagregación específico que puede utilizarse para "
+"desagregar los datos recogidos por el conjunto de datos.   Définit "
+"l'élément de désagrégation spécifique qui peut être utilisé pour désagréger "
+"les données collectées par l'ensemble de données."
 
 msgid ""
 "Specifies stages within the program for data collection, which could "
 "include various appointments, follow-ups, or interventions."
 msgstr ""
+"Especifica etapas dentro del programa para la recogida de datos, que "
+"podrían incluir diversas citas, seguimientos o intervenciones."
 
 msgid ""
 "Defines a description of the indicator numerator based on what result the "
 "indicator calculates."
 msgstr ""
+"Define una descripción del numerador del indicador en función del resultado "
+"que calcula el indicador."
 
 msgid ""
 "Defines the title of the indicator denominator based on what result the "
 "indicator calculates."
 msgstr ""
+"Define el título del denominador del indicador en función del resultado que "
+"calcula el indicador."
 
 msgid "Defines the name of the indicator assigned/used in a dataset."
-msgstr ""
+msgstr "Define el nombre del indicador asignado/utilizado en un conjunto de datos."
 
 msgid ""
 "Defines the title of the indicator numerator based on what result the "
 "indicator calculates."
 msgstr ""
+"Define el título del numerador del indicador basándose en qué resultado "
+"calcula el indicador."
 
 msgid ""
 "Defines the short name of the indicator, used in compact displays and "
 "analytics."
 msgstr ""
+"Define el nombre corto del indicador, utilizado en pantallas compactas y "
+"análisis."
 
 msgid ""
 "Defines the type of value that is resulted from the calculation of the "
 "indicator based on the calculation fomula."
 msgstr ""
+"Define el tipo de valor resultante del cálculo del indicador en función de "
+"la fórmula de cálculo."
 
 msgid ""
 "Defines the category combination used for collection in the specified data "
 "element."
 msgstr ""
+"Define la combinación de categorías utilizada para la recogida en el "
+"elemento de datos especificado."
 
 msgid "Defines the data type of the specific data element used in the form."
 msgstr ""
+"Define el tipo de datos del elemento de datos específico utilizado en el "
+"formulario."
 
 msgid ""
 "Organizational elements that group data elements into meaningful categories "
 " structured logically."
 msgstr ""
+"Elementos organizativos que agrupan elementos de datos en categorías "
+"significativas estructuradas de forma lógica."
 
 msgid "Defines the description of the data element in the section form."
-msgstr ""
+msgstr "Define la descripción del elemento de datos en el formulario de la sección."
 
 msgid "Defines the name of the form used in a section."
-msgstr ""
+msgstr "Define el nombre del formulario utilizado en una sección."
 
 msgid "Defines the name of the section."
-msgstr ""
+msgstr "Define el nombre de la sección."
 
 msgid "Defines the options assigned to the data element in a section."
-msgstr ""
+msgstr "Define las opciones asignadas al elemento de datos en una sección."
 
 msgid ""
 "Defines the short name of the data element, used in compact displays and "
 "analytics."
 msgstr ""
-
-msgid "Back to reader"
-msgstr ""
+"Define el nombre corto del elemento de datos, utilizado en pantallas "
+"compactas y análisis."
 
 msgid "Save"
-msgstr ""
+msgstr "Guardar"
+
+msgid "Back to reader"
+msgstr "Volver al lector"
 
 msgid "Edit"
-msgstr ""
+msgstr "Editar"
 
 msgid "Dossiers"
-msgstr ""
+msgstr "Dosieres"
 
 msgid "Select a service"
-msgstr ""
+msgstr "Seleccionar un servicio"
 
 msgid "Number of Services"
-msgstr ""
+msgstr "Número de Servicios"
 
 msgid "Number of Data Sets in Service"
-msgstr ""
+msgstr "Número de Sets de Datos en el Servicio"
 
 msgid "Number of Indicator Groups in Service"
-msgstr ""
+msgstr "Número de Grupos de Indicadores en el Servicio"
 
 msgid "Description of Service"
-msgstr ""
+msgstr "Descripción del Servicio"
 
 msgid "Data Sets > Sections > Data Elements (Table 1)"
-msgstr ""
+msgstr "Sets de Datos > Sección > Elementos de Datos (Tabla 1)"
 
 msgid "Indicator Groups > Indicators (Table 2)"
-msgstr ""
+msgstr "Grupo de Indicadores > Indicadores (Tabla 2)"
 
 msgid "Data Set"
-msgstr ""
+msgstr "Set de Datos"
 
 msgid "Indicator Group"
-msgstr ""
+msgstr "Grupo de Indicadores"
 
 msgid "Section"
 msgstr "Sección"
 
 msgid "Number of Data Elements in Section"
-msgstr ""
+msgstr "Número de Elementos de Datos en la Sección"
 
 msgid "Number of Indicators in Indicator Group"
-msgstr ""
-
-msgid "Back to Top"
-msgstr ""
+msgstr "Número de Indicadores en el Grupo de Indicadores"
 
 msgid "Comments"
-msgstr ""
-
-msgid "Metadata Dictionary"
-msgstr ""
+msgstr "Comentarios"
 
 msgid "No Value"
 msgstr ""
@@ -559,492 +584,628 @@ msgid "Number"
 msgstr ""
 
 msgid "Select an Indicator"
-msgstr ""
+msgstr "Seleccione un indicador"
 
 msgid "Denotes the respective dataset with which the indicator belongs to."
-msgstr ""
+msgstr "Denota el conjunto de datos al que pertenece el indicador."
 
 msgid ""
 "The part of the indicator formula that provides the context for the "
 "Numerator by representing the total or eligible population, events, or "
 "units against which the Numerator is compared."
 msgstr ""
+"La parte de la fórmula del indicador que proporciona el contexto para el "
+"Numerador al representar la población total o elegible, los eventos o las "
+"unidades con las que se compara el Numerador."
 
 msgid ""
 "Defines the title of the Indicator Denominator based on what the indicator "
 "calculates"
 msgstr ""
+"Define el título del denominador del indicador basado en lo que calcula el "
+"indicador."
 
 msgid "Denotes the specific program with which the indicator belongs to."
-msgstr ""
+msgstr "Denota el programa específico al que pertenece el indicador."
 
 msgid "Indicator types define the factor that is applied during aggregation."
 msgstr ""
+"Los tipos de indicadores definen el factor que se aplica durante la "
+"agregación."
 
 msgid ""
 "A set of mathematical operations that is used to calculate rates, "
 "incidences and other values that are a result of data element values that "
 "have been entered into the system."
 msgstr ""
+"Conjunto de operaciones matemáticas que se utiliza para calcular tasas, "
+"incidencias y otros valores que son el resultado de los valores de los "
+"elementos de datos que se han introducido en el sistema."
 
 msgid "A formula consisting of data elements and numbers"
-msgstr ""
+msgstr "Una fórmula compuesta por elementos de datos y números"
 
 msgid ""
 "The part of the indicator formula that represents the primary count or "
 "measure being calculated."
 msgstr ""
+"La parte de la fórmula del indicador que representa el recuento primario o "
+"la medida que se está calculando."
 
 msgid ""
 "Defines the title of the indicator numerator based on what the indicator "
 "calculates"
 msgstr ""
+"Define el título del numerador del indicador en función de lo que calcula "
+"el indicador."
+
+msgid "Number of Rules in Program"
+msgstr ""
 
 msgid "Select a program"
-msgstr ""
+msgstr "Seleccione un programa"
 
 msgid "Describing expressions"
-msgstr ""
+msgstr "Describiendo expresiones"
 
 msgid "Stage"
-msgstr ""
+msgstr "Etapa"
 
 msgid "Repeatable"
 msgstr ""
 
-msgid "Actions Types"
+msgid "Program Resources"
 msgstr ""
+
+msgid "Actions Types"
+msgstr "Tipos de acciones"
 
 msgid "Analytics period boundary type"
-msgstr ""
+msgstr "Tipo de límite del periodo de análisis"
 
 msgid "Boundary target"
-msgstr ""
+msgstr "Límite objetivo"
 
 msgid "Custom Message for Blanked Field"
-msgstr ""
+msgstr "Mensaje personalizado para campo en blanco"
 
 msgid "Date to Send Message"
-msgstr ""
+msgstr "Fecha de envío del mensaje"
 
 msgid "Stage Description"
-msgstr ""
+msgstr "Descripción de la Etapa"
 
 msgid "Direct Data Entry"
-msgstr ""
+msgstr "Entrada Directa de Datos"
 
 msgid "Display Widget"
-msgstr ""
+msgstr "Widget de visualización"
 
 msgid "Expression"
-msgstr ""
-
-msgid "Go to Index"
-msgstr ""
+msgstr "Expresión"
 
 msgid "Key Label"
-msgstr ""
+msgstr "Etiqueta"
 
 msgid "Link"
-msgstr ""
+msgstr "Enlace"
 
 msgid "Message Template"
-msgstr ""
+msgstr "Plantilla de mensaje"
 
 msgid "Number of Indicators"
-msgstr ""
+msgstr "Número de Indicadores"
 
 msgid "Number of Program Indicators"
-msgstr ""
+msgstr "Número de Indicadores del Programa"
 
 msgid "Number of Programs"
-msgstr ""
+msgstr "Número de programas"
 
 msgid "Offset period by amount"
-msgstr ""
+msgstr "Desplazar periodo por importe"
 
 msgid "Option Group to Hide"
-msgstr ""
+msgstr "Grupo de opciones a ocultar"
 
 msgid "Option Group to Show"
-msgstr ""
+msgstr "Grupo de opciones para mostrar"
 
 msgid "Option Set Name"
-msgstr ""
+msgstr "Nombre del Set de Opciones"
 
 msgid "Option Set Options"
-msgstr ""
+msgstr "Opciones del conjunto de opciones"
 
 msgid "Option to Hide"
-msgstr ""
+msgstr "Opción para ocultar"
 
 msgid "Option Stage Section to Hide"
-msgstr ""
+msgstr "Opción Ocultar Sección de Etapa"
 
 msgid "Option Stage to Hide"
-msgstr ""
+msgstr "Opción Escenario a Ocultar"
 
 msgid "Other"
-msgstr ""
+msgstr "Otros"
 
 msgid "Period type"
-msgstr ""
+msgstr "Tipo de período"
 
 msgid "Program Rule"
-msgstr ""
+msgstr "Regla del programa"
 
 msgid "Program Rule Variable to Assign to"
-msgstr ""
+msgstr "Variable de regla de programa a asignar"
 
 msgid "Number of Rule Variables in Program"
-msgstr ""
+msgstr "Número de Variables de Reglas en el Programa"
 
 msgid "Programs"
-msgstr ""
+msgstr "Programas"
 
 msgid "Resource Type"
-msgstr ""
+msgstr "Tipo de Recurso"
 
 msgid "Resources"
-msgstr ""
+msgstr "Recursos"
 
 msgid "Number of Resources"
-msgstr ""
+msgstr "Número de Recursos"
 
 msgid "See options"
-msgstr ""
+msgstr "Ver opciones"
 
 msgid "Static Text"
-msgstr ""
+msgstr "Texto estático"
 
 msgid "Number of Tracked Entity Attributes in Program"
-msgstr ""
+msgstr "Número de atributos de entidad rastreada en el programa"
 
 msgid "Export this page to Excel"
-msgstr ""
+msgstr "Exportar esta página a Excel"
 
 msgid "Show legacy data elements and options"
-msgstr ""
+msgstr "Mostrar elementos de datos y opciones obsoletos"
 
 msgid "Defines a description of the Health Program used in HMIS."
-msgstr ""
+msgstr "Define la descripción del Programa de Salud utilizado en HMIS."
 
 msgid ""
 "Refers to the specific details and setup for a health program within the "
 "HMIS system, primarily used for tracking and managing health-related "
 "activities, services, or interventions."
 msgstr ""
+"Se refiere a los detalles específicos y la configuración de un programa de "
+"salud dentro del sistema HMIS, utilizado principalmente para el seguimiento "
+"y la gestión de actividades, servicios o intervenciones relacionados con la "
+"salud."
 
 msgid ""
 "Defines the title of the Indicator denominator for what the indicator "
 "calculates."
 msgstr ""
+"Define el título del denominador del indicador para lo que calcula el "
+"indicador."
 
 msgid ""
 "Metrics defined within the program to measure its outcomes or impact, such "
 "as completion rate, follow-up attendance, or disease incidence rate"
 msgstr ""
+"Métricas definidas dentro del programa para medir sus resultados o impacto, "
+"como la tasa de finalización, la asistencia de seguimiento o la tasa de "
+"incidencia de la enfermedad."
 
 msgid "Defines a description of an indicator used in a program in HMIS."
-msgstr ""
+msgstr "Define la descripción de un indicador utilizado en un programa en HMIS."
 
 msgid "Defines the name of an indicator used in a program in HMIS."
-msgstr ""
+msgstr "Define el nombre de un indicador utilizado en un programa en HMIS."
 
 msgid ""
 "Defines the title of the Indicator numerator for the value the indicator "
 "calculates."
 msgstr ""
+"Define el título del numerador del indicador para el valor que calcula el "
+"indicador."
 
 msgid ""
 "Defines the stages of a program that the Indicator is set  for data "
 "calculation in a program in HMIS."
 msgstr ""
+"Define las etapas de un programa en las que se establece el indicador para "
+"el cálculo de datos en un programa en HMIS."
 
 msgid ""
 "Defines a type of the data value calculated by an indicator used in a "
 "program in HMIS."
 msgstr ""
+"Define un tipo de valor de datos calculado por un indicador utilizado en un "
+"programa en HMIS."
 
 msgid ""
 "Displays the data visualization set for the Indicator following a "
 "calculation in a program in HMIS."
 msgstr ""
+"Muestra el conjunto de visualización de datos para el Indicador después de "
+"un cálculo en un programa en HMIS."
 
 msgid ""
 "Defines an aggregation type of the program indicator used in a program in "
 "HMIS."
 msgstr ""
+"Define un tipo de agregación del indicador de programa utilizado en un "
+"programa en HMIS."
 
 msgid ""
 "Defines the calculation boundaries with which the program indicator "
 "calculates data values of a program in HMIS."
 msgstr ""
+"Define los límites de cálculo con los que el indicador de programa calcula "
+"los valores de los datos de un programa en HMIS."
 
 msgid "Defines the calculation mode of the program indicator in a program in HMIS."
-msgstr ""
+msgstr "Define el modo de cálculo del indicador de programa en un programa en HMIS."
 
 msgid ""
 "Specialized custom metrics indicators built from data collected within a "
 "program, typically calculated from one or more data elements and attributes "
 "gathered through various stages of program activities"
 msgstr ""
+"Indicadores métricos personalizados y especializados creados a partir de "
+"los datos recopilados en un programa, normalmente calculados a partir de "
+"uno o más elementos de datos y atributos recopilados a lo largo de las "
+"distintas fases de las actividades del programa."
 
 msgid "Defines a description of the program indicator used in a program in HMIS."
 msgstr ""
+"Define la descripción del indicador de programa utilizado en un programa en "
+"HMIS."
 
 msgid "Defines a filter of the program indicator used in a program in HMIS."
-msgstr ""
+msgstr "Define un filtro del indicador de programa utilizado en un programa en HMIS."
 
 msgid "Defines the name of the program indicator used in a program in HMIS."
-msgstr ""
+msgstr "Define el nombre del indicador de programa utilizado en un programa en HMIS."
 
 msgid ""
 "Defines the stages of a Program that the program indicator is set  for data "
 "calculation in a program in HMIS."
 msgstr ""
+"Define las etapas de un programa en las que se establece el Indicador de "
+"programa para el cálculo de datos en un programa en HMIS."
 
 msgid "Defines the type of program indicator used in a program in HMIS."
-msgstr ""
+msgstr "Define el tipo de indicador de programa utilizado en un programa en HMIS."
 
 msgid ""
 "Displays the data visualization set for the program indicator following a "
 "calculation in a program in HMIS."
 msgstr ""
+"Muestra el conjunto de visualización de datos para el indicador de programa "
+"tras un cálculo en un programa en HMIS."
 
 msgid ""
 "Defines the executable actions for a program rule configured for a program "
 "in HMIS."
 msgstr ""
+"Define las acciones ejecutables para una regla de programa configurada para "
+"un programa en HMIS."
 
 msgid ""
 "Defines the set of conditions which a program rule is configured for "
 "execution for a program in HMIS."
 msgstr ""
+"Define el conjunto de condiciones con las que se configura la ejecución de "
+"una regla de programa para un programa en HMIS."
 
 msgid ""
 "Rules that allow you to create and control dynamic behavior of the user "
 "interface in the Tracker Capture and Event Capture apps."
 msgstr ""
+"Reglas que permiten crear y controlar el comportamiento dinámico de la "
+"interfaz de usuario en las aplicaciones Captura de Seguimientos y Captura "
+"de Eventos."
 
 msgid "Defines a description of the program rules configured for a program in HMIS."
 msgstr ""
+"Define una descripción de las reglas del programa configuradas para un "
+"programa en HMIS."
 
 msgid "Defines the name of the program rules configured for a program in HMIS."
 msgstr ""
+"Define el nombre de las reglas del programa configuradas para un programa "
+"en HMIS."
 
 msgid ""
 "Defines the stages of a program that the rule is defined for the rule "
 "action to execute in a program in HMIS."
 msgstr ""
+"Define las etapas de un programa que la regla está definida para que la "
+"acción de la regla se ejecute en un programa en HMIS."
 
 msgid ""
 "Defines the program rules that are associated to the program rule variable "
 "for a program in HMIS."
 msgstr ""
+"Define las reglas del programa que están asociadas a la variable de regla "
+"del programa para un programa en HMIS."
 
 msgid ""
 "Defines the data element of a program rule variable that is configured  for "
 "data collection in a program in HMIS."
 msgstr ""
+"Define el elemento de datos de una variable de regla de programa que se "
+"configura para la recopilación de datos en un programa en HMIS."
 
 msgid "Variables used to create program rule expressions."
-msgstr ""
+msgstr "Variables utilizadas para crear expresiones de reglas de programa."
 
 msgid ""
 "Defines a name for the program rule Variables configured for a program in "
 "HMIS."
 msgstr ""
+"Define un nombre para las variables de la regla de programa configuradas "
+"para un programa en HMIS."
 
 msgid ""
 "Defines the stage of a program that the program rule variable is set  for "
 "data calculation in a program in HMIS."
 msgstr ""
+"Define la etapa de un programa en la que se establece la variable de la "
+"regla de programa para el cálculo de datos en un programa en HMIS."
 
 msgid ""
 "Defines a source type for a program rule variable configured for a program "
 "in HMIS."
 msgstr ""
+"Define un tipo de fuente para una variable de regla de programa configurada "
+"para un programa en HMIS."
 
 msgid ""
 "Defines the tracked entity attributes set for the program rule varibale "
 "used in a program in HMIS."
 msgstr ""
+"Define el conjunto de atributos de la entidad rastreada para la regla de "
+"programa varibale utilizada en un programa en HMIS."
 
 msgid ""
 "Defines the mode of calculation of the data values to be collected in a "
 "stage of a program in HMIS."
 msgstr ""
+"Define el modo de cálculo de los valores de los datos a recoger en una "
+"etapa de un programa en HMIS."
 
 msgid "Defines a description of the stage of a program in HMIS."
-msgstr ""
+msgstr "Define la descripción de la etapa de un programa en HMIS."
 
 msgid "Defines the name of the form used in a program stage in HMIS."
-msgstr ""
+msgstr "Define el nombre del formulario utilizado en una etapa del programa en HMIS."
 
 msgid ""
 "Defines a boolean expression of whether the program stage should be "
 "mandatory in an entry form."
 msgstr ""
+"Define una expresión booleana de si la etapa del programa debe ser "
+"obligatoria en un formulario de entrada."
 
 msgid "Defines the name of the data element of a program in HMIS."
-msgstr ""
+msgstr "Define el nombre de la etapa de un programa en HMIS."
 
 msgid ""
 "Defines the option set of the tracked entity attribute data assigned used "
 "in an entry form."
 msgstr ""
+"Define el conjunto de opciones de los datos de atributo de la entidad "
+"rastreada asignados utilizados en un formulario de entrada."
 
 msgid "Defines the type of data to be collected in a stage of a program in HMIS."
-msgstr ""
+msgstr "Define el tipo de datos a recoger en una etapa de un programa en HMIS."
 
 msgid ""
 "Defines a boolean expression of whether the attribute should be mandatory "
 "or not used in an entry form."
 msgstr ""
+"Define una expresión booleana que indica si el atributo debe utilizarse "
+"obligatoriamente o no en un formulario de entrada."
 
 msgid ""
 "Defines a data aggregation type of the tracked entity attribute for the "
 "patients data collected in an entry form."
 msgstr ""
+"Define un tipo de agregación de datos del atributo de la entidad rastreada "
+"para los datos de pacientes recogidos en un formulario de entrada."
 
 msgid ""
 "Additional data tied to individuals, like patient ID, age, gender, or "
 "location, for long-term tracking across the HMIS."
 msgstr ""
+"Datos adicionales vinculados a las personas, como identificación del "
+"paciente, edad, sexo o ubicación, para el seguimiento a largo plazo en todo "
+"el HMIS."
 
 msgid ""
 "Defines a description of the tracked entity attribute for the patients data "
 "collected in an entry form."
 msgstr ""
+"Define la descripción del atributo de la entidad rastreada para los datos "
+"de pacientes recogidos en un formulario de entrada."
 
 msgid ""
 "Defines the form name of the tracked entity attribute for the patient's "
 "data collected an entry form."
 msgstr ""
+"Define el nombre del formulario del atributo de la entidad rastreada para "
+"los datos del paciente recogidos en un formulario de entrada."
 
 msgid ""
 "Defines a boolean expression of whether the tracked entity attribute should "
 "be visible or not used in an entry form."
 msgstr ""
+"Define una expresión booleana de si el atributo de la entidad rastreada "
+"debe ser visible o no utilizado en un formulario de entrada."
 
 msgid ""
 "Defines the name of the tracked entity attribute for the patients data "
 "collected an entry form."
 msgstr ""
+"Define el nombre del atributo de la entidad rastreada para los datos de "
+"pacientes recogidos en un formulario de entrada."
 
 msgid ""
 "Defines a data value type of the tracked entity attribute for the patients "
 "data collected in an entry form."
 msgstr ""
+"Define un tipo de valor de datos del atributo de la entidad rastreada para "
+"los datos de pacientes recogidos en un formulario de entrada."
 
 msgid "Show / Hide advanced columns"
-msgstr ""
+msgstr "Mostrar / Ocultar columnas avanzadas"
+
+msgid "Search"
+msgstr "Búsqueda"
 
 msgid "Loading search data"
-msgstr ""
+msgstr "Cargando los datos de búsqueda"
 
 msgid "No results"
-msgstr ""
+msgstr "Sin resultados"
 
 msgid ""
 "Defines the data type of the specific data element  or indicator used in "
 "the form."
 msgstr ""
+"Define el tipo de dato del elemento de datos o indicador específico "
+"utilizado en el formulario."
 
 msgid "Defines the unique ID of the data element or indicator used in the form."
 msgstr ""
+"Define el ID único del elemento de datos o indicador utilizado en el "
+"formulario."
 
 msgid ""
 "Defines the unique code assigned to the data element or indicator in the "
 "form."
 msgstr ""
+"Define el código único asignado al elemento de datos o indicador en el "
+"formulario."
 
 msgid ""
 "Defines the unique ICD10 Code assigned to the specified data element or "
 "indicator in the form."
 msgstr ""
+"Define el Código CIE10 único asignado al elemento de datos o indicador "
+"especificado en el formulario."
 
 msgid ""
 "Defines the name of the data element or indicator assigned/used in a "
 "dataset."
 msgstr ""
+"Define el nombre del elemento de datos o indicador asignado/utilizado en un "
+"conjunto de datos."
 
 msgid ""
 "Defines the short name of the data element or indicator, used in compact "
 "displays and analytics."
 msgstr ""
+"Define el nombre corto del elemento de datos o indicador, utilizado en "
+"pantallas compactas y análisis."
 
 msgid ""
 "Defines the form name in the section form.(Applicable to Data Elements "
 "only)."
 msgstr ""
+"Define el nombre del elemento de datos en el formulario (en la sección del "
+"formulario). Aplicable sólo a elementos de datos."
 
 msgid "Defines the description of the Data Element or Indicator used in a form."
 msgstr ""
+"Define la descripción del elemento de datos o indicador utilizado en un "
+"formulario."
 
 msgid ""
 "Defines a description of the numerator formula used in an Indicator. "
 "Applicable for Indicators."
 msgstr ""
+"Define la descripción de la fórmula del numerador utilizada en un "
+"Indicador. Aplicable para Indicadores."
 
 msgid ""
 "Defines a description of the denominator formula used in an Indicator. "
 "Applicable for Indicators."
 msgstr ""
+"Define la descripción de la fórmula del denominador utilizada en un "
+"Indicador. Aplicable para Indicadores."
 
 msgid ""
 "Defines a description of the filter formula used in an Program Indicator. "
 "Applicable for Program Indicators."
 msgstr ""
+"Define la descripción de la fórmula de filtro utilizada en un Indicador de "
+"Programa. Aplicable para Indicadores de Programa."
 
 msgid ""
 "Defines a description of the expression formula used in an Program "
 "Indicator. Applicable for Program Indicators."
 msgstr ""
+"Define la descripción de la fórmula de expresión utilizada en un Indicador "
+"de Programa. Aplicable para Indicadores de Programa."
 
 msgid ""
 "Defines the unique ID of the data element or indicator group used in a "
 "dataset or the group unique IDs assigned to a program indicator."
 msgstr ""
+"Define el ID único del elemento de datos o grupo de indicadores utilizado "
+"en un conjunto de datos o los ID únicos de grupo asignados a un indicador "
+"de programa."
 
 msgid ""
 "Defines the unique code assigned to the data element or indicator group "
 "used in a dataset or the group unique codes assigned to a program indicator."
 msgstr ""
+"Define el código único asignado al elemento de datos o grupo de indicadores "
+"utilizado en un conjunto de datos o los códigos únicos de grupo asignados a "
+"un indicador de programa."
 
 msgid ""
 "Defines the name of the data element or indicator groups assigned or used "
 "in a dataset or the group names assigned to a program indicator."
 msgstr ""
+"Define el nombre del elemento de datos o de los grupos de indicadores "
+"asignados o utilizados en un conjunto de datos o los nombres de grupo "
+"asignados a un indicador de programa."
 
 msgid ""
 "Defines the unique service ID of the data element or indicator used in a "
 "dataset."
 msgstr ""
+"Define el identificador único de servicio del elemento de datos o indicador "
+"utilizado en un conjunto de datos."
 
 msgid ""
 "Defines the unique service code assigned to the data element or indicator "
 "group used in a dataset."
 msgstr ""
+"Define el código de servicio único asignado al elemento de datos o grupo de "
+"indicadores utilizado en un conjunto de datos."
 
 msgid "Defines the name of the Service assigned to the dataset."
-msgstr ""
+msgstr "Define el nombre del Servicio asignado al conjunto de datos."
 
 msgid "Clear filters"
-msgstr ""
+msgstr "Reiniciar filtros"
 
 msgid "Show / Hide column filters"
-msgstr ""
+msgstr "Mostrar / Esconder filtros de columnas"
 
 msgid "Type here..."
-msgstr ""
+msgstr "Escriba aquí..."
 
 msgid "Manage Columns"
-msgstr ""
+msgstr "Elegir Columnas"
 
 msgid "Expand"
-msgstr ""
+msgstr "Expandir"
 
 msgid ""
 "<p>This interface is made to simplify user access the terminology "
@@ -1059,6 +1220,19 @@ msgid ""
 "can finally export the results of your search to Excel (page by page, and "
 "do not forget to save as .xls).</p>"
 msgstr ""
+"<p>Esta interfaz permite simplificar el acceso del usuario a la "
+"terminología asociada con la información recopilada con HMIS. <ul> <li> "
+"Mediante la pestaña <b>Buscar</b> puede buscar directamente un término en "
+"todas las columnas de la tabla. También puede mostrar filtros de columna, "
+"lo que le permite buscar información en una columna específica. Utilice "
+"'Reiniciar filtros' para reiniciar todos los filtros. <i>Los usuarios "
+"expertos pueden usar la palabra clave '|' (OR) para buscar múltiples "
+"objetos.</i> </li> <li> A través de la pestaña <b>Seleccionar columnas</b> "
+"puede seleccionar las columnas que se mostrarán en la tabla. <i>Los "
+"usuarios expertos pueden utilizar las columnas avanzadas para realizar "
+"investigaciones detalladas a través los IDs.</i> </ li> </ ul>Finalmente "
+"puede exportar los resultados de su búsqueda a Excel (página por página, y "
+"no olvide guardar como .xls).</p>"
 
 msgid "Dossier editor"
 msgstr ""

@@ -15,8 +15,8 @@ export const TableOfContents: React.FC<{ items: TocItem[] }> = React.memo(({ ite
     if (items.length === 0) return null;
 
     return (
-        <nav id="tocContainer" className={css.toc} aria-label={i18n.t("Table of contents")}>
-            <h4>{i18n.t("Table of contents")}</h4>
+        <nav id="tocContainer" className={css.toc} aria-label={i18n.t("Table of Content")}>
+            <h4>{i18n.t("Table of Content")}</h4>
             <TocList items={items} />
         </nav>
     );
