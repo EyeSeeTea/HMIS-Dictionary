@@ -4,10 +4,12 @@ import {
     SearchDataElementSource,
     SearchIndicatorSource,
     SearchProgramIndicatorSource,
+    SearchProgramSource,
 } from "$/domain/entities/SearchCatalog";
 
 export interface SearchRepository {
     getDataElements(): FutureData<SearchDataElementSource[]>;
+    getPrograms(): FutureData<SearchProgramSource[]>;
     getCategoryOptionCombos(): FutureData<NamedRef[]>;
     getProgramIndicators(): FutureData<SearchProgramIndicatorSource[]>;
     getIndicators(): FutureData<SearchIndicatorSource[]>;

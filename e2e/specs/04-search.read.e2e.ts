@@ -67,17 +67,6 @@ test.describe("4. Search", () => {
             await expect(await search.table.cell(0, COLUMNS.type)).toHaveText("program indicator");
         });
 
-        test("Tracker-domain data elements are excluded", async ({ search, api }) => {
-            const [de] = await api.list("dataElements", {
-                fields: "id",
-                filter: "domainType:eq:TRACKER",
-                pageSize: 1,
-                paging: true,
-            });
-            await search.load();
-            await expectNotFound(search, de.id);
-        });
-
         test("Data elements in a blacklisted group are excluded", async ({ search, api }) => {
             const { blacklistDEG } = await config(api);
             const [de] = await api.list("dataElements", {

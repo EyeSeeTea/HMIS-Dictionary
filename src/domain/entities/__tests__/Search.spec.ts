@@ -10,9 +10,24 @@ const SERVICE_ATTRIBUTE = "pG4YeQyynJh";
 const base = { code: "", shortName: "short", formName: "form", description: "desc" };
 
 const sources: SearchSources = {
+    programs: [
+        { id: "p1", name: "Line list", code: "P1", dataElementIds: ["trackerDe"] },
+        { id: "p2", name: "~Hidden program", code: "P2", dataElementIds: ["trackerDe"] },
+        { id: "p3", name: "Unrelated", code: "P3", dataElementIds: [] },
+    ],
     dataElements: [
         {
             ...base,
+            domain: "tracker",
+            id: "trackerDe",
+            name: "Tracker element",
+            icd10: "",
+            groupIds: [],
+            dataSets: [],
+        },
+        {
+            ...base,
+            domain: "aggregate",
             id: "de1",
             name: "Visible element",
             code: "DE1",
@@ -31,6 +46,7 @@ const sources: SearchSources = {
         },
         {
             ...base,
+            domain: "aggregate",
             id: "de2",
             name: "Hidden element",
             icd10: "",
@@ -96,7 +112,21 @@ describe("SearchCatalog", () => {
         assertValue(catalog.rows().find(row => row.columns.object_id === id));
 
     it("hides blacklisted objects, and not-in-use ones for non-admins", () => {
-        expect(catalog.objects.map(object => object.id)).toEqual(["de1", "ind1", "pi1"]);
+        expect(catalog.objects.map(object => object.id)).toEqual([
+            "trackerDe",
+            "de1",
+            "ind1",
+            "pi1",
+        ]);
+    });
+
+    it("gives tracker data elements their own type, and their programs as the group", () => {
+        const tracker = catalog.objects.find(object => object.id === "trackerDe");
+
+        expect(tracker?.groups.map(group => group.name)).toEqual(["Line list"]);
+        const row = catalog.rows().find(row => row.columns.object_id === "trackerDe");
+        expect(row?.columns.object_type).toBe("dataElement (tracker)");
+        expect(row?.columns.objectGroup_name).toBe("Line list");
     });
 
     it("shows not-in-use objects to admins", () => {
@@ -106,6 +136,7 @@ describe("SearchCatalog", () => {
         });
 
         expect(adminCatalog.objects.map(object => object.id)).toEqual([
+            "trackerDe",
             "de1",
             "ind1",
             "ind2",

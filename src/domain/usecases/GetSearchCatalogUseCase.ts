@@ -7,6 +7,7 @@ import { SearchRepository } from "$/domain/repositories/SearchRepository";
 
 export type SearchStep =
     | "dataElements"
+    | "programs"
     | "categoryOptionCombos"
     | "programIndicators"
     | "indicators";
@@ -31,22 +32,26 @@ export class GetSearchCatalogUseCase {
 
         return this.getHealthServices(context).flatMap(healthServices =>
             step("dataElements", () => searchRepository.getDataElements()).flatMap(dataElements =>
-                step("categoryOptionCombos", () =>
-                    searchRepository.getCategoryOptionCombos()
-                ).flatMap(categoryOptionCombos =>
-                    step("programIndicators", () =>
-                        searchRepository.getProgramIndicators()
-                    ).flatMap(programIndicators =>
-                        step("indicators", () => searchRepository.getIndicators()).map(indicators =>
-                            SearchCatalog.build(
-                                {
-                                    dataElements,
-                                    categoryOptionCombos,
-                                    programIndicators,
-                                    indicators,
-                                },
-                                healthServices,
-                                context
+                step("programs", () => searchRepository.getPrograms()).flatMap(programs =>
+                    step("categoryOptionCombos", () =>
+                        searchRepository.getCategoryOptionCombos()
+                    ).flatMap(categoryOptionCombos =>
+                        step("programIndicators", () =>
+                            searchRepository.getProgramIndicators()
+                        ).flatMap(programIndicators =>
+                            step("indicators", () => searchRepository.getIndicators()).map(
+                                indicators =>
+                                    SearchCatalog.build(
+                                        {
+                                            dataElements,
+                                            programs,
+                                            categoryOptionCombos,
+                                            programIndicators,
+                                            indicators,
+                                        },
+                                        healthServices,
+                                        context
+                                    )
                             )
                         )
                     )

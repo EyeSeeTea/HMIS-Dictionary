@@ -23,7 +23,13 @@ import { defaultVisibleColumns, searchColumnDefs } from "$/webapp/pages/search/s
 import { getTableRows, SearchTableRow } from "$/webapp/pages/search/searchRows";
 import { columnTexts, searchHelpHtml, searchTexts } from "$/webapp/pages/search/searchTexts";
 
-const steps = ["dataElements", "categoryOptionCombos", "programIndicators", "indicators"] as const;
+const steps = [
+    "dataElements",
+    "programs",
+    "categoryOptionCombos",
+    "programIndicators",
+    "indicators",
+] as const;
 
 export const SearchPage: React.FC = React.memo(() => {
     const { compositionRoot, settings, currentUser } = useAppContext();

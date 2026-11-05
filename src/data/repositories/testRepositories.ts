@@ -44,6 +44,7 @@ export function getTestRepositories(): Repositories {
         },
         searchRepository: {
             getDataElements: empty,
+            getPrograms: empty,
             getCategoryOptionCombos: empty,
             getProgramIndicators: empty,
             getIndicators: empty,

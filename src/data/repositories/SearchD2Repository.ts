@@ -7,6 +7,7 @@ import {
     SearchGroupSource,
     SearchIndicatorSource,
     SearchProgramIndicatorSource,
+    SearchProgramSource,
 } from "$/domain/entities/SearchCatalog";
 import { SearchRepository } from "$/domain/repositories/SearchRepository";
 import { D2Api } from "$/types/d2-api";
@@ -45,16 +46,17 @@ export class SearchD2Repository implements SearchRepository {
                 fields: {
                     ...baseFields,
                     displayShortName: true,
+                    domainType: true,
                     attributeValues: attributeValueFields,
                     dataElementGroups: { id: true },
                     dataSetElements: { dataSet: groupFields },
                 },
-                filter: { domainType: { eq: "AGGREGATE" } },
                 paging: false,
             })
         ).map(({ objects }) =>
             objects.map(dataElement => ({
                 id: dataElement.id,
+                domain: dataElement.domainType === "TRACKER" ? "tracker" : "aggregate",
                 name: dataElement.displayName,
                 code: text(dataElement.code),
                 shortName: text(dataElement.displayShortName),
@@ -68,6 +70,31 @@ export class SearchD2Repository implements SearchRepository {
                 ),
                 groupIds: dataElement.dataElementGroups.map(group => group.id),
                 dataSets: dataElement.dataSetElements.map(({ dataSet }) => toGroup(dataSet)),
+            }))
+        );
+    }
+
+    getPrograms(): FutureData<SearchProgramSource[]> {
+        return apiToFuture(
+            this.api.models.programs.get({
+                fields: {
+                    id: true,
+                    code: true,
+                    displayName: true,
+                    programStages: {
+                        programStageDataElements: { dataElement: { id: true } },
+                    },
+                },
+                paging: false,
+            })
+        ).map(({ objects }) =>
+            objects.map(program => ({
+                id: program.id,
+                code: text(program.code),
+                name: program.displayName,
+                dataElementIds: program.programStages.flatMap(stage =>
+                    stage.programStageDataElements.map(({ dataElement }) => dataElement.id)
+                ),
             }))
         );
     }

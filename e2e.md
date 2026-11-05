@@ -200,7 +200,7 @@ Language tests set the real `keyUiLocale` user setting on a test user `[W]`, so 
 **Data loading**
 
 - [x] Table loads data elements, indicators and program indicators, each with the right type
-- [x] Tracker-domain data elements are excluded
+- [x] Tracker-domain data elements are included, with their own type (`14-his-tracker-data-elements`)
 - [x] Data elements in a blacklisted group are excluded
 - [x] Data elements in no data set are included
 - [x] Blacklisted data sets are left out of a row's group columns, and the row stays

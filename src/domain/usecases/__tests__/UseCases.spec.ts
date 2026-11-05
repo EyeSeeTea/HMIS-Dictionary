@@ -298,6 +298,7 @@ describe("SaveHealthServiceTextUseCase", () => {
 describe("GetSearchCatalogUseCase", () => {
     const search = fake<SearchRepository>({
         getDataElements: () => success([]),
+        getPrograms: () => success([]),
         getCategoryOptionCombos: () => success([]),
         getProgramIndicators: () => success([]),
         getIndicators: () => success([]),
@@ -314,6 +315,7 @@ describe("GetSearchCatalogUseCase", () => {
 
         expect(onStep.mock.calls.map(([step]) => step)).toEqual([
             "dataElements",
+            "programs",
             "categoryOptionCombos",
             "programIndicators",
             "indicators",

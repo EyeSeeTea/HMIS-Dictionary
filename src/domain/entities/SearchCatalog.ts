@@ -29,13 +29,20 @@ type SearchObjectBase = {
 /** The stored text of the type column, which filters match against. */
 const typeLabels = {
     dataElement: "dataElement",
+    trackerDataElement: "dataElement (tracker)",
     indicator: "indicator",
     programIndicator: "program indicator",
 } as const;
 
 export type SearchObject = SearchObjectBase &
     (
-        | { type: "dataElement"; shortName: string; icd10: string; healthServices: HealthService[] }
+        | {
+              type: "dataElement";
+              domain: DataElementDomain;
+              shortName: string;
+              icd10: string;
+              healthServices: HealthService[];
+          }
         | {
               type: "indicator";
               shortName: string;
@@ -46,9 +53,12 @@ export type SearchObject = SearchObjectBase &
         | { type: "programIndicator"; expression: ProgramExpression; filter: ProgramExpression }
     );
 
+export type DataElementDomain = "aggregate" | "tracker";
+
 export type SearchGroupSource = SearchGroup & { attributeValues: AttributeValue[] };
 
 export type SearchDataElementSource = NamedRef & {
+    domain: DataElementDomain;
     code: string;
     shortName: string;
     formName: string;
@@ -77,8 +87,11 @@ export type SearchProgramIndicatorSource = NamedRef & {
     groups: SearchGroup[];
 };
 
+export type SearchProgramSource = SearchGroup & { dataElementIds: Id[] };
+
 export type SearchSources = {
     dataElements: SearchDataElementSource[];
+    programs: SearchProgramSource[];
     categoryOptionCombos: NamedRef[];
     programIndicators: SearchProgramIndicatorSource[];
     indicators: SearchIndicatorSource[];
@@ -100,6 +113,8 @@ export class SearchCatalog extends Struct<SearchCatalogAttrs>() {
         const { settings, user } = context;
         const servicesByKey = new Map(healthServices.map(service => [service.key(), service]));
 
+        const programs = sources.programs.filter(program => !isHiddenProgramName(program.name));
+
         const dataElements = sources.dataElements
             .filter(source => !settings.isDataElementBlacklisted(source.groupIds))
             .map((source): SearchObject => {
@@ -110,9 +125,16 @@ export class SearchCatalog extends Struct<SearchCatalogAttrs>() {
                 return {
                     type: "dataElement",
                     ...getBase(source),
+                    domain: source.domain,
                     shortName: source.shortName,
                     icd10: source.icd10,
-                    groups: dataSets.map(toGroup),
+                    // Aggregate elements belong to data sets, and tracker ones to programs
+                    groups:
+                        source.domain === "tracker"
+                            ? programs
+                                  .filter(program => program.dataElementIds.includes(source.id))
+                                  .map(toGroup)
+                            : dataSets.map(toGroup),
                     healthServices: uniqueById(
                         dataSets.flatMap(dataSet =>
                             findServices(dataSetServiceValue(dataSet), servicesByKey)
@@ -175,7 +197,7 @@ export class SearchCatalog extends Struct<SearchCatalogAttrs>() {
 
         return {
             columns: {
-                object_type: typeLabels[object.type],
+                object_type: getTypeLabel(object),
                 object_id: object.id,
                 object_code: object.code,
                 object_ICD10: object.type === "dataElement" ? object.icd10 : "",
@@ -206,6 +228,17 @@ export class SearchCatalog extends Struct<SearchCatalogAttrs>() {
     private formulaText(formula: IndicatorFormula | undefined): string {
         return formula ? formulaToPlainText(formula.resolve(this.lookup), this.tags) : "";
     }
+}
+
+function getTypeLabel(object: SearchObject): string {
+    return object.type === "dataElement" && object.domain === "tracker"
+        ? typeLabels.trackerDataElement
+        : typeLabels[object.type];
+}
+
+/** Programs whose name starts with ~ are not meant to be seen by users. */
+function isHiddenProgramName(name: string): boolean {
+    return name.startsWith("~");
 }
 
 function getBase(source: SearchObjectBase | SearchDataElementSource | SearchIndicatorSource) {
