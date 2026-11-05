@@ -16,7 +16,8 @@ export class GetDataSetIndicatorsUseCase {
                 indicators.filter(
                     indicator =>
                         settings.isIndicatorVisible(indicator.groupIds, user) &&
-                        indicator.referencesAnyDataElement(dataSet.dataElementIds)
+                        (dataSet.assignedIndicatorIds.includes(indicator.id) ||
+                            indicator.referencesAnyDataElement(dataSet.dataElementIds))
                 )
             );
     }

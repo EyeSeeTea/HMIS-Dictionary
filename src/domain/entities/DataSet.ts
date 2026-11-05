@@ -25,6 +25,8 @@ export type DataSetAttrs = {
     hasRealSections: boolean;
     /** All its elements, also those outside sections. They find its indicators. */
     dataElementIds: Id[];
+    /** Indicators assigned to the data set itself, whatever their formulas say. */
+    assignedIndicatorIds: Id[];
 };
 
 export class DataSet extends Struct<DataSetAttrs>() {

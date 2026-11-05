@@ -401,10 +401,17 @@ describe("GetDataSetIndicatorsUseCase", () => {
             sections: [],
             hasRealSections: false,
             dataElementIds: ["outside"],
+            assignedIndicatorIds: ["assigned", "assignedHidden"],
         });
         const indicators = [
             createIndicator({ id: "yes", numerator: formula("#{outside.coc}") }),
             createIndicator({ id: "bare", numerator: formula("#{outside}") }),
+            createIndicator({ id: "assigned", numerator: formula("1") }),
+            createIndicator({
+                id: "assignedHidden",
+                numerator: formula("1"),
+                groupIds: ["blacklistedIg"],
+            }),
             createIndicator({
                 id: "hidden",
                 numerator: formula("#{outside.coc}"),
@@ -417,7 +424,7 @@ describe("GetDataSetIndicatorsUseCase", () => {
             .execute(dataSet, context)
             .toPromise();
 
-        expect(result.map(indicator => indicator.id)).toEqual(["yes"]);
+        expect(result.map(indicator => indicator.id)).toEqual(["yes", "assigned"]);
     });
 });
 

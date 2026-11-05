@@ -195,6 +195,7 @@ describe("DataSet", () => {
             ],
             hasRealSections: true,
             dataElementIds: [],
+            assignedIndicatorIds: [],
         });
 
         expect(dataSet.categoryComboIds()).toEqual(["a", "b"]);

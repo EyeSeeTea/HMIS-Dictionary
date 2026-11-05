@@ -64,6 +64,7 @@ export function getTestRepositories(): Repositories {
                         sections: [],
                         hasRealSections: false,
                         dataElementIds: [],
+                        assignedIndicatorIds: [],
                     })
                 ),
             getCategoryCombos: empty,

@@ -46,6 +46,7 @@ export type D2DataSet = {
         dataElements: D2DataElement[];
     }[];
     dataSetElements: { categoryCombo?: D2Combo; dataElement: D2DataElement }[];
+    indicators?: { id: string }[];
 };
 
 export class DataSetD2Repository implements DataSetRepository {
@@ -101,6 +102,7 @@ export class DataSetD2Repository implements DataSetRepository {
                         description: true,
                         dataElements: elementFields,
                     },
+                    indicators: { id: true },
                     dataSetElements: {
                         categoryCombo: comboFields,
                         dataElement: elementFields,
@@ -198,5 +200,6 @@ export function toDataSet(dataSet: D2DataSet): DataSet {
                   },
               ],
         dataElementIds: dataSet.dataSetElements.map(({ dataElement }) => dataElement.id),
+        assignedIndicatorIds: (dataSet.indicators ?? []).map(indicator => indicator.id),
     });
 }

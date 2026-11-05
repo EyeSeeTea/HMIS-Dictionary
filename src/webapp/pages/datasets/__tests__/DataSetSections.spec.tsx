@@ -23,6 +23,7 @@ const dataSet = new DataSet({
     description: "",
     hasRealSections: true,
     dataElementIds: ["a", "b"],
+    assignedIndicatorIds: [],
     sections: [
         { id: "s1", name: "Section 1", description: "", dataElements: [element("a")] },
         { id: "s2", name: "Section 2", description: "", dataElements: [] },
