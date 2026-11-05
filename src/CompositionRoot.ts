@@ -8,6 +8,9 @@ import { HealthServiceD2Repository } from "./data/repositories/HealthServiceD2Re
 import { AttributeD2Repository } from "./data/repositories/AttributeD2Repository";
 import { DossierD2Repository } from "./data/repositories/DossierD2Repository";
 import { HealthServiceTextD2Repository } from "./data/repositories/HealthServiceTextD2Repository";
+import { IndexedDbCache } from "./data/IndexedDbCache";
+import { getMetadataSignature } from "./data/repositories/metadataSignature";
+import { SearchCachedRepository } from "./data/repositories/SearchCachedRepository";
 import { SearchD2Repository } from "./data/repositories/SearchD2Repository";
 import { DataSetD2Repository } from "./data/repositories/DataSetD2Repository";
 import { IndicatorD2Repository } from "./data/repositories/IndicatorD2Repository";
@@ -190,7 +193,11 @@ export function getWebappCompositionRoot(api: D2Api) {
         attributeRepository: new AttributeD2Repository(api),
         dossierRepository: new DossierD2Repository(api),
         healthServiceTextRepository: new HealthServiceTextD2Repository(api),
-        searchRepository: new SearchD2Repository(api),
+        searchRepository: new SearchCachedRepository(
+            new SearchD2Repository(api),
+            getMetadataSignature(api),
+            new IndexedDbCache()
+        ),
         dataSetRepository: new DataSetD2Repository(api),
         indicatorRepository: new IndicatorD2Repository(api),
         formulaRepository: new FormulaD2Repository(api),
