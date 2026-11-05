@@ -14,6 +14,7 @@ import { IndicatorD2Repository } from "./data/repositories/IndicatorD2Repository
 import { FormulaD2Repository } from "./data/repositories/FormulaD2Repository";
 import { ProgramD2Repository } from "./data/repositories/ProgramD2Repository";
 import { VisualizationD2Repository } from "./data/repositories/VisualizationD2Repository";
+import { OrgUnitD2Repository } from "./data/repositories/OrgUnitD2Repository";
 import { getTestRepositories } from "./data/repositories/testRepositories";
 import { UserRepository } from "./domain/repositories/UserRepository";
 import { UserGroupRepository } from "./domain/repositories/UserGroupRepository";
@@ -31,6 +32,7 @@ import { IndicatorRepository } from "./domain/repositories/IndicatorRepository";
 import { FormulaRepository } from "./domain/repositories/FormulaRepository";
 import { ProgramRepository } from "./domain/repositories/ProgramRepository";
 import { VisualizationRepository } from "./domain/repositories/VisualizationRepository";
+import { OrgUnitRepository } from "./domain/repositories/OrgUnitRepository";
 import { CheckSessionUseCase } from "./domain/usecases/CheckSessionUseCase";
 import { DescribeExpressionsUseCase } from "./domain/usecases/DescribeExpressionsUseCase";
 import { DescribeIndicatorsUseCase } from "./domain/usecases/DescribeIndicatorsUseCase";
@@ -51,6 +53,7 @@ import { GetLegacyOptionIdsUseCase } from "./domain/usecases/GetLegacyOptionIdsU
 import { GetProgramAttributesUseCase } from "./domain/usecases/GetProgramAttributesUseCase";
 import { GetProgramIndicatorsUseCase } from "./domain/usecases/GetProgramIndicatorsUseCase";
 import { GetProgramRelatedIndicatorsUseCase } from "./domain/usecases/GetProgramRelatedIndicatorsUseCase";
+import { GetOrgUnitTreeUseCase } from "./domain/usecases/GetOrgUnitTreeUseCase";
 import { GetProgramResourcesUseCase } from "./domain/usecases/GetProgramResourcesUseCase";
 import { GetProgramRuleVariablesUseCase } from "./domain/usecases/GetProgramRuleVariablesUseCase";
 import { GetProgramRulesUseCase } from "./domain/usecases/GetProgramRulesUseCase";
@@ -84,6 +87,7 @@ export type Repositories = {
     formulaRepository: FormulaRepository;
     programRepository: ProgramRepository;
     visualizationRepository: VisualizationRepository;
+    orgUnitRepository: OrgUnitRepository;
 };
 
 function getCompositionRoot(repositories: Repositories) {
@@ -145,6 +149,9 @@ function getCompositionRoot(repositories: Repositories) {
             getRuleVariables: new GetProgramRuleVariablesUseCase(repositories.programRepository),
             getResources: new GetProgramResourcesUseCase(repositories.programRepository),
         },
+        orgUnits: {
+            getTree: new GetOrgUnitTreeUseCase(repositories.orgUnitRepository),
+        },
         admin: {
             getOptions: new GetAdminOptionsUseCase(
                 repositories.healthServiceRepository,
@@ -183,6 +190,7 @@ export function getWebappCompositionRoot(api: D2Api) {
         formulaRepository: new FormulaD2Repository(api),
         programRepository: new ProgramD2Repository(api),
         visualizationRepository: new VisualizationD2Repository(api),
+        orgUnitRepository: new OrgUnitD2Repository(api),
     });
 }
 

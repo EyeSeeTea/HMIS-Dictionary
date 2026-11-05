@@ -14,6 +14,7 @@ import { ItemSelector } from "$/webapp/components/item-selector/ItemSelector";
 import { LoadingBanner } from "$/webapp/components/loading-banner/LoadingBanner";
 import { LayoutSettingsButton } from "$/webapp/components/layout-settings/LayoutSettingsButton";
 import { ProgressBar } from "$/webapp/components/progress-bar/ProgressBar";
+import { OrgUnitTreePanel } from "$/webapp/components/org-unit-tree/OrgUnitTreePanel";
 import { TableOfContents, TocItem } from "$/webapp/components/table-of-contents/TableOfContents";
 import { DataSetSectionsSection } from "$/webapp/pages/datasets/DataSetSectionsSection";
 import { CategoryCombosSection } from "$/webapp/pages/datasets/CategoryCombosSection";
@@ -109,6 +110,7 @@ export const DataSetsPage: React.FC = React.memo(() => {
                         <h1>{dataSetValue.name}</h1>
                     </div>
                     <TableOfContents items={toc} />
+                    <OrgUnitTreePanel ownerType="dataSets" ownerId={dataSetValue.id} />
 
                     <DataSetSectionsSection
                         dataSet={dataSetValue}

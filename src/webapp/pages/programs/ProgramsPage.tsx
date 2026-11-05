@@ -18,6 +18,7 @@ import { LoadingBanner } from "$/webapp/components/loading-banner/LoadingBanner"
 import { ProgressBar } from "$/webapp/components/progress-bar/ProgressBar";
 import { HtmlContent } from "$/webapp/components/html-content/HtmlContent";
 import { LayoutSettingsButton } from "$/webapp/components/layout-settings/LayoutSettingsButton";
+import { OrgUnitTreePanel } from "$/webapp/components/org-unit-tree/OrgUnitTreePanel";
 import { TableOfContents, TocItem } from "$/webapp/components/table-of-contents/TableOfContents";
 import { HelpIcon } from "$/webapp/components/help-icon/HelpIcon";
 import { downloadExcel } from "$/webapp/utils/excel";
@@ -248,6 +249,7 @@ export const ProgramsPage: React.FC = React.memo(() => {
                         disabled={isLoading}
                     />
                     <TableOfContents items={toc} />
+                    <OrgUnitTreePanel ownerType="programs" ownerId={program.id} />
 
                     {showDescription && (
                         <div id="DossierTextTitleContainer">

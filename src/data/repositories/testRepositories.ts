@@ -83,6 +83,7 @@ export function getTestRepositories(): Repositories {
             getOptionIdsOfGroups: () => success(new Set()),
         },
         visualizationRepository: { save: () => success("visualizationId") },
+        orgUnitRepository: { getAssigned: empty, getNames: empty, getUserRootIds: empty },
     };
 }
 

@@ -9,7 +9,7 @@ export type CollapsiblePanelProps = {
     children: React.ReactNode;
 };
 
-/** The panels above the search table: Search, Manage Columns and Help. */
+/** A titled panel that shows its content only while open, so that content loads on demand. */
 export const CollapsiblePanel: React.FC<CollapsiblePanelProps> = React.memo(props => {
     const { title, defaultOpen = false, bodyId, children } = props;
     const [open, setOpen] = React.useState(defaultOpen);

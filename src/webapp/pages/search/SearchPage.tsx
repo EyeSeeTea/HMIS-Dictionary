@@ -15,7 +15,7 @@ import { ProgressBar } from "$/webapp/components/progress-bar/ProgressBar";
 import { HtmlContent } from "$/webapp/components/html-content/HtmlContent";
 import { LayoutSettingsButton } from "$/webapp/components/layout-settings/LayoutSettingsButton";
 import { downloadExcel } from "$/webapp/utils/excel";
-import { CollapsiblePanel } from "$/webapp/pages/search/CollapsiblePanel";
+import { CollapsiblePanel } from "$/webapp/components/collapsible-panel/CollapsiblePanel";
 import { SearchPanel } from "$/webapp/pages/search/SearchPanel";
 import { ColumnSelectorPanel } from "$/webapp/pages/search/ColumnSelectorPanel";
 import { SearchTable } from "$/webapp/pages/search/SearchTable";
