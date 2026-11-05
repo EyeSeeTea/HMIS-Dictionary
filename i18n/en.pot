@@ -5,25 +5,22 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-11-05T10:47:00.615Z\n"
-"PO-Revision-Date: 2026-11-05T10:47:00.615Z\n"
+"POT-Creation-Date: 2026-11-05T19:11:41.461Z\n"
+"PO-Revision-Date: 2026-11-05T19:11:41.461Z\n"
 
 msgid "No data"
 msgstr ""
 
-msgid "Select..."
+msgid "Something went wrong"
 msgstr ""
 
-msgid "No matches"
-msgstr ""
-
-msgid "Search"
-msgstr ""
-
-msgid "Clear"
+msgid "Reload the page. If the problem persists, contact your administrator."
 msgstr ""
 
 msgid "Settings"
+msgstr ""
+
+msgid "Close"
 msgstr ""
 
 msgid ""
@@ -38,9 +35,6 @@ msgid "Advanced User"
 msgstr ""
 
 msgid "Normal User"
-msgstr ""
-
-msgid "Close"
 msgstr ""
 
 msgid "Restore changes"
@@ -199,6 +193,9 @@ msgstr ""
 msgid "Group Name"
 msgstr ""
 
+msgid "Data Element Groups"
+msgstr ""
+
 msgid "ICD10"
 msgstr ""
 
@@ -247,6 +244,15 @@ msgstr ""
 msgid "Loading..."
 msgstr ""
 
+msgid "Organisation units"
+msgstr ""
+
+msgid "No organisation units"
+msgstr ""
+
+msgid "Assigned organisation units"
+msgstr ""
+
 msgid "Back"
 msgstr ""
 
@@ -256,16 +262,25 @@ msgstr ""
 msgid "Print"
 msgstr ""
 
+msgid "Print selection"
+msgstr ""
+
 msgid "Table of contents"
 msgstr ""
 
-msgid "Go to index"
+msgid "Go to Index"
 msgstr ""
 
-msgid "Back to top"
+msgid "Back to Top"
 msgstr ""
 
-msgid "View table"
+msgid "Previous page"
+msgstr ""
+
+msgid "Next page"
+msgstr ""
+
+msgid "View Table"
 msgstr ""
 
 msgid "About this version"
@@ -309,6 +324,9 @@ msgid "[Optional] An array of dataElementGroups UIDs to blacklist from the panel
 msgstr ""
 
 msgid "[Optional] An array of dataSets UIDs to blacklist from the panels."
+msgstr ""
+
+msgid "[Optional] An array of programs UIDs to blacklist from the panels."
 msgstr ""
 
 msgid "[Optional] An array of indicatorGroups UIDs to blacklist from the panels."
@@ -384,10 +402,33 @@ msgid ""
 "and their translations."
 msgstr ""
 
+msgid "Selectors of Data Sets and Programs"
+msgstr ""
+
+msgid ""
+"Only list the data sets and programs assigned to the organisation units of "
+"the user, or to their descendants."
+msgstr ""
+
+msgid "Select..."
+msgstr ""
+
 msgid "Submit"
 msgstr ""
 
+msgid "Defines how the values of the data element are aggregated."
+msgstr ""
+
+msgid "Number of Elements in Section"
+msgstr ""
+
 msgid "No data elements"
+msgstr ""
+
+msgid "Data Elements Columns"
+msgstr ""
+
+msgid "Indicator Columns"
 msgstr ""
 
 msgid "Data Sets"
@@ -399,7 +440,10 @@ msgstr ""
 msgid "Describing indicators"
 msgstr ""
 
-msgid "Data Elements"
+msgid "Data elements"
+msgstr ""
+
+msgid "Category combinations"
 msgstr ""
 
 msgid "Defines the categories assigned for that dataset."
@@ -483,10 +527,10 @@ msgid ""
 "analytics."
 msgstr ""
 
-msgid "Back to reader"
+msgid "Save"
 msgstr ""
 
-msgid "Save"
+msgid "Back to reader"
 msgstr ""
 
 msgid "Edit"
@@ -529,9 +573,6 @@ msgid "Number of Data Elements in Section"
 msgstr ""
 
 msgid "Number of Indicators in Indicator Group"
-msgstr ""
-
-msgid "Back to Top"
 msgstr ""
 
 msgid "Comments"
@@ -600,6 +641,27 @@ msgid ""
 "calculates"
 msgstr ""
 
+msgid "Defines the short name, used in compact displays and analytics."
+msgstr ""
+
+msgid "Number of Rules in Program"
+msgstr ""
+
+msgid "Other sections"
+msgstr ""
+
+msgid "Tracked Entity Attribute Columns"
+msgstr ""
+
+msgid "Program Indicator Columns"
+msgstr ""
+
+msgid "Program Rule Columns"
+msgstr ""
+
+msgid "Program Rule Variable Columns"
+msgstr ""
+
 msgid "Select a program"
 msgstr ""
 
@@ -610,6 +672,12 @@ msgid "Stage"
 msgstr ""
 
 msgid "Repeatable"
+msgstr ""
+
+msgid "Program Resources"
+msgstr ""
+
+msgid "You have no access to the data of this program"
 msgstr ""
 
 msgid "Actions Types"
@@ -637,9 +705,6 @@ msgid "Display Widget"
 msgstr ""
 
 msgid "Expression"
-msgstr ""
-
-msgid "Go to Index"
 msgstr ""
 
 msgid "Key Label"
@@ -941,6 +1006,9 @@ msgstr ""
 msgid "Show / Hide advanced columns"
 msgstr ""
 
+msgid "Search"
+msgstr ""
+
 msgid "Loading search data"
 msgstr ""
 
@@ -1018,6 +1086,14 @@ msgid ""
 "in a dataset or the group names assigned to a program indicator."
 msgstr ""
 
+msgid "Defines the data element groups a data element belongs to."
+msgstr ""
+
+msgid ""
+"Defines the program of a program indicator, or the programs that use a "
+"tracker data element."
+msgstr ""
+
 msgid ""
 "Defines the unique service ID of the data element or indicator used in a "
 "dataset."
@@ -1044,6 +1120,26 @@ msgid "Manage Columns"
 msgstr ""
 
 msgid "Expand"
+msgstr ""
+
+msgid ""
+"<p><b>Combining terms in the search:</b></p><ul><li><code>a b</code>: rows "
+"with all the words, in any order and in any column. Rows with the exact "
+"phrase go first.</li><li><code>a &amp; b</code>: rows with all the "
+"terms.</li><li><code>a | b</code>: rows with any of the "
+"terms.</li></ul><p><b>DHIS2 terminology:</b></p><ul><li><b>Data "
+"Element:</b> an item of counted data or raw data.</li><li><b>Indicator:</b> "
+"combined data or calculations the system does using data elements. These "
+"could be totals, percentages, rates, etc.</li><li><b>Program Indicator:</b> "
+"a calculation or filtering of individual level data (recorded in Programs). "
+"Some program indicators may be a building block for an indicator (used in "
+"its numerator or denominator).</li><li><b>Group:</b> data elements of the "
+"same data set, entirely or in part, are grouped in a data element group. "
+"Related indicators are grouped in an indicator group.</li><li><b>Data "
+"Set:</b> made up of data elements to collect aggregate data or total "
+"numbers for a specific medical service.</li><li><b>Program:</b> made up of "
+"data elements to collect individual patient data for a particular medical "
+"service.</li></ul>"
 msgstr ""
 
 msgid ""

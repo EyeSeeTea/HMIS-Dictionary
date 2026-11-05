@@ -396,7 +396,7 @@ export const AdminPage: React.FC = React.memo(() => {
             </DetailsBox>
 
             <div className={css.heading}>
-                <h3>{i18n.t("Selectors of Data Sets and Programs:")}</h3>
+                <h3>{i18n.t("Selectors of Data Sets and Programs")}:</h3>
             </div>
             <div className={css.setting}>
                 <Checkbox

@@ -51,7 +51,9 @@ const Tree: React.FC<{ tree: OrgUnitTree }> = ({ tree }) => {
 
     return (
         <>
-            <p>{i18n.t("Assigned organisation units: {{count}}", { count: tree.assignedCount })}</p>
+            <p>
+                {i18n.t("Assigned organisation units")}: {tree.assignedCount}
+            </p>
             <ul className={css.tree} role="tree">
                 {tree.roots.map(node => (
                     <TreeNode key={node.id} node={node} level={1} expandedLevels={expandedLevels} />
