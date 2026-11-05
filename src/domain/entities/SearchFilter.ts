@@ -33,8 +33,9 @@ export type SearchFilterAttrs = {
 };
 
 /**
- * The global search: "a|b" finds any of the terms, and "a b" finds all the words, in any order and
- * in any column. Column filters are "a|b" too. Filters combine with AND. Not case-sensitive.
+ * The global search: "a|b" finds any of the terms, "a & b" finds all the terms, and "a b" finds all
+ * the words, in any order and in any column. "|" goes first if both are there. Column filters are
+ * "a|b" too. Filters combine with AND. Not case-sensitive.
  */
 export class SearchFilter extends Struct<SearchFilterAttrs>() {
     matches(row: SearchRow): boolean {
@@ -62,18 +63,20 @@ function matchesGlobal(global: string, isInRow: (term: string) => boolean): bool
         return terms.length === 0 || terms.some(isInRow);
     }
 
-    return getWords(global).every(isInRow);
+    return global.includes("&")
+        ? getTerms(global, "&").every(isInRow)
+        : getWords(global).every(isInRow);
 }
 
-function getTerms(filter: string): string[] {
+function getTerms(filter: string, separator = "|"): string[] {
     return filter
-        .split("|")
+        .split(separator)
         .map(term => term.trim())
         .filter(Boolean);
 }
 
 function getWords(text: string): string[] {
-    return text.split(/[\s|]+/).filter(Boolean);
+    return text.split(/[\s|&]+/).filter(Boolean);
 }
 
 function includes(value: string, term: string): boolean {

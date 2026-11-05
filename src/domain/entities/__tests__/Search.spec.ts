@@ -278,6 +278,24 @@ describe("SearchFilter, global search", () => {
         expect(find("dengue|cholera")).toBe(false);
     });
 
+    it("uses & as AND, where a term can have several words in that order", () => {
+        const find = (global: string) =>
+            SearchFilter.create({ global, columns: {} }).matches(malaria);
+
+        expect(find("malaria & indicator")).toBe(true);
+        expect(find("malaria cases&indicator")).toBe(true);
+        expect(find("cases malaria & indicator")).toBe(false);
+        expect(find("malaria & dengue")).toBe(false);
+        expect(find("dengue & cholera | malaria")).toBe(true);
+        expect(find("&")).toBe(true);
+    });
+
+    it("highlights the terms of &, word by word", () => {
+        const filter = SearchFilter.create({ global: "malaria cases & indicator", columns: {} });
+
+        expect(filter.highlightTerms("object_name")).toEqual(["malaria", "cases", "indicator"]);
+    });
+
     it("highlights each word", () => {
         const filter = SearchFilter.create({ global: "confirmed malaria", columns: {} });
 
