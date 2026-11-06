@@ -1,9 +1,9 @@
-import { D2Api as D2Api40 } from "@eyeseetea/d2-api/2.40";
-import { D2Api as D2Api42 } from "@eyeseetea/d2-api/2.42";
-import { getMockApiFromClass } from "@eyeseetea/d2-api";
+import { D2Api as D2Api40 } from "d2-api-40";
+import { D2Api as D2Api42 } from "d2-api-42";
+import { getMockApiFromClass } from "d2-api-42";
 
-export type { MetadataPick } from "@eyeseetea/d2-api/2.42";
-export { CancelableResponse, isCancel } from "@eyeseetea/d2-api";
+export type { MetadataPick } from "d2-api-42";
+export { CancelableResponse, isCancel } from "d2-api-42";
 
 /**
  * The only place that knows about d2-api versions. The rest of the data layer is typed against

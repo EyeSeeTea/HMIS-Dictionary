@@ -145,6 +145,19 @@ The global entry was also pulling `eslint` down from the `^6.0.2` it declares.
 
 ---
 
+### Security pins (added 2026-11-06)
+
+#### `vitest/tinypool: ^2.1.2`
+
+- **Why:** `vitest@3.2.7` declares `tinypool ^1.1.1`, and no 1.x release is patched. Dev dependency only, it is not in the app bundle.
+- **Fixes:** GHSA-5gmw-xhrv-c9v3 and GHSA-85c8-ppgw-ccpr (critical, prototype pollution to RCE). Patched from 2.1.2.
+- **Verified:** `vitest run` passes with `tinypool@2.2.0` (344 tests).
+- **Drop when:** the project moves to a vitest major that no longer requests tinypool 1.x.
+
+The other critical and high findings of this audit (`handlebars`, `axios`, `brace-expansion`, `follow-redirects`, `js-yaml`, `markdown-it`, `source-map-js`, `undici`, `vite`, `zod`) were stale lockfile entries: `yarn up -R` reached patched versions with no manifest change.
+
+---
+
 ## Rejected pins
 
 Tried during this pass, verified to break a consumer, and reverted. Recorded so nobody re-tries them.
