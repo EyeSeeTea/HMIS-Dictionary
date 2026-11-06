@@ -580,6 +580,15 @@ These are additions to "Known bugs", for the next iteration. The suite does not 
 - [ ] **P11. Program indicator filters keep `Program stage id == 'x'` instead of the stage name.** The regex in `dossierPrograms.controllers.js:760` cannot match it. The option regex next to it only matches one-character codes.
 - [ ] **P12. "Display Widget" never shows on rule actions.** The view and the export read `location`, but the rules query does not fetch it (`dossierPrograms.services.js`).
 
+### Pending to match the baseline (React app, v42)
+
+Latest full run: 353 passed, 3 failed, 4 flaky, 5 skipped, of 365. The goal is that every test passes, or that each difference is accepted and written down. Each case is fixed in the app or in the test.
+
+- **Header title click (fails always):** the skeleton header was chosen on purpose, and its title is not a link, only the logo goes home. Probably accepted: change the test to click the logo.
+- **Global Shell header (fails always):** the test expects the floating print button in place of the header one (section 1). The React app has no floating button, and the print button is in the page header (`react-views.md`, decision 5). Probably accepted: change the test. To confirm by running it.
+- **Excel export headers are translated (fails in about 2 of 6 runs):** the header of `@dhis2/ui` sets the language again from `/me` on each render, over `/userSettings`. This is an app problem, not a test one. Options: keep both values equal, or avoid reading the language while the header re-renders.
+- **Flaky (pass on retry):** 2 navigation tests and 2 Admin tests, the same as before the integration. Names in the Playwright report of the last run. Fixing them means finding what the test waits for (Back navigation is P7 above).
+
 ### Behaviour worth knowing
 
 Tests accept both options for these, so React can choose.

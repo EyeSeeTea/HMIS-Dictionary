@@ -4,12 +4,10 @@ import { expect, fixtures, test } from "../support/fixtures";
 const panels = {
     es: {
         orgUnits: "Unidades organizativas",
-        print: "Selección de impresión",
         guide: "Terminología DHIS2",
     },
     fr: {
         orgUnits: "Unités d'organisation",
-        print: "Sélection d'impression",
         guide: "Terminologie DHIS2",
     },
 } as const;
@@ -47,7 +45,6 @@ test.describe("HIS: translations of the new features", () => {
             await expect(
                 page.getByRole("button", { name: new RegExp(texts.orgUnits) })
             ).toBeVisible();
-            await expect(page.getByRole("button", { name: new RegExp(texts.print) })).toBeVisible();
 
             await search.load();
             await page.locator("#accordion section > button").nth(2).click();

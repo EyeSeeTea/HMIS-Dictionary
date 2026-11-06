@@ -64,7 +64,7 @@ Full e2e suite on v42, on the installed app, after merging `feature/react-migrat
 
 Translations:
 
-- **es, fr:** the 19 new strings without a match in HIS were translated by hand, and need a review by a native speaker. Where both branches had a different text, the imported one was kept.
+- **es, fr:** the 19 new strings without a match in HIS are left empty (they show in English), to be translated by a native speaker. Where both branches had a different text, the imported one was kept.
 - **pt, ar:** the new strings of the integration are not translated, so they show in English.
 
 The "Missed indicators" bug mentioned in the item of assigned indicators was fixed in `feature/react-migration`: data sets also list the indicators that use `#{de}`.

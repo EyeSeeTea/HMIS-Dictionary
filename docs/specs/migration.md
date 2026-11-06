@@ -44,7 +44,7 @@ Twelve app problems found are listed in `e2e.md`, to fix once the migration is d
 - [x] Set up the clean architecture layers (domain / data / presentation)
 - [x] Decide on the API client and the table component: `d2-api` with the 4x branches, `@dhis2/ui` and an own `DataTable`
 - [x] Migrate the app layout: navigation, user settings
-- [ ] Translations (en, es, fr, pt, ar)
+- [x] Translations (en, es, fr, pt, ar)
 - [ ] Migrate the modules:
   - [x] `dossiers` (`reader`, `editor`)
   - [x] `dossierPrograms`

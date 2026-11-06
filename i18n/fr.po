@@ -13,10 +13,12 @@ msgid "No data"
 msgstr "Aucune donnée"
 
 msgid "Something went wrong"
-msgstr "Une erreur s'est produite"
+msgstr ""
+
 
 msgid "Reload the page. If the problem persists, contact your administrator."
-msgstr "Rechargez la page. Si le problème persiste, contactez votre administrateur."
+msgstr ""
+
 
 msgid "Settings"
 msgstr ""
@@ -195,7 +197,8 @@ msgid "Group Name"
 msgstr "Ensemble de Données/Groupe d'Indicateurs"
 
 msgid "Data Element Groups"
-msgstr "Groupes d'éléments de données"
+msgstr ""
+
 
 msgid "ICD10"
 msgstr ""
@@ -249,10 +252,12 @@ msgid "Organisation units"
 msgstr "Unités d'organisation"
 
 msgid "No organisation units"
-msgstr "Aucune unité d'organisation"
+msgstr ""
+
 
 msgid "Assigned organisation units"
-msgstr "Unités d'organisation assignées"
+msgstr ""
+
 
 msgid "Back"
 msgstr ""
@@ -264,7 +269,8 @@ msgid "Print"
 msgstr "Imprimer"
 
 msgid "Print selection"
-msgstr "Sélection d'impression"
+msgstr ""
+
 
 msgid "Table of Content"
 msgstr "Table des Matières"
@@ -328,7 +334,8 @@ msgid "[Optional] An array of dataSets UIDs to blacklist from the panels."
 msgstr ""
 
 msgid "[Optional] An array of programs UIDs to blacklist from the panels."
-msgstr "[Facultatif] Une liste d'UID de programmes à exclure des panneaux."
+msgstr ""
+
 
 msgid "[Optional] An array of indicatorGroups UIDs to blacklist from the panels."
 msgstr ""
@@ -404,14 +411,14 @@ msgid ""
 msgstr ""
 
 msgid "Selectors of Data Sets and Programs"
-msgstr "Sélecteurs d'ensembles de données et de programmes"
+msgstr ""
+
 
 msgid ""
 "Only list the data sets and programs assigned to the organisation units of "
 "the user, or to their descendants."
 msgstr ""
-"Afficher uniquement les ensembles de données et les programmes assignés aux "
-"unités d'organisation de l'utilisateur, ou à leurs descendants."
+
 
 msgid "Select..."
 msgstr "Sélectionner..."
@@ -420,7 +427,8 @@ msgid "Submit"
 msgstr "Envoyer"
 
 msgid "Defines how the values of the data element are aggregated."
-msgstr "Définit la façon dont les valeurs de l'élément de données sont agrégées."
+msgstr ""
+
 
 msgid "Number of Elements in Section"
 msgstr "Nombre d'éléments dans la section"
@@ -685,25 +693,30 @@ msgstr ""
 "l'indicateur calcule."
 
 msgid "Defines the short name, used in compact displays and analytics."
-msgstr "Définit le nom court, utilisé dans les affichages compacts et les analyses."
+msgstr ""
+
 
 msgid "Number of Rules in Program"
 msgstr ""
 
 msgid "Other sections"
-msgstr "Autres sections"
+msgstr ""
+
 
 msgid "Tracked Entity Attribute Columns"
 msgstr "Colonnes d'attribut d'entité suivie"
 
 msgid "Program Indicator Columns"
-msgstr "Colonnes d'indicateurs de programme"
+msgstr ""
+
 
 msgid "Program Rule Columns"
-msgstr "Colonnes de règles de programme"
+msgstr ""
+
 
 msgid "Program Rule Variable Columns"
-msgstr "Colonnes de variables de règles de programme"
+msgstr ""
+
 
 msgid "Select a program"
 msgstr "Sélectionner un programme"
@@ -721,7 +734,8 @@ msgid "Program Resources"
 msgstr ""
 
 msgid "You have no access to the data of this program"
-msgstr "Vous n'avez pas accès aux données de ce programme"
+msgstr ""
+
 
 msgid "Actions Types"
 msgstr "Types d'actions"
@@ -1252,15 +1266,13 @@ msgstr ""
 
 msgid "Defines the data element groups a data element belongs to."
 msgstr ""
-"Définit les groupes d'éléments de données auxquels appartient un élément de "
-"données."
+
 
 msgid ""
 "Defines the program of a program indicator, or the programs that use a "
 "tracker data element."
 msgstr ""
-"Définit le programme d'un indicateur de programme, ou les programmes qui "
-"utilisent un élément de données de suivi."
+
 
 msgid ""
 "Defines the unique service ID of the data element or indicator used in a "
@@ -1313,28 +1325,7 @@ msgid ""
 "data elements to collect individual patient data for a particular medical "
 "service.</li></ul>"
 msgstr ""
-"<p><b>Combiner des termes dans la recherche :</b></p><ul><li><code>a "
-"b</code> : lignes avec tous les mots, dans n'importe quel ordre et dans "
-"n'importe quelle colonne. Les lignes avec l'expression exacte apparaissent "
-"en premier.</li><li><code>a &amp; b</code> : lignes avec tous les "
-"termes.</li><li><code>a | b</code> : lignes avec l'un des "
-"termes.</li></ul><p><b>Terminologie DHIS2 :</b></p><ul><li><b>Élément de "
-"données :</b> un élément de données comptées ou de données "
-"brutes.</li><li><b>Indicateur :</b> données ou calculs combinés que le "
-"système effectue à l'aide d'éléments de données. Il peut s'agir de totaux, "
-"de pourcentages, de taux, etc.</li><li><b>Indicateur de programme :</b> un "
-"calcul ou un filtrage des données au niveau individuel (enregistrées dans "
-"les programmes). Certains indicateurs de programme peuvent servir de base à "
-"un indicateur (utilisés dans son numérateur ou son "
-"dénominateur).</li><li><b>Groupe :</b> les éléments de données qui se "
-"trouvent soit dans la totalité, soit dans une partie du même ensemble de "
-"données sont regroupés dans un groupe d'éléments de données. Les "
-"indicateurs connexes sont regroupés dans un groupe "
-"d'indicateurs.</li><li><b>Ensemble de données :</b> composé d'éléments de "
-"données permettant de collecter des données agrégées ou des chiffres totaux "
-"pour un service médical spécifique.</li><li><b>Programme :</b> composé "
-"d'éléments de données permettant de collecter des données individuelles sur "
-"les patients pour un service médical particulier.</li></ul>"
+
 
 msgid ""
 "<p>This interface is made to simplify user access the terminology "
