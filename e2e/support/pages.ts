@@ -2,6 +2,7 @@ import { expect, FrameLocator, Locator, Page } from "@playwright/test";
 import * as fs from "fs";
 import * as path from "path";
 import { Api } from "./api";
+import { escapeRegex } from "./data";
 import { env } from "./env";
 import { t } from "./i18n";
 import { RichTextEditor, SearchTable } from "./widgets";
@@ -254,7 +255,7 @@ export class SearchPage extends App {
     columnCheckbox(label: string) {
         return this.columnsPanel
             .locator("label")
-            .filter({ hasText: new RegExp(`^\\s*${label.replace(/[()]/g, "\\$&")}\\s*$`) })
+            .filter({ hasText: new RegExp(`^\\s*${escapeRegex(label)}\\s*$`) })
             .locator("input");
     }
 
@@ -328,10 +329,7 @@ export class DossierPage extends App {
     }
 
     tocLink(name: string | RegExp) {
-        const text =
-            typeof name === "string"
-                ? new RegExp(`^\\s*${name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*$`)
-                : name;
+        const text = typeof name === "string" ? new RegExp(`^\\s*${escapeRegex(name)}\\s*$`) : name;
         return this.toc.locator("a").filter({ hasText: text }).first();
     }
 
