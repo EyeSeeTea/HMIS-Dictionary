@@ -1,6 +1,6 @@
 # E2E tests
 
-Playwright tests for HMIS Dictionary. The same specs run against the AngularJS app and the React app, and only `E2E_BASE_URL` changes. See `e2e.md` for the checklist and the rules.
+Playwright tests for HMIS Dictionary. The same specs run against the AngularJS app and the React app, and only `E2E_BASE_URL` changes. See `docs/specs/e2e.md` for the checklist and the rules.
 
 ## Setup
 
@@ -35,4 +35,4 @@ python3 e2e/scripts/instance-state.py restore /some/folder
 
 ## Moving to React
 
-Only `e2e/support/widgets.ts` should change, because it wraps the Search table and the rich text editor. Everything else relies on roles, visible text and the DOM contract in `e2e.md`.
+Only `e2e/support/widgets.ts` should change, because it wraps the Search table and the rich text editor. Everything else relies on roles, visible text and the DOM contract in `docs/specs/e2e.md`.

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Ticks the items in e2e.md from Playwright JSON results, and lists what could not be ticked.
+"""Ticks the items in docs/specs/e2e.md from Playwright JSON results, and lists what could not be ticked.
 
-Usage: tick-checklist.py e2e.md results.json [more-results.json ...]
+Usage: tick-checklist.py docs/specs/e2e.md results.json [more-results.json ...]
 A test matches an item through its top-level describe (the section number) and its title.
 """
 import json, re, sys

@@ -56,9 +56,18 @@ Items are grouped by priority and tagged by area and relative cost, from 1 (chea
 
 ## Result
 
-Full e2e suite on v42, on the installed app: 348 passed, 7 failed, 4 flaky, 6 skipped. The 65 new tests (`e2e/specs/12` to `38`) pass. The failures and flaky tests are the same ones as before the integration. Not run on v40.
+Full e2e suite on v42, on the installed app, after merging `feature/react-migration` (`d49d120`): 353 passed, 3 failed, 4 flaky, 5 skipped, of 365. The 65 new tests (`e2e/specs/12` to `38`) pass.
 
-The 19 new Spanish and French strings without a match in HIS were translated by hand, and need a review by a native speaker.
+- **Failed:** the header title click and the Global Shell header, both from before the integration, and `Excel export headers are translated`, which fails only some of the time, also on `feature/react-migration` alone (2 of 6 runs).
+- **Cause of that last one:** the header of `@dhis2/ui` sets the language again from `/me` on each render, over the value from `/userSettings`.
+- **Flaky:** two navigation tests and two Admin tests, the same ones as before the integration.
+
+Translations:
+
+- **es, fr:** the 19 new strings without a match in HIS were translated by hand, and need a review by a native speaker. Where both branches had a different text, the imported one was kept.
+- **pt, ar:** the new strings of the integration are not translated, so they show in English.
+
+The "Missed indicators" bug mentioned in the item of assigned indicators was fixed in `feature/react-migration`: data sets also list the indicators that use `#{de}`.
 
 ## Considered covered
 

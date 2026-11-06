@@ -1,5 +1,7 @@
 HMIS Dictionary: a DHIS2 + TypeScript + React app, based on [dhis2-app-skeleton](https://github.com/EyeSeeTea/dhis2-app-skeleton).
 
+Specs of the migration and the HIS integration: [docs/specs](docs/specs/README.md).
+
 ## Getting Started
 
 ```sh
