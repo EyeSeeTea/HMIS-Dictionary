@@ -192,12 +192,19 @@ export class Api {
             for (const { id } of (payload[type] ?? []) as { id: string }[]) {
                 const path = this.url(`${type}/${id}`);
                 let res = await this.context.delete(path);
+                if (res.status() === 409 && type === "optionGroups") await this.emptyGroup(id);
                 if (!res.ok() && res.status() !== 404) res = await this.context.delete(path);
                 if (!res.ok() && res.status() !== 404) {
                     console.error(`Could not delete ${type}/${id}: ${res.status()}`);
                 }
             }
         }
+    }
+
+    /** 2.40 answers 409 when deleting an option group that has options. */
+    private async emptyGroup(id: string) {
+        const group = await this.get(`optionGroups/${id}`, { fields: ":owner" });
+        await this.put(`optionGroups/${id}`, { ...group, options: [] });
     }
 
     /** Sets a program's attribute values, runs fn, and restores them afterwards. */

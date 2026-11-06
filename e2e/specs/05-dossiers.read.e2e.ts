@@ -74,6 +74,21 @@ test.describe("5. Dossiers - reader", () => {
         await expect(dossiers.description).toHaveCount(0);
     });
 
+    test("Selecting a service while the data sets are loading keeps them (P2)", async ({
+        dossiers,
+        api,
+        page,
+    }) => {
+        const found = (await serviceWithContents(api))!;
+        await page.route(/\/api(\/\d+)?\/dataSets\?/, async route => {
+            await new Promise(resolve => setTimeout(resolve, 2_000));
+            await route.continue();
+        });
+        await dossiers.loadRoute("dossiers");
+        await dossiers.select(found.service.displayName);
+        await expect(counters(dossiers).dataSets).toContainText(`: ${found.dataSets.length}`);
+    });
+
     test("Selecting a service updates the title and the data set and indicator group counters", async ({
         dossiers,
         api,

@@ -1,4 +1,4 @@
-import { expect, fixtures, test } from "../support/fixtures";
+import { expect, fixtures, skipWithoutNestedIndicator, test } from "../support/fixtures";
 import { allIndicators, config, escapeRegex, services, visibleIndicators } from "../support/data";
 import { t } from "../support/i18n";
 import { mockKeys, SearchPage } from "../support/pages";
@@ -154,6 +154,7 @@ test.describe("4. Search", () => {
                 fields: "id",
                 filter: `programIndicatorGroups.id:in:[${notInUsePIG.join(",")}]`,
             });
+            test.skip(!pi, "The instance has no program indicator in a not-in-use group");
             await mockKeys(page, { notInUse_indicatorGroups: [indicator.indicatorGroups[0]!.id] });
             await search.load();
             await expectFound(search, indicator.id);
@@ -450,6 +451,7 @@ test.describe("4. Search", () => {
             search,
             api,
         }) => {
+            await skipWithoutNestedIndicator(api);
             const plain = (await visibleIndicators(api)).find(i =>
                 FORMULA_DE_COC.test(i.numerator)
             )!;
@@ -467,6 +469,8 @@ test.describe("4. Search", () => {
     });
 
     test.describe("Formula dialog", () => {
+        test.beforeEach(async ({ api }) => skipWithoutNestedIndicator(api));
+
         async function openDialog(search: SearchPage) {
             await search.load();
             await search.showColumn(COLUMNS.num);
@@ -599,12 +603,16 @@ test.describe("4. Search", () => {
             expect(ids).toEqual(expect.arrayContaining([a!.id, b!.id]));
         });
 
-        test("Regex characters are treated literally", async ({ search }) => {
+        test("Regex characters are treated literally", async ({ search, api }) => {
+            const indicator = (await visibleIndicators(api)).find(i => i.name.includes("(%)"))!;
             await search.load();
             await search.searchFor("zzzz.*");
             await expect(search.table.rows).toHaveCount(0);
-            await search.searchFor("(%)");
-            await expect(search.table.rows.first()).toContainText("(%)");
+            await search.searchFor("(.*)");
+            await expect(search.table.rows).toHaveCount(0);
+            // Rows can also match on a column that is not displayed, so look for a known one
+            await search.searchFor(`(%) ${indicator.id}`);
+            await expect(search.table.rows).toHaveCount(1);
         });
 
         test("The matched term is highlighted, for global search and for column filters", async ({

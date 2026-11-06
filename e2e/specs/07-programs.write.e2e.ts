@@ -62,20 +62,24 @@ test.describe("7. Programs", () => {
             async () => {
                 await mockKeys(page, { legacy_optionGroups: [groupId] });
                 await select(programs, program.displayName);
-                const row = rowsOf(tableAfter(programs.attributesHeading))
-                    .filter({ hasText: attribute.displayName })
-                    .first();
+                const attributeRow = () =>
+                    rowsOf(tableAfter(programs.attributesHeading))
+                        .filter({
+                            has: page.getByRole("cell", {
+                                name: attribute.displayName,
+                                exact: true,
+                            }),
+                        })
+                        .first();
+                const row = attributeRow();
                 await expect(row.locator("select")).toBeVisible();
                 await expect(
                     row.locator("option").filter({ hasText: new RegExp(`^${option.displayName}$`) })
                 ).toHaveCount(0);
                 await programs.legacyToggle.check();
                 await select(programs, program.displayName);
-                const again = rowsOf(tableAfter(programs.attributesHeading))
-                    .filter({ hasText: attribute.displayName })
-                    .first();
                 await expect(
-                    again.locator("option").filter({ hasText: option.displayName }).first()
+                    attributeRow().locator("option").filter({ hasText: option.displayName }).first()
                 ).toBeAttached();
             }
         );

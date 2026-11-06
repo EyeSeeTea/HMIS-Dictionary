@@ -1,5 +1,5 @@
 import * as path from "path";
-import { expect, fixtures, test } from "../support/fixtures";
+import { expect, fixtures, skipWithoutNestedIndicator, test } from "../support/fixtures";
 
 const dir = path.join(
     __dirname,
@@ -35,6 +35,7 @@ test.describe("0. Infrastructure", () => {
         await dataSets.load();
         await dataSets.select(fixtures.dataSets.small.name);
         await shot("data-sets");
+        await skipWithoutNestedIndicator(api);
         const { name } = await api.get(`indicators/${fixtures.nestedIndicator.id}`, {
             fields: "name",
         });

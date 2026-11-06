@@ -9,6 +9,7 @@ async function submitAndWait(page: Page, click: () => Promise<unknown>) {
 }
 
 async function chooseOther(selector: AdminPage["userGroup"], avoid: string) {
+    await expect(selector.locator("option:not([disabled])").nth(1)).toBeAttached();
     const labels = await selector.locator("option:not([disabled])").allInnerTexts();
     const label = labels.map(x => x.trim()).find(x => x !== avoid)!;
     await selector.selectOption({ label });

@@ -170,9 +170,8 @@ export class RichTextEditor {
         return this.root.locator(selector).first();
     }
 
-    /** TinyMCE syncs its content about 400ms after a change, so saving earlier loses it (P4). */
+    /** The app has the text at once, so saving right after this must not lose it (P4). */
     private async commit() {
         await this.root.locator("#drpBoxLanguage").focus();
-        await this.body.page().waitForTimeout(700);
     }
 }

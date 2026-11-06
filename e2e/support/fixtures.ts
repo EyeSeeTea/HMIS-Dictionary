@@ -48,6 +48,15 @@ export const test = base.extend<Fixtures>({
 
 export { expect };
 
+/** The nested indicator is on 8098 only, so tests that need it skip on instances without it. */
+export async function skipWithoutNestedIndicator(api: Api) {
+    const found = await api.list("indicators", {
+        fields: "id",
+        filter: `id:eq:${fixtures.nestedIndicator.id}`,
+    });
+    test.skip(found.length === 0, `The instance has no indicator ${fixtures.nestedIndicator.id}`);
+}
+
 /** Test objects on 8098, chosen for the scenario they cover. */
 export const fixtures = {
     groupSet: "g7k6NQmqJY2",

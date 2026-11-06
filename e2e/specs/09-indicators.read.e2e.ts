@@ -20,9 +20,9 @@ async function open(indicators: IndicatorsPage, name: string) {
     await indicators.select(name);
 }
 
-/** An indicator with a program indicator or number, and the indicator's raw `name`. */
+/** The name the selector shows, which is translated. `name` differs when it has translations. */
 async function byName(api: any, id: string): Promise<string> {
-    return (await api.get(`indicators/${id}`, { fields: "name" })).name;
+    return (await api.get(`indicators/${id}`, { fields: "displayName" })).displayName;
 }
 
 test.describe("9. Indicators", () => {

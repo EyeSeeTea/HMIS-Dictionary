@@ -322,6 +322,37 @@ test.describe("7. Programs", () => {
             ).not.toBeEmpty();
         });
 
+        test("Attributes: Visibility shows the rules hiding the attribute (P10)", async ({
+            programs,
+            api,
+        }) => {
+            const rules = await api.list<any>("programRules", {
+                fields: "name,program[displayName],programRuleActions[programRuleActionType,trackedEntityAttribute[displayName]]",
+            });
+            const rule = rules.find(r =>
+                r.programRuleActions.some(
+                    (a: any) => a.programRuleActionType === "HIDEFIELD" && a.trackedEntityAttribute
+                )
+            );
+            test.skip(!rule, "No HIDEFIELD rule on an attribute");
+            const { displayName } = rule.programRuleActions.find(
+                (a: any) => a.programRuleActionType === "HIDEFIELD" && a.trackedEntityAttribute
+            ).trackedEntityAttribute;
+            await select(programs, rule.program.displayName);
+            const row = rowsOf(tableAfter(programs.attributesHeading))
+                .filter({
+                    has: programs.page.getByRole("cell", { name: displayName, exact: true }),
+                })
+                .first();
+            await expect(row).toContainText(`HIDEFIELD: ${rule.name}`);
+        });
+
+        test("Program indicators and indicators have different ids (P9)", async ({ programs }) => {
+            await select(programs, ambulances.name);
+            await expect(programs.page.locator("#programIndicators")).toHaveCount(1);
+            expect(await programs.page.locator("[id='indicators']").count()).toBeLessThan(2);
+        });
+
         test("Visibility shows the rules hiding the field or section", async ({
             programs,
             api,
@@ -883,13 +914,13 @@ test.describe("7. Programs", () => {
         const scenarios: Array<[string, string, string[]]> = [
             ["ASSIGN", "content", labels(["dos_ProgramRuleVariableAssign"])],
             ["DISPLAYTEXT", "content", labels(["dos_StaticText"])],
+            ["DISPLAYTEXT", "location", ["Display Widget"]],
             ["ERRORONCOMPLETE", "content", labels(["dos_StaticText"])],
             ["SHOWERROR", "content", labels(["dos_StaticText"])],
             ["SHOWWARNING", "content", labels(["dos_StaticText"])],
             ["HIDEFIELD", "dataElement", labels(["dos_DataElement"])],
-            // The label only shows when the action has content, which no action here has (P6).
-            ["HIDEOPTION", "option", []],
-            ["HIDEOPTIONGROUP", "optionGroup", []],
+            ["HIDEOPTION", "option", labels(["dos_OptionToHide"])],
+            ["HIDEOPTIONGROUP", "optionGroup", labels(["dos_OptionGroupToHide"])],
             ["HIDEPROGRAMSTAGE", "programStage", labels(["dos_OptionstageToHide"])],
             ["HIDESECTION", "programStageSection", labels(["dos_OptionstageSectionToHide"])],
         ];
@@ -900,7 +931,7 @@ test.describe("7. Programs", () => {
             types: Array<[string, string, string[]]>
         ) {
             const rules = await api.list("programRules", {
-                fields: "name,program[id,displayName],programRuleActions[programRuleActionType,content,dataElement[id],option[id],optionGroup[id],programStage[id],programStageSection[id]]",
+                fields: "name,program[id,displayName],programRuleActions[programRuleActionType,content,location,dataElement[id],option[id],optionGroup[id],programStage[id],programStageSection[id]]",
             });
             const sizes = await programsBySize(api);
             const order = new Map<string, number>(sizes.map((p: any, i: number) => [p.id, i]));
@@ -914,7 +945,7 @@ test.describe("7. Programs", () => {
                     .sort(
                         (a: any, b: any) => order.get(a.program.id)! - order.get(b.program.id)!
                     )[0];
-                expect(rule, `A rule with a ${type} action`).toBeTruthy();
+                test.skip(!rule, `The instance has no rule with a ${type} action`);
                 await select(programs, rule.program.displayName);
                 const row = rowsOf(tableAfter(programs.rulesHeading))
                     .filter({ hasText: rule.name })

@@ -8,8 +8,10 @@ import { env } from "./env";
 export async function login(context: APIRequestContext): Promise<void> {
     const response = await context.post(`${env.dhis2Url}/api/auth/login`, {
         data: { username: env.username, password: env.password },
+        // 2.40 answers with a redirect to the login page, which would look like a success
+        maxRedirects: 0,
     });
-    if (response.ok()) return;
+    if (response.status() === 200) return;
 
     const form = await context.post(`${env.dhis2Url}/dhis-web-commons-security/login.action`, {
         form: { j_username: env.username, j_password: env.password },

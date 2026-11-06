@@ -1,4 +1,5 @@
-import { expect, fixtures, test } from "../support/fixtures";
+import { Page } from "@playwright/test";
+import { expect, fixtures, skipWithoutNestedIndicator, test } from "../support/fixtures";
 import { env } from "../support/env";
 import { t } from "../support/i18n";
 import { App, mockKeys, tabIds } from "../support/pages";
@@ -11,11 +12,18 @@ const moduleHeading: Record<string, string> = {
     admin: t("idx_Admin"),
 };
 
+/** The Global Shell comes with DHIS2 2.41, so 2.40 has no app path to open. */
+async function skipWithoutShell(page: Page) {
+    const response = await page.request.get(env.shellUrl);
+    test.skip(!response.ok(), "This DHIS2 version has no Global Shell");
+}
+
 const missingKeys = (keys: string[]) => Object.fromEntries(keys.map(key => [key, undefined]));
 
 test.describe("1. App shell and navigation", () => {
     test.describe("Loading and session", () => {
         test("The app loads inside the Global Shell, at its app path @smoke", async ({ page }) => {
+            await skipWithoutShell(page);
             await page.goto(env.shellUrl);
             const frame = page.frameLocator("iframe").first();
             await expect(frame.locator("#menu-container li#search")).toBeVisible({
@@ -136,8 +144,6 @@ test.describe("1. App shell and navigation", () => {
                 page.getByRole("heading", { name: moduleHeading.admin, exact: true })
             ).toBeVisible();
             await app.waitIdle();
-            // Going back while a module is still loading can leave the previous module on screen (P7).
-            await page.waitForLoadState("networkidle");
             await page.goBack();
             await expect(page).toHaveURL(/#\/datasets$/);
             await expect(
@@ -182,25 +188,28 @@ test.describe("1. App shell and navigation", () => {
             await expect(page).toHaveTitle("Metadata Dictionary");
         });
 
-        test("Standalone: header shows the title, and clicking it goes to the DHIS2 home page", async ({
+        test("Standalone: header shows the title, and clicking the logo goes to the DHIS2 home page", async ({
             app,
             page,
         }) => {
             await app.open("dossierIndicators");
-            const title = app.header.getByText("Metadata Dictionary");
-            await expect(title).toBeVisible();
-            await title.click();
+            await expect(app.header.getByText("Metadata Dictionary")).toBeVisible();
+            // The title is not a link, only the logo goes home
+            await page.locator("[data-test=headerbar-logo] a").click();
             await expect(page).not.toHaveURL(/HMIS-Dictionary/, { timeout: 60_000 });
             expect(page.url()).toContain(env.dhis2Url);
         });
 
-        test("Inside the Global Shell: only one header is displayed, and the floating print button replaces the header one", async ({
+        test("Inside the Global Shell: only one header is displayed, and the page has one print button", async ({
             page,
         }) => {
+            await skipWithoutShell(page);
             await page.goto(env.shellUrl);
             const frame = page.frameLocator("iframe").first();
             await expect(frame.locator("#menu-container")).toBeVisible({ timeout: 120_000 });
             await expect(frame.locator("#header")).toBeHidden();
+            // No floating button: the print button stays in the page header (react-views.md, decision 5)
+            await new App(page, frame).tabLink(tabIds.indicators).click();
             await expect(frame.locator(".printButton:visible")).toHaveCount(1);
         });
     });
@@ -297,6 +306,7 @@ test.describe("1. App shell and navigation", () => {
             indicators,
             api,
         }) => {
+            await skipWithoutNestedIndicator(api);
             const indicator = await api.get(`indicators/${fixtures.nestedIndicator.id}`, {
                 fields: "name",
             });
@@ -388,6 +398,7 @@ test.describe("1. App shell and navigation", () => {
             await dataSets.load();
             await dataSets.select(fixtures.dataSets.small.name);
             await expectHelp();
+            await skipWithoutNestedIndicator(api);
             const indicator = await api.get(`indicators/${fixtures.nestedIndicator.id}`, {
                 fields: "name",
             });
