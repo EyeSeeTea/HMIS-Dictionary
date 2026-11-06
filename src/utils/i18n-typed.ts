@@ -2,12 +2,19 @@
 import i18n from "$/locales";
 
 export function getModuleForNamespace(namespace: string) {
+    // The header of @dhis2/ui changes the global language on each render, from /me and without
+    // normalizing it, so the texts of the app ask for their own language.
+    let language: string | undefined;
+
     return {
         t: function <Str extends string>(...args: I18nTArgs<Str>): string {
             const [s, options] = args;
-            return i18n.t(s, { ...options, ns: namespace });
+            return i18n.t(s, { ...(language ? { lng: language } : {}), ...options, ns: namespace });
         },
-        changeLanguage: i18n.changeLanguage.bind(i18n),
+        changeLanguage: (locale: string) => {
+            language = locale;
+            return i18n.changeLanguage(locale);
+        },
     };
 }
 

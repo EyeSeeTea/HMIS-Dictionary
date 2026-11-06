@@ -4,6 +4,7 @@ import { Program } from "$/domain/entities/Program";
 import { Id } from "$/domain/entities/Ref";
 import { Progress } from "$/domain/entities/Shared";
 import { Maybe } from "$/utils/ts-utils";
+import { useSnackbar } from "@eyeseetea/d2-ui-components";
 import i18n from "$/utils/i18n";
 import { useAppContext } from "$/webapp/contexts/app-context";
 import { useFuture } from "$/webapp/hooks/useFuture";
@@ -49,6 +50,7 @@ const showLegacyKey = "programs_show_legacy";
 
 export const ProgramsPage: React.FC = React.memo(() => {
     const { compositionRoot, settings, currentUser } = useAppContext();
+    const snackbar = useSnackbar();
     const name = useLinkedName("programName");
     const context = React.useMemo(() => ({ user: currentUser, settings }), [currentUser, settings]);
 
@@ -199,6 +201,12 @@ export const ProgramsPage: React.FC = React.memo(() => {
             },
             { canSeeSection, canSeeColumn }
         );
+
+        // A workbook without sheets does not open, so say why there is no file
+        if (sheets.length === 0) {
+            snackbar.warning(i18n.t("There is nothing to export"));
+            return;
+        }
 
         downloadExcel(getProgramFilename(program.name), sheets);
     };

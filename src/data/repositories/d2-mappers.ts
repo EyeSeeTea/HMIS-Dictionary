@@ -4,7 +4,8 @@ import { Maybe } from "$/utils/ts-utils";
 
 export type D2OptionSet = {
     displayName: string;
-    options: { id: string; code?: string; displayName: string }[];
+    /** With gaps in the sort order of the options, the API answers with nulls in their place. */
+    options: ({ id: string; code?: string; displayName: string } | null)[];
 };
 
 export function text(value: Maybe<string>): string {
@@ -25,10 +26,8 @@ export function toOptionSet(optionSet: Maybe<D2OptionSet>): Maybe<OptionSet> {
 
     return OptionSet.create({
         name: optionSet.displayName,
-        options: optionSet.options.map(option => ({
-            id: option.id,
-            code: text(option.code),
-            name: option.displayName,
-        })),
+        options: optionSet.options.flatMap(option =>
+            option ? [{ id: option.id, code: text(option.code), name: option.displayName }] : []
+        ),
     });
 }

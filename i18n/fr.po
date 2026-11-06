@@ -5,7 +5,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-11-05T20:52:44.438Z\n"
+"POT-Creation-Date: 2026-11-06T12:44:36.951Z\n"
 "PO-Revision-Date: 2026-11-05T19:43:47.436Z\n"
 "Language: fr\n"
 
@@ -15,10 +15,8 @@ msgstr "Aucune donnée"
 msgid "Something went wrong"
 msgstr ""
 
-
 msgid "Reload the page. If the problem persists, contact your administrator."
 msgstr ""
-
 
 msgid "Settings"
 msgstr ""
@@ -199,7 +197,6 @@ msgstr "Ensemble de Données/Groupe d'Indicateurs"
 msgid "Data Element Groups"
 msgstr ""
 
-
 msgid "ICD10"
 msgstr ""
 
@@ -254,10 +251,8 @@ msgstr "Unités d'organisation"
 msgid "No organisation units"
 msgstr ""
 
-
 msgid "Assigned organisation units"
 msgstr ""
-
 
 msgid "Back"
 msgstr ""
@@ -270,7 +265,6 @@ msgstr "Imprimer"
 
 msgid "Print selection"
 msgstr ""
-
 
 msgid "Table of Content"
 msgstr "Table des Matières"
@@ -335,7 +329,6 @@ msgstr ""
 
 msgid "[Optional] An array of programs UIDs to blacklist from the panels."
 msgstr ""
-
 
 msgid "[Optional] An array of indicatorGroups UIDs to blacklist from the panels."
 msgstr ""
@@ -413,12 +406,10 @@ msgstr ""
 msgid "Selectors of Data Sets and Programs"
 msgstr ""
 
-
 msgid ""
 "Only list the data sets and programs assigned to the organisation units of "
 "the user, or to their descendants."
 msgstr ""
-
 
 msgid "Select..."
 msgstr "Sélectionner..."
@@ -428,7 +419,6 @@ msgstr "Envoyer"
 
 msgid "Defines how the values of the data element are aggregated."
 msgstr ""
-
 
 msgid "Number of Elements in Section"
 msgstr "Nombre d'éléments dans la section"
@@ -695,13 +685,14 @@ msgstr ""
 msgid "Defines the short name, used in compact displays and analytics."
 msgstr ""
 
-
 msgid "Number of Rules in Program"
+msgstr ""
+
+msgid "There is nothing to export"
 msgstr ""
 
 msgid "Other sections"
 msgstr ""
-
 
 msgid "Tracked Entity Attribute Columns"
 msgstr "Colonnes d'attribut d'entité suivie"
@@ -709,14 +700,11 @@ msgstr "Colonnes d'attribut d'entité suivie"
 msgid "Program Indicator Columns"
 msgstr ""
 
-
 msgid "Program Rule Columns"
 msgstr ""
 
-
 msgid "Program Rule Variable Columns"
 msgstr ""
-
 
 msgid "Select a program"
 msgstr "Sélectionner un programme"
@@ -735,7 +723,6 @@ msgstr ""
 
 msgid "You have no access to the data of this program"
 msgstr ""
-
 
 msgid "Actions Types"
 msgstr "Types d'actions"
@@ -1267,12 +1254,10 @@ msgstr ""
 msgid "Defines the data element groups a data element belongs to."
 msgstr ""
 
-
 msgid ""
 "Defines the program of a program indicator, or the programs that use a "
 "tracker data element."
 msgstr ""
-
 
 msgid ""
 "Defines the unique service ID of the data element or indicator used in a "
@@ -1325,7 +1310,6 @@ msgid ""
 "data elements to collect individual patient data for a particular medical "
 "service.</li></ul>"
 msgstr ""
-
 
 msgid ""
 "<p>This interface is made to simplify user access the terminology "

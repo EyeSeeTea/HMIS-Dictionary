@@ -14,12 +14,20 @@ export class HealthServiceTextD2Repository implements HealthServiceTextRepositor
     constructor(private api: D2Api) {}
 
     getText(healthServiceId: Id, locale: Locale): FutureData<string> {
+        // Not `displayDescription` with the `locale` parameter: under load, 2.40 can answer with
+        // the description in another language.
         return apiToFuture(
-            this.api.get<{ displayDescription?: string }>(
+            this.api.get<{ description?: string; translations?: Translation[] }>(
                 `/organisationUnitGroups/${healthServiceId}`,
-                { fields: "displayDescription", paging: false, translate: true, locale: locale }
+                { fields: "description,translations", paging: false }
             )
-        ).map(response => text(response.displayDescription));
+        ).map(({ description, translations = [] }) => {
+            const translation = translations.find(
+                ({ locale: translated, property }) =>
+                    translated === locale && property === "DESCRIPTION"
+            );
+            return text(translation?.value ?? description);
+        });
     }
 
     getTranslations(healthServiceId: Id): FutureData<HealthServiceTranslations> {

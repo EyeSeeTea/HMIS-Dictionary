@@ -391,14 +391,17 @@ export class ProgramD2Repository implements ProgramRepository {
         if (ids.length === 0) return Future.success(new Set());
 
         return apiToFuture(
-            this.api.get<{ optionGroups: { options?: { id: string }[] }[] }>("/optionGroups", {
-                filter: `id:in:[${ids.join(",")}]`,
-                fields: "options[id]",
-                paging: false,
-            })
+            this.api.get<{ optionGroups: { options?: ({ id: string } | null)[] }[] }>(
+                "/optionGroups",
+                {
+                    filter: `id:in:[${ids.join(",")}]`,
+                    fields: "options[id]",
+                    paging: false,
+                }
+            )
         ).map(({ optionGroups }) => {
             const optionIds = optionGroups.flatMap(group =>
-                (group.options ?? []).map(option => option.id)
+                (group.options ?? []).flatMap(option => (option ? [option.id] : []))
             );
 
             return new Set(optionIds);

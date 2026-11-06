@@ -3,12 +3,17 @@ import { AppSettingsD2Repository } from "$/data/repositories/AppSettingsD2Reposi
 import { D2DataElement, toDataSet } from "$/data/repositories/DataSetD2Repository";
 import { fromStored, toStored } from "$/data/repositories/LayoutSettingsD2Repository";
 import { D2StageDataElement, toProgramStage } from "$/data/repositories/ProgramD2Repository";
+import { HealthServiceTextD2Repository } from "$/data/repositories/HealthServiceTextD2Repository";
+import { toOptionSet } from "$/data/repositories/d2-mappers";
 import { SessionD2Repository } from "$/data/repositories/SessionD2Repository";
 import { LayoutSettings } from "$/domain/entities/LayoutSettings";
 import { D2Api } from "$/types/d2-api";
 
 const response = <T>(data: T) => ({ getData: () => Promise.resolve(data), cancel: () => {} });
-const rejected = () => ({ getData: () => Promise.reject(new Error("401")), cancel: () => {} });
+const rejected = (error = new Error("Network error")) => ({
+    getData: () => Promise.reject(error),
+    cancel: () => {},
+});
 const asApi = (api: unknown) => api as D2Api;
 
 describe("AppSettingsD2Repository", () => {
@@ -198,6 +203,39 @@ describe("Program stage mapping", () => {
     });
 });
 
+describe("toOptionSet", () => {
+    it("skips the nulls the API answers for gaps in the sort order", () => {
+        const optionSet = toOptionSet({
+            displayName: "Set",
+            options: [null, { id: "a", displayName: "A" }, null],
+        });
+
+        expect(optionSet?.options).toEqual([{ id: "a", code: "", name: "A" }]);
+    });
+});
+
+describe("HealthServiceTextD2Repository", () => {
+    const stored = {
+        description: "<p>Default</p>",
+        translations: [
+            { locale: "es", property: "NAME", value: "Nombre" },
+            { locale: "es", property: "DESCRIPTION", value: "<p>Hola</p>" },
+        ],
+    };
+    const getText = (locale: "en" | "es" | "fr") =>
+        new HealthServiceTextD2Repository(asApi({ get: () => response(stored) }))
+            .getText("id", locale)
+            .toPromise();
+
+    it("reads the description of the locale from its translations", async () => {
+        expect(await getText("es")).toBe("<p>Hola</p>");
+    });
+
+    it("uses the description when the locale has no translation", async () => {
+        expect(await getText("fr")).toBe("<p>Default</p>");
+    });
+});
+
 describe("SessionD2Repository", () => {
     // jsdom's Blob has no text()
     const blob = (text: string) => ({ text: () => Promise.resolve(text) });
@@ -213,7 +251,12 @@ describe("SessionD2Repository", () => {
         expect(await check(response(blob("<html>")))).toBe(false);
     });
 
-    it("does not notice a failed request, as the kept bug P1", async () => {
+    it("is not active when the server says there is no session (P1)", async () => {
+        const error = Object.assign(new Error("401"), { response: { status: 401 } });
+        expect(await check(rejected(error))).toBe(false);
+    });
+
+    it("says nothing about the session when a request fails for other reasons", async () => {
         expect(await check(rejected())).toBe(true);
     });
 });

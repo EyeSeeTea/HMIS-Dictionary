@@ -28,13 +28,19 @@ export const DossierEditor: React.FC<{ service: HealthService }> = React.memo(({
     const [html, setHtml] = React.useState<string>();
     const [saveState, setSaveState] = React.useState<SaveState>("idle");
 
+    const editorKey = `${service.id}-${language}`;
     const text = useFuture(
-        () => compositionRoot.dossiers.getText.execute(service.id, language),
+        () =>
+            compositionRoot.dossiers.getText
+                .execute(service.id, language)
+                .map(html => ({ key: editorKey, html })),
         [compositionRoot, service, language]
     );
 
-    // A new text (other service or language) is the new starting point
-    const loadedHtml = text?.type === "success" ? text.data : undefined;
+    // A new text (other service or language) is the new starting point. Until the new one starts
+    // loading, the result is still the previous one, which would load in the new editor.
+    const loadedHtml =
+        text?.type === "success" && text.data.key === editorKey ? text.data.html : undefined;
     React.useEffect(() => {
         setHtml(loadedHtml);
         setSaveState("idle");
@@ -82,7 +88,7 @@ export const DossierEditor: React.FC<{ service: HealthService }> = React.memo(({
                 {loadedHtml !== undefined && (
                     <React.Suspense fallback={<CircularLoader small />}>
                         <RichTextEditor
-                            key={`${service.id}-${language}`}
+                            key={editorKey}
                             initialValue={loadedHtml}
                             rtl={language === "ar"}
                             onChange={newHtml => {

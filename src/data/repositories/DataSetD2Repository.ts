@@ -31,7 +31,7 @@ export type D2DataElement = {
     displayDescription?: string;
     valueType: string;
     aggregationType?: string;
-    optionSet?: { options: { displayName: string }[] };
+    optionSet?: { options: ({ displayName: string } | null)[] };
     categoryCombo: D2Combo;
 };
 
@@ -164,7 +164,9 @@ export function toDataSet(dataSet: D2DataSet): DataSet {
             description: text(element.displayDescription),
             valueType: element.valueType,
             aggregationType: text(element.aggregationType),
-            optionNames: (element.optionSet?.options ?? []).map(option => option.displayName),
+            optionNames: (element.optionSet?.options ?? []).flatMap(option =>
+                option ? [option.displayName] : []
+            ),
             categoryCombo: toNamedRef(override ?? element.categoryCombo),
         };
     };

@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-11-05T20:52:44.438Z\n"
-"PO-Revision-Date: 2026-11-05T20:52:44.438Z\n"
+"POT-Creation-Date: 2026-11-06T12:44:36.951Z\n"
+"PO-Revision-Date: 2026-11-06T12:44:36.951Z\n"
 
 msgid "No data"
 msgstr ""
@@ -642,6 +642,9 @@ msgid "Defines the short name, used in compact displays and analytics."
 msgstr ""
 
 msgid "Number of Rules in Program"
+msgstr ""
+
+msgid "There is nothing to export"
 msgstr ""
 
 msgid "Other sections"
