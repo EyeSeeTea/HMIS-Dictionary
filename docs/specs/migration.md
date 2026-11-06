@@ -53,9 +53,9 @@ Twelve app problems found are listed in `e2e.md`, to fix once the migration is d
   - [x] `search`
   - [x] `admin`
 - [x] Category Combos fix ([PR #68](https://github.com/EyeSeeTea/HMIS-Dictionary/pull/68)): already in `est/master` and the baseline, nothing to port. `DataSetElement.categoryCombo` is per element, so it can't recur
-- [ ] Run the v42 e2e suite on the React app until it matches the baseline
-- [ ] Use d2-api npm package @40 and @42 (with aliases)
-- [ ] Run the e2e suite on v40
+- [x] Run the v42 e2e suite on the React app until it matches the baseline (`e2e.md`, "Latest results")
+- [x] Use d2-api npm package @40 and @42 (with aliases): `src/types/d2-api.ts` chooses at runtime
+- [x] Run the e2e suite on v40 until it matches (`e2e.md`, "Latest results")
 - [x] Integrate the features of [msf-oca-his/dhis-dictionary](https://github.com/msf-oca-his/dhis-dictionary) that are not already in HMIS-Dictionary: see `his-integration.md`, on branch `feature/his-integration`.
 
-- [ ] When all is done, fix the known app problems in the React app (listed in `e2e.md`)
+- [x] When all is done, fix the known app problems in the React app (listed in `e2e.md`)

@@ -67,6 +67,8 @@ Translations:
 - **es, fr:** the 19 new strings without a match in HIS are left empty (they show in English), to be translated by a native speaker. Where both branches had a different text, the imported one was kept.
 - **pt, ar:** the new strings of the integration are not translated, so they show in English.
 
+On v40: details in `e2e.md`, "Latest results".
+
 The "Missed indicators" bug mentioned in the item of assigned indicators was fixed in `feature/react-migration`: data sets also list the indicators that use `#{de}`.
 
 ## Considered covered

@@ -17,7 +17,7 @@ Untagged tests are read-only and can run in parallel.
 
 - **Serving:** the app is built as a zip and installed on 8098, and tests run on it standalone and inside the Global Shell.
 - **Users:** one user with full access (`pentaho`). Tests that need a restricted role are out of scope.
-- **DHIS2 versions:** v42 only.
+- **DHIS2 versions:** v42 (8098) and v40 (8097). Tests that need data or features a version does not have are skipped there.
 - **Graph:** dropped, with no tests.
 - **Page structure:** React keeps the DOM contract below where it can, with no test ids added to the current app.
 - **Table and rich text editor:** React is free to use a more suitable modern solution, so only their isolated helpers change.
@@ -68,14 +68,14 @@ Tests compare the UI against API responses rather than hardcoded counts, because
 
 - **Services:** group set `g7k6NQmqJY2` (37 services). `xIz3n0VWiDl` Outbreak Measles has descriptions in en, es, fr and pt.
 - **Data sets:**
-  - `jn8nB25hA8v` Meningitis: Age distribution (small, with sections)
-  - `rFIy2mYoFiu` 25-08-REAC-Zamfara (OCV) (one section, no data elements, blacklisted)
-  - The category combo override scenario picks the smallest suitable data set through the API
+    - `jn8nB25hA8v` Meningitis: Age distribution (small, with sections)
+    - `rFIy2mYoFiu` 25-08-REAC-Zamfara (OCV) (one section, no data elements, blacklisted)
+    - The category combo override scenario picks the smallest suitable data set through the API
 - **Programs:**
-  - `LlBkgJO9WCv` Ambulances Line list (description, sections, rules, few indicators)
-  - `NQF5RvfjwaX` Mental Health - Group (repeatable stage, attributes, description)
-  - `vYRMQ43Zl3Y` eCare Pilot Project (stage with no sections)
-  - `Rs4W7I3twdy` BOAT Medical Linelist (no rules, variables or indicators)
+    - `LlBkgJO9WCv` Ambulances Line list (description, sections, rules, few indicators)
+    - `NQF5RvfjwaX` Mental Health - Group (repeatable stage, attributes, description)
+    - `vYRMQ43Zl3Y` eCare Pilot Project (stage with no sections)
+    - `Rs4W7I3twdy` BOAT Medical Linelist (no rules, variables or indicators)
 - **Indicators:** `rPAOXzG3811` SIPCA-IPD: Average IPC Score (the only one with nested indicators in its numerator)
 - **Configuration in use:** blacklists, not-in-use groups, legacy groups and layout settings for all four views are set. The two tag keys are unset, so the default tag texts apply.
 
@@ -127,8 +127,8 @@ Tests compare the UI against API responses rather than hardcoded counts, because
 **Header**
 
 - [x] Page title is "Metadata Dictionary"
-- [x] Standalone: header shows the title, and clicking it goes to the DHIS2 home page
-- [x] Inside the Global Shell: only one header is displayed, and the floating print button replaces the header one
+- [x] Standalone: header shows the title, and clicking the logo goes to the DHIS2 home page
+- [x] Inside the Global Shell: only one header is displayed, and the page has one print button
 
 **Tab visibility**
 
@@ -139,10 +139,10 @@ Tests compare the UI against API responses rather than hardcoded counts, because
 **Missing configuration**
 
 - [x] App loads when each `HMIS_Dictionary` key is missing, using its default `[M]`:
-  - [x] `setup_userGroup`, `setup_organisationUnitGroupSet`, `setup_dossierConfigComplete`
-  - [x] `blacklist_dataElementGroups`, `blacklist_dataSets`, `blacklist_indicatorGroups`, `blacklist_tag`
-  - [x] `notInUse_indicatorGroups`, `notInUse_programIndicatorGroups`, `notInUse_tag`
-  - [x] `legacy_dataElementGroups`, `legacy_optionGroups`
+    - [x] `setup_userGroup`, `setup_organisationUnitGroupSet`, `setup_dossierConfigComplete`
+    - [x] `blacklist_dataElementGroups`, `blacklist_dataSets`, `blacklist_indicatorGroups`, `blacklist_tag`
+    - [x] `notInUse_indicatorGroups`, `notInUse_programIndicatorGroups`, `notInUse_tag`
+    - [x] `legacy_dataElementGroups`, `legacy_optionGroups`
 - [x] App loads with the whole `HMIS_Dictionary` namespace missing `[M]`
 
 **Loading indicator and print**
@@ -393,10 +393,10 @@ Language tests set the real `keyUiLocale` user setting on a test user `[W]`, so 
 
 - [x] Rules table: name, description, stage, condition and actions, with its count
 - [x] Each action type shows its own fields:
-  - [x] `ASSIGN`, `DISPLAYKEYVALUEPAIR`, `DISPLAYTEXT`
-  - [x] `ERRORONCOMPLETE`, `WARNINGONCOMPLETE`, `SHOWERROR`, `SHOWWARNING`
-  - [x] `HIDEFIELD`, `HIDEOPTION`, `HIDEOPTIONGROUP`, `HIDEPROGRAMSTAGE`, `HIDESECTION`
-  - [x] `SCHEDULEMESSAGE`, `SENDMESSAGE`, `SETMANDATORYFIELD`, `SHOWOPTIONGROUP`
+    - [x] `ASSIGN`, `DISPLAYKEYVALUEPAIR`, `DISPLAYTEXT`
+    - [x] `ERRORONCOMPLETE`, `WARNINGONCOMPLETE`, `SHOWERROR`, `SHOWWARNING`
+    - [x] `HIDEFIELD`, `HIDEOPTION`, `HIDEOPTIONGROUP`, `HIDEPROGRAMSTAGE`, `HIDESECTION`
+    - [x] `SCHEDULEMESSAGE`, `SENDMESSAGE`, `SETMANDATORYFIELD`, `SHOWOPTIONGROUP`
 - [x] Message actions show the notification template name
 - [x] Program with no rules has no block or entry
 
@@ -514,15 +514,15 @@ Language tests set the real `keyUiLocale` user setting on a test user `[W]`, so 
 **Lists and tags**
 
 - [x] Each field below loads the current value, saves when the key is missing and when it is present, and is read back through the API `[W]`:
-  - [x] Blacklist: data element groups
-  - [x] Blacklist: data sets, takes effect in Data Sets
-  - [x] Blacklist: indicator groups
-  - [x] Blacklist tag text
-  - [x] Not in use: indicator groups
-  - [x] Not in use: program indicator groups
-  - [x] Not in use tag text
-  - [x] Legacy: data element groups
-  - [x] Legacy: option groups
+    - [x] Blacklist: data element groups
+    - [x] Blacklist: data sets, takes effect in Data Sets
+    - [x] Blacklist: indicator groups
+    - [x] Blacklist tag text
+    - [x] Not in use: indicator groups
+    - [x] Not in use: program indicator groups
+    - [x] Not in use tag text
+    - [x] Legacy: data element groups
+    - [x] Legacy: option groups
 
 **Configuration complete flag**
 
@@ -567,27 +567,63 @@ Differences, with their reason:
 
 These are additions to "Known bugs", for the next iteration. The suite does not pin them, and comments in the specs refer to these numbers.
 
-- [ ] **P1. Session expiry goes unnoticed on v42.** With the session gone, `system/ping` returns 401 to XHR requests, and the app only reloads on a successful response that is not `pong`. The user stays on the page, with requests failing. Confirmed with `curl` and in the browser. Skipped test: section 1.
-- [ ] **P2. Selecting a service too early loses its data sets.** The Dossiers selector is usable before the data sets request finishes. Selecting then shows 0 data sets, with no message. Seen in the browser; the cause comes from reading the code. Tests wait for the network to be idle before selecting.
+- [x] **P1. Session expiry goes unnoticed on v42.** With the session gone, `system/ping` returns 401 to XHR requests, and the app only reloads on a successful response that is not `pong`. The user stays on the page, with requests failing. Confirmed with `curl` and in the browser. Skipped test: section 1. Fixed in the React app: `SessionD2Repository` treats 401 and 403 as no session. Covered by section 1 and a unit test.
+- [x] **P2. Selecting a service too early loses its data sets.** The Dossiers selector is usable before the data sets request finishes. Selecting then shows 0 data sets, with no message. Seen in the browser; the cause comes from reading the code. Tests wait for the network to be idle before selecting. Fixed in the React app: the data sets load per selection. New test with the data sets request delayed.
 - [x] **P3. Event chart and event report resources disappear on v42.** Fixed in the React app, with the HIS integration. The `metadata` endpoint returns them under `eventVisualizations`, but the app only reads `eventCharts` and `eventReports`. Confirmed through the API. Skipped test: section 7.
-- [ ] **P4. Saving right after typing loses the text, and reports success.** The editor syncs its content after a short delay (a debounce in `angular-ui-tinymce`). Clicking Save inside that window saves the old text and turns the button green. Seen in the browser. The test helper waits 700ms; React should not need this.
-- [ ] **P5. Search never loads if the service set key is missing while `setup_dossierConfigComplete` is true.** `TypeError` at `search.controllers.js:122`, and the loading indicator stays on. Confirmed in the browser. Not carried over to the React app (`code-architecture.md`, decision 7).
-- [ ] **P6. Some rule action labels never appear.** "Option to Hide" only shows when the action has `content`, which no `HIDEOPTION` action on 8098 has. "Option Group to Hide" did not show either on a `HIDEOPTIONGROUP` action that has an option group. The tests only check the action type for these two.
-- [ ] **P7. Browser Back can leave the previous module on screen.** The URL changes to `#/datasets`, but the page stays on Admin. It happened in roughly 1 of 8 to 2 of 6 runs when going back right after switching modules. The cause is unknown. The test waits for the network to be idle first, so this is not covered when navigating quickly.
-- [ ] **P8. Program export does nothing when a sheet has no rows.** With every data element of a program hidden, no file is downloaded and no message is shown. Seen once in the browser; the likely cause is `Object.keys(data[0])` in the export code. No test covers this case.
-- [ ] **P9. Duplicate id on Programs.** Program indicators and indicators both use `id="indicators"`, so a link to the second can scroll to the first. Seen in the page, and the scroll itself is not tested.
-- [ ] **P10. The Visibility column for tracked entity attributes is always empty.** Its query asks for a `trackedEntityAttribute` field on the rule, and rules do not have one (0 of 151 with `ASSIGN` actions on v42). It also looks at `ASSIGN`, not at hiding actions. Fixing the query is not enough: the cell also reads `dataElement.visibility`, the wrong variable (`dossierPrograms.view.html:135`).
-- [ ] **P11. Program indicator filters keep `Program stage id == 'x'` instead of the stage name.** The regex in `dossierPrograms.controllers.js:760` cannot match it. The option regex next to it only matches one-character codes.
-- [ ] **P12. "Display Widget" never shows on rule actions.** The view and the export read `location`, but the rules query does not fetch it (`dossierPrograms.services.js`).
+- [x] **P4. Saving right after typing loses the text, and reports success.** The editor syncs its content after a short delay (a debounce in `angular-ui-tinymce`). Clicking Save inside that window saves the old text and turns the button green. Seen in the browser. The test helper waits 700ms; React should not need this. Fixed in the React app: the page has the text on each edit. The test helper no longer waits.
+- [x] **P5. Search never loads if the service set key is missing while `setup_dossierConfigComplete` is true.** `TypeError` at `search.controllers.js:122`, and the loading indicator stays on. Confirmed in the browser. Not carried over to the React app (`code-architecture.md`, decision 7). Not carried over to the React app (`code-architecture.md`, decision 7): without a group set there are no services. Unit test.
+- [x] **P6. Some rule action labels never appear.** "Option to Hide" only shows when the action has `content`, which no `HIDEOPTION` action on 8098 has. "Option Group to Hide" did not show either on a `HIDEOPTIONGROUP` action that has an option group. The tests only check the action type for these two. Fixed in the React app: `getActionFields` shows both labels. The tests now check them.
+- [x] **P7. Browser Back can leave the previous module on screen.** The URL changes to `#/datasets`, but the page stays on Admin. It happened in roughly 1 of 8 to 2 of 6 runs when going back right after switching modules. The cause is unknown. The test waits for the network to be idle first, so this is not covered when navigating quickly. Not seen in the React app: the test no longer waits for the network before going back, and it passed in the last runs. The cause in the Angular app stays unknown.
+- [x] **P8. Program export does nothing when a sheet has no rows.** With every data element of a program hidden, no file is downloaded and no message is shown. Seen once in the browser; the likely cause is `Object.keys(data[0])` in the export code. No test covers this case. Fixed in the React app: a sheet with no rows is left out, and with no sheets at all it shows a message instead of a file. Unit test for the sheets; the message has no test.
+- [x] **P9. Duplicate id on Programs.** Program indicators and indicators both use `id="indicators"`, so a link to the second can scroll to the first. Seen in the page, and the scroll itself is not tested. Fixed in the React app: the ids are `programIndicators` and `indicators`. New test.
+- [x] **P10. The Visibility column for tracked entity attributes is always empty.** Its query asks for a `trackedEntityAttribute` field on the rule, and rules do not have one (0 of 151 with `ASSIGN` actions on v42). It also looks at `ASSIGN`, not at hiding actions. Fixing the query is not enough: the cell also reads `dataElement.visibility`, the wrong variable (`dossierPrograms.view.html:135`). Fixed in the React app: `attributeVisibility` reads the `HIDEFIELD` actions on the attribute. New test.
+- [x] **P11. Program indicator filters keep `Program stage id == 'x'` instead of the stage name.** The regex in `dossierPrograms.controllers.js:760` cannot match it. The option regex next to it only matches one-character codes. Fixed in the React app: `withStageNames` in `DescribeProgramIndicatorsUseCase`. Unit test.
+- [x] **P12. "Display Widget" never shows on rule actions.** The view and the export read `location`, but the rules query does not fetch it (`dossierPrograms.services.js`). Fixed in the React app: the rules query fetches `location`. New scenario, on v42 only (v40 has no action with `location`).
 
-### Pending to match the baseline (React app, v42)
+### Latest results
 
-Latest full run: 353 passed, 3 failed, 4 flaky, 5 skipped, of 365. The goal is that every test passes, or that each difference is accepted and written down. Each case is fixed in the app or in the test.
+Both on `feature/d2-api-40-42` (uncommitted), 2026-11-06, with the `d2-api` 40 and 42 aliases and the same zip, with `--workers=4`.
 
-- **Header title click (fails always):** the skeleton header was chosen on purpose, and its title is not a link, only the logo goes home. Probably accepted: change the test to click the logo.
-- **Global Shell header (fails always):** the test expects the floating print button in place of the header one (section 1). The React app has no floating button, and the print button is in the page header (`react-views.md`, decision 5). Probably accepted: change the test. To confirm by running it.
-- **Excel export headers are translated (fails in about 2 of 6 runs):** the header of `@dhis2/ui` sets the language again from `/me` on each render, over `/userSettings`. This is an app problem, not a test one. Options: keep both values equal, or avoid reading the language while the header re-renders.
-- **Flaky (pass on retry):** 2 navigation tests and 2 Admin tests, the same as before the integration. Names in the Playwright report of the last run. Fixing them means finding what the test waits for (Back navigation is P7 above).
+| Instance   | Passed | Failed | Flaky | Skipped |
+| ---------- | -----: | -----: | ----: | ------: |
+| v42 (8098) |    363 |      0 |     0 |       5 |
+| v40 (8097) |    345 |      0 |     0 |      23 |
+
+The v42 count includes one test (`05-dossiers`, P2) rerun alone: its first run failed because the test was still being corrected when the suite started. One clean run per version does not prove the old flaky tests are gone.
+
+### Differences accepted (tests changed)
+
+- **Header title click:** the title of the skeleton header is not a link. The test clicks the logo.
+- **Global Shell header:** the React app has no floating print button (`react-views.md`, decision 5). The test checks one print button on a page that has it.
+
+### Problems found on v40 and fixed in the app
+
+- **Null options:** with gaps in the sort order of the options, the 2.40 API answers with `null` in their place. `toOptionSet` then threw, and the Tracked Entity Attributes section of the program disappeared with no message, for example on `Measles Outbreak Linelist`. The mappers now skip them.
+- **Description in the wrong language:** `displayDescription` with `locale=es` answered in English in 3 of 12 repeats under parallel load. `getText` now reads `description` and `translations`, and the same 12 repeats passed.
+
+### Other fixes
+
+- **Excel export headers (app):** the header of `@dhis2/ui` changes the global language on each render. The texts of the app now ask for their own language (`i18n-typed.ts`).
+- **Editor (app):** the editor of a new language could mount with the text of the previous one (`DossierEditor`).
+- **Admin flaky tests (test):** they read the options of the selector before they had loaded.
+- **`Regex characters` (test):** the match can be in a column that is not displayed, so it looks for a known row.
+- **`09-indicators` (test):** the selector shows `displayName`, and the test used `name`.
+- **Legacy options (test):** `Sex` also matched other rows, so it matches the exact cell. The cleanup empties the option group first, as 2.40 answers 409 otherwise.
+- **Login (test):** on 2.40 `/api/auth/login` redirects to the login page, which looked like a success.
+
+### Skipped on v40
+
+The 23 skipped tests are 18 more than on v42. Some of them skip for the whole test when only part of it needs the missing data:
+
+- **No Global Shell (2):** `/apps/HMIS-Dictionary` answers 404.
+- **Fixture `rPAOXzG3811` not on v40 (8):** `01-shell` print button and help icons, `04-search` Expand and formula dialog, screenshots.
+- **No not-in-use program indicator, or no `DISPLAYTEXT` action (3):** the `ASSIGN` check of that test is skipped too.
+- **Others (10):** the 5 skipped on v42 too, and 5 more for data v40 does not have, in Search and Dossiers.
+
+### Limits and problems of these runs
+
+- **Shared session file:** `e2e/.auth/user.json` is one per folder, and other runs overwrite it, whichever instance they use. Do not run two suites from the same folder at once.
+- **Silent errors on Programs:** a section whose request or mapping fails is not displayed, and nothing tells the user. This hid the null options problem.
 
 ### Behaviour worth knowing
 
@@ -601,17 +637,17 @@ Tests accept both options for these, so React can choose.
 ### Limits of the current suite
 
 - **Global Shell:** only 2 tests run inside it. All others run standalone (`?redirect=false`), which is faster and needs no iframe handling. On v42 users see the shell, so consider running more there.
-- **Restricted roles and v40:** out of scope, as decided.
+- **Restricted roles:** out of scope, as decided.
 - **Weak spots:**
-  - Effects of the Admin lists are mostly tested in each module with mocked keys, not by saving through Admin. Only the data set blacklist is tested end to end.
-  - Export sheets are checked by sheet names, headers and row counts, not cell by cell.
-  - Metadata language is checked on Dossiers only.
+    - Effects of the Admin lists are mostly tested in each module with mocked keys, not by saving through Admin. Only the data set blacklist is tested end to end.
+    - Export sheets are checked by sheet names, headers and row counts, not cell by cell.
+    - Metadata language is checked on Dossiers only.
 - **Fixed waits:** the editor helpers use 2 fixed waits, because of P4 and a save button reset about 500ms after loading. React should allow removing them.
 - **Search load time:** about 6 seconds on 8098, measured once in this session with a single browser.
 - **Likely changes on React:**
-  - `e2e/support/widgets.ts`, for the table and editor
-  - `.alert-success`, `.alert-danger` and `btn-warning`, used for Admin checks and the save button state
-  - The `#searchTable` cell structure, used for sort values
+    - `e2e/support/widgets.ts`, for the table and editor
+    - `.alert-success`, `.alert-danger` and `btn-warning`, used for Admin checks and the save button state
+    - The `#searchTable` cell structure, used for sort values
 
 ### Changes on 8098
 
@@ -676,7 +712,6 @@ The suite does not pin any of them: where a scenario touches one, tests only cov
 ## Out of scope
 
 - Restricted roles (advanced and normal users): what they can see, hidden tabs and buttons, and default access per role. Tests use one user with full access
-- DHIS2 v40
 - Pixel-level visual regression, because the React app will not match exactly
 - DHIS2 apps themselves (Data Visualizer and others), beyond checking that they open the right object
 - Non-Chromium browsers
