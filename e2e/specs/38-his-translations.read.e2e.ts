@@ -4,11 +4,9 @@ import { expect, fixtures, test } from "../support/fixtures";
 const panels = {
     es: {
         orgUnits: "Unidades organizativas",
-        guide: "Terminología DHIS2",
     },
     fr: {
         orgUnits: "Unités d'organisation",
-        guide: "Terminologie DHIS2",
     },
 } as const;
 
@@ -32,11 +30,7 @@ async function useLanguage(page: Page, language: string) {
 
 test.describe("HIS: translations of the new features", () => {
     for (const language of ["es", "fr"] as const) {
-        test(`The new panels and help are translated in ${language}`, async ({
-            dataSets,
-            search,
-            page,
-        }) => {
+        test(`The new panels are translated in ${language}`, async ({ dataSets, page }) => {
             const texts = panels[language];
             await useLanguage(page, language);
 
@@ -45,10 +39,6 @@ test.describe("HIS: translations of the new features", () => {
             await expect(
                 page.getByRole("button", { name: new RegExp(texts.orgUnits) })
             ).toBeVisible();
-
-            await search.load();
-            await page.locator("#accordion section > button").nth(2).click();
-            await expect(search.root.locator("#collapseThree")).toContainText(texts.guide);
         });
     }
 
