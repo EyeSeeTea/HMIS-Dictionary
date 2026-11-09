@@ -15,6 +15,17 @@ How each pin is set, and when to drop it, is in `RESOLUTIONS.md`.
 
 Newest first. Each entry says what was decided, why, and who decided.
 
+### 2026-11-09: no known vulnerabilities left
+
+- **Finding:** after the gate passed, 11 moderate and 2 low findings remained.
+- **Decision:** fix them all, not only the critical and high ones the gate checks.
+    - `elliptic` and `pbkdf2`: removed with the browser polyfills (`vite-plugin-node-polyfills`). They were only there for `md5.js`, used by `src/utils/uid.ts`, which nothing imported. All three are gone. Two bundled modules still use the Node global `Buffer` (`d2-api`'s fetch client and `btoa`), so `src/webapp/polyfills.ts` provides only that one, from the `buffer` package.
+    - `qs`, `moment`, `minimatch`: pinned to patched releases (`RESOLUTIONS.md`).
+    - `vitest`: upgraded from 3 to 4.1.12, which also made the `vitest/tinypool` pin unnecessary.
+    - `deepmerge` (no fixed release): it came from `@dhis2/d2-i18n-extract`, through `i18next-scanner`. Replaced by `src/scripts/dev/ExtractPotScript.ts`, which finds the `i18n.t("...")` texts with the TypeScript compiler. It also extracts 16 texts the old tool dropped: those with a `:`, which it read as an i18next namespace.
+- **Result:** OSV reports no finding for any package in `yarn.lock`.
+- **Decided by:** Arnau Sanchez, in PR #70.
+
 ### 2026-11-09: `braces` removed with the tools that brought it
 
 - **Finding:** GHSA-vfj7-8cjw-p6xm, high, in `braces@3.0.3`. No release fixes it, and GitHub has since withdrawn the advisory as not practically exploitable, but the gate still counted it.

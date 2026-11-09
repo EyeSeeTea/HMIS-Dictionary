@@ -1,3 +1,4 @@
+import "./polyfills";
 import ReactDOM from "react-dom/client";
 import { Dhis2App } from "./pages/app/Dhis2App";
 import { CssReset, CssVariables } from "@dhis2/ui";

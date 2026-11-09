@@ -165,7 +165,7 @@ Language tests set the real `keyUiLocale` user setting on a test user `[W]`, so 
 - [x] Regional locale (`pt_BR`, `es_419`, `ar_EG`) resolves to its base language
 - [x] Unsupported locale (`ru`) falls back to English
 - [x] User with no language setting uses the system default
-- [x] Labels missing in a language display the English text
+- [x] Labels missing in a language display the English text (with `ru`; in the React app no Spanish label is missing)
 - [x] Metadata names and descriptions follow the user's language, checked on Dossiers
 - [x] Arabic sets `dir="rtl"` on the document, and aligns the page content to the right
 - [x] Other languages set `dir="ltr"`
@@ -591,6 +591,7 @@ The tests expect English: a `keyUiLocale` other than `en` for the test user make
 ### Differences accepted (tests changed)
 
 - **Header title click:** the title of the skeleton header is not a link. The test clicks the logo.
+- **Labels missing in Spanish:** the AngularJS app left some labels in English, such as "Settings". The React app translates them all, so the test checks the Spanish text, and the English fallback is checked with an unsupported language (`ru`).
 - **Global Shell header:** the React app has no floating print button (`react-views.md`, decision 5). The test checks one print button on a page that has it.
 
 ### Problems found on v40 and fixed in the app

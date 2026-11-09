@@ -2,7 +2,6 @@
 import { UserConfig, defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import checker from "vite-plugin-checker";
-import { nodePolyfills } from "vite-plugin-node-polyfills";
 import * as path from "path";
 
 export default ({ mode }): UserConfig => {
@@ -13,10 +12,6 @@ export default ({ mode }): UserConfig => {
     return defineConfig({
         base: "", // Relative paths
         plugins: [
-            // md5.js (a direct dependency) uses Buffer, so the browser build
-            // needs Node stdlib shims. Replaces vite-plugin-node-stdlib-browser,
-            // which only supports Vite <= 4.
-            nodePolyfills(),
             react(),
             !isTest &&
                 checker({

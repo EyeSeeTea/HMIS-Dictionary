@@ -1,5 +1,6 @@
 {
     "$schema": "https://unpkg.com/knip@6/schema.json",
     "entry": ["e2e/specs/**/*.e2e.ts", "e2e/playwright.config.ts", "src/scripts/**/*.ts"],
-    "ignore": ["src/utils/ts-utils.ts"]
+    "ignore": ["src/utils/ts-utils.ts"],
+    "ignoreDependencies": ["buffer"]
 }

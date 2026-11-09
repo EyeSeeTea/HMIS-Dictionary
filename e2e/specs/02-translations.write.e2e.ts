@@ -77,14 +77,19 @@ test.describe("2. Translations", () => {
         await api.withLocale(undefined, () => expectTabs(app, (keyUiLocale ?? "en").split("_")[0]));
     });
 
-    test("Labels missing in a language display the English text", async ({ app, api, page }) => {
-        // `layout_settings` is in English but not in Spanish.
+    test("Labels missing in the AngularJS translations are translated", async ({
+        app,
+        api,
+        page,
+    }) => {
+        // `layout_settings` is in English but not in the Spanish file of the AngularJS app. The
+        // React app translates every label, so the English fallback is checked with `ru` below.
         expect(t("layout_settings", "es")).toBe(t("layout_settings", "en"));
         await api.withLocale("es", async () => {
             await app.open("datasets");
-            await expect(page.locator("#headerDossierPanel")).toContainText(
-                t("layout_settings", "en")
-            );
+            const header = page.locator("#headerDossierPanel");
+            await expect(header.getByRole("button", { name: "Configuración" })).toBeVisible();
+            await expect(header).not.toContainText(t("layout_settings", "en"));
         });
     });
 

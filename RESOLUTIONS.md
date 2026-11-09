@@ -90,11 +90,12 @@ The lesson worth keeping from that batch: **"prune candidate" and "does nothing"
 - **Fixes:** GHSA-v245-v573-v5vm, GHSA-22p9-wv53-3rq4 (high) — quadratic-complexity DoS.
 - **Drop when:** `@eyeseetea/d2-ui-components` drops or replaces `react-linkify`. EyeSeeTea-owned, so fixable upstream — and that would remove this pin from every app.
 
-#### `qs: ^6.15.3`
+#### `qs: ^6.16.1`
 
 - **Why:** this entry was inherited from `8a8d2b4` as the exact version `6.14.2`, and **that exact version had itself become the vulnerable one** — GHSA-q8mj-m7cp-5q26 affects `>= 6.11.1 <= 6.15.1`, and 6.15.2 was published after the pin was written. A textbook decay: the pin was a floor written as a fixture, so it held the tree _at_ the advisory instead of above it. Converted to a `^` range, which is what a security floor should always have been. It is requested by `url` via the browser polyfills and by `@eyeseetea/d2-api`, which is **runtime**, so this was verified with the test suite and a build rather than with `yarn install` alone.
 - **Fixes:** GHSA-q8mj-m7cp-5q26 (medium) — unhandled `TypeError` in `qs.stringify` with `arrayFormat: 'comma'` and `encodeValuesOnly: true` over an array containing `null`.
-- **Drop when:** every consumer requests `qs >= 6.15.2` natively. `@eyeseetea/d2-api` is the blocker: it requests the exact version `6.9.7`, so removing this pin resolves `qs` _downwards_ rather than upwards — verified by removing it and re-installing.
+- **Raised on 2026-11-09** from `^6.15.3` to `^6.16.1`, for GHSA-x5fp-wj9c-mxmx, GHSA-4mjr-xmp4-gh2g and GHSA-6pq8-jhm2-2vcw (moderate). The browser polyfills are gone (see `SECURITY.md`), so `url` no longer requests `qs`, and `@eyeseetea/d2-api` is the only consumer.
+- **Drop when:** every consumer requests `qs >= 6.16.1` natively. `@eyeseetea/d2-api` is the blocker: it requests the exact version `6.9.7`, so removing this pin resolves `qs` _downwards_ rather than upwards — verified by removing it and re-installing.
 
 ---
 
@@ -103,6 +104,10 @@ The lesson worth keeping from that batch: **"prune candidate" and "does nothing"
 > **The test is whether a resolved version moves, not whether the lockfile changes.** A byte-identical lockfile proves an entry did nothing, but the reverse does not hold: an entry can rewrite a descriptor, change the lockfile, and still leave every installed version exactly where it was. `path-to-regexp` below is that case, and it is the reason this section states the criterion explicitly.
 
 Four entries retired on 2026-08-05, each tested by removing it, re-installing and comparing resolved versions. All the versions that resulted are outside every advisory affecting them, checked against the published advisory database rather than assumed.
+
+### `vitest/tinypool: ^2.1.2` — removed 2026-11-09
+
+**No longer needed.** It patched GHSA-5gmw-xhrv-c9v3 and GHSA-85c8-ppgw-ccpr (critical) under `vitest@3.2.7`, which requested `tinypool ^1.1.1`. vitest 4 (4.1.12, upgraded for GHSA-82fw-gwwq-j7x9 and GHSA-qxg6-89mg-rqv8) does not depend on `tinypool` at all.
 
 ### `path-to-regexp: 1.9.0` — removed 2026-08-05
 
@@ -147,19 +152,27 @@ The global entry was also pulling `eslint` down from the `^6.0.2` it declares.
 
 ### Security pins (added 2026-11-06)
 
-#### `vitest/tinypool: ^2.1.2`
-
-- **Why:** `vitest@3.2.7` declares `tinypool ^1.1.1`, and no 1.x release is patched. Dev dependency only, it is not in the app bundle.
-- **Fixes:** GHSA-5gmw-xhrv-c9v3 and GHSA-85c8-ppgw-ccpr (critical, prototype pollution to RCE). Patched from 2.1.2.
-- **Verified:** `vitest run` passes with `tinypool@2.2.0` (344 tests).
-- **Drop when:** the project moves to a vitest major that no longer requests tinypool 1.x.
-
 #### `exceljs/uuid: ^11.1.1`
 
 - **Why:** `exceljs@4.4.0` declares `uuid ^8.3.0`, and no 8.x release is patched. The pin only changes the Node build of exceljs (`excel.js`, used by the unit tests). The app bundles `dist/exceljs.min.js`, which has its own copy of uuid inside and only calls `v4`, while the advisory is about `v3`, `v5` and `v6`.
 - **Fixes:** GHSA-w5hq-g745-h8pq (GitHub rates it moderate, but its CVSS 3.1 score is 7.5, so Dependency-Track reports it as high). Patched from 11.1.1.
 - **Safe because:** exceljs only does `const {v4: uuidv4} = require('uuid')`, and uuid 11 still ships CommonJS with a named `v4` export. Unlike `request/uuid` (see "Rejected pins"), no `uuid/v4` subpath is involved.
 - **Drop when:** exceljs requests a patched uuid.
+
+### Security pins (added 2026-11-09)
+
+#### `moment: ^2.31.0`
+
+- **Why:** several runtime packages request `moment` (`@dhis2-ui/header-bar`, `@dhis2/d2-i18n`, `@eyeseetea/d2-ui-components`), one of them the exact version `2.29.4`. The patched release is on the same major, so the pin moves them all to it.
+- **Fixes:** GHSA-4p3w-j4w9-5jqw (moderate). Patched from 2.31.0.
+- **Drop when:** every consumer requests `moment >= 2.31.0` natively.
+
+#### `minimatch@npm:^10.2.2` and `minimatch@npm:^10.2.5`: `^11.0.1`
+
+- **Why:** the 10.x consumers (`typescript-eslint`, `typedoc`, `@eslint/config-array`, `readdir-glob`) have no patched 10.x release. 11 keeps the same exports (ESM and CommonJS, named `minimatch`). Scoped by descriptor, so the 3.x and 5.x lines, outside the advisory, are not touched (see "Rejected pins" for why one line across the tree breaks).
+- **Fixes:** GHSA-g3hv-75wg-m249 (moderate). Patched from 11.0.1.
+- **Verified:** `yarn lint` (ESLint and typescript-eslint use it) passes with 11.0.4.
+- **Drop when:** the consumers request `minimatch >= 11.0.1`.
 
 The other critical and high findings of this audit (`handlebars`, `axios`, `brace-expansion`, `follow-redirects`, `js-yaml`, `markdown-it`, `source-map-js`, `undici`, `vite`, `zod`) were stale lockfile entries: `yarn up -R` reached patched versions with no manifest change.
 
@@ -189,13 +202,9 @@ Held on this branch from 2026-07-30 and removed on 2026-08-03, before merge. Rec
 
 Recorded here rather than in `resolutions` because **no version resolves them**.
 
-#### `elliptic@6.6.1` — GHSA-848j-6mx2-7j84
+No finding is left in this section.
 
-- **Chain:** `vite-plugin-node-polyfills` → `node-stdlib-browser` → `crypto-browserify` → `browserify-sign` and `create-ecdh`.
-- **Advisories against this component:** **one** open — GHSA-848j-6mx2-7j84, the entry above. Eight others exist against `elliptic` and are all patched at or below 6.6.1, including the critical GHSA-vjh7-7g9h-fjfh, which 6.6.1 itself is the fix for. The count is stated rather than implied so that a missing row reads as a gap rather than as an absence: an entry written during a pass filtered to critical and high can describe a component in better shape than the scanner does.
-- **Why it cannot be fixed:** the advisory covers **all versions `<= 6.6.1`**, and 6.6.1 is the latest published release. There is nothing to pin to — verified against the published version list, the check that rescued `node-gettext`.
-- **Impact:** the ECDSA signing path is never reached. The polyfills exist only because `md5.js` needs the `Buffer` shim.
-- **Drop when:** `elliptic` publishes a fix, or `md5.js` is replaced and the polyfill chain leaves the tree entirely.
+_(`elliptic@6.6.1` was in this section until 2026-11-09, when the browser polyfills that brought it in were removed, and `deepmerge@4.3.1` was added and removed the same day, with the extractor that brought it in: see `SECURITY.md`.)_
 
 _(`braces@3.0.3` was in this section until 2026-11-09, when the tools that brought it in were replaced: see `SECURITY.md`.)_
 
