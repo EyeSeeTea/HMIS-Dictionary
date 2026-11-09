@@ -197,12 +197,7 @@ Recorded here rather than in `resolutions` because **no version resolves them**.
 - **Impact:** the ECDSA signing path is never reached. The polyfills exist only because `md5.js` needs the `Buffer` shim.
 - **Drop when:** `elliptic` publishes a fix, or `md5.js` is replaced and the polyfill chain leaves the tree entirely.
 
-#### `braces@3.0.3` — GHSA-vfj7-8cjw-p6xm
-
-- **Chain:** `micromatch@4.0.8` → `braces`, build and test tooling only.
-- **Why it cannot be fixed:** the advisory covers all versions `<= 3.0.3`, and 3.0.3 is the latest release.
-- **Status:** GitHub has withdrawn the advisory as not practically exploitable, and OSV no longer returns it. Dependency-Track reported it as high on 2026-11-06. If it still does, suppress it there as withdrawn.
-- **Drop when:** Dependency-Track stops reporting it.
+_(`braces@3.0.3` was in this section until 2026-11-09, when the tools that brought it in were replaced: see `SECURITY.md`.)_
 
 _(`node-gettext` was in this section until it turned out to be fixable — see the pin above.)_
 
