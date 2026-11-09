@@ -9,7 +9,7 @@
         "type": "git",
         "url": "git+https://github.com/EyeSeeTea/HMIS-Dictionary.git"
     },
-    "packageManager": "yarn@4.15.0",
+    "packageManager": "yarn@4.18.1",
     "dependencies": {
         "$": "link:./src",
         "@dhis2/app-runtime": "^3",
