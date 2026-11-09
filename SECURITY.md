@@ -15,6 +15,12 @@ How each pin is set, and when to drop it, is in `RESOLUTIONS.md`.
 
 Newest first. Each entry says what was decided, why, and who decided.
 
+### 2026-11-09: `sprintf-js` removed with the i18n generator
+
+- **Finding:** GHSA-hp3w-g68c-fv3c, moderate, in `sprintf-js@1.0.3`, with no fixed release. Dependency-Track reported it in CI after the entry below; OSV did not, because its record does not match version 1.0.3. Check with Dependency-Track, not only OSV.
+- **Decision:** the goal is zero vulnerabilities, so remove it. It came from `@dhis2/d2-i18n-generate`, through `argparse@1` (`argparse@2` has another API, so a pin breaks the tool). Replaced by `src/scripts/dev/GenerateLocalesScript.ts`, which writes the same `src/locales` files (compared byte for byte) with `gettext-parser`. `i18next-conv`, `node-gettext` and `handlebars` left the tree with it, and the `i18next-conv/node-gettext` pin with them.
+- **Decided by:** Arnau Sanchez, in PR #70.
+
 ### 2026-11-09: no known vulnerabilities left
 
 - **Finding:** after the gate passed, 11 moderate and 2 low findings remained.

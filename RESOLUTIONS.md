@@ -78,12 +78,6 @@ The lesson worth keeping from that batch: **"prune candidate" and "does nothing"
 - **Fixes:** GHSA-r5fr-rjxr-66jc (high) — code injection via `_.template` import key names.
 - **Drop when:** `@eyeseetea/d2-api` and `@eyeseetea/d2-ui-components` stop pinning lodash exactly. Both are EyeSeeTea-owned — fixing them upstream removes this pin from every app.
 
-#### `i18next-conv/node-gettext: ^3.0.1`
-
-- **Why:** `i18next-conv@9.2.1` requests `node-gettext@^2.0.0`, which resolves to the vulnerable `2.1.0`. ⚠️ **The advisory looks unfixable and is not.** GHSA-g974-hxvm-x689 declares no `first_patched_version`, so tooling reports it as having no fix — but its affected range is `<= 3.0.0`, and **3.0.1 is published and outside that range**. Always compare the affected range against the published version list before concluding a finding is a dead end. Scoped to the parent; dev/build-only, used during i18n generation.
-- **Fixes:** GHSA-g974-hxvm-x689 (high) — prototype pollution.
-- **Drop when:** `i18next-conv` requests `node-gettext@^3.0.1` or later natively, or drops it. Verify with `yarn why node-gettext`.
-
 #### `react-linkify/linkify-it: ^5.0.2`
 
 - **Why:** `react-linkify@1.0.0-alpha` requests `linkify-it@^2.0.3`, and the 2.x line has no fix. `@eyeseetea/d2-ui-components` requests react-linkify at an exact version, and `2.13.0-beta.6` still does, so upgrading that library does not help. react-linkify is unmaintained since 2022 and written against the linkify-it 2 API, so this pin was **checked rather than assumed**: linkify-it 5 still ships a callable CJS export, `.tlds()` and `.match()` behave the same, and rendering `<Linkify>` in jsdom produces the expected `<a href>`. Scoped to react-linkify so `markdown-it`'s own linkify-it, already on 5.0.2, is untouched.
@@ -104,6 +98,10 @@ The lesson worth keeping from that batch: **"prune candidate" and "does nothing"
 > **The test is whether a resolved version moves, not whether the lockfile changes.** A byte-identical lockfile proves an entry did nothing, but the reverse does not hold: an entry can rewrite a descriptor, change the lockfile, and still leave every installed version exactly where it was. `path-to-regexp` below is that case, and it is the reason this section states the criterion explicitly.
 
 Four entries retired on 2026-08-05, each tested by removing it, re-installing and comparing resolved versions. All the versions that resulted are outside every advisory affecting them, checked against the published advisory database rather than assumed.
+
+### `i18next-conv/node-gettext: ^3.0.1` — removed 2026-11-09
+
+**Nothing left to pin.** It fixed GHSA-g974-hxvm-x689 (high) under `i18next-conv`, which only came with `@dhis2/d2-i18n-extract` and `@dhis2/d2-i18n-generate`. Both were replaced by scripts in `src/scripts/dev` (see "The archived i18n packages" below), and `i18next-conv` and `node-gettext` left the tree with them. The lesson it recorded still holds: GHSA-g974-hxvm-x689 declared no `first_patched_version`, but 3.0.1 was outside its affected range. Compare the range with the published versions before calling a finding unfixable.
 
 ### `vitest/tinypool: ^2.1.2` — removed 2026-11-09
 
@@ -224,9 +222,13 @@ When auditing, treat any of these as a signal that a pin has gone stale:
 
 ---
 
-## Why the archived i18n packages are still here
+## The archived i18n packages (replaced 2026-11-09)
 
-`@dhis2/d2-i18n-extract` and `@dhis2/d2-i18n-generate` are archived upstream and will never receive a fix. `@dhis2/cli-app-scripts` is the maintained equivalent, and replacing them was implemented on this branch and then reverted. The reasoning is recorded here because a remediation that was tried and rejected leaves no trace in the tree.
+`@dhis2/d2-i18n-extract` and `@dhis2/d2-i18n-generate` are archived upstream and will never receive a fix. On 2026-11-09 they brought in two findings with no fixed release, `deepmerge` (through `i18next-scanner`) and `sprintf-js` (through `argparse@1`), which is the second "revisit" condition below. They were replaced by two scripts in `src/scripts/dev`, run by `yarn localize`: `ExtractPotScript.ts` (texts to `i18n/en.pot`) and `GenerateLocalesScript.ts` (`.po` files to `src/locales`). Their output was compared with the old tools': the same `translations.json` files, byte for byte, and the same texts in `en.pot`, plus 16 the old extractor dropped (see `SECURITY.md`).
+
+What follows is the earlier decision, kept as the record of why `@dhis2/cli-app-scripts` was not the replacement.
+
+`@dhis2/cli-app-scripts` is the maintained equivalent, and replacing them with it was implemented on this branch and then reverted. The reasoning is recorded here because a remediation that was tried and rejected leaves no trace in the tree.
 
 **What the replacement costs.** `@dhis2/cli-app-scripts` cannot provide translation extraction without the DHIS2 CLI framework beneath it, so adopting it for i18n alone pulls in the whole chain. Measured on this branch, that chain was responsible for **every one of these**:
 
@@ -243,7 +245,7 @@ When auditing, treat any of these as a signal that a pin has gone stale:
 
 Removing the replacement removed **seven resolutions** and the exact-version fixture along with them, and `tar`, `tmp` and `cross-spawn` then resolve to patched versions unaided. The `esbuild` pin became redundant too: with the CLI's vite gone, `vite@7` requests `^0.27.0 || ^0.28.0` and reaches a patched release on its own.
 
-**Why this repository is staying, for now.** The archived packages currently require exactly one constraint — `i18next-conv/node-gettext`, above — and produce no finding beyond it. So the choice is not _abandoned → maintained_; it is _two frozen packages that need one pin_ against _a maintained package that carries an abandoned chain with an unfixable finding and needs seven_. Both toolchains are build-time only: they run during `yarn localize` and never reach the browser bundle, so the difference in real exposure is negligible and the decision rests on maintainability.
+**Why this repository stayed, until 2026-11-09.** The archived packages then required exactly one constraint — `i18next-conv/node-gettext`, above — and produce no finding beyond it. So the choice is not _abandoned → maintained_; it is _two frozen packages that need one pin_ against _a maintained package that carries an abandoned chain with an unfixable finding and needs seven_. Both toolchains are build-time only: they run during `yarn localize` and never reach the browser bundle, so the difference in real exposure is negligible and the decision rests on maintainability.
 
 Being archived is not the same as being vulnerable — frozen code introduces nothing new either. The exposure here is conditional, not current.
 
