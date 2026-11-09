@@ -154,6 +154,13 @@ The global entry was also pulling `eslint` down from the `^6.0.2` it declares.
 - **Verified:** `vitest run` passes with `tinypool@2.2.0` (344 tests).
 - **Drop when:** the project moves to a vitest major that no longer requests tinypool 1.x.
 
+#### `exceljs/uuid: ^11.1.1`
+
+- **Why:** `exceljs@4.4.0` declares `uuid ^8.3.0`, and no 8.x release is patched. The pin only changes the Node build of exceljs (`excel.js`, used by the unit tests). The app bundles `dist/exceljs.min.js`, which has its own copy of uuid inside and only calls `v4`, while the advisory is about `v3`, `v5` and `v6`.
+- **Fixes:** GHSA-w5hq-g745-h8pq (GitHub rates it moderate, but its CVSS 3.1 score is 7.5, so Dependency-Track reports it as high). Patched from 11.1.1.
+- **Safe because:** exceljs only does `const {v4: uuidv4} = require('uuid')`, and uuid 11 still ships CommonJS with a named `v4` export. Unlike `request/uuid` (see "Rejected pins"), no `uuid/v4` subpath is involved.
+- **Drop when:** exceljs requests a patched uuid.
+
 The other critical and high findings of this audit (`handlebars`, `axios`, `brace-expansion`, `follow-redirects`, `js-yaml`, `markdown-it`, `source-map-js`, `undici`, `vite`, `zod`) were stale lockfile entries: `yarn up -R` reached patched versions with no manifest change.
 
 ---
@@ -189,6 +196,13 @@ Recorded here rather than in `resolutions` because **no version resolves them**.
 - **Why it cannot be fixed:** the advisory covers **all versions `<= 6.6.1`**, and 6.6.1 is the latest published release. There is nothing to pin to — verified against the published version list, the check that rescued `node-gettext`.
 - **Impact:** the ECDSA signing path is never reached. The polyfills exist only because `md5.js` needs the `Buffer` shim.
 - **Drop when:** `elliptic` publishes a fix, or `md5.js` is replaced and the polyfill chain leaves the tree entirely.
+
+#### `braces@3.0.3` — GHSA-vfj7-8cjw-p6xm
+
+- **Chain:** `micromatch@4.0.8` → `braces`, build and test tooling only.
+- **Why it cannot be fixed:** the advisory covers all versions `<= 3.0.3`, and 3.0.3 is the latest release.
+- **Status:** GitHub has withdrawn the advisory as not practically exploitable, and OSV no longer returns it. Dependency-Track reported it as high on 2026-11-06. If it still does, suppress it there as withdrawn.
+- **Drop when:** Dependency-Track stops reporting it.
 
 _(`node-gettext` was in this section until it turned out to be fixable — see the pin above.)_
 
