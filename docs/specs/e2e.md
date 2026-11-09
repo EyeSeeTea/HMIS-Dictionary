@@ -577,14 +577,16 @@ All fixed or settled in the React app. Comments in the specs refer to these numb
 
 ### Latest results
 
-Both on `feature/d2-api-40-42`, 2026-11-06, with the `d2-api` 40 and 42 aliases and the same zip, with `--workers=4`.
+On `feature/his-integration` (`363bfae`), 2026-11-09, with the same zip on both instances and `--workers=4`. The two suites ran at the same time, each from its own checkout.
 
-| Instance   | Passed | Failed | Flaky | Skipped |
-| ---------- | -----: | -----: | ----: | ------: |
-| v42 (8098) |    363 |      0 |     0 |       5 |
-| v40 (8097) |    345 |      0 |     0 |      23 |
+| Instance   | Passed | Failed | Flaky | Skipped |  Time |
+| ---------- | -----: | -----: | ----: | ------: | ----: |
+| v42 (8098) |    365 |      0 |     0 |       5 | 13.7m |
+| v40 (8097) |    346 |      0 |     0 |      23 | 15.5m |
 
-The v42 count includes one test (`05-dossiers`, P2) rerun alone: its first run failed because the test was still being corrected when the suite started. One clean run per version does not prove the old flaky tests are gone.
+Both instances matched their saved state afterwards (`instance-state.py check`). Together with the runs of 2026-11-06 (v42 363 passed, v40 345 passed, 0 flaky), this is the second full run per version with no flaky tests.
+
+The tests expect English: a `keyUiLocale` other than `en` for the test user makes most of them fail on timeouts. `api.withLocale` restores it, but an interrupted write run can leave it changed.
 
 ### Differences accepted (tests changed)
 
