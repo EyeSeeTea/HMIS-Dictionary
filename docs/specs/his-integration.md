@@ -84,4 +84,4 @@ The "Missed indicators" bug mentioned in the item of assigned indicators was fix
 - **Tabs:** we keep the side menu.
 - **Export as HTML `.xls`:** ours is real `.xlsx`.
 - **Redirect to Search until its data is loaded:** it only exists to fill the HIS cache.
-- **Rajdhani font.**
+- **Rajdhani font for headings:** the React app uses Roboto, like `@dhis2/ui` and the DHIS2 header. The current app on `master` already has Rajdhani, so this is not specific to HIS.

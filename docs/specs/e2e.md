@@ -655,36 +655,36 @@ Tests accept both options for these, so React can choose.
 
 ## Known bugs (for a follow-up PR)
 
-These come from reading the code and have not been reproduced in a browser, except where noted. My suggestion is in brackets.
+These come from reading the code and have not been reproduced in a browser, except where noted. My suggestion is in brackets. Ticked items are fixed or settled in the React app. The unticked ones are left for a follow-up PR.
 
 The suite does not pin any of them: where a scenario touches one, tests only cover the unaffected part. For example, Data Sets indicators are tested through `#{de.coc}`. This way, React can keep or fix each bug later without breaking a test.
 
 **Search**
 
-- [ ] **Accents:** the code removes accents on a copy of the data and then discards it, so `e` does not match `é`. [fix]
-- [ ] **Highlighting:** with only one of the global and column filters active, the regex includes the literal word `undefined`, which gets highlighted in text. [fix]
-- [ ] **Stale service codes:** `servicesCode` is declared outside the data element loop, so a data set without the attribute can reuse the previous one's codes. [fix]
-- [ ] **Hidden markup:** global search also looks inside generated formula HTML and raw expressions, so a term like `tooltip` matches rows. [fix the markup, keep raw expressions]
-- [ ] **Export markup:** formula HTML is only stripped when the header is in English, and never for program indicator formulas. [fix]
-- [ ] **Advanced columns:** the advanced row needs all three advanced groups allowed, while the link shows with any one. A role with only some sees a link that does nothing. [fix]
+- [x] **Accents:** the code removes accents on a copy of the data and then discards it, so `e` does not match `é`. [fix] Fixed in the React app: Search matches without accents (`deburr`), and the highlight too.
+- [x] **Highlighting:** with only one of the global and column filters active, the regex includes the literal word `undefined`, which gets highlighted in text. [fix] Fixed in the React app: empty terms are left out of the highlight pattern.
+- [x] **Stale service codes:** `servicesCode` is declared outside the data element loop, so a data set without the attribute can reuse the previous one's codes. [fix] Fixed in the React app: decision 8 in `code-architecture.md`.
+- [x] **Hidden markup:** global search also looks inside generated formula HTML and raw expressions, so a term like `tooltip` matches rows. [fix the markup, keep raw expressions] Fixed in the React app: decision 8 in `code-architecture.md`: formula HTML is not searched, raw expressions are.
+- [x] **Export markup:** formula HTML is only stripped when the header is in English, and never for program indicator formulas. [fix] Fixed in the React app: the export writes the plain text of each cell, in any language, with no formula HTML.
+- [x] **Advanced columns:** the advanced row needs all three advanced groups allowed, while the link shows with any one. A role with only some sees a link that does nothing. [fix] Fixed in the React app: each advanced column shows when its own group is allowed, and the link only when one of them is available.
 
 **Data Sets**
 
-- [ ] **Missed indicators:** indicators referencing a data element without a category option combo are not listed. The regex `#{(\w+)\.?\w+?}` captures only 10 of the 11 UID characters for `#{abcdefghijk}` (confirmed by running it). Programs already uses a corrected pattern. [fix]
+- [x] **Missed indicators:** indicators referencing a data element without a category option combo are not listed. The regex `#{(\w+)\.?\w+?}` captures only 10 of the 11 UID characters for `#{abcdefghijk}` (confirmed by running it). Programs already uses a corrected pattern. [fix] Fixed in the React app: `#{de}` and `#{de.coc}` both count (`IndicatorFormula.referencesAnyDataElement`).
 
 **Programs**
 
-- [ ] **Rule variables entry:** the table of contents check reads `accesses.programRulesVariables`, while the key is `programRuleVariables`, so the entry never appears. [fix]
-- [ ] **Resources format:** the README documents `(ID1;ID2;...)`, but the code does not remove the parentheses. No program on 8098 uses this attribute. [confirm the real format]
-- [ ] **Toggle reset:** following a link from Indicators clears all session storage, which also resets the legacy elements toggle. [fix]
-- [ ] **Toggle loses the selection:** turning the toggle on with a program selected reloads the page, so the program must be selected again. [fix]
+- [x] **Rule variables entry:** the table of contents check reads `accesses.programRulesVariables`, while the key is `programRuleVariables`, so the entry never appears. [fix] Fixed in the React app: the table of contents uses the `programRuleVariables` key.
+- [x] **Resources format:** the README documents `(ID1;ID2;...)`, but the code does not remove the parentheses. No program on 8098 uses this attribute. [confirm the real format] Fixed in the React app: both `ID1;ID2` and `(ID1;ID2)` are read.
+- [x] **Toggle reset:** following a link from Indicators clears all session storage, which also resets the legacy elements toggle. [fix] Fixed in the React app: a link only removes its own key from the session storage.
+- [x] **Toggle loses the selection:** turning the toggle on with a program selected reloads the page, so the program must be selected again. [fix] Fixed in the React app: the toggle reloads the data, not the page, so the program stays selected.
 
 **Indicators**
 
 - [ ] **Links narrow the selector:** after following a link, the Data Sets or Programs selector lists only that item until the page reloads, and nothing is selected. [confirm the intent]
-- [ ] **Constants:** only two hardcoded constant UIDs are handled in formulas. [fix, using the constants API]
-- [ ] **Nested indicators:** the formula code handles `#`, `I`, `D`, `G` and `C`, but not `N{}`. [fix]
-- [ ] **Untranslated names:** this module uses `name` instead of `displayName`, so metadata is not translated, and its table of contents is hardcoded in English. [fix]
+- [x] **Constants:** only two hardcoded constant UIDs are handled in formulas. [fix, using the constants API] Fixed in the React app: constants are read from the API.
+- [x] **Nested indicators:** the formula code handles `#`, `I`, `D`, `G` and `C`, but not `N{}`. [fix] Fixed in the React app: `N{}` is resolved to the indicator name.
+- [x] **Untranslated names:** this module uses `name` instead of `displayName`, so metadata is not translated, and its table of contents is hardcoded in English. [fix] Fixed in the React app: the Indicators screen reads `displayName` and `displayDescription`, and its table of contents is translated.
 
 **Dossiers**
 
@@ -692,19 +692,19 @@ The suite does not pin any of them: where a scenario touches one, tests only cov
 
 **Admin**
 
-- [ ] **Not protected by URL:** non-admins can open `#/admin` directly, as only the tab is hidden. [fix]
-- [ ] **Reload race:** the submit buttons reload the page without waiting for the save to finish, so saves can be lost. This may also make baseline tests flaky. [fix]
+- [x] **Not protected by URL:** non-admins can open `#/admin` directly, as only the tab is hidden. [fix] Fixed in the React app: pages hidden in the menu are also hidden when opened by URL (`Router.tsx`).
+- [x] **Reload race:** the submit buttons reload the page without waiting for the save to finish, so saves can be lost. This may also make baseline tests flaky. [fix] Fixed in the React app: the page reloads only after the save succeeds.
 - [ ] **Writes on open:** just viewing the page can write `setup_dossierConfigComplete` and reload it. [keep the result, review the mechanism]
-- [ ] **Config never reverts:** that write only runs if the attribute check passes, so the flag can stay true. [fix]
+- [x] **Config never reverts:** that write only runs if the attribute check passes, so the flag can stay true. [fix] Fixed in the React app: the check saves `false` when it fails. Only a failed request leaves the flag as it was.
 
 **Shell and settings**
 
-- [ ] **Active tab:** on deep links, the code targets `#dossiersPrograms` and `#dossierIndicator`, while the ids are `dossierPrograms` and `dossierIndicators`. [fix]
-- [ ] **Print:** the print button stays disabled on Search and Admin. [keep]
-- [ ] **Layout settings merge:** Search and Data Sets merge stored settings with the defaults, while Programs and Indicators replace them, so new columns can go missing there. [fix]
+- [x] **Active tab:** on deep links, the code targets `#dossiersPrograms` and `#dossierIndicator`, while the ids are `dossierPrograms` and `dossierIndicators`. [fix] Fixed in the React app: the active tab follows the route.
+- [x] **Print:** the print button stays disabled on Search and Admin. [keep] Kept, as suggested: no print button on Search and Admin.
+- [x] **Layout settings merge:** Search and Data Sets merge stored settings with the defaults, while Programs and Indicators replace them, so new columns can go missing there. [fix] Fixed in the React app: stored settings merge over the defaults on all four screens (decision 2).
 - [ ] **Settings created on view:** the first visit to a module writes its settings to the dataStore, whichever user it is. [review]
-- [ ] **Missing translations:** en has 9 keys missing, which display as written (for example the `DataSets` column header). es, fr and pt lack about 26 to 29, and show English. ar lacks 10. [keep the English fallback, fix `DataSets`]
-- [ ] **Hardcoded UIDs:** attributes `pG4YeQyynJh` and `zC3TBJnSxar`, groups `LjRqO9XzQPs` and `epFY01iJN0Z`. All exist on 8098. [keep for now, move to configuration if other organisations will use the app]
+- [ ] **Missing translations:** en has 9 keys missing, which display as written (for example the `DataSets` column header). es, fr and pt lack about 26 to 29, and show English. ar lacks 10. [keep the English fallback, fix `DataSets`] In the React app: the five languages are imported, but `DataSets` still displays as written, and the strings added since (HIS features, load errors) are empty in es and fr.
+- [x] **Hardcoded UIDs:** attributes `pG4YeQyynJh` and `zC3TBJnSxar`, groups `LjRqO9XzQPs` and `epFY01iJN0Z`. All exist on 8098. [keep for now, move to configuration if other organisations will use the app] Kept, as suggested: still in `HardcodedIds.ts`.
 
 ## Out of scope
 
