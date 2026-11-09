@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2026-11-06T12:44:36.951Z\n"
+"POT-Creation-Date: 2026-11-09T08:57:31.005Z\n"
 "PO-Revision-Date: 2026-08-18T08:31:01.792Z\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -240,6 +240,15 @@ msgstr "Elementos de datos o indicadores - Descripciones"
 
 msgid "Services - Basics"
 msgstr "Servicios - Conceptos básicos"
+
+msgid "Some sections could not be loaded"
+msgstr ""
+
+msgid "Unknown error"
+msgstr ""
+
+msgid "The sections that depend on them are not shown either."
+msgstr ""
 
 msgid "Loading..."
 msgstr "Cargando..."
@@ -709,6 +718,12 @@ msgstr "Seleccione un programa"
 
 msgid "Describing expressions"
 msgstr "Describiendo expresiones"
+
+msgid "Legacy options"
+msgstr ""
+
+msgid "Program stages"
+msgstr ""
 
 msgid "Stage"
 msgstr "Etapa"

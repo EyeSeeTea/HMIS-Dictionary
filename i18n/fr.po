@@ -5,7 +5,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-11-06T12:44:36.951Z\n"
+"POT-Creation-Date: 2026-11-09T08:57:31.005Z\n"
 "PO-Revision-Date: 2026-11-05T19:43:47.436Z\n"
 "Language: fr\n"
 
@@ -241,6 +241,15 @@ msgstr "Éléments de données ou indicateurs - Descriptions"
 
 msgid "Services - Basics"
 msgstr "Services - Principes de base"
+
+msgid "Some sections could not be loaded"
+msgstr ""
+
+msgid "Unknown error"
+msgstr ""
+
+msgid "The sections that depend on them are not shown either."
+msgstr ""
 
 msgid "Loading..."
 msgstr "Chargement..."
@@ -711,6 +720,12 @@ msgstr "Sélectionner un programme"
 
 msgid "Describing expressions"
 msgstr "Description des expressions"
+
+msgid "Legacy options"
+msgstr ""
+
+msgid "Program stages"
+msgstr ""
 
 msgid "Stage"
 msgstr "Étape"

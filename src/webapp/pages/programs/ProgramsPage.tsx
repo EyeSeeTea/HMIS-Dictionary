@@ -15,6 +15,7 @@ import { PageHeader } from "$/webapp/components/page-header/PageHeader";
 import { PrintButton } from "$/webapp/components/print-button/PrintButton";
 import { ExportButton } from "$/webapp/components/export-button/ExportButton";
 import { ItemSelector } from "$/webapp/components/item-selector/ItemSelector";
+import { LoadErrors } from "$/webapp/components/load-errors/LoadErrors";
 import { LoadingBanner } from "$/webapp/components/loading-banner/LoadingBanner";
 import { ProgressBar } from "$/webapp/components/progress-bar/ProgressBar";
 import { HtmlContent } from "$/webapp/components/html-content/HtmlContent";
@@ -303,6 +304,19 @@ export const ProgramsPage: React.FC = React.memo(() => {
 
                 <LoadingBanner visible={isLoading} />
                 <ProgressBar progress={progress} label={i18n.t("Describing expressions")} />
+                <LoadErrors
+                    pieces={[
+                        { label: t.dos_Programs(), loader: list },
+                        { label: i18n.t("Legacy options"), loader: legacyIds },
+                        { label: t.dos_ProgramRules(), loader: rules },
+                        { label: i18n.t("Program stages"), loader: stages },
+                        { label: t.dos_TrackedEntityAttributes(), loader: attributes },
+                        { label: t.dos_ProgramIndicators(), loader: programIndicators },
+                        { label: t.dos_Indicators(), loader: relatedIndicators },
+                        { label: t.dos_ProgramRuleVariables(), loader: ruleVariables },
+                        { label: t.dos_Resources(), loader: resources },
+                    ]}
+                />
             </div>
 
             {program && (

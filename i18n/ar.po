@@ -5,7 +5,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-11-06T12:44:36.951Z\n"
+"POT-Creation-Date: 2026-11-09T08:57:31.005Z\n"
 "PO-Revision-Date: 2026-11-05T19:43:47.436Z\n"
 "Language: ar\n"
 
@@ -241,6 +241,15 @@ msgstr "عناصر البيانات أو المؤشرات - الأوصاف"
 
 msgid "Services - Basics"
 msgstr "الخدمات - الأساسيات"
+
+msgid "Some sections could not be loaded"
+msgstr ""
+
+msgid "Unknown error"
+msgstr ""
+
+msgid "The sections that depend on them are not shown either."
+msgstr ""
 
 msgid "Loading..."
 msgstr "جار التحميل..."
@@ -678,6 +687,12 @@ msgstr "اختر برنامجا"
 
 msgid "Describing expressions"
 msgstr "جار وصف التعبيرات"
+
+msgid "Legacy options"
+msgstr ""
+
+msgid "Program stages"
+msgstr ""
 
 msgid "Stage"
 msgstr "مرحلة"
