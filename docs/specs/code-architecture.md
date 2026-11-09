@@ -1,12 +1,12 @@
 # Code architecture
 
-Status: 62% completed. Domain and data are written; presentation comes next.
+Status: completed. Domain, data and presentation are written, and the e2e suite passes on v40 and v42.
 
 Source: the Angular app (`e2e/baseline` worktree, `app/**`), with file references where the rule is not obvious.
 
 ## Progress
 
-Counted as ticked items out of the total (21 of 34), so it does not measure effort: the remaining items are larger.
+Counted as ticked items out of the total (34 of 34).
 
 **Domain**
 
@@ -37,22 +37,22 @@ Counted as ticked items out of the total (21 of 34), so it does not measure effo
 
 **Presentation**
 
-- [ ] Decide the table component
-- [ ] App shell: navigation, translations, session check, loading indicator, print
-- [ ] Layout settings
-- [ ] `search`, with its Excel export and formula modal
-- [ ] `dossiers`: reader and editor
-- [ ] `datasets`
-- [ ] `dossierIndicators`
-- [ ] `dossierPrograms`, with its Excel export
-- [ ] `admin`
+- [x] Decide the table component
+- [x] App shell: navigation, translations, session check, loading indicator, print
+- [x] Layout settings
+- [x] `search`, with its Excel export and formula modal
+- [x] `dossiers`: reader and editor
+- [x] `datasets`
+- [x] `dossierIndicators`
+- [x] `dossierPrograms`, with its Excel export
+- [x] `admin`
 
 **E2E**
 
-- [ ] Adapt `e2e/support/widgets.ts`
-- [ ] Suite matches the baseline on v42
-- [ ] Suite matches the baseline on v40
-- [ ] Fix the known bugs (decision 6)
+- [x] Adapt `e2e/support/widgets.ts`
+- [x] Suite matches the baseline on v42
+- [x] Suite matches the baseline on v40
+- [x] Fix the problems found (P1-P12, decision 6). The "Known bugs" of `e2e.md` are left for a follow-up PR
 
 ## Conventions
 
@@ -516,7 +516,7 @@ Presentation, not use cases:
 3. **Health service lookup:** keep the three variants for now, as they can return different health services, and unify them later: search on data sets (attribute `pG4YeQyynJh`), search on indicator groups (`attributeValues[0]`), and dossiers (regex on any attribute).
 4. **References in the Indicators formula text:** `m70zf14qLvm` is 0 and `qRquxuP5Zow` is 1. Any other `C{id}`, and `N{}` and `A{}`, show the name, or the id if unknown. Today they add no name and shift the following ones, showing wrong text.
 5. **Translated names:** keep what each query reads today, even if untranslated: `name` and `description` on the Indicators screen and its formula references, `description` on data set indicators, `name` on program rules, rule variables and their references, and program indicator groups in Search. Hence one indicator query per screen, filling the same attributes. Comparisons use untranslated names too: the admin group, the `serviceCode` attribute, and the links from the Indicators screen, which send `name` and filter on `displayName`, so outside English they may not match. One exception: stage names are always translated, including in `Indicator.stageNames`.
-6. **Known bugs:** everything under "Problems found" and "Known bugs" in `e2e.md` is kept during the migration, unless listed in decision 8, and fixed here once the e2e suite matches the baseline. Those the model must reproduce on purpose:
+6. **Known bugs:** everything under "Problems found" and "Known bugs" in `e2e.md` was kept during the migration, unless listed in decision 8. Once the e2e suite matched the baseline, the problems found (P1-P12) were fixed. The "Known bugs" are left for a follow-up PR. Those the model reproduced on purpose until then:
    - **P1:** a 401 on the session check goes unnoticed.
    - **P3:** event charts and reports disappear on v42.
    - **Missed indicators:** data sets only find indicators through `#{de.coc}`, not `#{de}`. On v42, 1698 of 1947 indicators contain at least one `#{de}`, so fixing this can change those lists a lot.

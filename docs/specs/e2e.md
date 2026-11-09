@@ -112,7 +112,7 @@ Tests compare the UI against API responses rather than hardcoded counts, because
 - [x] The app loads standalone, at its direct URL
 - [x] The app appears in the DHIS2 app list as "HMIS Dictionary", with its icon
 - [x] Without a session, opening the app leads to the login page
-- [ ] If the session expires, switching module leads to the login page `[W]`
+- [x] If the session expires, switching module leads to the login page `[W]`
 
 **Navigation**
 
@@ -410,7 +410,7 @@ Language tests set the real `keyUiLocale` user setting on a test user `[W]`, so 
 
 - [x] Table lists the resources from the `HMIS-Dict_Resources` attribute, with its count `[W]`
 - [x] Dashboard and visualization resources show their label and link to the right app and id `[W]`
-- [ ] Event chart and event report resources are listed, with their label and a link to the right app and id `[W]`
+- [x] Event chart and event report resources are listed, with their label and a link to the right app and id `[W]`
 - [x] Program with no attribute value has no block or entry
 
 **Export**
@@ -532,8 +532,8 @@ Language tests set the real `keyUiLocale` user setting on a test user `[W]`, so 
 ### 11. Full runs
 
 - [x] Full suite passes against the AngularJS app on v42, as the baseline
-- [ ] Full suite passes against the React app on v42, changing only `E2E_BASE_URL` and the isolated helpers (after the migration)
-- [ ] Differences between the two apps are documented, each with an accepted reason (after the migration)
+- [x] Full suite passes against the React app on v42 and v40, changing only `E2E_BASE_URL` and the isolated helpers
+- [x] Differences between the two apps are documented, each with an accepted reason ("Differences accepted")
 
 **First run on the React app (v42, instance 8098, app served same-origin with a session)**
 
@@ -556,16 +556,11 @@ Differences, with their reason:
 
 **HIS integration:** the specs `12-his-*` to `38-his-*` cover the features in `his-integration.md`. Run them with `yarn test:e2e`, like the rest.
 
-**Last full run:** 294 passed, 7 skipped, 0 failed, 0 flaky, in 10.8 minutes, on the AngularJS app at `http://localhost:8098`. Of the 7 skipped, 2 are P1 and P3, and 5 are read-only versions of scenarios that 8098 has no data for, which the write tests cover with temporary metadata.
-
-### Not ticked
-
-- **Session expiry (P1)** and **event resources (P3):** the tests exist, but are marked `fixme` because the baseline does not behave that way.
-- **React run and differences between apps:** these wait for the migration.
+**Baseline run (AngularJS app):** 294 passed, 7 skipped, 0 failed, 0 flaky, in 10.8 minutes, on the AngularJS app at `http://localhost:8098`. Of the 7 skipped, 2 are P1 and P3, and 5 are read-only versions of scenarios that 8098 has no data for, which the write tests cover with temporary metadata.
 
 ### Problems found in the current app
 
-These are additions to "Known bugs", for the next iteration. The suite does not pin them, and comments in the specs refer to these numbers.
+All fixed or settled in the React app. Comments in the specs refer to these numbers.
 
 - [x] **P1. Session expiry goes unnoticed on v42.** With the session gone, `system/ping` returns 401 to XHR requests, and the app only reloads on a successful response that is not `pong`. The user stays on the page, with requests failing. Confirmed with `curl` and in the browser. Skipped test: section 1. Fixed in the React app: `SessionD2Repository` treats 401 and 403 as no session. Covered by section 1 and a unit test.
 - [x] **P2. Selecting a service too early loses its data sets.** The Dossiers selector is usable before the data sets request finishes. Selecting then shows 0 data sets, with no message. Seen in the browser; the cause comes from reading the code. Tests wait for the network to be idle before selecting. Fixed in the React app: the data sets load per selection. New test with the data sets request delayed.
@@ -582,7 +577,7 @@ These are additions to "Known bugs", for the next iteration. The suite does not 
 
 ### Latest results
 
-Both on `feature/d2-api-40-42` (uncommitted), 2026-11-06, with the `d2-api` 40 and 42 aliases and the same zip, with `--workers=4`.
+Both on `feature/d2-api-40-42`, 2026-11-06, with the `d2-api` 40 and 42 aliases and the same zip, with `--workers=4`.
 
 | Instance   | Passed | Failed | Flaky | Skipped |
 | ---------- | -----: | -----: | ----: | ------: |
@@ -609,6 +604,7 @@ The v42 count includes one test (`05-dossiers`, P2) rerun alone: its first run f
 - **`Regex characters` (test):** the match can be in a column that is not displayed, so it looks for a known row.
 - **`09-indicators` (test):** the selector shows `displayName`, and the test used `name`.
 - **Legacy options (test):** `Sex` also matched other rows, so it matches the exact cell. The cleanup empties the option group first, as 2.40 answers 409 otherwise.
+- **Silent errors on Programs (app):** a section whose request or mapping failed was not displayed, and nothing told the user. This is what hid the null options problem. The page now lists the pieces that failed to load, with their error (`LoadErrors`). Covered by `39-programs-load-errors` and a unit test.
 - **Login (test):** on 2.40 `/api/auth/login` redirects to the login page, which looked like a success.
 
 ### Skipped on v40
@@ -623,7 +619,6 @@ The 23 skipped tests are 18 more than on v42. Some of them skip for the whole te
 ### Limits and problems of these runs
 
 - **Shared session file:** `e2e/.auth/user.json` is one per folder, and other runs overwrite it, whichever instance they use. Do not run two suites from the same folder at once.
-- **Silent errors on Programs:** a section whose request or mapping fails is not displayed, and nothing tells the user. This hid the null options problem.
 
 ### Behaviour worth knowing
 
@@ -656,7 +651,7 @@ Tests accept both options for these, so React can choose.
 - Everything else was checked against a snapshot after the run: dataStore keys, service translations, and no `E2E_` metadata or new visualizations left.
 - The `description` of the BOAT Medical Linelist stage was edited and restored.
 
-## Known bugs (NOTHING TO DO IN THIS ITERATION)
+## Known bugs (for a follow-up PR)
 
 These come from reading the code and have not been reproduced in a browser, except where noted. My suggestion is in brackets.
 
