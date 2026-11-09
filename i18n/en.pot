@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-11-09T08:57:31.005Z\n"
-"PO-Revision-Date: 2026-11-09T08:57:31.005Z\n"
+"POT-Creation-Date: 2026-11-09T10:42:24.229Z\n"
+"PO-Revision-Date: 2026-11-09T10:42:24.229Z\n"
 
 msgid "No data"
 msgstr ""
@@ -15,41 +15,6 @@ msgid "Something went wrong"
 msgstr ""
 
 msgid "Reload the page. If the problem persists, contact your administrator."
-msgstr ""
-
-msgid "Settings"
-msgstr ""
-
-msgid "Close"
-msgstr ""
-
-msgid ""
-"User group ids (JSON array) whose users are Advanced Users, for example "
-"[\"abc\"]"
-msgstr ""
-
-msgid "Admin"
-msgstr ""
-
-msgid "Advanced User"
-msgstr ""
-
-msgid "Normal User"
-msgstr ""
-
-msgid "Restore changes"
-msgstr ""
-
-msgid "Apply changes"
-msgstr ""
-
-msgid "Invalid array format"
-msgstr ""
-
-msgid "All UID's must be a valid userGroup"
-msgstr ""
-
-msgid "The settings could not be saved"
 msgstr ""
 
 msgid "Aggregation Type"
@@ -241,6 +206,41 @@ msgstr ""
 msgid "Services - Basics"
 msgstr ""
 
+msgid "Settings"
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid ""
+"User group ids (JSON array) whose users are Advanced Users, for example "
+"[\"abc\"]"
+msgstr ""
+
+msgid "Admin"
+msgstr ""
+
+msgid "Advanced User"
+msgstr ""
+
+msgid "Normal User"
+msgstr ""
+
+msgid "Restore changes"
+msgstr ""
+
+msgid "Apply changes"
+msgstr ""
+
+msgid "Invalid array format"
+msgstr ""
+
+msgid "All UID's must be a valid userGroup"
+msgstr ""
+
+msgid "The settings could not be saved"
+msgstr ""
+
 msgid "Some sections could not be loaded"
 msgstr ""
 
@@ -289,16 +289,40 @@ msgstr ""
 msgid "Next page"
 msgstr ""
 
+msgid "Total: {{total}}"
+msgstr ""
+
 msgid "View Table"
+msgstr ""
+
+msgid "The arrays should be formatted as follows:"
 msgstr ""
 
 msgid "About this version"
 msgstr ""
 
+msgid ""
+"This version of the app has been tested for dhis v2.42.4 with default "
+"locale assumed to be English and accepts translations in Spanish, French, "
+"Portuguese and Arabic. The latest version is available at:"
+msgstr ""
+
 msgid "The setting could not be saved"
 msgstr ""
 
+msgid "Dossiers configuration check:"
+msgstr ""
+
+msgid "Details:"
+msgstr ""
+
+msgid "A userGroup is defined for administrators:"
+msgstr ""
+
 msgid "User group"
+msgstr ""
+
+msgid "The members of this userGroup will have access to:"
 msgstr ""
 
 msgid "the 'Admin' panel (which you are currently visualizing) and,"
@@ -318,7 +342,13 @@ msgid ""
 "list of services... and each of the organisationUnitGroups have a code."
 msgstr ""
 
+msgid "To compile the information in the 'Dossiers' panel, the app reads:"
+msgstr ""
+
 msgid "the translations from the organisationUnitGroups names and descriptions and,"
+msgstr ""
+
+msgid "the code should be formatted as follows, for instance:"
 msgstr ""
 
 msgid ""
@@ -326,7 +356,17 @@ msgid ""
 "and indicatorGroups."
 msgstr ""
 
+msgid ""
+"The serviceCode should correspond to, at least, one code of a service. They "
+"should be formatted as follows:"
+msgstr ""
+
 msgid "where CD1 is an example of code used for a service."
+msgstr ""
+
+msgid ""
+"One or more codes can be added in the case of dataSets or indicatorGroups "
+"used in multiple services:"
 msgstr ""
 
 msgid "[Optional] An array of dataElementGroups UIDs to blacklist from the panels."
@@ -396,6 +436,9 @@ msgid ""
 "panel unless the 'Show legacy data elements and options' option is enabled."
 msgstr ""
 
+msgid "About dataElements and indicators:"
+msgstr ""
+
 msgid ""
 "dataElements are listed unless they belong to a blacklisted data element "
 "group. Blacklisted dataset will not be displayed in the results. In the "
@@ -444,6 +487,9 @@ msgid "Data Sets"
 msgstr ""
 
 msgid "Select a Data Set"
+msgstr ""
+
+msgid "Number of Data Sets: {{count}}"
 msgstr ""
 
 msgid "Describing indicators"
@@ -605,9 +651,6 @@ msgstr ""
 msgid "Number"
 msgstr ""
 
-msgid "Select an Indicator"
-msgstr ""
-
 msgid "Denotes the respective dataset with which the indicator belongs to."
 msgstr ""
 
@@ -645,6 +688,12 @@ msgstr ""
 msgid ""
 "Defines the title of the indicator numerator based on what the indicator "
 "calculates"
+msgstr ""
+
+msgid "Select an Indicator"
+msgstr ""
+
+msgid "Number of Indicators: {{count}}"
 msgstr ""
 
 msgid "Defines the short name, used in compact displays and analytics."
@@ -690,9 +739,6 @@ msgid "Repeatable"
 msgstr ""
 
 msgid "Program Resources"
-msgstr ""
-
-msgid "You have no access to the data of this program"
 msgstr ""
 
 msgid "Actions Types"
@@ -1018,7 +1064,13 @@ msgid ""
 "data collected in an entry form."
 msgstr ""
 
+msgid "You have no access to the data of this program"
+msgstr ""
+
 msgid "Show / Hide advanced columns"
+msgstr ""
+
+msgid "[cyclic indicator reference: {{name}}]"
 msgstr ""
 
 msgid "Search"
@@ -1137,6 +1189,9 @@ msgstr ""
 msgid "Expand"
 msgstr ""
 
+msgid "Max Depth (1-10):"
+msgstr ""
+
 msgid ""
 "<p><b>Combining terms in the search:</b></p><ul><li><code>a b</code>: rows "
 "with all the words, in any order and in any column. Rows with the exact "
@@ -1176,3 +1231,4 @@ msgstr ""
 
 msgid "Search by name"
 msgstr ""
+

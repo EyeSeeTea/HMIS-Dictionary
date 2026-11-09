@@ -5,7 +5,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-11-09T08:57:31.005Z\n"
+"POT-Creation-Date: 2026-11-09T10:42:24.229Z\n"
 "PO-Revision-Date: 2026-11-05T19:43:47.436Z\n"
 "Language: pt\n"
 
@@ -13,45 +13,10 @@ msgid "No data"
 msgstr "Sem dados"
 
 msgid "Something went wrong"
-msgstr ""
+msgstr "Algo correu mal"
 
 msgid "Reload the page. If the problem persists, contact your administrator."
-msgstr ""
-
-msgid "Settings"
-msgstr ""
-
-msgid "Close"
-msgstr "Fechar"
-
-msgid ""
-"User group ids (JSON array) whose users are Advanced Users, for example "
-"[\"abc\"]"
-msgstr ""
-
-msgid "Admin"
-msgstr ""
-
-msgid "Advanced User"
-msgstr "Usuário avançado"
-
-msgid "Normal User"
-msgstr "Usuário normal"
-
-msgid "Restore changes"
-msgstr "Restaurar alterações"
-
-msgid "Apply changes"
-msgstr "Aplicar alterações"
-
-msgid "Invalid array format"
-msgstr "Formato de lista inválido"
-
-msgid "All UID's must be a valid userGroup"
-msgstr "Todos os UID devem ser grupos de usuários válidos"
-
-msgid "The settings could not be saved"
-msgstr "Não foi possível salvar as configurações"
+msgstr "Recarregue a página. Se o problema persistir, contacte o seu administrador."
 
 msgid "Aggregation Type"
 msgstr "Tipo de agregação"
@@ -69,10 +34,10 @@ msgid "Calculation Mode"
 msgstr "Modo de cálculo"
 
 msgid "Categories"
-msgstr ""
+msgstr "Categorias"
 
 msgid "Category Combination"
-msgstr ""
+msgstr "Combinação de categorias"
 
 msgid "Category Combinations"
 msgstr "Combinações de categorias"
@@ -84,16 +49,16 @@ msgid "Data Element"
 msgstr "Elemento de dados"
 
 msgid "DataSets"
-msgstr ""
+msgstr "Conjuntos de dados"
 
 msgid "DataTypeElement"
-msgstr ""
+msgstr "Tipo de elemento"
 
 msgid "Denominator"
 msgstr "Denominador"
 
 msgid "Denominator description"
-msgstr ""
+msgstr "Descrição do denominador"
 
 msgid "Description"
 msgstr "Descrição"
@@ -105,7 +70,7 @@ msgid "Filter"
 msgstr "Filtrar"
 
 msgid "Form Name"
-msgstr ""
+msgstr "Nome no formulário"
 
 msgid "Formula of Indicator"
 msgstr "Fórmula do indicador"
@@ -114,7 +79,7 @@ msgid "Indicators"
 msgstr "Indicadores"
 
 msgid "Items"
-msgstr ""
+msgstr "Itens"
 
 msgid "Mandatory"
 msgstr "Obrigatório"
@@ -135,7 +100,7 @@ msgid "Options"
 msgstr "Opções"
 
 msgid "Program"
-msgstr ""
+msgstr "Programa"
 
 msgid "Program Indicators"
 msgstr "Indicadores do programa"
@@ -195,10 +160,10 @@ msgid "Group Name"
 msgstr "Conjunto de Dados/Grupo de Indicadores"
 
 msgid "Data Element Groups"
-msgstr ""
+msgstr "Grupos de elementos de dados"
 
 msgid "ICD10"
-msgstr ""
+msgstr "CID10"
 
 msgid "Code"
 msgstr "Código"
@@ -216,7 +181,7 @@ msgid "Form name (datae. only)"
 msgstr "Nome do formulário (somente el. de dados)"
 
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 msgid "Numerator Formula (ind. only)"
 msgstr "Fórmula Numerador (ind. Somente)"
@@ -242,29 +207,66 @@ msgstr "Elementos de dados ou indicadores - Descrições"
 msgid "Services - Basics"
 msgstr "Serviços - noções básicas"
 
-msgid "Some sections could not be loaded"
+msgid "Settings"
+msgstr "Configurações"
+
+msgid "Close"
+msgstr "Fechar"
+
+msgid ""
+"User group ids (JSON array) whose users are Advanced Users, for example "
+"[\"abc\"]"
 msgstr ""
+"Ids de grupos de utilizadores (array JSON) cujos utilizadores são "
+"utilizadores avançados, por exemplo [\"abc\"]"
+
+msgid "Admin"
+msgstr "Admin"
+
+msgid "Advanced User"
+msgstr "Usuário avançado"
+
+msgid "Normal User"
+msgstr "Usuário normal"
+
+msgid "Restore changes"
+msgstr "Restaurar alterações"
+
+msgid "Apply changes"
+msgstr "Aplicar alterações"
+
+msgid "Invalid array format"
+msgstr "Formato de lista inválido"
+
+msgid "All UID's must be a valid userGroup"
+msgstr "Todos os UID devem ser grupos de usuários válidos"
+
+msgid "The settings could not be saved"
+msgstr "Não foi possível salvar as configurações"
+
+msgid "Some sections could not be loaded"
+msgstr "Não foi possível carregar algumas seções"
 
 msgid "Unknown error"
-msgstr ""
+msgstr "Erro desconhecido"
 
 msgid "The sections that depend on them are not shown either."
-msgstr ""
+msgstr "As seções que dependem delas também não são mostradas."
 
 msgid "Loading..."
 msgstr "Carregando..."
 
 msgid "Organisation units"
-msgstr ""
+msgstr "Unidades organizacionais"
 
 msgid "No organisation units"
-msgstr ""
+msgstr "Sem unidades organizacionais"
 
 msgid "Assigned organisation units"
-msgstr ""
+msgstr "Unidades organizacionais atribuídas"
 
 msgid "Back"
-msgstr ""
+msgstr "Voltar"
 
 msgid "Help"
 msgstr "Ajuda"
@@ -273,13 +275,13 @@ msgid "Print"
 msgstr "Imprimir"
 
 msgid "Print selection"
-msgstr ""
+msgstr "Seleção para impressão"
 
 msgid "Table of Content"
 msgstr "Tabela de Conteúdo"
 
 msgid "Go to Index"
-msgstr ""
+msgstr "Ir para o índice"
 
 msgid "Back to Top"
 msgstr "Voltar ao topo"
@@ -290,112 +292,192 @@ msgstr "Página anterior"
 msgid "Next page"
 msgstr "Próxima página"
 
+msgid "Total: {{total}}"
+msgstr "Total: {{total}}"
+
 msgid "View Table"
-msgstr ""
+msgstr "Ver tabela"
+
+msgid "The arrays should be formatted as follows:"
+msgstr "Os arrays devem ter este formato:"
 
 msgid "About this version"
+msgstr "Sobre esta versão"
+
+msgid ""
+"This version of the app has been tested for dhis v2.42.4 with default "
+"locale assumed to be English and accepts translations in Spanish, French, "
+"Portuguese and Arabic. The latest version is available at:"
 msgstr ""
+"Esta versão da aplicação foi testada com o dhis v2.42.4, com o inglês como "
+"idioma predefinido, e aceita traduções em espanhol, francês, português e "
+"árabe. A versão mais recente está disponível em:"
 
 msgid "The setting could not be saved"
 msgstr "Não foi possível salvar a configuração"
 
+msgid "Dossiers configuration check:"
+msgstr "Verificação da configuração dos dossiês:"
+
+msgid "Details:"
+msgstr "Detalhes:"
+
+msgid "A userGroup is defined for administrators:"
+msgstr "Existe um userGroup definido para os administradores:"
+
 msgid "User group"
-msgstr ""
+msgstr "Grupo de utilizadores"
+
+msgid "The members of this userGroup will have access to:"
+msgstr "Os membros deste userGroup terão acesso a:"
 
 msgid "the 'Admin' panel (which you are currently visualizing) and,"
-msgstr ""
+msgstr "o painel 'Admin' (o que está a ver agora) e,"
 
 msgid "to the service description editor in the 'Dossier' panel."
-msgstr ""
+msgstr "ao editor de descrições de serviços do painel 'Dossiê'."
 
 msgid "An organisationUnitGroupSet is defined to contain the list of services."
-msgstr ""
+msgstr "Existe um organisationUnitGroupSet definido para conter a lista de serviços."
 
 msgid "Organisation unit group set"
-msgstr ""
+msgstr "Conjunto de grupos de unidades organizacionais"
 
 msgid ""
 "organisationUnitGroups are associated to the organisationUnitGroupSet as a "
 "list of services... and each of the organisationUnitGroups have a code."
 msgstr ""
+"Os organisationUnitGroups estão associados ao organisationUnitGroupSet como "
+"uma lista de serviços... e cada um dos organisationUnitGroups tem um código."
+
+msgid "To compile the information in the 'Dossiers' panel, the app reads:"
+msgstr "Para reunir a informação do painel 'Dossiês', a aplicação lê:"
 
 msgid "the translations from the organisationUnitGroups names and descriptions and,"
-msgstr ""
+msgstr "as traduções dos nomes e descrições dos organisationUnitGroups e,"
+
+msgid "the code should be formatted as follows, for instance:"
+msgstr "o código deve ter este formato, por exemplo:"
 
 msgid ""
 "An attribute named 'serviceCode' is defined and associated with dataSets "
 "and indicatorGroups."
 msgstr ""
+"Existe um atributo chamado 'serviceCode' definido e associado a dataSets e "
+"indicatorGroups."
+
+msgid ""
+"The serviceCode should correspond to, at least, one code of a service. They "
+"should be formatted as follows:"
+msgstr ""
+"O serviceCode deve corresponder a, pelo menos, um código de um serviço. "
+"Deve ter este formato:"
 
 msgid "where CD1 is an example of code used for a service."
+msgstr "onde CD1 é um exemplo de código usado para um serviço."
+
+msgid ""
+"One or more codes can be added in the case of dataSets or indicatorGroups "
+"used in multiple services:"
 msgstr ""
+"Podem ser adicionados um ou mais códigos no caso de dataSets ou "
+"indicatorGroups usados em vários serviços:"
 
 msgid "[Optional] An array of dataElementGroups UIDs to blacklist from the panels."
-msgstr ""
+msgstr "[Opcional] Um array de UIDs de dataElementGroups a excluir dos painéis."
 
 msgid "[Optional] An array of dataSets UIDs to blacklist from the panels."
-msgstr ""
+msgstr "[Opcional] Um array de UIDs de dataSets a excluir dos painéis."
 
 msgid "[Optional] An array of programs UIDs to blacklist from the panels."
-msgstr ""
+msgstr "[Opcional] Um array de UIDs de programas a excluir dos painéis."
 
 msgid "[Optional] An array of indicatorGroups UIDs to blacklist from the panels."
-msgstr ""
+msgstr "[Opcional] Um array de UIDs de indicatorGroups a excluir dos painéis."
 
 msgid ""
 "[Optional] Text of the tag to display for blacklisted elements in Search "
 "panel indicator formulas."
 msgstr ""
+"[Opcional] Texto da etiqueta mostrada para os elementos na lista negra nas "
+"fórmulas dos indicadores do painel de pesquisa."
 
 msgid ""
 "These groups contain blacklisted elements and will not be displayed in the "
 "panels."
 msgstr ""
+"Estes grupos contêm elementos na lista negra e não serão mostrados nos "
+"painéis."
 
 msgid ""
 "The tag text field is used to mark metadata elements in the blacklisted "
 "groups present in Indicator formulas. If no value is set it will default to "
 "Blacklisted."
 msgstr ""
+"O campo de texto da etiqueta serve para marcar os elementos de metadados "
+"dos grupos na lista negra presentes nas fórmulas dos indicadores. Se não "
+"for indicado nenhum valor, será usado Blacklisted."
 
 msgid ""
 "[Optional] An array of not in use indicatorGroups UIDs to hide in the "
 "panels for non-admin users."
 msgstr ""
+"[Opcional] Um array de UIDs de indicatorGroups não utilizados a ocultar nos "
+"painéis para utilizadores que não são administradores."
 
 msgid ""
 "[Optional] An array of not in use programIndicatorGroups UIDs to hide in "
 "the panels for non-admin users."
 msgstr ""
+"[Opcional] Um array de UIDs de programIndicatorGroups não utilizados a "
+"ocultar nos painéis para utilizadores que não são administradores."
 
 msgid ""
 "[Optional] Text of the tag to display for not in use elements in Search "
 "panel indicator formulas."
 msgstr ""
+"[Opcional] Texto da etiqueta mostrada para os elementos não utilizados nas "
+"fórmulas dos indicadores do painel de pesquisa."
 
 msgid ""
 "These groups contain elements that are not in use and will be hidden in the "
 "panels for non-admin users but visible for admin users."
 msgstr ""
+"Estes grupos contêm elementos não utilizados que serão ocultados nos "
+"painéis para utilizadores que não são administradores, mas visíveis para os "
+"administradores."
 
 msgid ""
 "The tag text field is used to mark metadata elements in the not in use "
 "groups present in Indicator formulas. If no value is set it will default to "
 "Not in Use."
 msgstr ""
+"O campo de texto da etiqueta serve para marcar os elementos de metadados "
+"dos grupos não utilizados presentes nas fórmulas dos indicadores. Se não "
+"for indicado nenhum valor, será usado Not in Use."
 
 msgid ""
 "[Optional] An array of legacy dataElementGroups UIDs for the 'Programs' "
 "panel."
 msgstr ""
+"[Opcional] Um array de UIDs de dataElementGroups obsoletos para o painel "
+"'Programas'."
 
 msgid "[Optional] An array of legacy optionGroups UIDs for the 'Programs' panel."
 msgstr ""
+"[Opcional] Um array de UIDs de optionGroups obsoletos para o painel "
+"'Programas'."
 
 msgid ""
 "These groups contain legacy elements that will be hidden in the 'Programs' "
 "panel unless the 'Show legacy data elements and options' option is enabled."
 msgstr ""
+"Estes grupos contêm elementos obsoletos que serão ocultados no painel "
+"'Programas', a menos que a opção 'Mostrar elementos de dados e opções "
+"obsoletos' esteja ativada."
+
+msgid "About dataElements and indicators:"
+msgstr "Sobre dataElements e indicadores:"
 
 msgid ""
 "dataElements are listed unless they belong to a blacklisted data element "
@@ -404,6 +486,12 @@ msgid ""
 "domain. In the tables, the principal information used to display in columns "
 "is Name, Form Name and Description and their translations."
 msgstr ""
+"Os dataElements são listados a menos que pertençam a um grupo de elementos "
+"de dados na lista negra. Os conjuntos de dados na lista negra não serão "
+"mostrados nos resultados. No painel 'Pesquisar', só são mostrados "
+"dataElements do domínio 'Agregado'. Nas tabelas, a informação principal "
+"mostrada em colunas é o nome, o nome no formulário e a descrição, com as "
+"suas traduções."
 
 msgid ""
 "indicators have to be associated to a indicatorGroup (not blacklisted) to "
@@ -411,14 +499,20 @@ msgid ""
 "principal information used to display in columns is Name and Description "
 "and their translations."
 msgstr ""
+"Os indicadores têm de estar associados a um indicatorGroup (fora da lista "
+"negra) para aparecerem nos painéis 'Pesquisar' e 'Indicadores'. Nas "
+"tabelas, a informação principal mostrada em colunas é o nome e a descrição, "
+"com as suas traduções."
 
 msgid "Selectors of Data Sets and Programs"
-msgstr ""
+msgstr "Seletores de conjuntos de dados e programas"
 
 msgid ""
 "Only list the data sets and programs assigned to the organisation units of "
 "the user, or to their descendants."
 msgstr ""
+"Mostrar apenas os conjuntos de dados e programas atribuídos às unidades "
+"organizacionais do utilizador, ou aos seus descendentes."
 
 msgid "Select..."
 msgstr "Selecionar..."
@@ -427,19 +521,19 @@ msgid "Submit"
 msgstr "Enviar"
 
 msgid "Defines how the values of the data element are aggregated."
-msgstr ""
+msgstr "Define como os valores do elemento de dados são agregados."
 
 msgid "Number of Elements in Section"
-msgstr ""
+msgstr "Número de elementos na seção"
 
 msgid "No data elements"
 msgstr "Sem elementos de dados"
 
 msgid "Data Elements Columns"
-msgstr ""
+msgstr "Colunas de elementos de dados"
 
 msgid "Indicator Columns"
-msgstr ""
+msgstr "Colunas de indicadores"
 
 msgid "Data Sets"
 msgstr "Conjunto de Dados"
@@ -447,14 +541,17 @@ msgstr "Conjunto de Dados"
 msgid "Select a Data Set"
 msgstr "Selecione um conjunto de dados"
 
+msgid "Number of Data Sets: {{count}}"
+msgstr "Número de conjuntos de dados: {{count}}"
+
 msgid "Describing indicators"
 msgstr "Descrevendo indicadores"
 
 msgid "Data elements"
-msgstr ""
+msgstr "Elementos de dados"
 
 msgid "Category combinations"
-msgstr ""
+msgstr "Combinações de categorias"
 
 msgid "Defines the categories assigned for that dataset."
 msgstr "Define as categorias atribuídas para esse conjunto de dados."
@@ -615,25 +712,22 @@ msgid "Comments"
 msgstr "Comentários"
 
 msgid "No Value"
-msgstr ""
+msgstr "Sem valor"
 
 msgid "Data Element - Aggregate Value"
-msgstr ""
+msgstr "Elemento de dados - Valor agregado"
 
 msgid "Data Element - Tracker Value"
-msgstr ""
+msgstr "Elemento de dados - Valor de tracker"
 
 msgid "Program Indicator"
-msgstr ""
+msgstr "Indicador do programa"
 
 msgid "Organisation Unit Group"
-msgstr ""
+msgstr "Grupo de unidades organizacionais"
 
 msgid "Number"
-msgstr ""
-
-msgid "Select an Indicator"
-msgstr "Selecione um indicador"
+msgstr "Número"
 
 msgid "Denotes the respective dataset with which the indicator belongs to."
 msgstr "Designa o conjunto de dados a que o indicador pertence."
@@ -686,29 +780,35 @@ msgstr ""
 "Define o título do numerador do indicador com base no que o indicador "
 "calcula."
 
+msgid "Select an Indicator"
+msgstr "Selecione um indicador"
+
+msgid "Number of Indicators: {{count}}"
+msgstr "Número de indicadores: {{count}}"
+
 msgid "Defines the short name, used in compact displays and analytics."
-msgstr ""
+msgstr "Define o nome curto, usado em vistas compactas e em análises."
 
 msgid "Number of Rules in Program"
-msgstr ""
+msgstr "Número de regras no programa"
 
 msgid "There is nothing to export"
-msgstr ""
+msgstr "Não há nada para exportar"
 
 msgid "Other sections"
-msgstr ""
+msgstr "Outras seções"
 
 msgid "Tracked Entity Attribute Columns"
-msgstr ""
+msgstr "Colunas de atributos da entidade rastreada"
 
 msgid "Program Indicator Columns"
-msgstr ""
+msgstr "Colunas de indicadores do programa"
 
 msgid "Program Rule Columns"
-msgstr ""
+msgstr "Colunas das regras do programa"
 
 msgid "Program Rule Variable Columns"
-msgstr ""
+msgstr "Colunas das variáveis das regras do programa"
 
 msgid "Select a program"
 msgstr "Selecione um programa"
@@ -717,22 +817,19 @@ msgid "Describing expressions"
 msgstr "Descrevendo expressões"
 
 msgid "Legacy options"
-msgstr ""
+msgstr "Opções obsoletas"
 
 msgid "Program stages"
-msgstr ""
+msgstr "Etapas do programa"
 
 msgid "Stage"
 msgstr "Etapa"
 
 msgid "Repeatable"
-msgstr ""
+msgstr "Repetível"
 
 msgid "Program Resources"
-msgstr ""
-
-msgid "You have no access to the data of this program"
-msgstr ""
+msgstr "Recursos do programa"
 
 msgid "Actions Types"
 msgstr "Tipos de ações"
@@ -853,6 +950,9 @@ msgid ""
 "HMIS system, primarily used for tracking and managing health-related "
 "activities, services, or interventions."
 msgstr ""
+"Refere-se aos detalhes e à configuração de um programa de saúde no sistema "
+"HMIS, usado principalmente para acompanhar e gerir atividades, serviços ou "
+"intervenções de saúde."
 
 msgid ""
 "Defines the title of the Indicator denominator for what the indicator "
@@ -1127,8 +1227,14 @@ msgstr ""
 "Define um tipo de valor de dados do atributo de entidade rastreada para "
 "dados do doente recolhidos num formulário de entrada."
 
+msgid "You have no access to the data of this program"
+msgstr "Não tem acesso aos dados deste programa"
+
 msgid "Show / Hide advanced columns"
 msgstr "Mostrar / Ocultar colunas avançadas"
+
+msgid "[cyclic indicator reference: {{name}}]"
+msgstr "[referência cíclica de indicador: {{name}}]"
 
 msgid "Search"
 msgstr "Pesquisar"
@@ -1242,12 +1348,14 @@ msgstr ""
 "indicador de programa."
 
 msgid "Defines the data element groups a data element belongs to."
-msgstr ""
+msgstr "Define os grupos de elementos de dados a que pertence um elemento de dados."
 
 msgid ""
 "Defines the program of a program indicator, or the programs that use a "
 "tracker data element."
 msgstr ""
+"Define o programa de um indicador do programa, ou os programas que usam um "
+"elemento de dados de tracker."
 
 msgid ""
 "Defines the unique service ID of the data element or indicator used in a "
@@ -1281,6 +1389,9 @@ msgstr "Selecione Colunas"
 msgid "Expand"
 msgstr "Expandir"
 
+msgid "Max Depth (1-10):"
+msgstr "Profundidade máxima (1-10):"
+
 msgid ""
 "<p><b>Combining terms in the search:</b></p><ul><li><code>a b</code>: rows "
 "with all the words, in any order and in any column. Rows with the exact "
@@ -1300,6 +1411,24 @@ msgid ""
 "data elements to collect individual patient data for a particular medical "
 "service.</li></ul>"
 msgstr ""
+"<p><b>Combinar termos na pesquisa:</b></p><ul><li><code>a b</code>: linhas "
+"com todas as palavras, em qualquer ordem e em qualquer coluna. As linhas "
+"com a frase exata aparecem primeiro.</li><li><code>a &amp; b</code>: linhas "
+"com todos os termos.</li><li><code>a | b</code>: linhas com qualquer um dos "
+"termos.</li></ul><p><b>Terminologia do DHIS2:</b></p><ul><li><b>Elemento de "
+"dados:</b> um dado contado ou um dado bruto.</li><li><b>Indicador:</b> "
+"dados combinados ou cálculos que o sistema faz com elementos de dados. "
+"Podem ser totais, percentagens, taxas, etc.</li><li><b>Indicador do "
+"programa:</b> um cálculo ou filtro sobre dados individuais (registados em "
+"Programas). Alguns indicadores do programa podem fazer parte de um "
+"indicador (no seu numerador ou denominador).</li><li><b>Grupo:</b> os "
+"elementos de dados de um mesmo conjunto de dados, no todo ou em parte, são "
+"agrupados num grupo de elementos de dados. Os indicadores relacionados são "
+"agrupados num grupo de indicadores.</li><li><b>Conjunto de dados:</b> "
+"formado por elementos de dados para recolher dados agregados ou totais de "
+"um serviço médico específico.</li><li><b>Programa:</b> formado por "
+"elementos de dados para recolher dados individuais de pacientes de um "
+"serviço médico específico.</li></ul>"
 
 msgid ""
 "<p>This interface is made to simplify user access the terminology "
@@ -1329,7 +1458,7 @@ msgstr ""
 "esqueça de salvar como .xls).</p>"
 
 msgid "Dossier editor"
-msgstr ""
+msgstr "Editor de dossiês"
 
 msgid "Search by name"
-msgstr ""
+msgstr "Pesquisar por nome"
