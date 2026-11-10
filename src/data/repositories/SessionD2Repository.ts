@@ -17,6 +17,9 @@ export class SessionD2Repository implements SessionRepository {
                 method: "get",
                 url: "/system/ping",
                 responseDataType: "raw",
+                // Without a session, DHIS2 then answers 401 instead of redirecting to the login
+                // page, a redirect the browser blocks when it goes from https to http (as on qa1)
+                headers: { "X-Requested-With": "XMLHttpRequest" },
             })
         )
             .flatMap(blob => Future.fromComputation<Error, string>(readBlob(blob)))
