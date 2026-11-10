@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-11-09T10:42:24.229Z\n"
-"PO-Revision-Date: 2026-11-09T10:42:24.229Z\n"
+"POT-Creation-Date: 2026-11-10T09:53:28.305Z\n"
+"PO-Revision-Date: 2026-11-10T09:53:28.305Z\n"
 
 msgid "No data"
 msgstr ""
@@ -352,13 +352,16 @@ msgid "the code should be formatted as follows, for instance:"
 msgstr ""
 
 msgid ""
-"An attribute named 'serviceCode' is defined and associated with dataSets "
-"and indicatorGroups."
+"An attribute is selected for the service codes, and it is associated with "
+"dataSets and indicatorGroups."
+msgstr ""
+
+msgid "Attribute"
 msgstr ""
 
 msgid ""
-"The serviceCode should correspond to, at least, one code of a service. They "
-"should be formatted as follows:"
+"The value of this attribute (named serviceCode in MSF) should correspond "
+"to, at least, one code of a service. They should be formatted as follows:"
 msgstr ""
 
 msgid "where CD1 is an example of code used for a service."
@@ -434,6 +437,59 @@ msgstr ""
 msgid ""
 "These groups contain legacy elements that will be hidden in the 'Programs' "
 "panel unless the 'Show legacy data elements and options' option is enabled."
+msgstr ""
+
+msgid "Metadata used by the app:"
+msgstr ""
+
+msgid "Default user group of Advanced Users."
+msgstr ""
+
+msgid ""
+"The members of this userGroup are Advanced Users in the panels whose "
+"settings were never saved. Once saved, the user groups of each panel are "
+"changed in its Settings dialog."
+msgstr ""
+
+msgid "User group to share the indicator tables with."
+msgstr ""
+
+msgid ""
+"The 'View Table' buttons create a pivot table in the Data Visualizer, "
+"shared with this userGroup (for instance, one with all the users). If it "
+"does not exist, the table is public, read only."
+msgstr ""
+
+msgid "Attribute of dataElements with the ICD-10 code."
+msgstr ""
+
+msgid ""
+"Its values are shown in the ICD-10 column of the 'Search' panel. If it does "
+"not exist, the column is empty."
+msgstr ""
+
+msgid "Attribute of programs with their resources."
+msgstr ""
+
+msgid ""
+"The dashboards, visualizations, event charts and event reports whose ids it "
+"lists are shown in the Resources section of the 'Programs' panel, before "
+"the event charts and reports of the program. The ids should be formatted as "
+"follows:"
+msgstr ""
+
+msgid "Constants with the values 0 and 1."
+msgstr ""
+
+msgid "Constant 0"
+msgstr ""
+
+msgid "Constant 1"
+msgstr ""
+
+msgid ""
+"In the indicator formulas, constants are shown with their values. If the "
+"constants cannot be read, these two are still shown as 0 and 1."
 msgstr ""
 
 msgid "About dataElements and indicators:"

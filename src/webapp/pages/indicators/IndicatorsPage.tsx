@@ -35,16 +35,22 @@ export const IndicatorsPage: React.FC = React.memo(() => {
     const numerator = useFuture(
         () =>
             indicator
-                ? compositionRoot.indicators.getFormulaBreakdown.execute(indicator.numerator)
+                ? compositionRoot.indicators.getFormulaBreakdown.execute(
+                      indicator.numerator,
+                      settings
+                  )
                 : null,
-        [compositionRoot, indicator]
+        [compositionRoot, indicator, settings]
     );
     const denominator = useFuture(
         () =>
             indicator
-                ? compositionRoot.indicators.getFormulaBreakdown.execute(indicator.denominator)
+                ? compositionRoot.indicators.getFormulaBreakdown.execute(
+                      indicator.denominator,
+                      settings
+                  )
                 : null,
-        [compositionRoot, indicator]
+        [compositionRoot, indicator, settings]
     );
 
     const isLoading =

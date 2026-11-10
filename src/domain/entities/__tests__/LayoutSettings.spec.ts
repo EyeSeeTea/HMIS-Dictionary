@@ -10,10 +10,10 @@ const plain = createUser();
 
 describe("LayoutSettings", () => {
     const settings = createSettings();
-    const programs = LayoutSettings.defaults("programs");
+    const programs = LayoutSettings.defaults("programs", "LjRqO9XzQPs");
 
     it("has the sections of each screen", () => {
-        expect(LayoutSettings.defaults("search").sections.map(s => s.key)).toEqual([
+        expect(LayoutSettings.defaults("search", "LjRqO9XzQPs").sections.map(s => s.key)).toEqual([
             "objectsBasics",
             "objectsDescriptions",
             "groupsBasics",
@@ -34,7 +34,7 @@ describe("LayoutSettings", () => {
     });
 
     it("admin-only columns are not for advanced users", () => {
-        const search = LayoutSettings.defaults("search");
+        const search = LayoutSettings.defaults("search", "LjRqO9XzQPs");
         const of = (user: typeof plain) => search.getPermissions({ user, settings });
 
         expect(of(advanced).canSeeColumn("objectsBasics", "id")).toBe(false);
@@ -42,7 +42,7 @@ describe("LayoutSettings", () => {
     });
 
     it("merging keeps what is stored and adds what is missing, on any screen", () => {
-        const defaults = LayoutSettings.defaults("indicators");
+        const defaults = LayoutSettings.defaults("indicators", "LjRqO9XzQPs");
         const formula = assertValue(defaults.sections[0]);
         const numerator = assertValue(defaults.sections[1]);
         const stored = defaults.update(

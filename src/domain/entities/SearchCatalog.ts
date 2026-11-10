@@ -1,7 +1,6 @@
 import { AccessContext, AppSettings } from "./AppSettings";
 import { Struct } from "./generic/Struct";
 import { HealthService } from "./HealthService";
-import { hardcodedIds } from "./HardcodedIds";
 import {
     FormulaLookup,
     FormulaObject,
@@ -71,7 +70,8 @@ export type SearchDataElementSource = NamedRef & {
     shortName: string;
     formName: string;
     description: string;
-    icd10: string;
+    /** For the ICD-10 code, by the attribute chosen in Admin. */
+    attributeValues: AttributeValue[];
     groupIds: Id[];
     groupNames: string[];
     dataSets: SearchGroupSource[];
@@ -126,6 +126,7 @@ export class SearchCatalog extends Struct<SearchCatalogAttrs>() {
     ): SearchCatalog {
         const { settings, user } = context;
         const servicesByKey = new Map(healthServices.map(service => [service.key(), service]));
+        const { healthServiceAttribute, icd10Attribute } = settings.metadataIds;
 
         const programs = sources.programs.filter(
             program =>
@@ -148,7 +149,7 @@ export class SearchCatalog extends Struct<SearchCatalogAttrs>() {
                     ...getBase(source),
                     domain: source.domain,
                     shortName: source.shortName,
-                    icd10: source.icd10,
+                    icd10: attributeValue(source.attributeValues, icd10Attribute),
                     // Aggregate elements belong to data sets, and tracker ones to programs
                     groups:
                         source.domain === "tracker"
@@ -158,7 +159,10 @@ export class SearchCatalog extends Struct<SearchCatalogAttrs>() {
                     programNames: elementPrograms.map(program => program.name),
                     healthServices: uniqueById(
                         dataSets.flatMap(dataSet =>
-                            findServices(dataSetServiceValue(dataSet), servicesByKey)
+                            findServices(
+                                attributeValue(dataSet.attributeValues, healthServiceAttribute),
+                                servicesByKey
+                            )
                         )
                     ),
                 };
@@ -290,13 +294,9 @@ function getGroupId(group: SearchGroup): Id {
     return group.id;
 }
 
-/** Decision 3: by attribute id on data sets, and the first attribute on indicator groups. */
-function dataSetServiceValue(dataSet: SearchGroupSource): string {
-    const attribute = dataSet.attributeValues.find(
-        attributeValue => attributeValue.attributeId === hardcodedIds.healthServiceAttribute
-    );
-
-    return attribute?.value ?? "";
+/** Decision 3: health services by attribute id on data sets, and the first attribute on indicator groups. */
+function attributeValue(attributeValues: AttributeValue[], attributeId: Id): string {
+    return attributeValues.find(value => value.attributeId === attributeId)?.value ?? "";
 }
 
 function findServices(value: string, servicesByKey: Map<string, HealthService>): HealthService[] {

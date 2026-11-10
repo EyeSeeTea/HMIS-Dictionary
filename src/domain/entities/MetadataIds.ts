@@ -13,6 +13,8 @@ export type MetadataIds = {
     /** Shown as 0 and 1 in formulas if the constants cannot be read. */
     constantZero: Id;
     constantOne: Id;
+    /** The resources of programs (dashboards, visualizations...), as "ID1;ID2". */
+    programResourcesAttribute: Id;
 };
 
 /** The UIDs of the MSF instance, the values when nothing is saved. */
@@ -23,4 +25,5 @@ export const defaultMetadataIds: MetadataIds = {
     icd10Attribute: "zC3TBJnSxar",
     constantZero: "m70zf14qLvm",
     constantOne: "qRquxuP5Zow",
+    programResourcesAttribute: "Q5alUdMbT9g",
 };

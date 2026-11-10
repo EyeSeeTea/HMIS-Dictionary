@@ -7,6 +7,7 @@ import { createSettings } from "./fixtures";
 import { createUser } from "./userFixtures";
 
 const SERVICE_ATTRIBUTE = "pG4YeQyynJh";
+const ICD10_ATTRIBUTE = "zC3TBJnSxar";
 const base = { code: "", shortName: "short", formName: "form", description: "desc" };
 
 const sources: SearchSources = {
@@ -21,7 +22,7 @@ const sources: SearchSources = {
             domain: "tracker",
             id: "trackerDe",
             name: "Tracker element",
-            icd10: "",
+            attributeValues: [],
             groupIds: [],
             groupNames: [],
             dataSets: [],
@@ -32,7 +33,10 @@ const sources: SearchSources = {
             id: "de1",
             name: "Visible element",
             code: "DE1",
-            icd10: "A01",
+            attributeValues: [
+                { attributeId: "other", value: "X99" },
+                { attributeId: ICD10_ATTRIBUTE, value: "A01" },
+            ],
             groupIds: [],
             groupNames: ["First group", "Second group"],
             dataSets: [
@@ -51,7 +55,7 @@ const sources: SearchSources = {
             domain: "aggregate",
             id: "de2",
             name: "Hidden element",
-            icd10: "",
+            attributeValues: [],
             groupIds: ["blacklistedDeg"],
             groupNames: ["Hidden group"],
             dataSets: [],

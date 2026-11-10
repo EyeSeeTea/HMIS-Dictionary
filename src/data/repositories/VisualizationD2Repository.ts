@@ -1,6 +1,5 @@
 import { apiToFuture } from "$/data/api-futures";
 import { Future, FutureData } from "$/domain/entities/generic/Future";
-import { hardcodedIds } from "$/domain/entities/HardcodedIds";
 import { IndicatorVisualization } from "$/domain/entities/IndicatorVisualization";
 import { Id } from "$/domain/entities/Ref";
 import { VisualizationRepository } from "$/domain/repositories/VisualizationRepository";
@@ -56,14 +55,8 @@ export class VisualizationD2Repository implements VisualizationRepository {
                         name: visualization.name,
                         publicAccess: getPublicAccess(visualization),
                         externalAccess: false,
-                        userGroupAccesses: visualization.sharedWithAllUsers
-                            ? [
-                                  {
-                                      id: hardcodedIds.allUsersGroup,
-                                      name: "ALL USERS",
-                                      access: "rw------",
-                                  },
-                              ]
+                        userGroupAccesses: visualization.allUsersGroupId
+                            ? [{ id: visualization.allUsersGroupId, access: "rw------" }]
                             : [],
                     },
                 }
@@ -73,7 +66,7 @@ export class VisualizationD2Repository implements VisualizationRepository {
 }
 
 function getPublicAccess(visualization: IndicatorVisualization): string {
-    return visualization.sharedWithAllUsers ? "--------" : "r-------";
+    return visualization.allUsersGroupId ? "--------" : "r-------";
 }
 
 /** A pivot table with the items as rows, for this year and the user's organisation unit. */

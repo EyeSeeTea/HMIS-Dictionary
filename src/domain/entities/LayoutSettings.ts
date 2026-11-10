@@ -3,7 +3,6 @@ import { Struct } from "./generic/Struct";
 import { layoutDefaults } from "./layoutDefaults";
 import { Id } from "./Ref";
 import { User } from "./User";
-import { hardcodedIds } from "./HardcodedIds";
 
 export type LayoutView = "search" | "datasets" | "indicators" | "programs";
 
@@ -20,17 +19,18 @@ export type LayoutSettingsAttrs = {
 };
 
 export class LayoutSettings extends Struct<LayoutSettingsAttrs>() {
-    static defaults(view: LayoutView): LayoutSettings {
+    /** For a screen whose settings were never saved. */
+    static defaults(view: LayoutView, advancedUserGroupId: Id): LayoutSettings {
         return LayoutSettings.create({
             view: view,
-            advancedUserGroupIds: [hardcodedIds.defaultAdvancedUserGroup],
+            advancedUserGroupIds: [advancedUserGroupId],
             sections: layoutDefaults[view],
         });
     }
 
     /** Keeps what is stored, and adds the sections and columns missing from it. */
     mergedOverDefaults(): LayoutSettings {
-        const defaults = LayoutSettings.defaults(this.view).sections;
+        const defaults = layoutDefaults[this.view];
 
         return this._update({
             sections: sortByIndex(

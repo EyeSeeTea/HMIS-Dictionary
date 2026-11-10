@@ -1,3 +1,4 @@
+import { AppSettings } from "$/domain/entities/AppSettings";
 import { FormulaBreakdown } from "$/domain/entities/FormulaBreakdown";
 import { FutureData } from "$/domain/entities/generic/Future";
 import { IndicatorFormula } from "$/domain/entities/IndicatorFormula";
@@ -6,9 +7,9 @@ import { FormulaRepository } from "$/domain/repositories/FormulaRepository";
 export class GetFormulaBreakdownUseCase {
     constructor(private formulaRepository: FormulaRepository) {}
 
-    execute(formula: IndicatorFormula): FutureData<FormulaBreakdown> {
+    execute(formula: IndicatorFormula, settings: AppSettings): FutureData<FormulaBreakdown> {
         return this.formulaRepository
             .getReferences(formula.tokens())
-            .map(references => FormulaBreakdown.build(formula, references));
+            .map(references => FormulaBreakdown.build(formula, references, settings.metadataIds));
     }
 }

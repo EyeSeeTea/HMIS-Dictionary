@@ -162,8 +162,8 @@ export const ProgramsPage: React.FC = React.memo(() => {
         [compositionRoot, program, rulesData]
     );
     const resources = useFuture(
-        () => (program ? compositionRoot.programs.getResources.execute(program) : null),
-        [compositionRoot, program]
+        () => (program ? compositionRoot.programs.getResources.execute(program, settings) : null),
+        [compositionRoot, program, settings]
     );
 
     const pieces = [

@@ -25,13 +25,14 @@ The configuration relies on the following elements that have to be defined throu
 - then *dataSets* and *indicatorGroups* have one attribute, repectively "DS_#CODE1#_#CODE2#..." and "ING_#CODE2#" that permits the direct association with the typology of services (association with multiple services is allowed),
 - finally the *dataElements* are associated via the *sections* to the dataSets and the *indicators* are associated directly to the indicatorGroups (*dataElements* outside of *sections* would not appear).
 - in *indicators* the descriptions of numerators and denominators cannot be translated (as of dhis v2.25) so the key words "NUM:" and "DENOM:" (both compulsory) are used in *indicators* descriptions (which have a translation).
-- an *attribute* for *programs* where the associated resources are referenced by ID in the following format: "(ID1;ID2;...)". This *attribute* has to have its code field set to: "HMIS-Dict_Resources".
+- an *attribute* for *programs* where the associated resources are referenced by ID in the following format: "(ID1;ID2;...)". This *attribute* is chosen in the **Admin** panel.
 
 Some elements are defined at the **Admin** panel:
 - The uid of the *organisationUnitGroupSet*
 - The name of the group of user with editing right in the **Dossier** panel and the **Admin** panel too
 - *dataSets*, *programs* and *indicatorGroups* can be blacklisted
 - The selectors of **DataSets** and **Programs** can be limited to the items assigned to the organisation units of the user (off by default)
+- The metadata the app relies on, which defaults to the MSF OCBA uids: the *attribute* with the service codes, the *attribute* with the ICD-10 code of *dataElements*, the default user group of Advanced Users, the user group to share the indicator tables with, the *constants* 0 and 1, and the *attribute* of *programs* with their resources
 
 Some elements are still hardcoded:
 - The search panel will not show *dataElements* or *indicators* that are not associated to a *dataSet* or an *indicatorGroup*

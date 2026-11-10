@@ -3,7 +3,12 @@ import { Struct } from "./generic/Struct";
 import { HealthService } from "./HealthService";
 import { NamedRef } from "./Ref";
 
-export type Attribute = NamedRef & { dataSetAttribute: boolean; indicatorGroupAttribute: boolean };
+export type Attribute = NamedRef & {
+    dataSetAttribute: boolean;
+    indicatorGroupAttribute: boolean;
+    dataElementAttribute: boolean;
+    programAttribute: boolean;
+};
 
 export type DossierConfigStatusAttrs = {
     adminGroup: boolean;
@@ -32,9 +37,10 @@ export class DossierConfigStatus extends Struct<DossierConfigStatusAttrs>() {
             healthServiceGroupSet: Boolean(settings.healthServiceGroupSet),
             healthServiceCodes:
                 healthServices.length > 0 && healthServices.every(service => service.code !== ""),
+            // The attribute chosen in Admin, the one Search reads
             healthServiceAttribute: attributes.some(
                 attribute =>
-                    attribute.name === "serviceCode" &&
+                    attribute.id === settings.metadataIds.healthServiceAttribute &&
                     attribute.dataSetAttribute &&
                     attribute.indicatorGroupAttribute
             ),

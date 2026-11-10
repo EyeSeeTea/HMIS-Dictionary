@@ -1,6 +1,7 @@
 import { apiToFuture } from "$/data/api-futures";
 import { AppSettings, AppSettingsAttrs, defaultTags } from "$/domain/entities/AppSettings";
 import { Future, FutureData } from "$/domain/entities/generic/Future";
+import { defaultMetadataIds, MetadataIds } from "$/domain/entities/MetadataIds";
 import { NamedRef } from "$/domain/entities/Ref";
 import { AppSettingsRepository } from "$/domain/repositories/AppSettingsRepository";
 import { D2Api } from "$/types/d2-api";
@@ -10,7 +11,22 @@ export const dataStoreNamespace = "HMIS_Dictionary";
 
 type StoredSetup = { value?: string; object?: { id?: string; name?: string } };
 
-type StoredKeys = {
+type StoredId = Maybe<{ value?: string }>;
+
+/** One key per id, as for the other settings: the default applies when it is not stored. */
+const metadataIdKeys = {
+    advancedUserGroup: "metadata_advancedUserGroup",
+    allUsersGroup: "metadata_allUsersGroup",
+    healthServiceAttribute: "metadata_healthServiceAttribute",
+    icd10Attribute: "metadata_icd10Attribute",
+    constantZero: "metadata_constantZero",
+    constantOne: "metadata_constantOne",
+    programResourcesAttribute: "metadata_programResourcesAttribute",
+} as const satisfies Record<keyof MetadataIds, string>;
+
+type MetadataIdKey = (typeof metadataIdKeys)[keyof MetadataIds];
+
+type StoredKeys = Record<MetadataIdKey, StoredId> & {
     setup_userGroup: Maybe<StoredSetup>;
     setup_organisationUnitGroupSet: Maybe<StoredSetup>;
     setup_dossierConfigComplete: Maybe<{ value?: boolean }>;
@@ -44,6 +60,7 @@ const keys: Key[] = [
     "legacy_dataElementGroups",
     "legacy_optionGroups",
     "selector_limitToUserOrgUnits",
+    ...Object.values(metadataIdKeys),
 ];
 
 export class AppSettingsD2Repository implements AppSettingsRepository {
@@ -118,6 +135,9 @@ function toAppSettings(stored: StoredKeys): AppSettings {
             optionGroupIds: stored.legacy_optionGroups ?? [],
         },
         limitSelectorsToUserOrgUnits: Boolean(stored.selector_limitToUserOrgUnits?.value),
+        metadataIds: mapMetadataIds(
+            key => stored[metadataIdKeys[key]]?.value || defaultMetadataIds[key]
+        ),
     });
 }
 
@@ -138,7 +158,19 @@ function toStoredKeys(settings: AppSettings): StoredKeys {
         legacy_dataElementGroups: settings.legacy.dataElementGroupIds,
         legacy_optionGroups: settings.legacy.optionGroupIds,
         selector_limitToUserOrgUnits: { value: settings.limitSelectorsToUserOrgUnits },
+        ...(Object.fromEntries(
+            metadataIdKeyNames.map(key => [
+                metadataIdKeys[key],
+                { value: settings.metadataIds[key] },
+            ])
+        ) as Record<MetadataIdKey, StoredId>),
     };
+}
+
+const metadataIdKeyNames = Object.keys(metadataIdKeys) as (keyof MetadataIds)[];
+
+function mapMetadataIds(getId: (key: keyof MetadataIds) => string): MetadataIds {
+    return Object.fromEntries(metadataIdKeyNames.map(key => [key, getId(key)])) as MetadataIds;
 }
 
 function toSetup(ref: Maybe<NamedRef>, getValue: (ref: NamedRef) => string): Maybe<StoredSetup> {

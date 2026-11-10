@@ -15,6 +15,8 @@ export class AttributeD2Repository implements AttributeRepository {
                     name: true,
                     dataSetAttribute: true,
                     indicatorGroupAttribute: true,
+                    dataElementAttribute: true,
+                    programAttribute: true,
                 },
                 paging: false,
             })

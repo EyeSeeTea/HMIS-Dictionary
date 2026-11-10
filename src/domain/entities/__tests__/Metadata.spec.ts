@@ -1,3 +1,4 @@
+import { defaultMetadataIds } from "$/domain/entities/MetadataIds";
 import { describe, expect, it } from "vitest";
 import { DataSet } from "$/domain/entities/DataSet";
 import { DossierConfigStatus } from "$/domain/entities/DossierConfigStatus";
@@ -60,10 +61,12 @@ describe("HealthServiceTranslations", () => {
 
 describe("DossierConfigStatus", () => {
     const attribute = {
-        id: "a",
+        id: defaultMetadataIds.healthServiceAttribute,
         name: "serviceCode",
         dataSetAttribute: true,
         indicatorGroupAttribute: true,
+        dataElementAttribute: false,
+        programAttribute: false,
     };
 
     it("is complete when all checks pass", () => {
@@ -91,6 +94,21 @@ describe("DossierConfigStatus", () => {
 
         expect(status.healthServiceAttribute).toBe(false);
         expect(status.isComplete()).toBe(false);
+    });
+
+    it("checks the attribute chosen in Admin, the one Search reads, not one named serviceCode", () => {
+        const other = { ...attribute, id: "other" };
+        const chosen = createSettings({
+            metadataIds: { ...defaultMetadataIds, healthServiceAttribute: "other" },
+        });
+
+        expect(
+            DossierConfigStatus.build(createSettings(), [], [other]).healthServiceAttribute
+        ).toBe(false);
+        expect(
+            DossierConfigStatus.build(chosen, [], [{ ...other, name: "Anything" }])
+                .healthServiceAttribute
+        ).toBe(true);
     });
 });
 
@@ -154,17 +172,17 @@ describe("IndicatorVisualization", () => {
             numerator: formula("#{a}"),
             denominator: formula("I{b}"),
         });
-        const visualization = IndicatorVisualization.build(indicator, true);
+        const visualization = IndicatorVisualization.build(indicator, "allUsers");
 
         expect(visualization.name).toBe("Ind - i1");
         expect(visualization.itemIds).toEqual(["a", "b", "i1"]);
-        expect(visualization.sharedWithAllUsers).toBe(true);
+        expect(visualization.allUsersGroupId).toBe("allUsers");
     });
 
     it("program indicators only use their own id", () => {
         const programIndicator = createProgramIndicator({ id: "pi1" });
 
-        expect(IndicatorVisualization.build(programIndicator, false).itemIds).toEqual(["pi1"]);
+        expect(IndicatorVisualization.build(programIndicator, undefined).itemIds).toEqual(["pi1"]);
     });
 });
 

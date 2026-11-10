@@ -1,3 +1,4 @@
+import { defaultMetadataIds } from "$/domain/entities/MetadataIds";
 import { fireEvent, RenderResult, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { getTestCompositionRoot } from "$/CompositionRoot";
@@ -61,10 +62,12 @@ describe("AdminPage", () => {
                 getAll: () =>
                     success([
                         {
-                            id: "a",
+                            id: defaultMetadataIds.healthServiceAttribute,
                             name: "serviceCode",
                             dataSetAttribute: true,
                             indicatorGroupAttribute: true,
+                            dataElementAttribute: false,
+                            programAttribute: false,
                         },
                     ]),
             },

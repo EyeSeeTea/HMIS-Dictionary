@@ -29,8 +29,11 @@ export class SearchCachedRepository implements SearchRepository {
     ) {}
 
     getDataElements(): FutureData<SearchDataElementSource[]> {
-        return this.cached("dataElements", ["dataElements", "dataElementGroups", "dataSets"], () =>
-            this.repository.getDataElements()
+        // Versioned key: the entries cached before have no attribute values
+        return this.cached(
+            "dataElements.v2",
+            ["dataElements", "dataElementGroups", "dataSets"],
+            () => this.repository.getDataElements()
         );
     }
 

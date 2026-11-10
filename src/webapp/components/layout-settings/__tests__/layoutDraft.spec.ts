@@ -7,7 +7,7 @@ import {
     parseAdvancedGroups,
 } from "$/webapp/components/layout-settings/layoutDraft";
 
-const settings = LayoutSettings.defaults("search");
+const settings = LayoutSettings.defaults("search", "LjRqO9XzQPs");
 
 describe("layoutDraft", () => {
     it("reads the checkboxes from the access of each row", () => {

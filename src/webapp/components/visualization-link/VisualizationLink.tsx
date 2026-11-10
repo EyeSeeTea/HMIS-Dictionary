@@ -15,13 +15,13 @@ export type VisualizationLinkProps = {
 /** Creates (or updates) a pivot table for the indicator and opens it in the Data Visualizer. */
 export const VisualizationLink: React.FC<VisualizationLinkProps> = React.memo(
     ({ source, variant = "button" }) => {
-        const { compositionRoot, baseUrl } = useAppContext();
+        const { compositionRoot, baseUrl, settings } = useAppContext();
         const [saving, setSaving] = React.useState(false);
 
         const open = () => {
             setSaving(true);
 
-            compositionRoot.visualizations.save.execute(source).run(
+            compositionRoot.visualizations.save.execute(source, settings).run(
                 id => {
                     setSaving(false);
                     window.open(`${baseUrl}/dhis-web-data-visualizer/index.html#/${id}`, "_blank");

@@ -5,6 +5,7 @@ import { OptionSet } from "$/domain/entities/OptionSet";
 import { ProgramExpression } from "$/domain/entities/ProgramExpression";
 import { ProgramIndicator, ProgramIndicatorAttrs } from "$/domain/entities/ProgramIndicator";
 import { ProgramRule, ProgramRuleAction, ProgramRuleAttrs } from "$/domain/entities/ProgramRule";
+import { defaultMetadataIds } from "$/domain/entities/MetadataIds";
 import { ProgramStage, ProgramStageAttrs, StageDataElement } from "$/domain/entities/ProgramStage";
 
 export function createSettings(attrs: Partial<AppSettingsAttrs> = {}): AppSettings {
@@ -26,6 +27,7 @@ export function createSettings(attrs: Partial<AppSettingsAttrs> = {}): AppSettin
         },
         legacy: { dataElementGroupIds: ["legacyDeg"], optionGroupIds: ["legacyOg"] },
         limitSelectorsToUserOrgUnits: false,
+        metadataIds: defaultMetadataIds,
         ...attrs,
     });
 }

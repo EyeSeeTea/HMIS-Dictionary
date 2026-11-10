@@ -6,7 +6,7 @@ import { LayoutSettings } from "$/domain/entities/LayoutSettings";
 import { getReactComponent } from "$/utils/tests";
 import { LayoutSettingsDialog } from "$/webapp/components/layout-settings/LayoutSettingsDialog";
 
-const settings = LayoutSettings.defaults("search");
+const settings = LayoutSettings.defaults("search", "LjRqO9XzQPs");
 
 function setup(options: { existingGroups?: string[] } = {}) {
     const save = vi.fn(() => Future.success<Error, void>(undefined));

@@ -1,3 +1,4 @@
+import { AppSettings } from "$/domain/entities/AppSettings";
 import { Future, FutureData } from "$/domain/entities/generic/Future";
 import { LayoutSettings, LayoutView } from "$/domain/entities/LayoutSettings";
 import { LayoutSettingsRepository } from "$/domain/repositories/LayoutSettingsRepository";
@@ -5,8 +6,8 @@ import { LayoutSettingsRepository } from "$/domain/repositories/LayoutSettingsRe
 export class GetLayoutSettingsUseCase {
     constructor(private layoutSettingsRepository: LayoutSettingsRepository) {}
 
-    execute(view: LayoutView): FutureData<LayoutSettings> {
-        const defaults = LayoutSettings.defaults(view);
+    execute(view: LayoutView, settings: AppSettings): FutureData<LayoutSettings> {
+        const defaults = LayoutSettings.defaults(view, settings.metadataIds.advancedUserGroup);
 
         return this.layoutSettingsRepository
             .get(view)

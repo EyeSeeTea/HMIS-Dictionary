@@ -15,8 +15,6 @@ import { ProgramRepository } from "$/domain/repositories/ProgramRepository";
 import { D2Api } from "$/types/d2-api";
 import { D2OptionSet, text, toOptionSet, toRawNamedRef } from "./d2-mappers";
 
-const resourcesAttributeCode = "HMIS-Dict_Resources";
-
 const resourceTypes: ProgramResourceType[] = [
     "dashboards",
     "visualizations",
@@ -32,7 +30,7 @@ const programFields = {
     displayName: true,
     displayDescription: true,
     programStages: { id: true },
-    attributeValues: { value: true, attribute: { code: true } },
+    attributeValues: { value: true, attribute: { id: true } },
     access: { data: { read: true } },
 } as const;
 
@@ -41,7 +39,7 @@ type D2Program = {
     displayName: string;
     displayDescription?: string;
     programStages: { id: string }[];
-    attributeValues: { value: string; attribute: { code?: string } }[];
+    attributeValues: { value: string; attribute: { id: string } }[];
     access?: { data?: { read?: boolean } };
 };
 
@@ -428,22 +426,16 @@ export class ProgramD2Repository implements ProgramRepository {
 }
 
 function toProgram(program: D2Program): Program {
-    const resources = program.attributeValues.find(
-        attributeValue => attributeValue.attribute.code === resourcesAttributeCode
-    );
-
     return {
         id: program.id,
         name: program.displayName,
         description: text(program.displayDescription),
         stageIds: program.programStages.map(stage => stage.id),
         canReadData: program.access?.data?.read ?? true,
-        // Also the documented format, (ID1;ID2), with the parentheses
-        resourceIds: (resources?.value ?? "")
-            .replace(/[()]/g, "")
-            .split(";")
-            .map(id => id.trim())
-            .filter(Boolean),
+        attributeValues: program.attributeValues.map(({ attribute, value }) => ({
+            attributeId: attribute.id,
+            value,
+        })),
     };
 }
 

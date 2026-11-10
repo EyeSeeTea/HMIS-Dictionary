@@ -1,5 +1,6 @@
 import { Maybe } from "$/utils/ts-utils";
 import { Struct } from "./generic/Struct";
+import { MetadataIds } from "./MetadataIds";
 import { Id, NamedRef } from "./Ref";
 import { User } from "./User";
 
@@ -20,6 +21,7 @@ export type AppSettingsAttrs = {
     legacy: { dataElementGroupIds: Id[]; optionGroupIds: Id[] };
     /** The selectors of Data Sets and Programs only list items of the user's org units. */
     limitSelectorsToUserOrgUnits: boolean;
+    metadataIds: MetadataIds;
 };
 
 export class AppSettings extends Struct<AppSettingsAttrs>() {

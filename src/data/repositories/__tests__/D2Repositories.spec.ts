@@ -82,7 +82,7 @@ describe("AppSettingsD2Repository", () => {
 
 describe("Layout settings mapping", () => {
     it("keeps the stored format, with access as 0, 1 and 2", () => {
-        const stored = toStored(LayoutSettings.defaults("indicators"));
+        const stored = toStored(LayoutSettings.defaults("indicators", "LjRqO9XzQPs"));
 
         expect(stored.advancedUserGroups).toEqual(["LjRqO9XzQPs"]);
         expect(stored.accesses?.["formula"]).toEqual({
@@ -94,7 +94,7 @@ describe("Layout settings mapping", () => {
     });
 
     it("reads back what it writes", () => {
-        const defaults = LayoutSettings.defaults("programs");
+        const defaults = LayoutSettings.defaults("programs", "LjRqO9XzQPs");
         const read = fromStored("programs", toStored(defaults));
 
         expect(read.sections).toEqual(defaults.sections);

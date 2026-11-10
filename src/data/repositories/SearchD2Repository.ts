@@ -1,6 +1,5 @@
 import { apiToFuture } from "$/data/api-futures";
 import { FutureData } from "$/domain/entities/generic/Future";
-import { hardcodedIds } from "$/domain/entities/HardcodedIds";
 import { NamedRef } from "$/domain/entities/Ref";
 import {
     SearchDataElementSource,
@@ -9,6 +8,7 @@ import {
     SearchProgramIndicatorSource,
     SearchProgramSource,
 } from "$/domain/entities/SearchCatalog";
+import { AttributeValue } from "$/domain/entities/Shared";
 import { SearchRepository } from "$/domain/repositories/SearchRepository";
 import { D2Api } from "$/types/d2-api";
 import { text, toNamedRef } from "./d2-mappers";
@@ -62,12 +62,7 @@ export class SearchD2Repository implements SearchRepository {
                 shortName: text(dataElement.displayShortName),
                 formName: text(dataElement.displayFormName),
                 description: text(dataElement.displayDescription),
-                icd10: text(
-                    dataElement.attributeValues.find(
-                        attributeValue =>
-                            attributeValue.attribute.id === hardcodedIds.icd10Attribute
-                    )?.value
-                ),
+                attributeValues: toAttributeValues(dataElement.attributeValues),
                 groupIds: dataElement.dataElementGroups.map(group => group.id),
                 groupNames: dataElement.dataElementGroups.map(group => group.displayName),
                 dataSets: dataElement.dataSetElements.map(({ dataSet }) => toGroup(dataSet)),
@@ -199,9 +194,10 @@ function toGroup(group: D2Group): SearchGroupSource {
         id: group.id,
         code: text(group.code),
         name: group.displayName,
-        attributeValues: group.attributeValues.map(attributeValue => ({
-            attributeId: attributeValue.attribute.id,
-            value: attributeValue.value,
-        })),
+        attributeValues: toAttributeValues(group.attributeValues),
     };
+}
+
+function toAttributeValues(values: D2Group["attributeValues"]): AttributeValue[] {
+    return values.map(({ attribute, value }) => ({ attributeId: attribute.id, value }));
 }

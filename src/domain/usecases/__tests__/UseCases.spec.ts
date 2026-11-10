@@ -1,3 +1,4 @@
+import { defaultMetadataIds } from "$/domain/entities/MetadataIds";
 import { describe, expect, it, vi } from "vitest";
 import {
     createIndicator,
@@ -76,7 +77,7 @@ const program: Program = {
     name: "Program",
     description: "",
     stageIds: ["stage1"],
-    resourceIds: [],
+    attributeValues: [],
     canReadData: true,
 };
 
@@ -182,7 +183,7 @@ describe("DescribeProgramIndicatorsUseCase", () => {
 });
 
 describe("GetLayoutSettingsUseCase", () => {
-    const defaults = LayoutSettings.defaults("indicators");
+    const defaults = LayoutSettings.defaults("indicators", "LjRqO9XzQPs");
 
     it("merges what is stored over the defaults, without saving", async () => {
         const save = vi.fn(() => success(undefined));
@@ -190,7 +191,7 @@ describe("GetLayoutSettingsUseCase", () => {
         const repository = fake<LayoutSettingsRepository>({ get: () => success(stored), save });
 
         const result = await new GetLayoutSettingsUseCase(repository)
-            .execute("indicators")
+            .execute("indicators", createSettings())
             .toPromise();
 
         expect(result.sections).toHaveLength(3);
@@ -202,7 +203,9 @@ describe("GetLayoutSettingsUseCase", () => {
         const save = vi.fn(() => success(undefined));
         const repository = fake<LayoutSettingsRepository>({ get: () => success(undefined), save });
 
-        await new GetLayoutSettingsUseCase(repository).execute("indicators").toPromise();
+        await new GetLayoutSettingsUseCase(repository)
+            .execute("indicators", createSettings())
+            .toPromise();
 
         expect(save).toHaveBeenCalledTimes(1);
     });
@@ -216,7 +219,7 @@ describe("GetLayoutSettingsUseCase", () => {
 
         for (const repository of [failingSave, failingGet]) {
             const result = await new GetLayoutSettingsUseCase(repository)
-                .execute("indicators")
+                .execute("indicators", createSettings())
                 .toPromise();
             expect(result.sections).toEqual(defaults.sections);
         }
@@ -224,7 +227,7 @@ describe("GetLayoutSettingsUseCase", () => {
 });
 
 describe("SaveLayoutSettingsUseCase", () => {
-    const layout = LayoutSettings.defaults("search").update([], ["g1"]);
+    const layout = LayoutSettings.defaults("search", "LjRqO9XzQPs").update([], ["g1"]);
     const run = (groupId: string) => {
         const save = vi.fn(() => success(undefined));
         const useCase = new SaveLayoutSettingsUseCase(
@@ -527,7 +530,9 @@ describe("Programs", () => {
         const getEventResources = vi.fn(() => success([]));
         const repository = fake<ProgramRepository>({ getResources, getEventResources });
 
-        await new GetProgramResourcesUseCase(repository).execute(program).toPromise();
+        await new GetProgramResourcesUseCase(repository)
+            .execute(program, createSettings())
+            .toPromise();
 
         expect(getResources).not.toHaveBeenCalled();
     });
@@ -539,27 +544,44 @@ describe("Programs", () => {
             description: "",
             type,
         });
+        const getResources = vi.fn((_ids: string[]) =>
+            success([resource("dash", "dashboards"), resource("chart", "eventCharts")])
+        );
         const repository = fake<ProgramRepository>({
-            getResources: () =>
-                success([resource("dash", "dashboards"), resource("chart", "eventCharts")]),
+            getResources,
             getEventResources: () =>
                 success([resource("chart", "eventCharts"), resource("report", "eventReports")]),
         });
 
         const resources = await new GetProgramResourcesUseCase(repository)
-            .execute({ ...program, resourceIds: ["dash", "chart"] })
+            .execute(
+                {
+                    ...program,
+                    attributeValues: [
+                        { attributeId: "other", value: "nope" },
+                        {
+                            attributeId: defaultMetadataIds.programResourcesAttribute,
+                            value: "(dash; chart)",
+                        },
+                    ],
+                },
+                createSettings()
+            )
             .toPromise();
 
+        expect(getResources).toHaveBeenCalledWith(["dash", "chart"]);
         expect(resources.map(({ id }) => id)).toEqual(["dash", "chart", "report"]);
     });
 });
 
 describe("RefreshDossierConfigStatusUseCase", () => {
     const attribute = {
-        id: "a",
+        id: defaultMetadataIds.healthServiceAttribute,
         name: "serviceCode",
         dataSetAttribute: true,
         indicatorGroupAttribute: true,
+        dataElementAttribute: false,
+        programAttribute: false,
     };
 
     const run = async (options: {
@@ -633,9 +655,26 @@ describe("SaveIndicatorVisualizationUseCase", () => {
             fake<VisualizationRepository>({ save })
         );
 
-        const id = await useCase.execute(createIndicator()).toPromise();
+        const id = await useCase.execute(createIndicator(), createSettings()).toPromise();
 
         expect(id).toBe("uid");
-        expect(save.mock.calls[0]?.[0].sharedWithAllUsers).toBe(false);
+        expect(save.mock.calls[0]?.[0].allUsersGroupId).toBeUndefined();
+    });
+
+    it("shares it with the group chosen in Admin", async () => {
+        const exists = vi.fn((_id: string) => success(true));
+        const save = vi.fn((_visualization: IndicatorVisualization) => success("uid"));
+        const useCase = new SaveIndicatorVisualizationUseCase(
+            fake<UserGroupRepository>({ exists }),
+            fake<VisualizationRepository>({ save })
+        );
+        const settings = createSettings({
+            metadataIds: { ...defaultMetadataIds, allUsersGroup: "everyone" },
+        });
+
+        await useCase.execute(createIndicator(), settings).toPromise();
+
+        expect(exists).toHaveBeenCalledWith("everyone");
+        expect(save.mock.calls[0]?.[0].allUsersGroupId).toBe("everyone");
     });
 });

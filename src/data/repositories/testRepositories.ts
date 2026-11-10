@@ -4,6 +4,7 @@ import { DataSet } from "$/domain/entities/DataSet";
 import { ExpressionDescription } from "$/domain/entities/ExpressionDescription";
 import { Future } from "$/domain/entities/generic/Future";
 import { HealthServiceTranslations } from "$/domain/entities/HealthServiceTranslations";
+import { defaultMetadataIds } from "$/domain/entities/MetadataIds";
 import { UserTestRepository } from "./UserTestRepository";
 
 const success = <T>(value: T) => Future.success<Error, T>(value);
@@ -30,6 +31,7 @@ export function getTestRepositories(): Repositories {
         },
         healthServiceRepository: { getGroupSets: empty, getHealthServices: empty },
         attributeRepository: { getAll: empty },
+        constantRepository: { getAll: empty },
         dossierRepository: {
             getDataSets: empty,
             getIndicatorGroups: empty,
@@ -109,4 +111,5 @@ const emptySettings = AppSettings.create({
     notInUse: { indicatorGroupIds: [], programIndicatorGroupIds: [], tag: "Not in Use" },
     legacy: { dataElementGroupIds: [], optionGroupIds: [] },
     limitSelectorsToUserOrgUnits: false,
+    metadataIds: defaultMetadataIds,
 });

@@ -16,8 +16,8 @@ export type LayoutAccess = {
 export function useLayoutPermissions(view: LayoutView): LayoutAccess {
     const { compositionRoot, currentUser, settings } = useAppContext();
     const loader = useFuture(
-        () => compositionRoot.layout.get.execute(view),
-        [compositionRoot, view]
+        () => compositionRoot.layout.get.execute(view, settings),
+        [compositionRoot, view, settings]
     );
 
     const permissions = React.useMemo(

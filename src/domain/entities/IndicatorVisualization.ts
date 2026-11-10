@@ -2,17 +2,19 @@ import { Struct } from "./generic/Struct";
 import { Indicator } from "./Indicator";
 import { ProgramIndicator } from "./ProgramIndicator";
 import { Id } from "./Ref";
+import { Maybe } from "$/utils/ts-utils";
 
 export type IndicatorVisualizationAttrs = {
     name: string;
     itemIds: Id[];
-    sharedWithAllUsers: boolean;
+    /** The group of all users it is shared with, if the instance has it. */
+    allUsersGroupId: Maybe<Id>;
 };
 
 export class IndicatorVisualization extends Struct<IndicatorVisualizationAttrs>() {
     static build(
         source: Indicator | ProgramIndicator,
-        allUsersGroupExists: boolean
+        allUsersGroupId: Maybe<Id>
     ): IndicatorVisualization {
         const formulaIds =
             source instanceof Indicator
@@ -25,7 +27,7 @@ export class IndicatorVisualization extends Struct<IndicatorVisualizationAttrs>(
         return IndicatorVisualization.create({
             name: `${source.name} - ${source.id}`,
             itemIds: [...formulaIds, source.id],
-            sharedWithAllUsers: allUsersGroupExists,
+            allUsersGroupId: allUsersGroupId,
         });
     }
 }

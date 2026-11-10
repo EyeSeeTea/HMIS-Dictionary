@@ -12,9 +12,11 @@ import { parseIds, stringifyIds } from "$/webapp/pages/admin/adminSettings";
 import { SettingSelect } from "$/webapp/pages/admin/SettingSelect";
 import { TextSetting } from "$/webapp/pages/admin/TextSetting";
 import { AppSettingsAttrs } from "$/domain/entities/AppSettings";
+import { MetadataIds } from "$/domain/entities/MetadataIds";
+import { NamedRef } from "$/domain/entities/Ref";
 import css from "./Admin.module.css";
 
-const exampleIds = '["rD7MJ3LaakW","vnoUusJDY1Z","vCfO0z5igGT"]';
+const exampleIds = '["uid00000001","uid00000002","uid00000003"]';
 
 export const AdminPage: React.FC = React.memo(() => {
     const { compositionRoot, settings } = useAppContext();
@@ -62,7 +64,38 @@ export const AdminPage: React.FC = React.memo(() => {
         if (parsed.type === "valid") save(update(parsed.ids));
     };
 
-    const { blacklist, notInUse, legacy } = settings;
+    const { blacklist, notInUse, legacy, metadataIds } = settings;
+    const adminOptions = options?.type === "success" ? options.data : undefined;
+    const attributes = adminOptions?.attributes ?? [];
+    const userGroups = adminOptions?.userGroups ?? [];
+    const constants = adminOptions?.constants ?? [];
+
+    const saveMetadataId = (key: keyof MetadataIds) => (selected: NamedRef) =>
+        save({ metadataIds: { ...metadataIds, [key]: selected.id } });
+
+    /** Found on the instance, or a warning: the feature that uses it just does nothing. */
+    const exists = (options: NamedRef[], key: keyof MetadataIds): ConfigStatus =>
+        !adminOptions
+            ? "pending"
+            : options.some(option => option.id === metadataIds[key])
+              ? "ok"
+              : "pending";
+
+    const metadataSelect = (
+        key: keyof MetadataIds,
+        options: NamedRef[],
+        label: string,
+        ids: { selectId: string; submitId: string }
+    ) => (
+        <SettingSelect
+            {...ids}
+            label={label}
+            options={options}
+            savedId={metadataIds[key]}
+            disabled={isSaving}
+            onSubmit={saveMetadataId(key)}
+        />
+    );
     const idsFormat = (
         <>
             {i18n.t("The arrays should be formatted as follows:")} <code>{exampleIds}</code>.
@@ -185,14 +218,20 @@ export const AdminPage: React.FC = React.memo(() => {
                 <ConfigBox status={check(status.healthServiceAttribute)} id="divA">
                     <p>
                         {i18n.t(
-                            "An attribute named 'serviceCode' is defined and associated with dataSets and indicatorGroups."
+                            "An attribute is selected for the service codes, and it is associated with dataSets and indicatorGroups."
                         )}
                     </p>
+                    {metadataSelect(
+                        "healthServiceAttribute",
+                        attributes.filter(a => a.dataSetAttribute || a.indicatorGroupAttribute),
+                        i18n.t("Attribute"),
+                        { selectId: "drpBoxA", submitId: "submitA" }
+                    )}
                 </ConfigBox>
                 <DetailsBox>
                     <p>
                         {i18n.t(
-                            "The serviceCode should correspond to, at least, one code of a service. They should be formatted as follows:"
+                            "The value of this attribute (named serviceCode in MSF) should correspond to, at least, one code of a service. They should be formatted as follows:"
                         )}
                     </p>
                     <ul>
@@ -380,6 +419,117 @@ export const AdminPage: React.FC = React.memo(() => {
                         )}
                     </p>
                     <p>{idsFormat}</p>
+                </DetailsBox>
+            </div>
+
+            <div className={css.heading}>
+                <h3>{i18n.t("Metadata used by the app:")}</h3>
+            </div>
+
+            <div className={css.row}>
+                <ConfigBox status={exists(userGroups, "advancedUserGroup")} id="divAdvancedUG">
+                    <p>{i18n.t("Default user group of Advanced Users.")}</p>
+                    {metadataSelect("advancedUserGroup", userGroups, i18n.t("User group"), {
+                        selectId: "drpBoxAdvancedUG",
+                        submitId: "submitAdvancedUG",
+                    })}
+                </ConfigBox>
+                <DetailsBox>
+                    <p>
+                        {i18n.t(
+                            "The members of this userGroup are Advanced Users in the panels whose settings were never saved. Once saved, the user groups of each panel are changed in its Settings dialog."
+                        )}
+                    </p>
+                </DetailsBox>
+            </div>
+
+            <div className={css.row}>
+                <ConfigBox status={exists(userGroups, "allUsersGroup")} id="divAllUsersUG">
+                    <p>{i18n.t("User group to share the indicator tables with.")}</p>
+                    {metadataSelect("allUsersGroup", userGroups, i18n.t("User group"), {
+                        selectId: "drpBoxAllUsersUG",
+                        submitId: "submitAllUsersUG",
+                    })}
+                </ConfigBox>
+                <DetailsBox>
+                    <p>
+                        {i18n.t(
+                            "The 'View Table' buttons create a pivot table in the Data Visualizer, shared with this userGroup (for instance, one with all the users). If it does not exist, the table is public, read only."
+                        )}
+                    </p>
+                </DetailsBox>
+            </div>
+
+            <div className={css.row}>
+                <ConfigBox status={exists(attributes, "icd10Attribute")} id="divICD10">
+                    <p>{i18n.t("Attribute of dataElements with the ICD-10 code.")}</p>
+                    {metadataSelect(
+                        "icd10Attribute",
+                        attributes.filter(attribute => attribute.dataElementAttribute),
+                        i18n.t("Attribute"),
+                        { selectId: "drpBoxICD10", submitId: "submitICD10" }
+                    )}
+                </ConfigBox>
+                <DetailsBox>
+                    <p>
+                        {i18n.t(
+                            "Its values are shown in the ICD-10 column of the 'Search' panel. If it does not exist, the column is empty."
+                        )}
+                    </p>
+                </DetailsBox>
+            </div>
+
+            <div className={css.row}>
+                <ConfigBox
+                    status={exists(attributes, "programResourcesAttribute")}
+                    id="divResources"
+                >
+                    <p>{i18n.t("Attribute of programs with their resources.")}</p>
+                    {metadataSelect(
+                        "programResourcesAttribute",
+                        attributes.filter(attribute => attribute.programAttribute),
+                        i18n.t("Attribute"),
+                        { selectId: "drpBoxResources", submitId: "submitResources" }
+                    )}
+                </ConfigBox>
+                <DetailsBox>
+                    <p>
+                        {i18n.t(
+                            "The dashboards, visualizations, event charts and event reports whose ids it lists are shown in the Resources section of the 'Programs' panel, before the event charts and reports of the program. The ids should be formatted as follows:"
+                        )}{" "}
+                        <code>(ID1;ID2)</code>
+                    </p>
+                </DetailsBox>
+            </div>
+
+            <div className={css.row}>
+                <ConfigBox
+                    status={
+                        exists(constants, "constantZero") === "ok" &&
+                        exists(constants, "constantOne") === "ok"
+                            ? "ok"
+                            : "pending"
+                    }
+                    id="divConstants"
+                >
+                    <p>{i18n.t("Constants with the values 0 and 1.")}</p>
+                    <div className={css.setting}>
+                        {metadataSelect("constantZero", constants, i18n.t("Constant 0"), {
+                            selectId: "drpBoxConstantZero",
+                            submitId: "submitConstantZero",
+                        })}
+                    </div>
+                    {metadataSelect("constantOne", constants, i18n.t("Constant 1"), {
+                        selectId: "drpBoxConstantOne",
+                        submitId: "submitConstantOne",
+                    })}
+                </ConfigBox>
+                <DetailsBox>
+                    <p>
+                        {i18n.t(
+                            "In the indicator formulas, constants are shown with their values. If the constants cannot be read, these two are still shown as 0 and 1."
+                        )}
+                    </p>
                 </DetailsBox>
             </div>
 

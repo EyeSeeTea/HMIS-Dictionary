@@ -1,9 +1,9 @@
+import { AppSettings } from "$/domain/entities/AppSettings";
 import { FutureData } from "$/domain/entities/generic/Future";
 import { Id } from "$/domain/entities/Ref";
 import { Indicator } from "$/domain/entities/Indicator";
 import { IndicatorVisualization } from "$/domain/entities/IndicatorVisualization";
 import { ProgramIndicator } from "$/domain/entities/ProgramIndicator";
-import { hardcodedIds } from "$/domain/entities/HardcodedIds";
 import { UserGroupRepository } from "$/domain/repositories/UserGroupRepository";
 import { VisualizationRepository } from "$/domain/repositories/VisualizationRepository";
 
@@ -13,12 +13,14 @@ export class SaveIndicatorVisualizationUseCase {
         private visualizationRepository: VisualizationRepository
     ) {}
 
-    execute(source: Indicator | ProgramIndicator): FutureData<Id> {
+    execute(source: Indicator | ProgramIndicator, settings: AppSettings): FutureData<Id> {
+        const groupId = settings.metadataIds.allUsersGroup;
+
         return this.userGroupRepository
-            .exists(hardcodedIds.allUsersGroup)
-            .flatMap(allUsersGroupExists =>
+            .exists(groupId)
+            .flatMap(exists =>
                 this.visualizationRepository.save(
-                    IndicatorVisualization.build(source, allUsersGroupExists)
+                    IndicatorVisualization.build(source, exists ? groupId : undefined)
                 )
             );
     }

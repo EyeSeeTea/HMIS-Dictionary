@@ -1,3 +1,4 @@
+import { defaultMetadataIds } from "$/domain/entities/MetadataIds";
 import { describe, expect, it } from "vitest";
 import { FormulaBreakdown, FormulaReferences } from "$/domain/entities/FormulaBreakdown";
 import { IndicatorFormula } from "$/domain/entities/IndicatorFormula";
@@ -16,7 +17,7 @@ const references: FormulaReferences = {
 };
 
 const build = (expression: string) =>
-    FormulaBreakdown.build(IndicatorFormula.create({ expression }), references);
+    FormulaBreakdown.build(IndicatorFormula.create({ expression }), references, defaultMetadataIds);
 
 describe("FormulaBreakdown", () => {
     it("text has names and operators, without parentheses, as today", () => {

@@ -98,7 +98,9 @@ class AppSettings {                                                          // 
   blacklist: { dataElementGroupIds: Id[]; dataSetIds: Id[]; indicatorGroupIds: Id[]; tag }   // tag defaults to "Blacklisted"
   notInUse: { indicatorGroupIds: Id[]; programIndicatorGroupIds: Id[]; tag } // tag defaults to "Not in Use"
   legacy: { dataElementGroupIds: Id[]; optionGroupIds: Id[] }
+  metadataIds: MetadataIds                                                   // metadata_<key> { value: id }, defaults to the MSF uids
 }
+type MetadataIds = { advancedUserGroup; allUsersGroup; healthServiceAttribute; icd10Attribute; constantZero; constantOne; programResourcesAttribute }
   isAdmin(user): boolean                     // user in a group NAMED adminGroup.name, see decision 1
   canManage(user): boolean                   // isAdmin, or adminGroup not configured. Admin tab, editor Save, reader Edit
   showsDossiersTab(): boolean                // healthServiceGroupSet configured
@@ -113,12 +115,12 @@ class AppSettings {                                                          // 
 
 type AccessContext = { user: User; settings: AppSettings }                   // loaded once at startup
 
-type Attribute = NamedRef & { dataSetAttribute: boolean; indicatorGroupAttribute: boolean }
+type Attribute = NamedRef & { dataSetAttribute: boolean; indicatorGroupAttribute: boolean; dataElementAttribute: boolean; programAttribute: boolean }
 class DossierConfigStatus { adminGroup: boolean; healthServiceGroupSet: boolean; healthServiceCodes: boolean; healthServiceAttribute: boolean }
   isComplete(): boolean
   static build(settings, healthServices, attributes): DossierConfigStatus
   // healthServiceCodes: at least one health service, all with a code
-  // healthServiceAttribute: named "serviceCode", dataSetAttribute && indicatorGroupAttribute
+  // healthServiceAttribute: the one in metadataIds (the one Search reads), dataSetAttribute && indicatorGroupAttribute
 ```
 
 ## Layout settings
@@ -515,7 +517,7 @@ Presentation, not use cases:
 2. **Layout defaults:** stored settings always merge over the defaults, on all four screens. Today only search and datasets merge, so new columns do not reach indicators and programs.
 3. **Health service lookup:** keep the three variants for now, as they can return different health services, and unify them later: search on data sets (attribute `pG4YeQyynJh`), search on indicator groups (`attributeValues[0]`), and dossiers (regex on any attribute).
 4. **References in the Indicators formula text:** `m70zf14qLvm` is 0 and `qRquxuP5Zow` is 1. Any other `C{id}`, and `N{}` and `A{}`, show the name, or the id if unknown. Today they add no name and shift the following ones, showing wrong text.
-5. **Translated names:** keep what each query reads today, even if untranslated: `name` and `description` on the Indicators screen and its formula references, `description` on data set indicators, `name` on program rules, rule variables and their references, and program indicator groups in Search. Hence one indicator query per screen, filling the same attributes. Comparisons use untranslated names too: the admin group, the `serviceCode` attribute, and the links from the Indicators screen, which send `name` and filter on `displayName`, so outside English they may not match. One exception: stage names are always translated, including in `Indicator.stageNames`.
+5. **Translated names:** keep what each query reads today, even if untranslated: `name` and `description` on the Indicators screen and its formula references, `description` on data set indicators, `name` on program rules, rule variables and their references, and program indicator groups in Search. Hence one indicator query per screen, filling the same attributes. Comparisons use untranslated names too: the admin group and the links from the Indicators screen, which send `name` and filter on `displayName`, so outside English they may not match. One exception: stage names are always translated, including in `Indicator.stageNames`.
 6. **Known bugs:** everything under "Problems found" and "Known bugs" in `e2e.md` was kept during the migration, unless listed in decision 8. Once the e2e suite matched the baseline, the problems found (P1-P12) were fixed. The "Known bugs" are left for a follow-up PR. Those the model reproduced on purpose until then:
    - **P1:** a 401 on the session check goes unnoticed.
    - **P3:** event charts and reports disappear on v42.
