@@ -24,3 +24,6 @@ export const env = {
 };
 
 export const authFile = path.join(__dirname, "..", ".auth", "user.json");
+
+/** The objects the tests use, found on the instance by the global setup. */
+export const fixturesFile = path.join(__dirname, "..", ".auth", "fixtures.json");

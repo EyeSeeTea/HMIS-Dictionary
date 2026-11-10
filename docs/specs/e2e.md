@@ -6,6 +6,8 @@
 
 **Target:** `http://localhost:8098`, DHIS2 v2.42.5.1, a local copy of the MSF OCBA instance. Credentials come from `E2E_USERNAME` and `E2E_PASSWORD`, and are never committed.
 
+**Seeded instance:** `yarn test:e2e:docker` starts a DHIS2 (v42 or v40) with d2-docker, filled with a seed: a subset of the OCBA metadata with the same ids and neutral names. See `e2e/instance/README.md`, and "Seeded instance" in the run notes.
+
 Tags used in the checklist:
 
 - `[W]` writes to the instance, so the test restores what it changed. These tests run serially.
@@ -62,22 +64,24 @@ Three page object helpers are isolated because they wrap third-party widgets tha
 - `RichTextEditor`: reading and writing content, and the toolbar (TinyMCE today)
 - `AppFrame`: locating the app inside or outside the Global Shell iframe
 
-## Test data on 8098
+## Test data
 
-Tests compare the UI against API responses rather than hardcoded counts, because the instance is large and may be refreshed. Search needs generous timeouts: it loads about 4,000 data elements, 1,900 indicators and 3,800 program indicators.
+Tests compare the UI against API responses rather than hardcoded counts, because the instance is large and may be refreshed. Search needs generous timeouts: it loads about 4,000 data elements, 1,900 indicators and 3,800 program indicators on MSF, and 9,500 data elements on OCA.
 
-- **Services:** group set `g7k6NQmqJY2` (37 services). `xIz3n0VWiDl` Outbreak Measles has descriptions in en, es, fr and pt.
-- **Data sets:**
-    - `jn8nB25hA8v` Meningitis: Age distribution (small, with sections)
-    - `rFIy2mYoFiu` 25-08-REAC-Zamfara (OCV) (one section, no data elements, blacklisted)
-    - The category combo override scenario picks the smallest suitable data set through the API
-- **Programs:**
-    - `LlBkgJO9WCv` Ambulances Line list (description, sections, rules, few indicators)
-    - `NQF5RvfjwaX` Mental Health - Group (repeatable stage, attributes, description)
-    - `vYRMQ43Zl3Y` eCare Pilot Project (stage with no sections)
-    - `Rs4W7I3twdy` BOAT Medical Linelist (no rules, variables or indicators)
-- **Indicators:** `rPAOXzG3811` SIPCA-IPD: Average IPC Score (the only one with nested indicators in its numerator)
-- **Configuration in use:** blacklists, not-in-use groups, legacy groups and layout settings for all four views are set. The two tag keys are unset, so the default tag texts apply.
+**No fixed ids.** The global setup (`e2e/support/discover.ts`) finds the objects the tests use on the instance, by what each scenario needs, and saves them to `e2e/.auth/fixtures.json`. So the same suite runs on MSF, OCA and the seed. A test whose object the instance does not have is skipped, saying which (`No fixture "programs.noSections" on this instance`).
+
+- **Configuration:** the group set of services, and the health service attribute, the program resources attribute and the group of all users chosen in Admin (or the app defaults), when the instance has them.
+- **Service:** the first of the group set with data sets and indicator groups.
+- **Data sets:** `small` (sections, all with data elements, the fewest elements, not blacklisted), `noElements` (a section with no data elements).
+- **Programs** (not blacklisted, nor starting with `~`):
+    - `event`: event program with description, sections, program indicators, rules, event resources and org units, preferably an HTML description
+    - `tracker`: attributes, sections, program indicators and rules. `repeatable`: first stage repeatable, with sections
+    - `noSections`: first stage without sections
+    - `other`: a second program with event resources, the lightest
+    - `noDescription`, `noProgramIndicators`, `noIndicators`, `noRules`, `noVariables`, `minimal` (no rules, variables nor indicators)
+    - `manyResources`: the fewest event resources above 30, for the list that scrolls
+    - `withIndicators`: referenced by indicators through `D{}`, `A{}` or `I{}`
+- **Indicators:** `nestedIndicator`, with `N{}` in its numerator.
 
 **Created by the tests, because 8098 does not have them `[W]`:**
 
@@ -408,7 +412,7 @@ Language tests set the real `keyUiLocale` user setting on a test user `[W]`, so 
 
 **Resources**
 
-- [x] Table lists the resources from the `HMIS-Dict_Resources` attribute, with its count `[W]`
+- [x] Table lists the resources from the resources attribute chosen in Admin, with its count `[W]`
 - [x] Dashboard and visualization resources show their label and link to the right app and id `[W]`
 - [x] Event chart and event report resources are listed, with their label and a link to the right app and id `[W]`
 - [x] Program with no attribute value has no block or entry
@@ -588,6 +592,20 @@ Both instances matched their saved state afterwards (`instance-state.py check`).
 
 The tests expect English: a `keyUiLocale` other than `en` for the test user makes most of them fail on timeouts. `api.withLocale` restores it, but an interrupted write run can leave it changed.
 
+### Seeded instance
+
+On `feature/his-integration`, 2026-11-09, on the seed in `e2e/instance` (an empty `dhis2/core` in Docker Compose plus `seed.sh`, before the move to d2-docker), with `--workers=4`. The suites ran one after the other.
+
+| Instance       | Passed | Failed | Flaky | Skipped |  Time |
+| -------------- | -----: | -----: | ----: | ------: | ----: |
+| v42.5.1 (8099) |    363 |      1 |     0 |       6 | 10.3m |
+| v40.9.0 (8100) |    362 |      0 |     0 |       8 |  8.9m |
+
+- The v42 failure (`10-admin`, a group the user is not in) needed a second user group. `seed.sh` now creates one, and the test passed on its own on v42 and in the v40 run.
+- Skipped on both: no indicator using a not-in-use program indicator, no service with an empty data set, no stage with a description, no option group with the options of a program, no data set with an option set, no indicator using `D{}`. v40 also skips the two Global Shell tests.
+- Fixture names come from the instance (`global-setup.ts` saves them), because the seed renames some of them. Since then, the fixtures themselves are found on the instance (see "Test data").
+- `07-programs` "sorted by name" compared the collapsed text on screen; the app counts the spaces of the name, as the AngularJS app did. The test now compares the names from the API.
+
 ### Differences accepted (tests changed)
 
 - **Header title click:** the title of the skeleton header is not a link. The test clicks the logo.
@@ -705,7 +723,7 @@ The suite does not pin any of them: where a scenario touches one, tests only cov
 - [x] **Layout settings merge:** Search and Data Sets merge stored settings with the defaults, while Programs and Indicators replace them, so new columns can go missing there. [fix] Fixed in the React app: stored settings merge over the defaults on all four screens (decision 2).
 - [ ] **Settings created on view:** the first visit to a module writes its settings to the dataStore, whichever user it is. [review]
 - [ ] **Missing translations:** en has 9 keys missing, which display as written (for example the `DataSets` column header). es, fr and pt lack about 26 to 29, and show English. ar lacks 10. [keep the English fallback, fix `DataSets`] In the React app: the five languages are imported, but `DataSets` still displays as written, and the strings added since (HIS features, load errors) are empty in es and fr.
-- [x] **Hardcoded UIDs:** attributes `pG4YeQyynJh` and `zC3TBJnSxar`, groups `LjRqO9XzQPs` and `epFY01iJN0Z`. All exist on 8098. [keep for now, move to configuration if other organisations will use the app] Kept, as suggested: still in `HardcodedIds.ts`.
+- [x] **Hardcoded UIDs:** attributes `pG4YeQyynJh` and `zC3TBJnSxar`, groups `LjRqO9XzQPs` and `epFY01iJN0Z`. All exist on 8098. [keep for now, move to configuration if other organisations will use the app] Kept as defaults, and they can be changed in the Admin panel (`AppSettings.metadataIds`, keys `metadata_*`), so other instances like OCA can use theirs.
 
 ## Out of scope
 

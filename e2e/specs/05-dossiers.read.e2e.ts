@@ -12,6 +12,7 @@ async function serviceWithContents(api: any, min = { dataSets: 1, groups: 1 }) {
             return { service: s, ...contents };
         }
     }
+    test.skip(true, "No service with data sets and indicator groups on this instance");
     return undefined;
 }
 

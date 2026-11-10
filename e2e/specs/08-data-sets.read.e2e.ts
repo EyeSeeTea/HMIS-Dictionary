@@ -40,24 +40,26 @@ async function overrideDataSet(api: any) {
         );
 }
 
-/** A small, not blacklisted data set that uses a data element in an indicator through #{de.coc}. */
+/** A small, not blacklisted data set with sections that uses a data element in an indicator through #{de.coc}. */
 async function dataSetWithIndicator(api: any) {
     const { blacklistDS } = await config(api);
     const all = await api.list("dataSets", {
-        fields: "id,displayName,dataSetElements[dataElement[id]]",
+        fields: "id,displayName,sections~size,dataSetElements[dataElement[id]]",
     });
     const indicators = await visibleIndicators(api);
     const candidates = all
-        .filter((d: any) => !blacklistDS.includes(d.id))
+        .filter((d: any) => !blacklistDS.includes(d.id) && d.sections > 0)
         .sort((a: any, b: any) => a.dataSetElements.length - b.dataSetElements.length);
     for (const dataSet of candidates) {
         const ids = new Set(dataSet.dataSetElements.map((e: any) => e.dataElement.id));
-        const indicator = indicators.find(i =>
+        const using = indicators.filter(i =>
             [...`${i.numerator} ${i.denominator}`.matchAll(/#\{(\w{11})\.\w{11}\}/g)].some(m =>
                 ids.has(m[1])
             )
         );
-        if (indicator) return { dataSet, indicator };
+        for (const indicator of using) {
+            if (await api.hasValidFormulas(indicator)) return { dataSet, indicator };
+        }
     }
     return undefined;
 }
@@ -75,7 +77,8 @@ test.describe("8. Data Sets", () => {
             await dataSets.load();
             await expect(dataSets.pageText).toContainText(`Number of Data Sets: ${all.length}`);
             const labels = await dataSets.optionLabels();
-            expect(new Set(labels)).toEqual(new Set(all.map((d: any) => d.displayName)));
+            // The browser trims the labels, and some names end with a space
+            expect(new Set(labels)).toEqual(new Set(all.map((d: any) => d.displayName.trim())));
             expect(labels).toEqual(
                 [...labels].sort((a, b) => (a.toLowerCase() < b.toLowerCase() ? -1 : 1))
             );

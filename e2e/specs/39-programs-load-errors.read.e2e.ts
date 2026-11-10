@@ -1,7 +1,7 @@
 import { expect, fixtures, test } from "../support/fixtures";
 import { t } from "../support/i18n";
 
-const { boat } = fixtures.programs;
+const { otherProgram } = fixtures.programs;
 
 test.describe("Programs: load errors", () => {
     test("A failed request is listed, instead of its sections disappearing", async ({
@@ -13,7 +13,7 @@ test.describe("Programs: load errors", () => {
         );
 
         await programs.load();
-        await programs.select(boat.name);
+        await programs.select(otherProgram.name);
 
         const errors = page.locator('[data-test="load-errors"]');
         await expect(errors).toContainText(t("dos_ProgramRules"));
@@ -29,7 +29,7 @@ test.describe("Programs: load errors", () => {
         );
 
         await programs.load();
-        await programs.select(boat.name);
+        await programs.select(otherProgram.name);
 
         const errors = page.locator('[data-test="load-errors"]');
         await expect(errors).toContainText(t("dos_ProgramRuleVariables"));

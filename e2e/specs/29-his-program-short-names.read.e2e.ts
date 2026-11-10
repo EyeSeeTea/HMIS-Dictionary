@@ -3,7 +3,7 @@ import { t } from "../support/i18n";
 import { headersOf, rowsOf, tableAfter } from "../support/pages";
 import { readXlsx } from "../support/xlsx";
 
-const { ambulances, mentalGroup } = fixtures.programs;
+const { eventProgram, trackerProgram } = fixtures.programs;
 const SHORT = t("dos_ShortNameElement");
 
 async function expectCell(table: any, name: string, shortName: string) {
@@ -16,7 +16,7 @@ async function expectCell(table: any, name: string, shortName: string) {
 test.describe("HIS: short names on Programs", () => {
     test("Stage data elements show it", async ({ programs, api }) => {
         const { programStageDataElements } = (
-            await api.get(`programs/${ambulances.id}`, {
+            await api.get(`programs/${eventProgram.id}`, {
                 fields: "programStages[programStageDataElements[dataElement[id]]]",
             })
         ).programStages[0];
@@ -28,7 +28,7 @@ test.describe("HIS: short names on Programs", () => {
         );
 
         await programs.load();
-        await programs.select(ambulances.name);
+        await programs.select(eventProgram.name);
         await programs.waitIdle();
         const table = programs.stageContainer
             .locator("table")
@@ -38,13 +38,13 @@ test.describe("HIS: short names on Programs", () => {
     });
 
     test("Attributes show it", async ({ programs, api }) => {
-        const { programTrackedEntityAttributes } = await api.get(`programs/${mentalGroup.id}`, {
+        const { programTrackedEntityAttributes } = await api.get(`programs/${trackerProgram.id}`, {
             fields: "programTrackedEntityAttributes[trackedEntityAttribute[displayName,displayShortName]]",
         });
         const attribute = programTrackedEntityAttributes[0].trackedEntityAttribute;
 
         await programs.load();
-        await programs.select(mentalGroup.name);
+        await programs.select(trackerProgram.name);
         await expectCell(
             tableAfter(programs.attributesHeading),
             attribute.displayName,
@@ -54,7 +54,7 @@ test.describe("HIS: short names on Programs", () => {
 
     test("The export has it", async ({ programs }) => {
         await programs.load();
-        await programs.select(mentalGroup.name);
+        await programs.select(trackerProgram.name);
         await programs.waitIdle();
         const file = await programs.download(() => programs.exportButton.click());
         const sheets = await readXlsx(file.path);

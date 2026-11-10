@@ -2,7 +2,7 @@ import { expect, fixtures, test } from "../support/fixtures";
 import { t } from "../support/i18n";
 import { rowsOf, tableAfter } from "../support/pages";
 
-const { ambulances } = fixtures.programs;
+const { eventProgram } = fixtures.programs;
 
 async function eventResources(api: any, programId: string) {
     const filter = `program.id:eq:${programId}`;
@@ -18,12 +18,12 @@ test.describe("HIS: event reports and charts by program", () => {
         programs,
         api,
     }) => {
-        const { charts, reports } = await eventResources(api, ambulances.id);
+        const { charts, reports } = await eventResources(api, eventProgram.id);
         const total = charts.length + reports.length;
         expect(total).toBeGreaterThan(0);
 
         await programs.load();
-        await programs.select(ambulances.name);
+        await programs.select(eventProgram.name);
         await expect(programs.resourcesHeading).toBeVisible();
         await expect(programs.pageText).toContainText(`${t("dos_ResourcesNumber")}: ${total}`);
         await expect(rowsOf(tableAfter(programs.resourcesHeading))).toHaveCount(total);
@@ -34,9 +34,9 @@ test.describe("HIS: event reports and charts by program", () => {
         programs,
         api,
     }) => {
-        const { charts, reports } = await eventResources(api, ambulances.id);
+        const { charts, reports } = await eventResources(api, eventProgram.id);
         await programs.load();
-        await programs.select(ambulances.name);
+        await programs.select(eventProgram.name);
         const rows = rowsOf(tableAfter(programs.resourcesHeading));
 
         const cases: [any, string, string][] = [
@@ -53,11 +53,11 @@ test.describe("HIS: event reports and charts by program", () => {
     });
 
     test("Another program lists only its own", async ({ programs, api }) => {
-        const { boat } = fixtures.programs;
-        const { charts, reports } = await eventResources(api, boat.id);
-        const own = await eventResources(api, ambulances.id);
+        const { otherProgram } = fixtures.programs;
+        const { charts, reports } = await eventResources(api, otherProgram.id);
+        const own = await eventResources(api, eventProgram.id);
         await programs.load();
-        await programs.select(boat.name);
+        await programs.select(otherProgram.name);
 
         const rows = rowsOf(tableAfter(programs.resourcesHeading));
         await expect(rows).toHaveCount(charts.length + reports.length);
@@ -66,7 +66,7 @@ test.describe("HIS: event reports and charts by program", () => {
 
     test("A long list scrolls on screen, and is printed in full", async ({ programs, page }) => {
         await programs.load();
-        await programs.select(fixtures.programs.mentalGroup.name);
+        await programs.select(fixtures.programs.manyResourcesProgram.name);
         const scrollBox = programs.resourcesHeading
             .locator("xpath=following::table[1]/ancestor::div[contains(@class, 'scroll')]")
             .first();

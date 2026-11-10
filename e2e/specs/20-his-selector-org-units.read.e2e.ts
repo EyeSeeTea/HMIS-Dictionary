@@ -48,9 +48,12 @@ test.describe("HIS: limit the selectors to the org units of the user", () => {
     });
 
     test("On: programs are limited", async ({ programs, api, page }) => {
-        const { organisationUnits } = await api.get(`programs/${fixtures.programs.ambulances.id}`, {
-            fields: "organisationUnits[id,level]",
-        });
+        const { organisationUnits } = await api.get(
+            `programs/${fixtures.programs.eventProgram.id}`,
+            {
+                fields: "organisationUnits[id,level]",
+            }
+        );
         const orgUnit = [...organisationUnits].sort((a: any, b: any) => b.level - a.level)[0];
         const expected = await api.list("programs", {
             fields: "displayName",

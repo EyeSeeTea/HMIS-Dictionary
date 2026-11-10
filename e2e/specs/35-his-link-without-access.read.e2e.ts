@@ -1,7 +1,7 @@
 import { expect, fixtures, test } from "../support/fixtures";
 import { rowsOf, tableAfter } from "../support/pages";
 
-const { ambulances } = fixtures.programs;
+const { eventProgram } = fixtures.programs;
 const noAccess = '[data-test="resource-no-access"]';
 
 test.describe("HIS: links without access", () => {
@@ -9,7 +9,7 @@ test.describe("HIS: links without access", () => {
         programs,
     }) => {
         await programs.load();
-        await programs.select(ambulances.name);
+        await programs.select(eventProgram.name);
         const rows = rowsOf(tableAfter(programs.resourcesHeading));
         await expect(rows.first()).toBeVisible();
         await expect(rows.locator(noAccess)).toHaveCount(0);
@@ -27,7 +27,7 @@ test.describe("HIS: links without access", () => {
         });
 
         await programs.load();
-        await programs.select(ambulances.name);
+        await programs.select(eventProgram.name);
         const rows = rowsOf(tableAfter(programs.resourcesHeading));
         await expect(rows.first()).toBeVisible();
 

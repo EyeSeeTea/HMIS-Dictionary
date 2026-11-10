@@ -510,6 +510,11 @@ export class AdminPage extends App {
         return this.root.locator(`#${id}`);
     }
 
+    /** A select of the metadata the app relies on, by the id of its select. */
+    select(id: string) {
+        return this.root.locator(`#${id}`);
+    }
+
     get userGroup() {
         return this.root.locator("#drpBoxUG");
     }

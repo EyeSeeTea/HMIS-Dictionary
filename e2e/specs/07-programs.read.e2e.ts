@@ -1,16 +1,38 @@
 import { Locator } from "@playwright/test";
 import { expect, fixtures, test } from "../support/fixtures";
-import { allIndicators, config } from "../support/data";
+import { allIndicators, config, escapeRegex } from "../support/data";
 import { t } from "../support/i18n";
 import { headersOf, mockKeys, ProgramsPage, rowsOf, tableAfter } from "../support/pages";
 import { readXlsx } from "../support/xlsx";
 
-const { ambulances, boat, eCare, mentalGroup } = fixtures.programs;
+const {
+    eventProgram,
+    otherProgram,
+    noSectionsProgram,
+    trackerProgram,
+    repeatableProgram,
+    noDescriptionProgram,
+    noProgramIndicatorsProgram,
+    noIndicatorsProgram,
+    noRulesProgram,
+    noVariablesProgram,
+    minimalProgram,
+} = fixtures.programs;
 
 const programFields =
     "id,displayName,displayDescription,programType,programStages[id,displayName,repeatable,sortOrder,description,programStageSections[id,displayName,dataElements[id]],programStageDataElements[compulsory,dataElement[id,displayName,optionSet[id],dataElementGroups[id]]]],programTrackedEntityAttributes~size";
 
-const getProgram = (api: any, id: string) => api.get(`programs/${id}`, { fields: programFields });
+/** The name as the export file has it: the characters unsafe in file names become "_". */
+function fileSafe(name: string): string {
+    return name.replace(/[\\/:*?"<>|]/g, "_");
+}
+
+/** The program, with its stages in their order, as the app shows them. */
+async function getProgram(api: any, id: string) {
+    const program = await api.get(`programs/${id}`, { fields: programFields });
+    program.programStages.sort((a: any, b: any) => a.sortOrder - b.sortOrder);
+    return program;
+}
 
 async function select(programs: ProgramsPage, label: string) {
     await programs.load();
@@ -57,8 +79,8 @@ test.describe("7. Programs", () => {
         test("Selecting a program shows its title, export button and table of contents", async ({
             programs,
         }) => {
-            await select(programs, ambulances.name);
-            await expect(programs.title).toHaveText(ambulances.name);
+            await select(programs, eventProgram.name);
+            await expect(programs.title).toHaveText(eventProgram.name);
             await expect(programs.exportButton).toBeVisible();
             await expect(programs.toc.locator("a").first()).toBeVisible();
         });
@@ -67,8 +89,8 @@ test.describe("7. Programs", () => {
             programs,
             api,
         }) => {
-            const program = await getProgram(api, ambulances.id);
-            await select(programs, ambulances.name);
+            const program = await getProgram(api, eventProgram.id);
+            await select(programs, eventProgram.name);
             await expect(programs.tocLink(t("dos_DescriptionOfProgram"))).toBeVisible();
             const start = program.displayDescription
                 .replace(/<[^>]+>/g, " ")
@@ -86,7 +108,7 @@ test.describe("7. Programs", () => {
         test("Program with no description has no description block or entry", async ({
             programs,
         }) => {
-            await select(programs, boat.name);
+            await select(programs, noDescriptionProgram.name);
             await expect(programs.tocLink(t("dos_DescriptionOfProgram"))).toHaveCount(0);
             await expect(programs.heading(t("dos_DescriptionOfProgram"))).toHaveCount(0);
         });
@@ -95,8 +117,8 @@ test.describe("7. Programs", () => {
             programs,
             api,
         }) => {
-            const program = await getProgram(api, mentalGroup.id);
-            await select(programs, mentalGroup.name);
+            const program = await getProgram(api, trackerProgram.id);
+            await select(programs, trackerProgram.name);
             const stageEntry = `Stage: ${program.programStages[0].displayName}`;
             await expect.poll(() => programs.tocEntries()).toContain(t("dos_ProgramRules"));
             const entries = await programs.tocEntries();
@@ -114,8 +136,8 @@ test.describe("7. Programs", () => {
         });
 
         test("Each table of contents link scrolls to its target", async ({ programs, api }) => {
-            const program = await getProgram(api, ambulances.id);
-            await select(programs, ambulances.name);
+            const program = await getProgram(api, eventProgram.id);
+            await select(programs, eventProgram.name);
             const stage = program.programStages[0];
             const section = stage.programStageSections[0];
             await programs.expectTocScrolls([
@@ -133,7 +155,7 @@ test.describe("7. Programs", () => {
         });
 
         test('"Go to index" links scroll to the top', async ({ programs }) => {
-            await select(programs, ambulances.name);
+            await select(programs, eventProgram.name);
             await programs.expectGoToIndexScrolls();
         });
 
@@ -141,9 +163,9 @@ test.describe("7. Programs", () => {
             programs,
             api,
         }) => {
-            const second = await getProgram(api, boat.id);
-            await select(programs, ambulances.name);
-            await programs.select(boat.name);
+            const second = await getProgram(api, noRulesProgram.id);
+            await select(programs, eventProgram.name);
+            await programs.select(noRulesProgram.name);
             await expect(programs.stages).toHaveCount(second.programStages.length);
             await expect(programs.rulesHeading).toBeHidden();
             await expect(programs.tocLink(t("dos_ProgramRules"))).toHaveCount(0);
@@ -155,12 +177,12 @@ test.describe("7. Programs", () => {
             programs,
             api,
         }) => {
-            const last = await getProgram(api, boat.id);
+            const last = await getProgram(api, noRulesProgram.id);
             await programs.load();
-            await programs.selector.selectOption({ label: mentalGroup.name });
-            await programs.selector.selectOption({ label: ambulances.name });
-            await programs.selector.selectOption({ label: boat.name });
-            await expect(programs.title).toHaveText(boat.name);
+            await programs.selector.selectOption({ label: trackerProgram.name });
+            await programs.selector.selectOption({ label: eventProgram.name });
+            await programs.selector.selectOption({ label: noRulesProgram.name });
+            await expect(programs.title).toHaveText(noRulesProgram.name);
             await programs.waitIdle();
             await expect(programs.stages).toHaveCount(last.programStages.length);
             await expect(programs.stages.first()).toContainText(last.programStages[0].displayName);
@@ -172,7 +194,7 @@ test.describe("7. Programs", () => {
             page,
         }) => {
             await programs.load();
-            await programs.selector.selectOption({ label: ambulances.name });
+            await programs.selector.selectOption({ label: eventProgram.name });
             await programs.tabLink("datasets").click();
             await expect(page).toHaveURL(/#\/datasets$/);
             await expect(programs.selector.locator("option").nth(2)).toBeAttached();
@@ -205,16 +227,16 @@ test.describe("7. Programs", () => {
             programs,
             api,
         }) => {
-            const program = await getProgram(api, mentalGroup.id);
+            const program = await getProgram(api, repeatableProgram.id);
             const stage = program.programStages[0];
             expect(stage.repeatable).toBe(true);
-            await select(programs, mentalGroup.name);
+            await select(programs, repeatableProgram.name);
             await expect(
                 programs.tocLink(`Stage: ${stage.displayName} (Repeatable)`)
             ).toBeVisible();
             await expect(programs.tocLink(stage.programStageSections[0].displayName)).toBeVisible();
-            await select(programs, ambulances.name);
-            const other = (await getProgram(api, ambulances.id)).programStages[0];
+            await select(programs, eventProgram.name);
+            const other = (await getProgram(api, eventProgram.id)).programStages[0];
             await expect(programs.tocLink(`Stage: ${other.displayName}`)).toBeVisible();
         });
 
@@ -236,8 +258,8 @@ test.describe("7. Programs", () => {
             programs,
             api,
         }) => {
-            const { programStages } = await getProgram(api, ambulances.id);
-            await select(programs, ambulances.name);
+            const { programStages } = await getProgram(api, eventProgram.id);
+            await select(programs, eventProgram.name);
             for (const section of programStages[0].programStageSections) {
                 const heading = programs.root.locator(`h3[id="${section.id}"]`);
                 await expect(heading).toHaveText(section.displayName);
@@ -248,7 +270,7 @@ test.describe("7. Programs", () => {
         test('Stage with no sections falls back to a "Data Elements" table', async ({
             programs,
         }) => {
-            await select(programs, eCare.name);
+            await select(programs, noSectionsProgram.name);
             const heading = programs.stageContainer.getByRole("heading", {
                 name: "Data Elements",
                 exact: true,
@@ -260,7 +282,7 @@ test.describe("7. Programs", () => {
         test("Columns: name, form name, description, value type, calculation mode, mandatory, visibility, option set", async ({
             programs,
         }) => {
-            await select(programs, ambulances.name);
+            await select(programs, eventProgram.name);
             const table = programs.stageContainer.locator("table").first();
             expect(await headersOf(table)).toEqual(
                 tableHeaders([
@@ -281,11 +303,24 @@ test.describe("7. Programs", () => {
             programs,
             api,
         }) => {
-            for (const { id, name } of [ambulances, eCare]) {
+            const { blacklistDEG, legacyDEG } = await config(api);
+            for (const { id, name } of [eventProgram, noSectionsProgram]) {
                 const { programStages } = await getProgram(api, id);
-                const element =
-                    programStages[0].programStageDataElements.find((e: any) => e.compulsory) ??
-                    programStages[0].programStageDataElements[0];
+                const [stage] = programStages;
+                // Only the elements on screen: in a section if the stage has them, not hidden
+                const inSections = new Set(
+                    stage.programStageSections.flatMap((s: any) =>
+                        s.dataElements.map((e: any) => e.id)
+                    )
+                );
+                const shown = stage.programStageDataElements.filter(
+                    (e: any) =>
+                        (inSections.size === 0 || inSections.has(e.dataElement.id)) &&
+                        !e.dataElement.dataElementGroups.some(
+                            (g: any) => blacklistDEG.includes(g.id) || legacyDEG.includes(g.id)
+                        )
+                );
+                const element = shown.find((e: any) => e.compulsory) ?? shown[0];
                 await select(programs, name);
                 const row = await rowWith(programs.stageContainer, element.dataElement.displayName);
                 await expect(row.locator("td").nth(6)).toHaveText(String(element.compulsory));
@@ -348,7 +383,7 @@ test.describe("7. Programs", () => {
         });
 
         test("Program indicators and indicators have different ids (P9)", async ({ programs }) => {
-            await select(programs, ambulances.name);
+            await select(programs, eventProgram.name);
             await expect(programs.page.locator("#programIndicators")).toHaveCount(1);
             expect(await programs.page.locator("[id='indicators']").count()).toBeLessThan(2);
         });
@@ -359,7 +394,7 @@ test.describe("7. Programs", () => {
         }) => {
             const rules = await api.list<any>("programRules", {
                 fields: "name,program[id,displayName],programRuleActions[programRuleActionType,dataElement[id,displayName]]",
-                filter: `program.id:eq:${ambulances.id}`,
+                filter: `program.id:eq:${eventProgram.id}`,
             });
             const rule = rules.find(r =>
                 r.programRuleActions.some(
@@ -370,7 +405,7 @@ test.describe("7. Programs", () => {
             const action = rule.programRuleActions.find(
                 (a: any) => a.programRuleActionType === "HIDEFIELD" && a.dataElement
             );
-            await select(programs, ambulances.name);
+            await select(programs, eventProgram.name);
             const row = await rowWith(programs.stageContainer, action.dataElement.displayName);
             await expect(row.locator("td").nth(7)).toContainText(rule.name);
         });
@@ -379,11 +414,11 @@ test.describe("7. Programs", () => {
             programs,
             api,
         }) => {
-            const { programStages } = await getProgram(api, ambulances.id);
+            const { programStages } = await getProgram(api, eventProgram.id);
             const elements = programStages[0].programStageDataElements;
             const withOptions = elements.find((e: any) => e.dataElement.optionSet);
             const without = elements.find((e: any) => !e.dataElement.optionSet);
-            await select(programs, ambulances.name);
+            await select(programs, eventProgram.name);
             const row = await rowWith(programs.stageContainer, withOptions.dataElement.displayName);
             const options = await api.get(`optionSets/${withOptions.dataElement.optionSet.id}`, {
                 fields: "options~size",
@@ -525,7 +560,7 @@ test.describe("7. Programs", () => {
             programs,
             page,
         }) => {
-            await select(programs, ambulances.name);
+            await select(programs, eventProgram.name);
             await programs.legacyToggle.check();
             await page.waitForLoadState("load");
             await expect(programs.legacyToggle).toBeChecked();
@@ -556,8 +591,8 @@ test.describe("7. Programs", () => {
             programs,
             api,
         }) => {
-            const program = await getProgram(api, mentalGroup.id);
-            await select(programs, mentalGroup.name);
+            const program = await getProgram(api, trackerProgram.id);
+            await select(programs, trackerProgram.name);
             await expect(programs.attributesHeading).toBeVisible();
             await expect(programs.pageText).toContainText(
                 `${t("dos_TrackedEntityAttributesNumber")}: ${program.programTrackedEntityAttributes}`
@@ -565,14 +600,14 @@ test.describe("7. Programs", () => {
             await expect(rowsOf(tableAfter(programs.attributesHeading))).toHaveCount(
                 program.programTrackedEntityAttributes
             );
-            await select(programs, ambulances.name);
+            await select(programs, eventProgram.name);
             await expect(programs.attributesHeading).toBeHidden();
         });
 
         test("Columns: name, short name, form name, description, value type, aggregation type, mandatory, visibility, option set", async ({
             programs,
         }) => {
-            await select(programs, mentalGroup.name);
+            await select(programs, trackerProgram.name);
             expect(await headersOf(tableAfter(programs.attributesHeading))).toEqual(
                 tableHeaders([
                     "dos_NameElement",
@@ -642,10 +677,10 @@ test.describe("7. Programs", () => {
             programs,
             api,
         }) => {
-            const { programIndicators } = await api.get(`programs/${ambulances.id}`, {
+            const { programIndicators } = await api.get(`programs/${eventProgram.id}`, {
                 fields: piFields,
             });
-            await select(programs, ambulances.name);
+            await select(programs, eventProgram.name);
             await expect(programs.programIndicatorsHeading).toBeVisible();
             await expect(programs.pageText).toContainText(
                 `${t("dos_NumberOfProgramIndicators")}: ${programIndicators.length}`
@@ -664,12 +699,12 @@ test.describe("7. Programs", () => {
         });
 
         test("Calculation shows a readable description", async ({ programs, api }) => {
-            const { programIndicators } = await api.get(`programs/${ambulances.id}`, {
+            const { programIndicators } = await api.get(`programs/${eventProgram.id}`, {
                 fields: piFields,
             });
             const pi = programIndicators.find((p: any) => /#\{/.test(p.expression));
             test.skip(!pi, "No program indicator using data elements");
-            await select(programs, ambulances.name);
+            await select(programs, eventProgram.name);
             const row = await rowWith(
                 tableAfter(programs.programIndicatorsHeading),
                 pi.displayName
@@ -681,7 +716,7 @@ test.describe("7. Programs", () => {
         test("Columns: name, description, filter, calculation, aggregation type, type, stages referenced, boundaries, visualization", async ({
             programs,
         }) => {
-            await select(programs, ambulances.name);
+            await select(programs, eventProgram.name);
             expect(await headersOf(tableAfter(programs.programIndicatorsHeading))).toEqual(
                 tableHeaders([
                     "dos_NameElement",
@@ -701,16 +736,16 @@ test.describe("7. Programs", () => {
             programs,
             api,
         }) => {
-            const program = await getProgram(api, ambulances.id);
+            const program = await getProgram(api, eventProgram.id);
             const stage = program.programStages[0];
-            const { programIndicators } = await api.get(`programs/${ambulances.id}`, {
+            const { programIndicators } = await api.get(`programs/${eventProgram.id}`, {
                 fields: piFields,
             });
             const pi = programIndicators.find((p: any) =>
                 `${p.expression} ${p.filter}`.includes(`#{${stage.id}`)
             );
             test.skip(!pi, "No program indicator referencing a stage");
-            await select(programs, ambulances.name);
+            await select(programs, eventProgram.name);
             const row = await rowWith(
                 tableAfter(programs.programIndicatorsHeading),
                 pi.displayName
@@ -719,12 +754,12 @@ test.describe("7. Programs", () => {
         });
 
         test("Analytics period boundaries are listed", async ({ programs, api }) => {
-            const { programIndicators } = await api.get(`programs/${ambulances.id}`, {
+            const { programIndicators } = await api.get(`programs/${eventProgram.id}`, {
                 fields: "programIndicators[displayName,analyticsPeriodBoundaries[boundaryTarget,analyticsPeriodBoundaryType]]",
             });
             const pi = programIndicators.find((p: any) => p.analyticsPeriodBoundaries.length > 0);
             test.skip(!pi, "No program indicator with boundaries");
-            await select(programs, ambulances.name);
+            await select(programs, eventProgram.name);
             const row = await rowWith(
                 tableAfter(programs.programIndicatorsHeading),
                 pi.displayName
@@ -754,7 +789,7 @@ test.describe("7. Programs", () => {
         });
 
         test("Program with no program indicators has no block or entry", async ({ programs }) => {
-            await select(programs, boat.name);
+            await select(programs, noProgramIndicatorsProgram.name);
             await expect(programs.programIndicatorsHeading).toBeHidden();
             await expect(
                 programs.toc.locator("a").filter({ hasText: /Program indicators/i })
@@ -778,7 +813,9 @@ test.describe("7. Programs", () => {
                 const indicator = visible.find(i =>
                     `${i.numerator}${i.denominator}`.includes(`I{${pi.id}}`)
                 );
-                if (indicator) return { indicator, program: pi.program };
+                if (indicator && (await api.hasValidFormulas(indicator))) {
+                    return { indicator, program: pi.program };
+                }
             }
             return undefined;
         }
@@ -795,8 +832,14 @@ test.describe("7. Programs", () => {
             await expect(
                 rowsOf(table).filter({ hasText: found!.indicator.displayName }).first()
             ).toBeVisible();
-            const names = (await rowsOf(table).locator("td:first-child").allInnerTexts()).map(x =>
+            const shown = (await rowsOf(table).locator("td:first-child").allInnerTexts()).map(x =>
                 x.trim()
+            );
+            // The order counts the spaces of the name, which the page collapses
+            const all = await api.list("indicators", { fields: "displayName" });
+            const collapse = (text: string) => text.replace(/\s+/g, " ").trim();
+            const names = shown.map(
+                text => all.find(i => collapse(i.displayName) === text)?.displayName ?? text
             );
             expect(names).toEqual(
                 [...names].sort((a, b) => (a.toLowerCase() < b.toLowerCase() ? -1 : 1))
@@ -874,7 +917,7 @@ test.describe("7. Programs", () => {
         });
 
         test("Program with no indicators has no block or entry", async ({ programs }) => {
-            await select(programs, boat.name);
+            await select(programs, noIndicatorsProgram.name);
             await expect(programs.indicatorsHeading).toBeHidden();
             await expect(
                 programs.toc.locator("a").filter({ hasText: /^\s*Indicators\s*$/ })
@@ -889,9 +932,9 @@ test.describe("7. Programs", () => {
         }) => {
             const rules = await api.list("programRules", {
                 fields: "name",
-                filter: `program.id:eq:${ambulances.id}`,
+                filter: `program.id:eq:${eventProgram.id}`,
             });
-            await select(programs, ambulances.name);
+            await select(programs, eventProgram.name);
             await expect(programs.rulesHeading).toBeVisible();
             const table = tableAfter(programs.rulesHeading);
             await expect(rowsOf(table)).toHaveCount(rules.length);
@@ -991,7 +1034,7 @@ test.describe("7. Programs", () => {
         });
 
         test("Program with no rules has no block or entry", async ({ programs }) => {
-            await select(programs, boat.name);
+            await select(programs, noRulesProgram.name);
             await expect(programs.rulesHeading).toBeHidden();
             await expect(programs.tocLink(t("dos_ProgramRules"))).toHaveCount(0);
         });
@@ -1004,9 +1047,9 @@ test.describe("7. Programs", () => {
         }) => {
             const variables = await api.list("programRuleVariables", {
                 fields: "name",
-                filter: `program.id:eq:${ambulances.id}`,
+                filter: `program.id:eq:${eventProgram.id}`,
             });
-            await select(programs, ambulances.name);
+            await select(programs, eventProgram.name);
             await expect(programs.variablesHeading).toBeVisible();
             const table = tableAfter(programs.variablesHeading);
             await expect(rowsOf(table)).toHaveCount(variables.length);
@@ -1054,7 +1097,7 @@ test.describe("7. Programs", () => {
         });
 
         test("Program with none has no block", async ({ programs }) => {
-            await select(programs, boat.name);
+            await select(programs, noVariablesProgram.name);
             await expect(programs.variablesHeading).toBeHidden();
         });
     });
@@ -1067,7 +1110,7 @@ test.describe("7. Programs", () => {
             await page.route(/\/api(\/\d+)?\/event(Charts|Reports)(\.json)?\?/, route =>
                 route.fulfill({ json: { eventCharts: [], eventReports: [] } })
             );
-            await select(programs, ambulances.name);
+            await select(programs, eventProgram.name);
             await expect(programs.resourcesHeading).toHaveCount(0);
             await expect(programs.tocLink("Program Resources")).toHaveCount(0);
         });
@@ -1083,16 +1126,18 @@ test.describe("7. Programs", () => {
         test("Export downloads `<program>-<date>.xlsx`, with unsafe filename characters replaced", async ({
             programs,
         }) => {
-            const { file } = await exportProgram(programs, ambulances.name);
+            const { file } = await exportProgram(programs, eventProgram.name);
             expect(file.name).toMatch(
-                new RegExp(`^${ambulances.name}-\\d{2}-\\d{2}-\\d{2}_\\d{1,2}-\\d{2}\\.xlsx$`)
+                new RegExp(
+                    `^${escapeRegex(fileSafe(eventProgram.name))}-\\d{2}-\\d{2}-\\d{2}_\\d{1,2}-\\d{2}\\.xlsx$`
+                )
             );
         });
 
         test("Sheets: Data Elements, Tracked Entity Attributes, Indicators, Program Indicators, Program Rules, Program Rules Actions, Program Rules Variables", async ({
             programs,
         }) => {
-            const { sheets } = await exportProgram(programs, mentalGroup.name);
+            const { sheets } = await exportProgram(programs, trackerProgram.name);
             for (const name of [
                 "Data Elements",
                 "Tracked Entity Attributes",
@@ -1108,7 +1153,7 @@ test.describe("7. Programs", () => {
         test("Data Elements sheet includes stage, section, option set name and options", async ({
             programs,
         }) => {
-            const { sheets } = await exportProgram(programs, ambulances.name);
+            const { sheets } = await exportProgram(programs, eventProgram.name);
             const { headers } = sheets["Data Elements"]!;
             for (const key of [
                 "dos_Stage",
@@ -1122,20 +1167,20 @@ test.describe("7. Programs", () => {
         });
 
         test("Program Rules Actions sheet lists the actions", async ({ programs }) => {
-            const { sheets } = await exportProgram(programs, ambulances.name);
+            const { sheets } = await exportProgram(programs, eventProgram.name);
             const sheet = sheets["Program Rules Actions"]!;
             expect(sheet.rows.length).toBeGreaterThan(0);
             expect(sheet.headers.length).toBeGreaterThan(1);
         });
 
         test("Sheet row counts match the tables on screen", async ({ programs, api }) => {
-            const { sheets } = await exportProgram(programs, ambulances.name);
+            const { sheets } = await exportProgram(programs, eventProgram.name);
             const rules = await api.list("programRules", {
                 fields: "name",
-                filter: `program.id:eq:${ambulances.id}`,
+                filter: `program.id:eq:${eventProgram.id}`,
             });
             expect(sheets["Program Rules"]!.rows).toHaveLength(rules.length);
-            const { programIndicators } = await api.get(`programs/${ambulances.id}`, {
+            const { programIndicators } = await api.get(`programs/${eventProgram.id}`, {
                 fields: "programIndicators[id]",
             });
             expect(sheets["Program Indicators"]!.rows).toHaveLength(programIndicators.length);
@@ -1183,15 +1228,15 @@ test.describe("7. Programs", () => {
             expect(names(shown.sheets)).toContain(element.displayName);
         });
 
-        test("Export works on a program with no rules, variables or indicators (`Rs4W7I3twdy`)", async ({
+        test("Export works on a program with no rules, variables or indicators", async ({
             programs,
         }) => {
-            const { sheets } = await exportProgram(programs, boat.name);
+            const { sheets } = await exportProgram(programs, minimalProgram.name);
             expect(Object.keys(sheets)).toContain("Data Elements");
         });
 
         test("Export works on an event program, with no attributes sheet", async ({ programs }) => {
-            const { sheets } = await exportProgram(programs, ambulances.name);
+            const { sheets } = await exportProgram(programs, eventProgram.name);
             expect(Object.keys(sheets)).not.toContain("Tracked Entity Attributes");
         });
 
@@ -1199,14 +1244,14 @@ test.describe("7. Programs", () => {
             programs,
             api,
         }) => {
-            const first = await exportProgram(programs, ambulances.name);
+            const first = await exportProgram(programs, eventProgram.name);
             const again = await programs.download(() => programs.exportButton.click());
-            expect(again.name).toContain(ambulances.name);
-            await programs.select(boat.name);
+            expect(again.name).toContain(fileSafe(eventProgram.name));
+            await programs.select(otherProgram.name);
             const second = await programs.download(() => programs.exportButton.click());
-            expect(second.name).toContain(boat.name);
+            expect(second.name).toContain(fileSafe(otherProgram.name));
             const sheets = await readXlsx(second.path);
-            const stage = (await getProgram(api, boat.id)).programStages[0];
+            const stage = (await getProgram(api, otherProgram.id)).programStages[0];
             expect(sheets["Data Elements"]!.rows[0]![t("dos_Stage")]).toBe(stage.displayName);
             expect(first.sheets["Data Elements"]!.rows[0]![t("dos_Stage")]).not.toBe(
                 stage.displayName

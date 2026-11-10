@@ -316,7 +316,7 @@ test.describe("1. App shell and navigation", () => {
             await expect(dossiers.printButton).toBeEnabled();
 
             await programs.load();
-            await programs.select(fixtures.programs.ambulances.name);
+            await programs.select(fixtures.programs.eventProgram.name);
             await expect(programs.printButton).toBeEnabled();
 
             await dataSets.load();
@@ -393,7 +393,7 @@ test.describe("1. App shell and navigation", () => {
             await search.openColumns();
             await expectHelp();
             await programs.load();
-            await programs.select(fixtures.programs.ambulances.name);
+            await programs.select(fixtures.programs.eventProgram.name);
             await expectHelp();
             await dataSets.load();
             await dataSets.select(fixtures.dataSets.small.name);

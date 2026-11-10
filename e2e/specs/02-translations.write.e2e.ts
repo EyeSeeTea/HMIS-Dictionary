@@ -197,7 +197,7 @@ test.describe("2. Translations", () => {
 
             const programs = new ProgramsPage(page);
             await programs.load();
-            await programs.select(fixtures.programs.boat.name);
+            await programs.select(fixtures.programs.otherProgram.name);
             const programFile = await programs.download(() =>
                 exportLabel("dos_exportToExcel").click()
             );

@@ -52,6 +52,7 @@ test.describe("9. Indicators", () => {
         const { blacklistIG } = await config(api);
         const all = await allIndicators(api);
         const blacklisted = all.find(i => i.indicatorGroups.some(g => blacklistIG.includes(g.id)))!;
+        test.skip(!blacklisted, "No indicator in a blacklisted group");
         const unique = all.filter(i => all.filter(o => o.name === blacklisted.name).length === 1);
         expect(unique.length).toBeGreaterThan(0);
         await indicators.load();

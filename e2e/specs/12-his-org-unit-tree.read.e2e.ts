@@ -3,6 +3,9 @@ import { expect, fixtures, test } from "../support/fixtures";
 import { OrgUnitTreePanel } from "../support/his";
 import { App } from "../support/pages";
 
+/** As in OrgUnitTreePanel: above this many assigned org units, only the first levels start expanded. */
+const maxFullyExpanded = 100;
+
 type Item = { type: "dataSets" | "programs"; id: string };
 
 async function assignedNames(api: any, { type, id }: Item): Promise<string[]> {
@@ -27,7 +30,12 @@ async function expectTree(app: App, api: any, item: Item) {
     await expect(panel.tree).toBeVisible();
     await expect(panel.summary).toHaveText(`Assigned organisation units: ${expected.length}`);
     const names = (await panel.assigned.allInnerTexts()).map(name => name.trim()).sort();
-    expect(names).toEqual(expected);
+    if (expected.length <= maxFullyExpanded) {
+        expect(names).toEqual(expected);
+    } else {
+        // Large trees start with only the first levels open, so some assigned ones are hidden
+        expect(names.every(name => expected.includes(name))).toBe(true);
+    }
 }
 
 test.describe("HIS: organisation unit tree", () => {
@@ -39,7 +47,7 @@ test.describe("HIS: organisation unit tree", () => {
     });
 
     test("Programs: shows the org units of the program, on demand", async ({ programs, api }) => {
-        const { id, name } = fixtures.programs.ambulances;
+        const { id, name } = fixtures.programs.eventProgram;
         await programs.load();
         await programs.select(name);
         await expectTree(programs, api, { type: "programs", id });

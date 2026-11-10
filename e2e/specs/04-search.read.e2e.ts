@@ -128,6 +128,7 @@ test.describe("4. Search", () => {
             const indicator = (await allIndicators(api)).find(i =>
                 i.indicatorGroups.some(g => blacklistIG.includes(g.id))
             );
+            test.skip(!indicator, "No indicator in a blacklisted group");
             await search.load();
             await expectNotFound(search, indicator!.id);
         });
@@ -402,10 +403,17 @@ test.describe("4. Search", () => {
                     })
                 ).map(p => p.id)
             );
-            const indicator = (await visibleIndicators(api)).find(i => {
+            const candidates = (await visibleIndicators(api)).filter(i => {
                 const m = FORMULA_PI.exec(i.numerator);
                 return m && pis.has(m[1]!);
             });
+            let indicator: (typeof candidates)[number] | undefined;
+            for (const candidate of candidates) {
+                if (await api.hasValidFormulas(candidate)) {
+                    indicator = candidate;
+                    break;
+                }
+            }
             test.skip(!indicator, "No indicator using a not-in-use program indicator");
             await mockKeys(page, { notInUse_tag: undefined });
             await search.load();
@@ -802,7 +810,10 @@ test.describe("4. Search", () => {
 
         test("Default visible columns: type, name, short name, description and service name", async ({
             search,
+            page,
         }) => {
+            // The service columns need the dossiers configuration complete, whatever the instance
+            await mockKeys(page, { setup_dossierConfigComplete: { value: true } });
             await search.load();
             expect(await search.table.headers()).toEqual([
                 COLUMNS.type,
@@ -815,7 +826,9 @@ test.describe("4. Search", () => {
 
         test("Select Columns groups: objects, descriptions, groups and services", async ({
             search,
+            page,
         }) => {
+            await mockKeys(page, { setup_dossierConfigComplete: { value: true } });
             await search.load();
             await search.openColumns();
             for (const key of [
@@ -830,7 +843,9 @@ test.describe("4. Search", () => {
 
         test("Each column checkbox shows and hides its column, for all 18 columns", async ({
             search,
+            page,
         }) => {
+            await mockKeys(page, { setup_dossierConfigComplete: { value: true } });
             await search.load();
             await search.openColumns();
             await search.advancedLink.click();

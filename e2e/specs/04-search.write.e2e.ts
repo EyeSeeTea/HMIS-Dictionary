@@ -1,4 +1,4 @@
-import { expect, test } from "../support/fixtures";
+import { expect, fixtures, test } from "../support/fixtures";
 import { Api } from "../support/api";
 import { visibleIndicators } from "../support/data";
 import { t } from "../support/i18n";
@@ -229,7 +229,11 @@ test.describe("4. Search", () => {
             }
         });
 
-        test("Sharing includes `ALL USERS` when that group exists", async ({ search, api }) => {
+        test("Sharing includes the all users group chosen in Admin, when it exists", async ({
+            search,
+            api,
+        }) => {
+            const group = fixtures.allUsersGroup;
             const target = await simpleIndicator(api);
             const name = `${target.displayName} - ${target.id}`;
             await cleanVisualizations(api, name);
@@ -243,7 +247,7 @@ test.describe("4. Search", () => {
                         });
                         return v ? Object.keys(v.sharing?.userGroups ?? {}) : [];
                     })
-                    .toContain("epFY01iJN0Z");
+                    .toContain(group);
             } finally {
                 await cleanVisualizations(api, name);
             }
@@ -257,7 +261,8 @@ test.describe("4. Search", () => {
             const target = await simpleIndicator(api);
             const name = `${target.displayName} - ${target.id}`;
             await cleanVisualizations(api, name);
-            await page.route(/\/api(\/\d+)?\/userGroups\/epFY01iJN0Z/, route =>
+            // Every group lookup answers that it does not exist, whichever is chosen in Admin
+            await page.route(/\/api(\/\d+)?\/userGroups\/\w{11}(\?|$)/, route =>
                 route.fulfill({ status: 404, json: { httpStatusCode: 404 } })
             );
             try {

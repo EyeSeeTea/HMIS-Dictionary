@@ -4,6 +4,13 @@ Playwright tests for HMIS Dictionary. The same specs run against the AngularJS a
 
 ## Setup
 
+The tests run on any DHIS2 instance with the app installed: the global setup finds the objects each test needs (`support/discover.ts`), and the tests whose object the instance lacks are skipped. Two scripts set everything up:
+
+- `yarn test:e2e:docker` starts a seeded instance with d2-docker, installs the app and runs the tests: see `e2e/instance/README.md`.
+- `yarn test:e2e:instance --url URL --auth USER:PASSWORD` runs them on an existing instance, as it is. On a shared one, run only the read-only tests: `-- --project=read`.
+
+Both pass the arguments after `--` to Playwright, and explain their options with `--help`. To run Playwright directly instead, follow these steps:
+
 1. Install the app on the instance, with `e2e/scripts/install-app.sh path/to/app.zip`.
 2. Set `E2E_USERNAME` and `E2E_PASSWORD` for a user with full access. Credentials are never committed.
 3. Run `npx playwright install chromium` once.

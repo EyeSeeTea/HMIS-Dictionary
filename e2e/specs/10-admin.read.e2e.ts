@@ -1,4 +1,4 @@
-import { expect, test } from "../support/fixtures";
+import { expect, skipWithoutHealthServiceAttribute, test } from "../support/fixtures";
 import { mockKeys } from "../support/pages";
 
 test.describe("10. Admin", () => {
@@ -64,9 +64,10 @@ test.describe("10. Admin", () => {
             await expect(admin.check("divOUG")).toHaveClass(/alert-success/);
         });
 
-        test("Attribute: success with `serviceCode` on data sets and indicator groups", async ({
+        test("Attribute: success with the one chosen on data sets and indicator groups", async ({
             admin,
         }) => {
+            skipWithoutHealthServiceAttribute();
             await admin.load();
             await expect(admin.check("divA")).toHaveClass(/alert-success/);
         });

@@ -4,7 +4,7 @@ import { PrintSelectionPanel } from "../support/his";
 import { t } from "../support/i18n";
 
 const { small } = fixtures.dataSets;
-const { ambulances } = fixtures.programs;
+const { eventProgram } = fixtures.programs;
 
 test.describe("HIS: print selection", () => {
     test("Data Sets: an unchecked column stays on screen but is not printed", async ({
@@ -99,11 +99,11 @@ test.describe("HIS: print selection", () => {
         api,
         page,
     }) => {
-        const { programStages } = await api.get(`programs/${ambulances.id}`, {
+        const { programStages } = await api.get(`programs/${eventProgram.id}`, {
             fields: "programStages[displayName,programStageSections[id,displayName]]",
         });
         await programs.load();
-        await programs.select(ambulances.name);
+        await programs.select(eventProgram.name);
         await programs.waitIdle();
         const panel = new PrintSelectionPanel(programs);
         await panel.open();
@@ -135,7 +135,7 @@ test.describe("HIS: print selection", () => {
         page,
     }) => {
         await programs.load();
-        await programs.select(ambulances.name);
+        await programs.select(eventProgram.name);
         await programs.waitIdle();
         const panel = new PrintSelectionPanel(programs);
         await panel.open();

@@ -30,7 +30,7 @@ test.describe("0. Infrastructure", () => {
         await dossiers.openEditor();
         await shot("dossiers-editor");
         await programs.load();
-        await programs.select(fixtures.programs.ambulances.name);
+        await programs.select(fixtures.programs.eventProgram.name);
         await shot("programs");
         await dataSets.load();
         await dataSets.select(fixtures.dataSets.small.name);

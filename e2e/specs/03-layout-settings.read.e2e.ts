@@ -229,10 +229,13 @@ test.describe("3. Layout settings and access levels", () => {
     });
 
     test.describe("Access applied", () => {
-        test("Stored settings on 8098 give the full-access user every Search column", async ({
+        test("Stored settings give the full-access user every Search column", async ({
             search,
             dataSets,
+            api,
         }) => {
+            // The service columns only show with the dossiers configuration complete
+            const complete = (await api.getKey("setup_dossierConfigComplete"))?.value === true;
             await search.load();
             await search.openColumns();
             await search.advancedLink.click();
@@ -252,9 +255,7 @@ test.describe("3. Layout settings and access levels", () => {
                 "objectGroup_name",
                 "objectGroup_id",
                 "objectGroup_code",
-                "service_name",
-                "service_id",
-                "service_code",
+                ...(complete ? ["service_name", "service_id", "service_code"] : []),
             ]) {
                 await expect(search.columnCheckbox(t(key))).toBeVisible();
             }

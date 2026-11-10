@@ -56,6 +56,25 @@ export class Api {
         return res.json().catch(() => undefined);
     }
 
+    /** Whether DHIS2 itself accepts the expression: it rejects some instance data, as `sum(I{x})` on 2.40. */
+    async isValidExpression(expression: string, kind = "indicators"): Promise<boolean> {
+        if (!expression.trim()) return true;
+        const res = await this.context.post(this.url(`${kind}/expression/description`), {
+            data: expression,
+            headers: { "Content-Type": "text/plain" },
+        });
+        if (!res.ok()) return false;
+        return (await res.json()).status === "OK";
+    }
+
+    /** Both formulas of the indicator are valid for DHIS2. */
+    async hasValidFormulas(indicator: { numerator: string; denominator: string }) {
+        return (
+            (await this.isValidExpression(indicator.numerator)) &&
+            (await this.isValidExpression(indicator.denominator))
+        );
+    }
+
     async put(path: string, data: unknown) {
         const res = await this.context.put(this.url(path), { data: data as object });
         await this.check(res, `PUT ${path}`);

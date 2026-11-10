@@ -9,19 +9,19 @@ test.describe("HIS: hide programs from the selector", () => {
         programs,
         api,
     }) => {
-        const { ambulances } = fixtures.programs;
+        const { eventProgram } = fixtures.programs;
         const saved = await api.getKey(key);
         try {
             await admin.load();
             await admin.submitField(
                 admin.input("PROGRAM_UIDs"),
                 "submitPrograms",
-                JSON.stringify([ambulances.id])
+                JSON.stringify([eventProgram.id])
             );
-            await readKeyEventually(api, key, [ambulances.id]);
+            await readKeyEventually(api, key, [eventProgram.id]);
 
             await programs.load();
-            await expect.poll(() => programs.optionLabels()).not.toContain(ambulances.name);
+            await expect.poll(() => programs.optionLabels()).not.toContain(eventProgram.name);
         } finally {
             await api.setKey(key, saved);
         }

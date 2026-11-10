@@ -27,6 +27,17 @@ type Field = {
 
 const uid = "AAAAAAAAAAA";
 
+/** The selects of the metadata the app relies on: `metadata_<key>` keys. */
+const metadataSelects = [
+    { key: "healthServiceAttribute", select: "drpBoxA", submit: "submitA" },
+    { key: "advancedUserGroup", select: "drpBoxAdvancedUG", submit: "submitAdvancedUG" },
+    { key: "allUsersGroup", select: "drpBoxAllUsersUG", submit: "submitAllUsersUG" },
+    { key: "icd10Attribute", select: "drpBoxICD10", submit: "submitICD10" },
+    { key: "constantZero", select: "drpBoxConstantZero", submit: "submitConstantZero" },
+    { key: "constantOne", select: "drpBoxConstantOne", submit: "submitConstantOne" },
+    { key: "programResourcesAttribute", select: "drpBoxResources", submit: "submitResources" },
+];
+
 const fields: Field[] = [
     {
         title: "Blacklist: data element groups",
@@ -151,13 +162,14 @@ test.describe("10. Admin", () => {
     });
 
     test("Attribute: error if missing or only on one", async ({ admin, page, api }) => {
+        const chosen = fixtures.healthServiceAttribute;
         // The app saves the result of the checks, so the flag is restored afterwards
         await api.withKeys(["setup_dossierConfigComplete"], async () => {
             await page.route(/\/api(\/\d+)?\/attributes(\.json)?(\?|$)/, async route => {
                 const response = await route.fetch();
                 const json = await response.json();
                 json.attributes = json.attributes.map((a: any) =>
-                    a.name === "serviceCode" ? { ...a, indicatorGroupAttribute: false } : a
+                    a.id === chosen ? { ...a, indicatorGroupAttribute: false } : a
                 );
                 await route.fulfill({ response, json });
             });
@@ -165,6 +177,51 @@ test.describe("10. Admin", () => {
             await expect(admin.check("divA")).toHaveClass(/alert-danger/);
         });
     });
+
+    test("Attribute: the check follows the attribute chosen, not one named serviceCode", async ({
+        admin,
+        api,
+    }) => {
+        const attributes = await api.list<any>("attributes", {
+            fields: "id,dataSetAttribute,indicatorGroupAttribute",
+        });
+        const other = attributes.find(a => !a.dataSetAttribute && !a.indicatorGroupAttribute);
+        test.skip(!other, "No attribute outside data sets and indicator groups");
+        await api.withKeys(
+            ["metadata_healthServiceAttribute", "setup_dossierConfigComplete"],
+            async () => {
+                await api.setKey("metadata_healthServiceAttribute", { value: other.id });
+                await admin.load();
+                await expect(admin.check("divA")).toHaveClass(/alert-danger/);
+                await expect(admin.select("drpBoxA")).toHaveValue("");
+            }
+        );
+    });
+
+    for (const metadata of metadataSelects) {
+        test(`Metadata: ${metadata.key} is saved, read back through the API`, async ({
+            admin,
+            api,
+            page,
+        }) => {
+            const key = `metadata_${metadata.key}`;
+            await api.withKeys([key, "setup_dossierConfigComplete"], async () => {
+                await admin.load();
+                const select = admin.select(metadata.select);
+                const values = await select
+                    .locator("option:not([disabled])")
+                    .evaluateAll(options => options.map(o => (o as HTMLOptionElement).value));
+                const current = await select.inputValue();
+                const value = values.find(v => v !== current);
+                test.skip(!value, `No other option for ${metadata.key} on this instance`);
+
+                await select.selectOption(value!);
+                await submitAndWait(page, () => admin.submit(metadata.submit).click());
+                await readKeyEventually(api, key, { value });
+                await expect(admin.select(metadata.select)).toHaveValue(value!);
+            });
+        });
+    }
 
     test("Setting the user group works when the key is missing and when it is present, read back through the API", async ({
         admin,

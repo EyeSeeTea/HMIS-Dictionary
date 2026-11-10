@@ -2,7 +2,7 @@ import { expect, fixtures, test } from "../support/fixtures";
 import { t } from "../support/i18n";
 import { mockKeys, ProgramsPage, rowsOf, tableAfter } from "../support/pages";
 
-const { ambulances, boat } = fixtures.programs;
+const { eventProgram, otherProgram } = fixtures.programs;
 
 async function select(programs: ProgramsPage, label: string) {
     await programs.load();
@@ -16,7 +16,7 @@ async function indicatorType(api: any) {
 
 test.describe("7. Programs", () => {
     test("Stage descriptions are displayed", async ({ programs, api }) => {
-        const { programStages } = await api.get(`programs/${boat.id}`, {
+        const { programStages } = await api.get(`programs/${otherProgram.id}`, {
             fields: "programStages[id,description]",
         });
         const stage = programStages[0];
@@ -24,7 +24,7 @@ test.describe("7. Programs", () => {
             api.patch(`programStages/${stage.id}`, [{ op: "add", path: "/description", value }]);
         await set("E2E stage description");
         try {
-            await select(programs, boat.name);
+            await select(programs, otherProgram.name);
             await expect(programs.stageContainer).toContainText("E2E stage description");
         } finally {
             await set(stage.description ?? "");
@@ -89,7 +89,7 @@ test.describe("7. Programs", () => {
         programs,
         api,
     }) => {
-        const { programIndicators } = await api.get(`programs/${ambulances.id}`, {
+        const { programIndicators } = await api.get(`programs/${eventProgram.id}`, {
             fields: "programIndicators[id,displayName]",
         });
         const pi = [...programIndicators].sort((a: any, b: any) =>
@@ -98,7 +98,7 @@ test.describe("7. Programs", () => {
         const name = `${pi.displayName} - ${pi.id}`;
         await api.deleteVisualizations(name);
         try {
-            await select(programs, ambulances.name);
+            await select(programs, eventProgram.name);
             const row = rowsOf(tableAfter(programs.programIndicatorsHeading))
                 .filter({ hasText: pi.displayName })
                 .first();
@@ -129,7 +129,7 @@ test.describe("7. Programs", () => {
     test("Visualization link includes the formula items", async ({ programs, api }) => {
         const pis = await api.list("programIndicators", {
             fields: "id,program[id,displayName]",
-            filter: `program.id:eq:${ambulances.id}`,
+            filter: `program.id:eq:${eventProgram.id}`,
         });
         const pi = pis[0];
         const id = api.uid();
@@ -153,7 +153,7 @@ test.describe("7. Programs", () => {
             },
             async () => {
                 try {
-                    await select(programs, ambulances.name);
+                    await select(programs, eventProgram.name);
                     const row = rowsOf(tableAfter(programs.indicatorsHeading))
                         .filter({ hasText: `E2E_${id}` })
                         .first();
@@ -185,7 +185,7 @@ test.describe("7. Programs", () => {
         programs,
         api,
     }) => {
-        const { programStages } = await api.get(`programs/${ambulances.id}`, {
+        const { programStages } = await api.get(`programs/${eventProgram.id}`, {
             fields: "programStages[programStageDataElements[dataElement[id]]]",
         });
         const de = programStages[0].programStageDataElements[0].dataElement.id;
@@ -206,12 +206,12 @@ test.describe("7. Programs", () => {
                         id: d,
                         name: `E2E_${d}`,
                         shortName: `E2E_${d}`,
-                        numerator: `D{${ambulances.id}.${de}}`,
+                        numerator: `D{${eventProgram.id}.${de}}`,
                     },
                 ],
             },
             async () => {
-                await select(programs, ambulances.name);
+                await select(programs, eventProgram.name);
                 await expect(
                     rowsOf(tableAfter(programs.indicatorsHeading))
                         .filter({ hasText: `E2E_${d}` })
@@ -234,7 +234,7 @@ test.describe("7. Programs", () => {
                 },
             ],
             async () => {
-                await select(programs, boat.name);
+                await select(programs, otherProgram.name);
                 const row = rowsOf(tableAfter(programs.rulesHeading))
                     .filter({ hasText: "E2E_KEY" })
                     .first();
@@ -253,7 +253,7 @@ test.describe("7. Programs", () => {
             "E2E_WARN",
             [{ programRuleActionType: "WARNINGONCOMPLETE", content: "E2E warning" }],
             async () => {
-                await select(programs, boat.name);
+                await select(programs, otherProgram.name);
                 const row = rowsOf(tableAfter(programs.rulesHeading))
                     .filter({ hasText: "E2E_WARN" })
                     .first();
@@ -267,7 +267,7 @@ test.describe("7. Programs", () => {
         programs,
         api,
     }) => {
-        const { programStages } = await api.get(`programs/${boat.id}`, {
+        const { programStages } = await api.get(`programs/${otherProgram.id}`, {
             fields: "programStages[id,programStageDataElements[dataElement[id,optionSet[id]]]]",
         });
         const elements = programStages[0].programStageDataElements.map((e: any) => e.dataElement);
@@ -330,7 +330,7 @@ test.describe("7. Programs", () => {
                             : []),
                     ],
                     async () => {
-                        await select(programs, boat.name);
+                        await select(programs, otherProgram.name);
                         const row = rowsOf(tableAfter(programs.rulesHeading))
                             .filter({ hasText: "E2E_MSG" })
                             .first();
@@ -371,7 +371,7 @@ test.describe("7. Programs", () => {
                     "E2E_TPL",
                     [{ programRuleActionType: "SENDMESSAGE", templateUid: templateId }],
                     async () => {
-                        await select(programs, boat.name);
+                        await select(programs, otherProgram.name);
                         const row = rowsOf(tableAfter(programs.rulesHeading))
                             .filter({ hasText: "E2E_TPL" })
                             .first();
@@ -399,7 +399,7 @@ test.describe("7. Programs", () => {
                 if (item) resources.push({ ...item, type, path });
             }
             await api.withProgramAttributes(
-                boat.id,
+                otherProgram.id,
                 [
                     {
                         value: resources.map(r => r.id).join(";"),
@@ -414,14 +414,14 @@ test.describe("7. Programs", () => {
             programs,
             api,
         }) => {
-            const filter = `program.id:eq:${boat.id}`;
+            const filter = `program.id:eq:${otherProgram.id}`;
             const events = [
                 ...(await api.list("eventCharts", { fields: "id", filter })),
                 ...(await api.list("eventReports", { fields: "id", filter })),
             ];
             await withResources(api, async resources => {
                 const total = resources.length + events.length;
-                await select(programs, boat.name);
+                await select(programs, otherProgram.name);
                 await expect(programs.resourcesHeading).toBeVisible();
                 await expect(programs.pageText).toContainText(
                     `${t("dos_ResourcesNumber")}: ${total}`
@@ -438,7 +438,7 @@ test.describe("7. Programs", () => {
             await withResources(
                 api,
                 async resources => {
-                    await select(programs, boat.name);
+                    await select(programs, otherProgram.name);
                     const table = tableAfter(programs.resourcesHeading);
                     for (const resource of resources) {
                         const row = rowsOf(table).filter({ hasText: resource.displayName }).first();
@@ -460,7 +460,7 @@ test.describe("7. Programs", () => {
             api,
         }) => {
             await withResources(api, async resources => {
-                await select(programs, boat.name);
+                await select(programs, otherProgram.name);
                 const table = tableAfter(programs.resourcesHeading);
                 for (const resource of resources) {
                     const row = rowsOf(table).filter({ hasText: resource.displayName }).first();
@@ -488,7 +488,7 @@ async function withRule(api: any, name: string, actions: object[], fn: () => Pro
                     id: ruleId,
                     name,
                     condition: "true",
-                    program: { id: fixtures.programs.boat.id },
+                    program: { id: fixtures.programs.otherProgram.id },
                     programRuleActions: withIds.map(a => ({ id: a.id })),
                 },
             ],

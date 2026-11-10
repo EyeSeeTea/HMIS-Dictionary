@@ -17,7 +17,7 @@ test.describe("5. Dossiers - reader", () => {
                         attributeValues: [
                             {
                                 value: `DS_${serviceCode(service.code)}`,
-                                attribute: { id: "pG4YeQyynJh" },
+                                attribute: { id: fixtures.healthServiceAttribute },
                             },
                         ],
                     },
