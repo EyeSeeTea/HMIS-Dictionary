@@ -39,11 +39,11 @@ test.describe("1. App shell and navigation", () => {
             expect(page.frames()).toHaveLength(1);
         });
 
-        test('The app appears in the DHIS2 app list as "HMIS Dictionary", with its icon', async ({
+        test('The app appears in the DHIS2 app list as "HMIS Dictionary (Beta)", with its icon', async ({
             api,
         }) => {
             const apps = await api.get<any[]>("apps");
-            const app = apps.find(a => a.name === "HMIS Dictionary");
+            const app = apps.find(a => a.name === "HMIS Dictionary (Beta)");
             expect(app, "installed app").toBeTruthy();
             expect(app.icons?.["48"]).toBeTruthy();
         });

@@ -20,7 +20,7 @@ Optional settings:
 - `E2E_DHIS2_URL`: the instance (default `http://localhost:8098`)
 - `E2E_BASE_URL`: the app outside the Global Shell
 - `E2E_SHELL_URL`: the app inside the Global Shell
-- `E2E_APP_KEY`: the app key used to build both URLs (default `HMIS-Dictionary`)
+- `E2E_APP_KEY`: the app key used to build both URLs (default `HMIS-Dictionary-Beta`)
 
 ## Running
 

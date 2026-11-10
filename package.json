@@ -121,7 +121,7 @@
         "update-po": "yarn extract-pot && yarn run-script src/scripts/dev/UpdatePoScript.ts"
     },
     "manifest.webapp": {
-        "name": "HMIS Dictionary",
+        "name": "HMIS Dictionary (Beta)",
         "description": "HMIS Dictionary App",
         "icons": {
             "48": "icon.png"

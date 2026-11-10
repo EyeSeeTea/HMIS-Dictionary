@@ -7,7 +7,7 @@ function required(name: string): string {
 }
 
 const dhis2Url = (process.env.E2E_DHIS2_URL ?? "http://localhost:8098").replace(/\/$/, "");
-const appKey = process.env.E2E_APP_KEY ?? "HMIS-Dictionary";
+const appKey = process.env.E2E_APP_KEY ?? "HMIS-Dictionary-Beta";
 
 export const env = {
     dhis2Url,
