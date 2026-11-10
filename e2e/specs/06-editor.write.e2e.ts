@@ -3,10 +3,11 @@ import { Api } from "../support/api";
 import { DossiersPage } from "../support/pages";
 
 const svc = fixtures.service;
-const path = `organisationUnitGroups/${svc.id}`;
+/** Read inside the tests, so they skip on instances without a service. */
+const path = () => `organisationUnitGroups/${svc.id}`;
 
 const getTranslations = async (api: Api) =>
-    (await api.get(path, { fields: "translations" })).translations as any[];
+    (await api.get(path(), { fields: "translations" })).translations as any[];
 const description = (list: any[], locale: string) =>
     list.find(x => x.locale === locale && x.property === "DESCRIPTION")?.value as
         | string
@@ -18,7 +19,7 @@ async function preserving(api: Api, fn: (saved: any[]) => Promise<void>) {
     try {
         await fn(saved);
     } finally {
-        await api.put(`${path}/translations`, { translations: saved });
+        await api.put(`${path()}/translations`, { translations: saved });
     }
 }
 
@@ -33,6 +34,11 @@ async function openEditor(dossiers: DossiersPage, language = "EN") {
 }
 
 test.describe("6. Dossiers - editor", () => {
+    test.beforeEach(() => {
+        // Skips without a service with data sets and indicator groups
+        void svc.id;
+    });
+
     test("Save button turns to warning state on edit, and success state after saving", async ({
         dossiers,
         api,
@@ -71,7 +77,7 @@ test.describe("6. Dossiers - editor", () => {
             await dossiers.saveButton.click();
             await expect(dossiers.saveButton).toHaveClass(/btn-success/);
             await api.withLocale("es", async () => {
-                const { translations } = await api.get(path, { fields: "translations" });
+                const { translations } = await api.get(path(), { fields: "translations" });
                 const name =
                     translations.find((x: any) => x.locale === "es" && x.property === "NAME")
                         ?.value ?? svc.name;
@@ -136,7 +142,7 @@ test.describe("6. Dossiers - editor", () => {
         await preserving(api, async saved => {
             const html =
                 "<h2>E2E title</h2><ul><li>one</li></ul><table><tbody><tr><td>cell</td></tr></tbody></table>";
-            await api.put(`${path}/translations`, {
+            await api.put(`${path()}/translations`, {
                 translations: saved
                     .filter(x => !(x.locale === "en" && x.property === "DESCRIPTION"))
                     .concat({ locale: "en", property: "DESCRIPTION", value: html }),

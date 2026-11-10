@@ -1,7 +1,8 @@
 import { Page } from "@playwright/test";
-import { expect, fixtures, test } from "../support/fixtures";
+import { expect, fixtures, skipWithoutHealthServiceAttribute, test } from "../support/fixtures";
 import { Api } from "../support/api";
 import { AdminPage, App, readKeyEventually, SearchPage } from "../support/pages";
+import { escapeRegex } from "../support/data";
 import { t } from "../support/i18n";
 
 async function submitAndWait(page: Page, click: () => Promise<unknown>) {
@@ -9,7 +10,9 @@ async function submitAndWait(page: Page, click: () => Promise<unknown>) {
 }
 
 async function chooseOther(selector: AdminPage["userGroup"], avoid: string) {
-    await expect(selector.locator("option:not([disabled])").nth(1)).toBeAttached();
+    await expect(selector.locator("option:not([disabled])").first()).toBeAttached();
+    const count = await selector.locator("option:not([disabled])").count();
+    test.skip(count < 2, "Only one option on this instance, so there is no other to choose");
     const labels = await selector.locator("option:not([disabled])").allInnerTexts();
     const label = labels.map(x => x.trim()).find(x => x !== avoid)!;
     await selector.selectOption({ label });
@@ -57,7 +60,10 @@ const fields: Field[] = [
             await app.open("datasets");
             await page.waitForLoadState("networkidle");
             await expect(
-                page.locator("#drpBoxServices option", { hasText: fixtures.dataSets.small.name })
+                page.locator("#drpBoxServices option", {
+                    // The whole name: others may start with it, as "X (Start Sunday)"
+                    hasText: new RegExp(`^\\s*${escapeRegex(fixtures.dataSets.small.name)}\\s*$`),
+                })
             ).toHaveCount(0);
         },
     },
@@ -343,6 +349,9 @@ test.describe("10. Admin", () => {
         admin,
         api,
     }) => {
+        // The checks only pass with health services and the attribute of their codes
+        skipWithoutHealthServiceAttribute();
+        void fixtures.service.id;
         await api.withKeys(["setup_dossierConfigComplete"], async () => {
             await api.setKey("setup_dossierConfigComplete", { value: false });
             await admin.load();

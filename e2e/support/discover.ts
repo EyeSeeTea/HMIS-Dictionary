@@ -86,6 +86,13 @@ function byName<T extends { displayName: string }>(items: T[]): T[] {
     return [...items].sort((a, b) => a.displayName.localeCompare(b.displayName));
 }
 
+/** Whether no other item has the same name, ignoring spaces at the ends as the selectors do. */
+function isUniqueName<T extends Found>(items: T[]): (item: T) => boolean {
+    const counts = new Map<string, number>();
+    for (const { name } of items) counts.set(name.trim(), (counts.get(name.trim()) ?? 0) + 1);
+    return item => counts.get(item.name.trim()) === 1;
+}
+
 function countBy(items: { program?: { id: string } }[]): Map<string, number> {
     const counts = new Map<string, number>();
     for (const { program } of items) {
@@ -159,9 +166,12 @@ async function discoverDataSets(api: Api, blacklist: string[]) {
     }));
     const listed = dataSets.filter(d => !blacklist.includes(d.id));
     const fewestElements = [...listed].sort((a, b) => a.elements - b.elements);
+    // The tests select by name, so the name must be unique in the selector
+    const unique = isUniqueName(listed);
 
     return {
         small: pick(fewestElements, [
+            unique,
             d => d.sections.length > 0,
             d => d.sections.every(elements => elements > 0),
         ]),
@@ -204,7 +214,7 @@ async function discoverPrograms(api: Api, blacklist: string[]) {
         for (const id of ids) related.set(id, (related.get(id) ?? 0) + 1);
     }
 
-    const programs: Program[] = byName(all)
+    const allPrograms: Program[] = byName(all)
         .filter(p => !blacklist.includes(p.id) && !p.displayName.startsWith("~"))
         .map(p => {
             const stage = [...p.programStages].sort((a, b) => a.sortOrder - b.sortOrder)[0];
@@ -230,6 +240,9 @@ async function discoverPrograms(api: Api, blacklist: string[]) {
                 relatedIndicators: related.get(p.id) ?? 0,
             };
         });
+
+    // The tests select by name, so the name must be unique in the selector
+    const programs = allPrograms.filter(isUniqueName(allPrograms));
 
     const event = pick(
         programs,
