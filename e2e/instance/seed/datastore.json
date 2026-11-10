@@ -1,0 +1,772 @@
+{
+ "HMIS_Dictionary": {
+  "blacklist_dataElementGroups": [
+   "mE9jlzrYjou"
+  ],
+  "blacklist_dataSets": [
+   "gMriz7rQ2OP",
+   "a48m4MFncLp",
+   "tF3VhOEqZgq",
+   "aY06k8vBh2m",
+   "foWqPN3kvVX",
+   "eacVFGM8rZm",
+   "KoCuxEeSLtx",
+   "Sc0goQTsM9D",
+   "fjdQu3rdKOz",
+   "lfEtqCgp9Tv",
+   "E72hz9sSFpP",
+   "E5NdH0QdKYw",
+   "OBVcBj69uzr",
+   "rFIy2mYoFiu",
+   "N8u8UcUIFaM",
+   "qeM6v4D8Sx9",
+   "cUkmR5AuiAX",
+   "FyZGMpXdBnN",
+   "Yj7GDMFBKCL",
+   "k5kthWuvNLD",
+   "Xu67wnslE3T",
+   "Co80h5I75sf",
+   "aSfOL4c1btx",
+   "AuBMg9XNJGQ",
+   "O2EzTNNbCB8",
+   "c0wijEM0crD",
+   "eWJEIwelnc2",
+   "dotW6OKwJc0",
+   "iYSkEJcLp0I",
+   "HmDyyqHdb68",
+   "R9v97YgNs6F",
+   "mn8knpRl7Ob",
+   "GWgeVRBJjOj",
+   "qEmuz1XUgf8",
+   "mck1MpA8oXx",
+   "ISxFjKYsD0s",
+   "Di8FGucOdTe",
+   "U6sEBaWvJF4",
+   "O2X1ogr6xgM",
+   "F30HCPqsmNj",
+   "VAAOr0LHMjd",
+   "OJ8Wjgq2BJT",
+   "YPXBo971B7C",
+   "jR3V3xExiKT",
+   "V8mePx2hQXZ",
+   "CzNo7Np9rOw",
+   "K03Zr6zWCSF",
+   "yfhfWYoC51t",
+   "yWoUNqiHoOL",
+   "lhDCFn1QBkr",
+   "D4DaEfvoiGh",
+   "BDs5Bn9dC3b",
+   "BalvIstVe6u",
+   "ZOcjtLmR9Ik",
+   "PotOFxtl3nU",
+   "YZkwUfAxjm2",
+   "hbx7FrhQBl5",
+   "XqNewIiZ5l3",
+   "ueqrnlV13xb",
+   "SKmCzUD6A36",
+   "kEwpvVio8AO",
+   "SyCxcBfhmfl",
+   "d4g3jk5uwDH",
+   "uteVMUoxRy6",
+   "WlYELx5zEyJ",
+   "GHEYWYgdulQ",
+   "FVVTWwlxo5Q",
+   "aE8OCPuwr4h",
+   "GqrypMnvcqX",
+   "s6RMMB45eGW",
+   "fWN0clukHqm",
+   "AjwuNAGMSFM",
+   "kraMkBJg3JI",
+   "Hp68S9muoCn",
+   "W5mXsrA0KL4",
+   "gQ7RhODQ490",
+   "G9d2fuDvDpQ",
+   "qH23yCv3Byu",
+   "gQ7RhODQ490",
+   "MpJhD8KZanS",
+   "dciqZBGXjMo",
+   "eny7kvuc0Ha",
+   "xQUixiHVsJE",
+   "Bvau6sHJ5Xv",
+   "BwDQ0pQ2SCF",
+   "ya2VttE4uAc",
+   "sWdXNIEus32",
+   "fkIFzMzDB7c",
+   "w8jjPQ5XJtF",
+   "VmbBUyjQfhu",
+   "aUM0PglHaYv",
+   "vmZVVBg55PE",
+   "QjsKeHSEVoD",
+   "dKCfhtWvK6M",
+   "DhWIyus8Tt9",
+   "z8TuuQ1H8qy",
+   "W5mXsrA0KL4",
+   "zo3dneaIKvN",
+   "kfCmbDQk3z4",
+   "nS7soj59ZNh",
+   "V4lTT6PyfuN",
+   "M81Rrwp21I0",
+   "rMVicfbOm3e",
+   "ng0UwRnv6El",
+   "PH6j4X6vNTr",
+   "Zo7SKGOo5Cw",
+   "SZGcrNhWjGT",
+   "LeN4yO99Qi2",
+   "HapxohJZzGX",
+   "zHjGOEWb2r1",
+   "O4iqBTRpziK",
+   "kraMkBJg3JI",
+   "g5F4evcedrn",
+   "ucRQo7hegU4",
+   "fCReqP828Fh",
+   "pJqbDcUVtq4",
+   "WugqJa9Ovwa",
+   "KBgEmL0xrlg",
+   "xdO1IIH0W14",
+   "d6q2XZ0tjCT",
+   "DplSWq0ivg7",
+   "FnMX6gtQrRJ",
+   "h0lg1hFRhep",
+   "GycXgBSHGDU",
+   "oTqySXM2lGt",
+   "iRS8KBVEFSJ",
+   "RS2UexzPIrc",
+   "c5u3YTT7rUf",
+   "iZyd3LwEQad",
+   "pn7pFwmSYN2",
+   "psIgGJmoSNl",
+   "kSJzXbUEnPa",
+   "kBlXBIDI5fj",
+   "WXX04I2GeBH",
+   "ISn1enFSbTd",
+   "W4I1onxUnYE",
+   "OssR2l5hHpZ",
+   "AGVgKOtZy0H",
+   "HP2MJCfbP9b",
+   "GDauKwPGgs4",
+   "IGci0bZU80E",
+   "CyNSUDmJxiz",
+   "wTDYdS2G3cD",
+   "Nb5tU4QQ2gI",
+   "TsLbU4hNVpm",
+   "mA3QOzDDxua",
+   "qcQJr0mtgo7",
+   "ieUEqRhl2GZ",
+   "MRAV9XBCvuC",
+   "iKKMi87C49Z",
+   "QS50rnhCf40",
+   "DRmp1s7qlMG",
+   "ZTKSVJniRI3",
+   "uDmJOaLAlrJ",
+   "qR8Q0j4Ea0T",
+   "n4uu1YI6hPe",
+   "GXXJ06zbMnr",
+   "x9ZAIfvEAMh",
+   "TZn0rXnE4dT",
+   "BltfsxuiEJV",
+   "kaLOjGd0TcY",
+   "x3OBR6joMZZ",
+   "ISQo5B6uR58",
+   "ETPJEFt4KEV",
+   "NJkyBvB77Rx",
+   "ceW0vLETzfm",
+   "WFvOnM4jONf",
+   "Up0H71ywVTX",
+   "Q1TvDtBhgS7",
+   "tQ0m6KfaMgV",
+   "q0orAI8AMz4"
+  ],
+  "blacklist_indicatorGroups": [
+   "ttzCFjzBTDS"
+  ],
+  "layoutSettings_datasets": {
+   "accesses": {
+    "categoryCombinations": {
+     "access": 0,
+     "columns": {
+      "categories": {
+       "access": 0,
+       "index": 1,
+       "translationKey": "dos_Categories"
+      },
+      "categoryCombination": {
+       "access": 0,
+       "index": 0,
+       "translationKey": "dos_CategoryCombination"
+      },
+      "items": {
+       "access": 0,
+       "index": 2,
+       "translationKey": "dos_Items"
+      }
+     },
+     "index": 1,
+     "translationKey": "dos_CategoryCombinations"
+    },
+    "indicators": {
+     "access": 2,
+     "columns": {
+      "denominator": {
+       "access": 2,
+       "index": 4,
+       "translationKey": "dos_DenominatorIndicator"
+      },
+      "denominatorDescription": {
+       "access": 2,
+       "index": 5,
+       "translationKey": "dos_DenominatorIndicatorDescription"
+      },
+      "name": {
+       "access": 2,
+       "index": 0,
+       "translationKey": "dos_NameIndicator"
+      },
+      "numerator": {
+       "access": 2,
+       "index": 2,
+       "translationKey": "dos_NumeratorIndicator"
+      },
+      "numeratorDescription": {
+       "access": 2,
+       "index": 3,
+       "translationKey": "dos_NumeratorIndicatorDescription"
+      },
+      "type": {
+       "access": 2,
+       "index": 1,
+       "translationKey": "dos_Type"
+      }
+     },
+     "index": 2,
+     "translationKey": "dos_Indicators"
+    },
+    "sections": {
+     "access": 2,
+     "columns": {
+      "categoryCombination": {
+       "access": 0,
+       "index": 5,
+       "translationKey": "dos_CategoryCombination"
+      },
+      "dataTypeElement": {
+       "access": 0,
+       "index": 3,
+       "translationKey": "dos_DataTypeElement"
+      },
+      "description": {
+       "access": 2,
+       "index": 2,
+       "translationKey": "dos_DescriptionElement"
+      },
+      "formName": {
+       "access": 2,
+       "index": 1,
+       "translationKey": "dos_FormNameElement"
+      },
+      "name": {
+       "access": 2,
+       "index": 0,
+       "translationKey": "dos_NameElement"
+      },
+      "options": {
+       "access": 0,
+       "index": 4,
+       "translationKey": "dos_Options"
+      }
+     },
+     "index": 0,
+     "translationKey": "dos_Sections"
+    }
+   },
+   "advancedUserGroups": [
+    "LjRqO9XzQPs"
+   ]
+  },
+  "layoutSettings_indicators": {
+   "accesses": {
+    "denominator": {
+     "access": 2,
+     "columns": {
+      "datasets": {
+       "access": 0,
+       "index": 2,
+       "translationKey": "dos_DataSets"
+      },
+      "name": {
+       "access": 0,
+       "index": 1,
+       "translationKey": "dos_NameIndicator"
+      },
+      "program": {
+       "access": 0,
+       "index": 3,
+       "translationKey": "dos_Program"
+      },
+      "type": {
+       "access": 0,
+       "index": 0,
+       "translationKey": "dos_Type"
+      }
+     },
+     "index": 2,
+     "translationKey": "dos_DenominatorIndicator"
+    },
+    "formula": {
+     "access": 2,
+     "index": 0,
+     "translationKey": "dos_FormulaOfIndicator"
+    },
+    "numerator": {
+     "access": 2,
+     "columns": {
+      "datasets": {
+       "access": 0,
+       "index": 2,
+       "translationKey": "dos_DataSets"
+      },
+      "name": {
+       "access": 0,
+       "index": 1,
+       "translationKey": "dos_NameIndicator"
+      },
+      "program": {
+       "access": 0,
+       "index": 3,
+       "translationKey": "dos_Program"
+      },
+      "type": {
+       "access": 0,
+       "index": 0,
+       "translationKey": "dos_Type"
+      }
+     },
+     "index": 1,
+     "translationKey": "dos_NumeratorIndicator"
+    }
+   },
+   "advancedUserGroups": [
+    "LjRqO9XzQPs"
+   ]
+  },
+  "layoutSettings_programs": {
+   "accesses": {
+    "indicators": {
+     "access": 2,
+     "columns": {
+      "denominator": {
+       "access": 2,
+       "index": 4,
+       "translationKey": "dos_DenominatorIndicator"
+      },
+      "description": {
+       "access": 2,
+       "index": 1,
+       "translationKey": "dos_DescriptionElement"
+      },
+      "name": {
+       "access": 2,
+       "index": 0,
+       "translationKey": "dos_NameElement"
+      },
+      "numerator": {
+       "access": 2,
+       "index": 3,
+       "translationKey": "dos_NumeratorIndicator"
+      },
+      "stagesReferenced": {
+       "access": 2,
+       "index": 5,
+       "translationKey": "dos_StagesReferenced"
+      },
+      "type": {
+       "access": 2,
+       "index": 2,
+       "translationKey": "dos_Type"
+      },
+      "visualization": {
+       "access": 2,
+       "index": 6,
+       "translationKey": "dos_Visualization"
+      }
+     },
+     "index": 4,
+     "translationKey": "dos_Indicators"
+    },
+    "programDescription": {
+     "access": 2,
+     "index": 0,
+     "translationKey": "dos_DescriptionOfProgram"
+    },
+    "programIndicators": {
+     "access": 2,
+     "columns": {
+      "aggregationType": {
+       "access": 1,
+       "index": 4,
+       "translationKey": "dos_AggregationType"
+      },
+      "boundaries": {
+       "access": 1,
+       "index": 7,
+       "translationKey": "dos_Boundaries"
+      },
+      "calculation": {
+       "access": 1,
+       "index": 3,
+       "translationKey": "dos_Calculation"
+      },
+      "description": {
+       "access": 2,
+       "index": 1,
+       "translationKey": "dos_DescriptionElement"
+      },
+      "filter": {
+       "access": 1,
+       "index": 2,
+       "translationKey": "dos_Filter"
+      },
+      "name": {
+       "access": 2,
+       "index": 0,
+       "translationKey": "dos_NameElement"
+      },
+      "stagesReferenced": {
+       "access": 1,
+       "index": 6,
+       "translationKey": "dos_StagesReferenced"
+      },
+      "typeOfProgramIndicator": {
+       "access": 1,
+       "index": 5,
+       "translationKey": "dos_TypeOfProgramIndicator"
+      },
+      "visualization": {
+       "access": 2,
+       "index": 8,
+       "translationKey": "dos_Visualization"
+      }
+     },
+     "index": 3,
+     "translationKey": "dos_ProgramIndicators"
+    },
+    "programRuleVariables": {
+     "access": 1,
+     "columns": {
+      "associatedProgramRules": {
+       "access": 1,
+       "index": 5,
+       "translationKey": "dos_AssociatedProgramRules"
+      },
+      "dataElement": {
+       "access": 1,
+       "index": 3,
+       "translationKey": "dos_DataElement"
+      },
+      "name": {
+       "access": 1,
+       "index": 0,
+       "translationKey": "dos_NameElement"
+      },
+      "programStage": {
+       "access": 1,
+       "index": 2,
+       "translationKey": "dos_ProgramStage"
+      },
+      "sourceType": {
+       "access": 1,
+       "index": 1,
+       "translationKey": "dos_SourceType"
+      },
+      "trackedEntityAttributes": {
+       "access": 1,
+       "index": 4,
+       "translationKey": "dos_TrackedEntityAttributes"
+      }
+     },
+     "index": 6,
+     "translationKey": "dos_ProgramRuleVariables"
+    },
+    "programRules": {
+     "access": 1,
+     "columns": {
+      "condition": {
+       "access": 1,
+       "index": 3,
+       "translationKey": "dos_Condition"
+      },
+      "description": {
+       "access": 1,
+       "index": 1,
+       "translationKey": "dos_DescriptionElement"
+      },
+      "name": {
+       "access": 1,
+       "index": 0,
+       "translationKey": "dos_NameElement"
+      },
+      "programRuleActions": {
+       "access": 1,
+       "index": 4,
+       "translationKey": "dos_ProgramRuleActions"
+      },
+      "programStage": {
+       "access": 1,
+       "index": 2,
+       "translationKey": "dos_ProgramStage"
+      }
+     },
+     "index": 5,
+     "translationKey": "dos_ProgramRules"
+    },
+    "programStages": {
+     "access": 2,
+     "columns": {
+      "calculationMode": {
+       "access": 1,
+       "index": 4,
+       "translationKey": "dos_CalculationMode"
+      },
+      "description": {
+       "access": 2,
+       "index": 2,
+       "translationKey": "dos_DescriptionElement"
+      },
+      "formName": {
+       "access": 2,
+       "index": 1,
+       "translationKey": "dos_FormNameElement"
+      },
+      "mandatory": {
+       "access": 1,
+       "index": 5,
+       "translationKey": "dos_Mandatory"
+      },
+      "name": {
+       "access": 2,
+       "index": 0,
+       "translationKey": "dos_NameElement"
+      },
+      "optionSet": {
+       "access": 2,
+       "index": 7,
+       "translationKey": "dos_OptionSet"
+      },
+      "valueType": {
+       "access": 1,
+       "index": 3,
+       "translationKey": "dos_ValueType"
+      },
+      "visibilityInDataEntry": {
+       "access": 1,
+       "index": 6,
+       "translationKey": "dos_Visibility"
+      }
+     },
+     "index": 2,
+     "translationKey": "dos_ProgramStages"
+    },
+    "trackedEntityAttributes": {
+     "access": 2,
+     "columns": {
+      "aggregationType": {
+       "access": 1,
+       "index": 4,
+       "translationKey": "dos_AggregationType"
+      },
+      "description": {
+       "access": 2,
+       "index": 2,
+       "translationKey": "dos_DescriptionElement"
+      },
+      "formName": {
+       "access": 2,
+       "index": 1,
+       "translationKey": "dos_FormNameElement"
+      },
+      "mandatory": {
+       "access": 1,
+       "index": 5,
+       "translationKey": "dos_Mandatory"
+      },
+      "name": {
+       "access": 2,
+       "index": 0,
+       "translationKey": "dos_NameElement"
+      },
+      "optionSet": {
+       "access": 2,
+       "index": 7,
+       "translationKey": "dos_OptionSet"
+      },
+      "valueType": {
+       "access": 1,
+       "index": 3,
+       "translationKey": "dos_ValueType"
+      },
+      "visibilityInDataEntry": {
+       "access": 1,
+       "index": 6,
+       "translationKey": "dos_Visibility"
+      }
+     },
+     "index": 1,
+     "translationKey": "dos_TrackedEntityAttributes"
+    }
+   },
+   "advancedUserGroups": [
+    "LjRqO9XzQPs"
+   ]
+  },
+  "layoutSettings_search": {
+   "accesses": {
+    "groupsBasics": {
+     "access": 2,
+     "columns": {
+      "code": {
+       "access": 0,
+       "index": 2,
+       "translationKey": "objectGroup_code"
+      },
+      "id": {
+       "access": 0,
+       "index": 1,
+       "translationKey": "objectGroup_id"
+      },
+      "name": {
+       "access": 2,
+       "index": 0,
+       "translationKey": "objectGroup_name"
+      }
+     },
+     "index": 2,
+     "translationKey": "srch_SelectColumns_grpBasics"
+    },
+    "objectsBasics": {
+     "access": 2,
+     "columns": {
+      "code": {
+       "access": 0,
+       "index": 4,
+       "translationKey": "object_code"
+      },
+      "form": {
+       "access": 2,
+       "index": 2,
+       "translationKey": "object_form"
+      },
+      "icd10": {
+       "access": 0,
+       "index": 5,
+       "translationKey": "object_ICD10"
+      },
+      "id": {
+       "access": 0,
+       "index": 3,
+       "translationKey": "object_id"
+      },
+      "name": {
+       "access": 2,
+       "index": 1,
+       "translationKey": "object_name"
+      },
+      "type": {
+       "access": 2,
+       "index": 0,
+       "translationKey": "object_type"
+      }
+     },
+     "index": 0,
+     "translationKey": "srch_SelectColumns_objBasics"
+    },
+    "objectsDescriptions": {
+     "access": 2,
+     "columns": {
+      "denFormula": {
+       "access": 2,
+       "index": 2,
+       "translationKey": "object_den_formula"
+      },
+      "description": {
+       "access": 2,
+       "index": 0,
+       "translationKey": "object_description"
+      },
+      "numFormula": {
+       "access": 2,
+       "index": 1,
+       "translationKey": "object_num_formula"
+      }
+     },
+     "index": 1,
+     "translationKey": "srch_SelectColumns_objDescs"
+    },
+    "servicesBasics": {
+     "access": 2,
+     "columns": {
+      "code": {
+       "access": 0,
+       "index": 2,
+       "translationKey": "service_code"
+      },
+      "id": {
+       "access": 0,
+       "index": 1,
+       "translationKey": "service_id"
+      },
+      "name": {
+       "access": 2,
+       "index": 0,
+       "translationKey": "service_name"
+      }
+     },
+     "index": 3,
+     "translationKey": "srch_SelectColumns_servBasics"
+    }
+   },
+   "advancedUserGroups": [
+    "LjRqO9XzQPs"
+   ]
+  },
+  "legacy_dataElementGroups": [
+   "xDy1m48DkB3"
+  ],
+  "legacy_optionGroups": [
+   "ndb3jRyeHrK",
+   "NpTtorJGYIQ",
+   "oCTRtMENHe6",
+   "ltP87IC8eRj",
+   "llOrh2qJldU",
+   "EHgwJcNNAXj",
+   "sEAmwcbJ3yK"
+  ],
+  "notInUse_indicatorGroups": [
+   "ttzCFjzBTDS"
+  ],
+  "notInUse_programIndicatorGroups": [
+   "wyfcwPfQ4WN",
+   "d28FKsDc5Hu",
+   "P9lDuBZSvKa",
+   "tU4jcr8dIM1",
+   "AqZDHThXu9a",
+   "BUF7vUoZ8VR"
+  ],
+  "setup_dossierConfigComplete": {
+   "value": true
+  },
+  "setup_organisationUnitGroupSet": {
+   "object": {
+    "$$hashKey": "object:21",
+    "id": "g7k6NQmqJY2",
+    "name": "HMIS_Dictionary"
+   },
+   "value": "g7k6NQmqJY2"
+  },
+  "setup_userGroup": {
+   "object": {
+    "id": "LjRqO9XzQPs",
+    "name": "Administrators"
+   },
+   "value": "Administrators"
+  }
+ }
+}
