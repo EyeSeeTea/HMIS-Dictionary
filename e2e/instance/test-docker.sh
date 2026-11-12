@@ -122,7 +122,7 @@ seed() {
 
 start() {
     # d2-docker's default heap (7.5 GB) thrashes with parallel workers
-    d2-docker start "$data_image" --port "$port" --detach --java-opts "-Xmx15g"
+    d2-docker start "$data_image" --port "$port" --detach --java-opts=-Xmx15g
     started=true
 }
 
