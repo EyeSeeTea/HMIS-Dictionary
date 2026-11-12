@@ -31,7 +31,6 @@ export function getTestRepositories(): Repositories {
         },
         healthServiceRepository: { getGroupSets: empty, getHealthServices: empty },
         attributeRepository: { getAll: empty },
-        constantRepository: { getAll: empty },
         dossierRepository: {
             getDataSets: empty,
             getIndicatorGroups: empty,

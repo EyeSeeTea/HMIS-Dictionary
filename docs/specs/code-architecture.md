@@ -100,7 +100,7 @@ class AppSettings {                                                          // 
   legacy: { dataElementGroupIds: Id[]; optionGroupIds: Id[] }
   metadataIds: MetadataIds                                                   // metadata_<key> { value: id }, defaults to the MSF uids
 }
-type MetadataIds = { advancedUserGroup; allUsersGroup; healthServiceAttribute; icd10Attribute; constantZero; constantOne; programResourcesAttribute }
+type MetadataIds = { advancedUserGroup; allUsersGroup; healthServiceAttribute; icd10Attribute; programResourcesAttribute }
   isAdmin(user): boolean                     // user in a group NAMED adminGroup.name, see decision 1
   canManage(user): boolean                   // isAdmin, or adminGroup not configured. Admin tab, editor Save, reader Edit
   showsDossiersTab(): boolean                // healthServiceGroupSet configured
@@ -340,7 +340,7 @@ type CategoryCombo = NamedRef & { categories: { name; items: string[] }[] }
 ```
 class FormulaBreakdown { text: string; components: FormulaComponent[] }
   static build(formula, references: FormulaReferences): FormulaBreakdown
-  // text: every reference by name or id; constants m70zf14qLvm = 0, qRquxuP5Zow = 1, see decision 4
+  // text: every reference by name or id, constants by their value, see decision 4
   // components: only the types below, as today
 
 type FormulaComponent = {
@@ -516,7 +516,7 @@ Presentation, not use cases:
 1. **Admin rule:** match the admin group by name (`me.userGroups[name] == setup_userGroup.value`), as the app does today, even though the id is also stored. This replaces the skeleton's `User.isAdmin` (the `ALL` authority).
 2. **Layout defaults:** stored settings always merge over the defaults, on all four screens. Today only search and datasets merge, so new columns do not reach indicators and programs.
 3. **Health service lookup:** keep the three variants for now, as they can return different health services, and unify them later: search on data sets (attribute `pG4YeQyynJh`), search on indicator groups (`attributeValues[0]`), and dossiers (regex on any attribute).
-4. **References in the Indicators formula text:** `m70zf14qLvm` is 0 and `qRquxuP5Zow` is 1. Any other `C{id}`, and `N{}` and `A{}`, show the name, or the id if unknown. Today they add no name and shift the following ones, showing wrong text.
+4. **References in the Indicators formula text:** `C{id}` shows the value of the constant, read from the API, and `N{}` and `A{}` show the name; the id if unknown. Before, only the two MSF constants `m70zf14qLvm` (0) and `qRquxuP5Zow` (1) were handled, and the others added no name, shifting the following ones and showing wrong text. Today they add no name and shift the following ones, showing wrong text.
 5. **Translated names:** keep what each query reads today, even if untranslated: `name` and `description` on the Indicators screen and its formula references, `description` on data set indicators, `name` on program rules, rule variables and their references, and program indicator groups in Search. Hence one indicator query per screen, filling the same attributes. Comparisons use untranslated names too: the admin group and the links from the Indicators screen, which send `name` and filter on `displayName`, so outside English they may not match. One exception: stage names are always translated, including in `Indicator.stageNames`.
 6. **Known bugs:** everything under "Problems found" and "Known bugs" in `e2e.md` was kept during the migration, unless listed in decision 8. Once the e2e suite matched the baseline, the problems found (P1-P12) were fixed. The "Known bugs" are left for a follow-up PR. Those the model reproduced on purpose until then:
    - **P1:** a 401 on the session check goes unnoticed.

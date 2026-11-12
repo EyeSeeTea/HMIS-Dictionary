@@ -5,7 +5,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-11-10T09:53:28.305Z\n"
+"POT-Creation-Date: 2026-11-12T07:51:56.825Z\n"
 "PO-Revision-Date: 2026-11-05T19:43:47.436Z\n"
 "Language: ar\n"
 
@@ -518,22 +518,6 @@ msgstr ""
 "تظهر لوحات المعلومات والتصورات ومخططات الأحداث وتقارير الأحداث التي يسرد "
 "معرفاتها في قسم الموارد في لوحة 'البرامج'، قبل مخططات وتقارير أحداث "
 "البرنامج. يجب أن تكون المعرفات بالتنسيق التالي:"
-
-msgid "Constants with the values 0 and 1."
-msgstr "الثوابت ذات القيمتين 0 و 1."
-
-msgid "Constant 0"
-msgstr "الثابت 0"
-
-msgid "Constant 1"
-msgstr "الثابت 1"
-
-msgid ""
-"In the indicator formulas, constants are shown with their values. If the "
-"constants cannot be read, these two are still shown as 0 and 1."
-msgstr ""
-"في صيغ المؤشرات، تظهر الثوابت بقيمها. إذا تعذّرت قراءة الثوابت، يظل هذان "
-"الثابتان يظهران كـ 0 و 1."
 
 msgid "About dataElements and indicators:"
 msgstr "حول dataElements والمؤشرات:"
@@ -1423,6 +1407,22 @@ msgstr "محرر الملفات"
 
 msgid "Search by name"
 msgstr "البحث بالاسم"
+
+#~ msgid "Constants with the values 0 and 1."
+#~ msgstr "الثوابت ذات القيمتين 0 و 1."
+
+#~ msgid "Constant 0"
+#~ msgstr "الثابت 0"
+
+#~ msgid "Constant 1"
+#~ msgstr "الثابت 1"
+
+#~ msgid ""
+#~ "In the indicator formulas, constants are shown with their values. If the "
+#~ "constants cannot be read, these two are still shown as 0 and 1."
+#~ msgstr ""
+#~ "في صيغ المؤشرات، تظهر الثوابت بقيمها. إذا تعذّرت قراءة الثوابت، يظل هذان "
+#~ "الثابتان يظهران كـ 0 و 1."
 
 #~ msgid ""
 #~ "An attribute named 'serviceCode' is defined and associated with dataSets "

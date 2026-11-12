@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2026-11-10T09:53:28.305Z\n"
+"POT-Creation-Date: 2026-11-12T07:51:56.825Z\n"
 "PO-Revision-Date: 2026-08-18T08:31:01.792Z\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -533,23 +533,6 @@ msgstr ""
 "cuyos ids enumera se muestran en la sección Recursos del panel 'Programas', "
 "antes de los gráficos e informes de eventos del programa. Los ids deben "
 "tener el siguiente formato:"
-
-msgid "Constants with the values 0 and 1."
-msgstr "Constantes con los valores 0 y 1."
-
-msgid "Constant 0"
-msgstr "Constante 0"
-
-msgid "Constant 1"
-msgstr "Constante 1"
-
-msgid ""
-"In the indicator formulas, constants are shown with their values. If the "
-"constants cannot be read, these two are still shown as 0 and 1."
-msgstr ""
-"En las fórmulas de los indicadores, las constantes se muestran con sus "
-"valores. Si no se pueden leer las constantes, estas dos se siguen mostrando "
-"como 0 y 1."
 
 msgid "About dataElements and indicators:"
 msgstr "Sobre dataElements e indicadores:"
@@ -1552,6 +1535,23 @@ msgstr "Editor de dosieres"
 
 msgid "Search by name"
 msgstr "Buscar por nombre"
+
+#~ msgid "Constants with the values 0 and 1."
+#~ msgstr "Constantes con los valores 0 y 1."
+
+#~ msgid "Constant 0"
+#~ msgstr "Constante 0"
+
+#~ msgid "Constant 1"
+#~ msgstr "Constante 1"
+
+#~ msgid ""
+#~ "In the indicator formulas, constants are shown with their values. If the "
+#~ "constants cannot be read, these two are still shown as 0 and 1."
+#~ msgstr ""
+#~ "En las fórmulas de los indicadores, las constantes se muestran con sus "
+#~ "valores. Si no se pueden leer las constantes, estas dos se siguen mostrando "
+#~ "como 0 y 1."
 
 #~ msgid ""
 #~ "An attribute named 'serviceCode' is defined and associated with dataSets "

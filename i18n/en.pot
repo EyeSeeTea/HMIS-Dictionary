@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-11-10T09:53:28.305Z\n"
-"PO-Revision-Date: 2026-11-10T09:53:28.305Z\n"
+"POT-Creation-Date: 2026-11-12T07:51:56.825Z\n"
+"PO-Revision-Date: 2026-11-12T07:51:56.825Z\n"
 
 msgid "No data"
 msgstr ""
@@ -476,20 +476,6 @@ msgid ""
 "lists are shown in the Resources section of the 'Programs' panel, before "
 "the event charts and reports of the program. The ids should be formatted as "
 "follows:"
-msgstr ""
-
-msgid "Constants with the values 0 and 1."
-msgstr ""
-
-msgid "Constant 0"
-msgstr ""
-
-msgid "Constant 1"
-msgstr ""
-
-msgid ""
-"In the indicator formulas, constants are shown with their values. If the "
-"constants cannot be read, these two are still shown as 0 and 1."
 msgstr ""
 
 msgid "About dataElements and indicators:"

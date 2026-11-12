@@ -68,7 +68,6 @@ export const AdminPage: React.FC = React.memo(() => {
     const adminOptions = options?.type === "success" ? options.data : undefined;
     const attributes = adminOptions?.attributes ?? [];
     const userGroups = adminOptions?.userGroups ?? [];
-    const constants = adminOptions?.constants ?? [];
 
     const saveMetadataId = (key: keyof MetadataIds) => (selected: NamedRef) =>
         save({ metadataIds: { ...metadataIds, [key]: selected.id } });
@@ -498,37 +497,6 @@ export const AdminPage: React.FC = React.memo(() => {
                             "The dashboards, visualizations, event charts and event reports whose ids it lists are shown in the Resources section of the 'Programs' panel, before the event charts and reports of the program. The ids should be formatted as follows:"
                         )}{" "}
                         <code>(ID1;ID2)</code>
-                    </p>
-                </DetailsBox>
-            </div>
-
-            <div className={css.row}>
-                <ConfigBox
-                    status={
-                        exists(constants, "constantZero") === "ok" &&
-                        exists(constants, "constantOne") === "ok"
-                            ? "ok"
-                            : "pending"
-                    }
-                    id="divConstants"
-                >
-                    <p>{i18n.t("Constants with the values 0 and 1.")}</p>
-                    <div className={css.setting}>
-                        {metadataSelect("constantZero", constants, i18n.t("Constant 0"), {
-                            selectId: "drpBoxConstantZero",
-                            submitId: "submitConstantZero",
-                        })}
-                    </div>
-                    {metadataSelect("constantOne", constants, i18n.t("Constant 1"), {
-                        selectId: "drpBoxConstantOne",
-                        submitId: "submitConstantOne",
-                    })}
-                </ConfigBox>
-                <DetailsBox>
-                    <p>
-                        {i18n.t(
-                            "In the indicator formulas, constants are shown with their values. If the constants cannot be read, these two are still shown as 0 and 1."
-                        )}
                     </p>
                 </DetailsBox>
             </div>

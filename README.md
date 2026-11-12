@@ -32,7 +32,7 @@ Some elements are defined at the **Admin** panel:
 - The name of the group of user with editing right in the **Dossier** panel and the **Admin** panel too
 - *dataSets*, *programs* and *indicatorGroups* can be blacklisted
 - The selectors of **DataSets** and **Programs** can be limited to the items assigned to the organisation units of the user (off by default)
-- The metadata the app relies on, which defaults to the MSF OCBA uids: the *attribute* with the service codes, the *attribute* with the ICD-10 code of *dataElements*, the default user group of Advanced Users, the user group to share the indicator tables with, the *constants* 0 and 1, and the *attribute* of *programs* with their resources
+- The metadata the app relies on, which defaults to the MSF OCBA uids: the *attribute* with the service codes, the *attribute* with the ICD-10 code of *dataElements*, the default user group of Advanced Users, the user group to share the indicator tables with, and the *attribute* of *programs* with their resources
 
 Some elements are still hardcoded:
 - The search panel will not show *dataElements* or *indicators* that are not associated to a *dataSet* or an *indicatorGroup*

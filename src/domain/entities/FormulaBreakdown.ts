@@ -1,6 +1,5 @@
 import { Struct } from "./generic/Struct";
 import { FormulaToken, IndicatorFormula } from "./IndicatorFormula";
-import { MetadataIds } from "./MetadataIds";
 import { Id } from "./Ref";
 
 export type FormulaComponent = {
@@ -20,20 +19,10 @@ export type FormulaReferences = {
     dataSetNames: Map<Id, string[]>;
 };
 
-/** The two constants the app knows, shown if the constants cannot be read. */
-export type KnownConstants = Pick<MetadataIds, "constantZero" | "constantOne">;
-
-type References = FormulaReferences & { constants: KnownConstants };
-
 export type FormulaBreakdownAttrs = { text: string; components: FormulaComponent[] };
 
 export class FormulaBreakdown extends Struct<FormulaBreakdownAttrs>() {
-    static build(
-        formula: IndicatorFormula,
-        formulaReferences: FormulaReferences,
-        constants: KnownConstants
-    ): FormulaBreakdown {
-        const references: References = { ...formulaReferences, constants };
+    static build(formula: IndicatorFormula, references: FormulaReferences): FormulaBreakdown {
         const tokens = formula.tokens();
         const operands = tokens.filter(token => token.type !== "operator");
         const operators = tokens.flatMap(token => (token.type === "operator" ? [token.value] : []));
@@ -53,17 +42,11 @@ export class FormulaBreakdown extends Struct<FormulaBreakdownAttrs>() {
     }
 }
 
-function constantValue(id: Id, constants: KnownConstants): string | undefined {
-    if (id === constants.constantZero) return "0";
-    if (id === constants.constantOne) return "1";
-    return undefined;
-}
-
 function nameOf(id: Id, references: FormulaReferences): string {
     return references.names.get(id) ?? id;
 }
 
-function operandText(token: FormulaToken, references: References): string {
+function operandText(token: FormulaToken, references: FormulaReferences): string {
     switch (token.type) {
         case "dataElement": {
             const name = nameOf(token.dataElementId, references);
@@ -75,11 +58,8 @@ function operandText(token: FormulaToken, references: References): string {
         case "programAttribute":
             return `${nameOf(token.programId, references)} ${nameOf(token.attributeId, references)}`;
         case "constant":
-            return (
-                references.names.get(token.id) ??
-                constantValue(token.id, references.constants) ??
-                token.id
-            );
+            // A constant shows as its value, or its id if it cannot be read
+            return nameOf(token.id, references);
         case "number":
         case "operator":
             return token.value;
@@ -88,7 +68,7 @@ function operandText(token: FormulaToken, references: References): string {
     }
 }
 
-function toComponents(token: FormulaToken, references: References): FormulaComponent[] {
+function toComponents(token: FormulaToken, references: FormulaReferences): FormulaComponent[] {
     const base = { dataSetNames: [], programNames: [] };
 
     switch (token.type) {
@@ -117,9 +97,7 @@ function toComponents(token: FormulaToken, references: References): FormulaCompo
         case "number":
             return [{ ...base, type: "number", name: token.value }];
         case "constant": {
-            // The value comes from the constants; the two known ones are the fallback
-            const value =
-                references.names.get(token.id) ?? constantValue(token.id, references.constants);
+            const value = references.names.get(token.id);
             return value ? [{ ...base, type: "number", name: value }] : [];
         }
         default:

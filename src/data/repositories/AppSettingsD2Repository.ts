@@ -19,8 +19,6 @@ const metadataIdKeys = {
     allUsersGroup: "metadata_allUsersGroup",
     healthServiceAttribute: "metadata_healthServiceAttribute",
     icd10Attribute: "metadata_icd10Attribute",
-    constantZero: "metadata_constantZero",
-    constantOne: "metadata_constantOne",
     programResourcesAttribute: "metadata_programResourcesAttribute",
 } as const satisfies Record<keyof MetadataIds, string>;
 

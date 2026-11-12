@@ -10,9 +10,6 @@ export type MetadataIds = {
     healthServiceAttribute: Id;
     /** The ICD-10 code of data elements, in Search. */
     icd10Attribute: Id;
-    /** Shown as 0 and 1 in formulas if the constants cannot be read. */
-    constantZero: Id;
-    constantOne: Id;
     /** The resources of programs (dashboards, visualizations...), as "ID1;ID2". */
     programResourcesAttribute: Id;
 };
@@ -23,7 +20,5 @@ export const defaultMetadataIds: MetadataIds = {
     allUsersGroup: "epFY01iJN0Z",
     healthServiceAttribute: "pG4YeQyynJh",
     icd10Attribute: "zC3TBJnSxar",
-    constantZero: "m70zf14qLvm",
-    constantOne: "qRquxuP5Zow",
     programResourcesAttribute: "Q5alUdMbT9g",
 };

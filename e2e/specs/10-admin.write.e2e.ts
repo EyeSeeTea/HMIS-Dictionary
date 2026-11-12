@@ -36,8 +36,6 @@ const metadataSelects = [
     { key: "advancedUserGroup", select: "drpBoxAdvancedUG", submit: "submitAdvancedUG" },
     { key: "allUsersGroup", select: "drpBoxAllUsersUG", submit: "submitAllUsersUG" },
     { key: "icd10Attribute", select: "drpBoxICD10", submit: "submitICD10" },
-    { key: "constantZero", select: "drpBoxConstantZero", submit: "submitConstantZero" },
-    { key: "constantOne", select: "drpBoxConstantOne", submit: "submitConstantOne" },
     { key: "programResourcesAttribute", select: "drpBoxResources", submit: "submitResources" },
 ];
 

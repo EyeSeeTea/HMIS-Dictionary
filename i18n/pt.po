@@ -5,7 +5,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-11-10T09:53:28.305Z\n"
+"POT-Creation-Date: 2026-11-12T07:51:56.825Z\n"
 "PO-Revision-Date: 2026-11-05T19:43:47.436Z\n"
 "Language: pt\n"
 
@@ -529,23 +529,6 @@ msgstr ""
 "cujos ids lista são mostrados na secção Recursos do painel 'Programas', "
 "antes dos gráficos e relatórios de eventos do programa. Os ids devem ter o "
 "seguinte formato:"
-
-msgid "Constants with the values 0 and 1."
-msgstr "Constantes com os valores 0 e 1."
-
-msgid "Constant 0"
-msgstr "Constante 0"
-
-msgid "Constant 1"
-msgstr "Constante 1"
-
-msgid ""
-"In the indicator formulas, constants are shown with their values. If the "
-"constants cannot be read, these two are still shown as 0 and 1."
-msgstr ""
-"Nas fórmulas dos indicadores, as constantes são mostradas com os seus "
-"valores. Se não for possível ler as constantes, estas duas continuam a ser "
-"mostradas como 0 e 1."
 
 msgid "About dataElements and indicators:"
 msgstr "Sobre dataElements e indicadores:"
@@ -1533,6 +1516,23 @@ msgstr "Editor de dossiês"
 
 msgid "Search by name"
 msgstr "Pesquisar por nome"
+
+#~ msgid "Constants with the values 0 and 1."
+#~ msgstr "Constantes com os valores 0 e 1."
+
+#~ msgid "Constant 0"
+#~ msgstr "Constante 0"
+
+#~ msgid "Constant 1"
+#~ msgstr "Constante 1"
+
+#~ msgid ""
+#~ "In the indicator formulas, constants are shown with their values. If the "
+#~ "constants cannot be read, these two are still shown as 0 and 1."
+#~ msgstr ""
+#~ "Nas fórmulas dos indicadores, as constantes são mostradas com os seus "
+#~ "valores. Se não for possível ler as constantes, estas duas continuam a ser "
+#~ "mostradas como 0 e 1."
 
 #~ msgid ""
 #~ "An attribute named 'serviceCode' is defined and associated with dataSets "

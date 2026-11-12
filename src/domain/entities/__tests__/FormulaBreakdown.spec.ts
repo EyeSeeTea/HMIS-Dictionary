@@ -1,4 +1,3 @@
-import { defaultMetadataIds } from "$/domain/entities/MetadataIds";
 import { describe, expect, it } from "vitest";
 import { FormulaBreakdown, FormulaReferences } from "$/domain/entities/FormulaBreakdown";
 import { IndicatorFormula } from "$/domain/entities/IndicatorFormula";
@@ -17,7 +16,7 @@ const references: FormulaReferences = {
 };
 
 const build = (expression: string) =>
-    FormulaBreakdown.build(IndicatorFormula.create({ expression }), references, defaultMetadataIds);
+    FormulaBreakdown.build(IndicatorFormula.create({ expression }), references);
 
 describe("FormulaBreakdown", () => {
     it("text has names and operators, without parentheses, as today", () => {
@@ -27,11 +26,9 @@ describe("FormulaBreakdown", () => {
         expect(build("D{p1.de1}").text).toBe("Program Element");
     });
 
-    it("the two known constants are numbers", () => {
-        expect(build("C{m70zf14qLvm} + C{qRquxuP5Zow}").text).toBe("0 + 1");
-        expect(build("C{m70zf14qLvm}").components).toEqual([
-            { type: "number", name: "0", dataSetNames: [], programNames: [] },
-        ]);
+    it("a constant that cannot be read shows its id, and is not a component", () => {
+        expect(build("C{unknown}").text).toBe("unknown");
+        expect(build("C{unknown}").components).toEqual([]);
     });
 
     it("other constants, N{} and A{} show by name or id, without shifting the rest", () => {

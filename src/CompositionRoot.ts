@@ -6,7 +6,6 @@ import { SessionD2Repository } from "./data/repositories/SessionD2Repository";
 import { ExpressionD2Repository } from "./data/repositories/ExpressionD2Repository";
 import { HealthServiceD2Repository } from "./data/repositories/HealthServiceD2Repository";
 import { AttributeD2Repository } from "./data/repositories/AttributeD2Repository";
-import { ConstantD2Repository } from "./data/repositories/ConstantD2Repository";
 import { DossierD2Repository } from "./data/repositories/DossierD2Repository";
 import { HealthServiceTextD2Repository } from "./data/repositories/HealthServiceTextD2Repository";
 import { IndexedDbCache } from "./data/IndexedDbCache";
@@ -28,7 +27,6 @@ import { SessionRepository } from "./domain/repositories/SessionRepository";
 import { ExpressionRepository } from "./domain/repositories/ExpressionRepository";
 import { HealthServiceRepository } from "./domain/repositories/HealthServiceRepository";
 import { AttributeRepository } from "./domain/repositories/AttributeRepository";
-import { ConstantRepository } from "./domain/repositories/ConstantRepository";
 import { DossierRepository } from "./domain/repositories/DossierRepository";
 import { HealthServiceTextRepository } from "./domain/repositories/HealthServiceTextRepository";
 import { SearchRepository } from "./domain/repositories/SearchRepository";
@@ -84,7 +82,6 @@ export type Repositories = {
     expressionRepository: ExpressionRepository;
     healthServiceRepository: HealthServiceRepository;
     attributeRepository: AttributeRepository;
-    constantRepository: ConstantRepository;
     dossierRepository: DossierRepository;
     healthServiceTextRepository: HealthServiceTextRepository;
     searchRepository: SearchRepository;
@@ -168,8 +165,7 @@ function getCompositionRoot(repositories: Repositories) {
             getOptions: new GetAdminOptionsUseCase(
                 repositories.healthServiceRepository,
                 repositories.userGroupRepository,
-                repositories.attributeRepository,
-                repositories.constantRepository
+                repositories.attributeRepository
             ),
             updateSettings: new UpdateAppSettingsUseCase(repositories.appSettingsRepository),
             refreshDossierConfigStatus: new RefreshDossierConfigStatusUseCase(
@@ -196,7 +192,6 @@ export function getWebappCompositionRoot(api: D2Api) {
         expressionRepository: new ExpressionD2Repository(api),
         healthServiceRepository: new HealthServiceD2Repository(api),
         attributeRepository: new AttributeD2Repository(api),
-        constantRepository: new ConstantD2Repository(api),
         dossierRepository: new DossierD2Repository(api),
         healthServiceTextRepository: new HealthServiceTextD2Repository(api),
         searchRepository: new SearchCachedRepository(
