@@ -13,7 +13,7 @@ type StoredSetup = { value?: string; object?: { id?: string; name?: string } };
 
 type StoredId = Maybe<{ value?: string }>;
 
-/** One key per id, as for the other settings: the default applies when it is not stored. */
+/** One key per id, as for the other settings: the default applies when it is not stored, and `{ value: "" }` means cleared. */
 const metadataIdKeys = {
     advancedUserGroup: "metadata_advancedUserGroup",
     allUsersGroup: "metadata_allUsersGroup",
@@ -133,9 +133,10 @@ function toAppSettings(stored: StoredKeys): AppSettings {
             optionGroupIds: stored.legacy_optionGroups ?? [],
         },
         limitSelectorsToUserOrgUnits: Boolean(stored.selector_limitToUserOrgUnits?.value),
-        metadataIds: mapMetadataIds(
-            key => stored[metadataIdKeys[key]]?.value || defaultMetadataIds[key]
-        ),
+        metadataIds: mapMetadataIds(key => {
+            const storedId = stored[metadataIdKeys[key]];
+            return storedId ? storedId.value || undefined : defaultMetadataIds[key];
+        }),
     });
 }
 
@@ -159,7 +160,7 @@ function toStoredKeys(settings: AppSettings): StoredKeys {
         ...(Object.fromEntries(
             metadataIdKeyNames.map(key => [
                 metadataIdKeys[key],
-                { value: settings.metadataIds[key] },
+                { value: settings.metadataIds[key] ?? "" },
             ])
         ) as Record<MetadataIdKey, StoredId>),
     };
@@ -167,10 +168,11 @@ function toStoredKeys(settings: AppSettings): StoredKeys {
 
 const metadataIdKeyNames = Object.keys(metadataIdKeys) as (keyof MetadataIds)[];
 
-function mapMetadataIds(getId: (key: keyof MetadataIds) => string): MetadataIds {
+function mapMetadataIds(getId: (key: keyof MetadataIds) => Maybe<string>): MetadataIds {
     return Object.fromEntries(metadataIdKeyNames.map(key => [key, getId(key)])) as MetadataIds;
 }
 
-function toSetup(ref: Maybe<NamedRef>, getValue: (ref: NamedRef) => string): Maybe<StoredSetup> {
-    return ref ? { value: getValue(ref), object: { id: ref.id, name: ref.name } } : undefined;
+/** A cleared setting is stored as `{}`, read back as not configured. */
+function toSetup(ref: Maybe<NamedRef>, getValue: (ref: NamedRef) => string): StoredSetup {
+    return ref ? { value: getValue(ref), object: { id: ref.id, name: ref.name } } : {};
 }

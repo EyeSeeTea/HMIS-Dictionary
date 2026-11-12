@@ -76,7 +76,7 @@ test.describe("10. Admin", () => {
                 [admin.groupSet, "organisationUnitGroupSets"],
             ] as const) {
                 const all = await api.list(resource, { fields: "id" });
-                const options = selector.locator("option:not([disabled])");
+                const options = selector.locator('option:not([value=""])');
                 await expect(options).toHaveCount(all.length);
                 expect(sorted(await options.allInnerTexts()), resource).toBe(true);
             }

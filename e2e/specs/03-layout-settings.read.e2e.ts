@@ -135,57 +135,64 @@ test.describe("3. Layout settings and access levels", () => {
             }
         });
 
-        test("Close and the X button discard the pending changes", async ({ app, api }) => {
+        test("Close discards the pending changes, and there is no X button", async ({
+            app,
+            api,
+        }) => {
             for (const view of views) {
                 const stored = JSON.stringify(await api.getKey(view.key));
                 await openSettings(app, view.route);
+                await expect(
+                    app.settings.dialog.locator(".modal-header").getByRole("button")
+                ).toHaveCount(0);
                 await app.settings.checks(app.settings.rows.first()).nth(2).click();
                 await app.settings.close.click();
                 await expect(app.settings.dialog).toBeHidden();
-                await app.settings.open();
-                await app.settings.checks(app.settings.rows.nth(1)).nth(2).click();
-                await app.settings.closeX.click();
-                await expect(app.settings.dialog).toBeHidden();
                 expect(JSON.stringify(await api.getKey(view.key))).toEqual(stored);
             }
         });
 
-        test("Advanced groups: a non-JSON-array value shows the format error, with no write", async ({
+        test("Advanced groups: shown by name, and a stored group missing on the instance by its id", async ({
             app,
             api,
+            page,
         }) => {
-            for (const view of views) {
-                const stored = JSON.stringify(await api.getKey(view.key));
-                await openSettings(app, view.route);
-                await app.settings.groups.fill("not-an-array");
-                await app.settings.apply.click();
-                await expect(app.settings.formatError).toBeVisible();
-                expect(JSON.stringify(await api.getKey(view.key))).toEqual(stored);
-            }
-        });
-
-        test("Advanced groups: an unknown group shows the group error, with no write", async ({
-            app,
-            api,
-        }) => {
-            for (const view of views) {
-                const stored = JSON.stringify(await api.getKey(view.key));
-                await openSettings(app, view.route);
-                await app.settings.groups.fill('["doesNotExis"]');
-                await app.settings.apply.click();
-                await expect(app.settings.groupError).toBeVisible();
-                expect(JSON.stringify(await api.getKey(view.key))).toEqual(stored);
-            }
-        });
-
-        test("Focusing the field clears the error", async ({ app }) => {
+            const stored = await api.getKey<any>("layoutSettings_datasets");
+            const [group] = await api.list<any>("userGroups", { fields: "id,name" });
+            await mockKeys(page, {
+                layoutSettings_datasets: {
+                    ...stored,
+                    advancedUserGroups: [group.id, "doesNotExis"],
+                },
+            });
             await openSettings(app, "datasets");
-            await app.settings.groups.fill("not-an-array");
+            await expect
+                .poll(() => app.settings.groups.selected())
+                .toEqual([group.name, "doesNotExis (not found)"]);
+        });
+
+        test("Advanced groups: an unknown group shows the group error, with no write; removing it clears the error", async ({
+            app,
+            api,
+            page,
+        }) => {
+            const stored = await api.getKey<any>("layoutSettings_datasets");
+            let writes = 0;
+            page.on("request", request => {
+                if (request.method() !== "GET" && /layoutSettings_datasets$/.test(request.url()))
+                    writes++;
+            });
+            await mockKeys(page, {
+                layoutSettings_datasets: { ...stored, advancedUserGroups: ["doesNotExis"] },
+            });
+            await openSettings(app, "datasets");
+            await app.settings.checks(app.settings.rows.first()).nth(2).click();
             await app.settings.apply.click();
-            await expect(app.settings.formatError).toBeVisible();
-            await app.settings.groups.blur();
-            await app.settings.groups.focus();
-            await expect(app.settings.formatError).toBeHidden();
+            await expect(app.settings.groupError).toBeVisible();
+            expect(writes).toBe(0);
+
+            await app.settings.groups.remove("doesNotExis (not found)");
+            await expect(app.settings.groupError).toBeHidden();
         });
 
         test("With no stored settings, the module displays with its default access", async ({

@@ -1,3 +1,4 @@
+import { Maybe } from "$/utils/ts-utils";
 import { AccessContext } from "./AppSettings";
 import { Struct } from "./generic/Struct";
 import { layoutDefaults } from "./layoutDefaults";
@@ -20,10 +21,10 @@ export type LayoutSettingsAttrs = {
 
 export class LayoutSettings extends Struct<LayoutSettingsAttrs>() {
     /** For a screen whose settings were never saved. */
-    static defaults(view: LayoutView, advancedUserGroupId: Id): LayoutSettings {
+    static defaults(view: LayoutView, advancedUserGroupId: Maybe<Id>): LayoutSettings {
         return LayoutSettings.create({
             view: view,
-            advancedUserGroupIds: [advancedUserGroupId],
+            advancedUserGroupIds: advancedUserGroupId ? [advancedUserGroupId] : [],
             sections: layoutDefaults[view],
         });
     }

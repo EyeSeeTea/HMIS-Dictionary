@@ -7,6 +7,7 @@ import { HealthServiceTextD2Repository } from "$/data/repositories/HealthService
 import { toOptionSet } from "$/data/repositories/d2-mappers";
 import { SessionD2Repository } from "$/data/repositories/SessionD2Repository";
 import { LayoutSettings } from "$/domain/entities/LayoutSettings";
+import { defaultMetadataIds } from "$/domain/entities/MetadataIds";
 import { D2Api } from "$/types/d2-api";
 
 const response = <T>(data: T) => ({ getData: () => Promise.resolve(data), cancel: () => {} });
@@ -77,6 +78,41 @@ describe("AppSettingsD2Repository", () => {
             ["setup_userGroup", { value: "New", object: { id: "g2", name: "New" } }],
             ["setup_organisationUnitGroupSet", { value: "s2", object: { id: "s2", name: "Set" } }],
         ]);
+    });
+
+    it("clears the admin group and the group set, read back as not configured", async () => {
+        const { save, repository } = setup();
+
+        await repository
+            .update({ adminGroup: undefined, healthServiceGroupSet: undefined })
+            .toPromise();
+
+        expect(save.mock.calls).toEqual([
+            ["setup_userGroup", {}],
+            ["setup_organisationUnitGroupSet", {}],
+        ]);
+        const cleared = await setup({ setup_userGroup: {}, setup_organisationUnitGroupSet: {} })
+            .repository.get()
+            .toPromise();
+        expect(cleared.adminGroup).toBeUndefined();
+        expect(cleared.healthServiceGroupSet).toBeUndefined();
+    });
+
+    it("uses the default metadata ids when not stored, and none when cleared", async () => {
+        const { save, repository } = setup();
+        const settings = await repository.get().toPromise();
+        expect(settings.metadataIds.icd10Attribute).toBe(defaultMetadataIds.icd10Attribute);
+
+        await repository
+            .update({ metadataIds: { ...settings.metadataIds, icd10Attribute: undefined } })
+            .toPromise();
+
+        expect(save.mock.calls).toEqual([["metadata_icd10Attribute", { value: "" }]]);
+        const cleared = await setup({ metadata_icd10Attribute: { value: "" } })
+            .repository.get()
+            .toPromise();
+        expect(cleared.metadataIds.icd10Attribute).toBeUndefined();
+        expect(cleared.metadataIds.allUsersGroup).toBe(defaultMetadataIds.allUsersGroup);
     });
 });
 

@@ -1,3 +1,4 @@
+import { Maybe } from "$/utils/ts-utils";
 import { AccessContext, AppSettings } from "./AppSettings";
 import { Struct } from "./generic/Struct";
 import { HealthService } from "./HealthService";
@@ -295,7 +296,8 @@ function getGroupId(group: SearchGroup): Id {
 }
 
 /** Decision 3: health services by attribute id on data sets, and the first attribute on indicator groups. */
-function attributeValue(attributeValues: AttributeValue[], attributeId: Id): string {
+function attributeValue(attributeValues: AttributeValue[], attributeId: Maybe<Id>): string {
+    if (!attributeId) return "";
     return attributeValues.find(value => value.attributeId === attributeId)?.value ?? "";
 }
 

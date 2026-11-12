@@ -5,7 +5,7 @@ import { Api } from "./api";
 import { escapeRegex } from "./data";
 import { env } from "./env";
 import { t } from "./i18n";
-import { RichTextEditor, SearchTable } from "./widgets";
+import { MultiSelect, RichTextEditor, SearchTable } from "./widgets";
 
 type Root = Page | FrameLocator;
 
@@ -153,8 +153,9 @@ export class LayoutSettings {
         return this.dialog.locator("tbody tr");
     }
 
+    /** The user groups of Advanced Users. */
     get groups() {
-        return this.dialog.locator('input[name="advancedUserGroups"]');
+        return new MultiSelect(this.app.root, "advanced-user-groups");
     }
 
     row(label: string) {
@@ -175,14 +176,6 @@ export class LayoutSettings {
 
     get close() {
         return this.dialog.locator(".modal-footer").getByRole("button", { name: t("CLOSE") });
-    }
-
-    get closeX() {
-        return this.dialog.locator(".modal-header").getByRole("button", { name: "Close" });
-    }
-
-    get formatError() {
-        return this.dialog.getByText(t("invalid_array_format"));
     }
 
     get groupError() {
@@ -531,10 +524,9 @@ export class AdminPage extends App {
         return this.root.locator(`input[name="${name}"]`);
     }
 
-    /** Fills a field and submits it, waiting for the page to reload. */
-    async submitField(inputLocator: Locator, submitId: string, value: string) {
-        await inputLocator.fill(value);
-        await this.submit(submitId).click();
+    /** A list of ids, chosen by name, by the id of its Submit button. */
+    ids(submitId: string) {
+        return new MultiSelect(this.root, `ids-${submitId}`);
     }
 }
 

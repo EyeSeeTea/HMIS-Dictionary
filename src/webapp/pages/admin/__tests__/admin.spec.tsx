@@ -1,5 +1,5 @@
 import { defaultMetadataIds } from "$/domain/entities/MetadataIds";
-import { fireEvent, RenderResult, waitFor } from "@testing-library/react";
+import { fireEvent, RenderResult, waitFor, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { getTestCompositionRoot } from "$/CompositionRoot";
 import { createSettings } from "$/domain/entities/__tests__/fixtures";
@@ -7,7 +7,6 @@ import { Future } from "$/domain/entities/generic/Future";
 import { AppSettingsAttrs } from "$/domain/entities/AppSettings";
 import { getReactComponent } from "$/utils/tests";
 import { AdminPage } from "$/webapp/pages/admin/AdminPage";
-import { parseIds, stringifyIds } from "$/webapp/pages/admin/adminSettings";
 
 /** The Angular ids are part of the e2e contract, so they are checked by id. */
 function byId(view: RenderResult, id: string): HTMLElement {
@@ -18,24 +17,6 @@ function byId(view: RenderResult, id: string): HTMLElement {
 }
 
 const success = <T,>(value: T) => Future.success<Error, T>(value);
-
-describe("parseIds", () => {
-    it("reads a JSON array of strings, and an empty field as no ids", () => {
-        expect(parseIds('["a","b"]')).toEqual({ type: "valid", ids: ["a", "b"] });
-        expect(parseIds("")).toEqual({ type: "valid", ids: [] });
-        expect(parseIds("  ")).toEqual({ type: "valid", ids: [] });
-    });
-
-    it("rejects everything else", () => {
-        expect(parseIds("a,b").type).toBe("invalid");
-        expect(parseIds('{"a":1}').type).toBe("invalid");
-        expect(parseIds("[1]").type).toBe("invalid");
-    });
-
-    it("writes ids in the same format", () => {
-        expect(stringifyIds(["a", "b"])).toBe('["a","b"]');
-    });
-});
 
 describe("AdminPage", () => {
     function setup(options: { codesOk?: boolean } = {}) {
@@ -71,6 +52,17 @@ describe("AdminPage", () => {
                         },
                     ]),
             },
+            metadataListRepository: {
+                getAll: model =>
+                    success(
+                        model === "dataSets"
+                            ? [
+                                  { id: "ds1", name: "Data set 1" },
+                                  { id: "ds2", name: "Data set 2" },
+                              ]
+                            : []
+                    ),
+            },
             appSettingsRepository: {
                 get: () => success(createSettings()),
                 update,
@@ -96,27 +88,34 @@ describe("AdminPage", () => {
         expect(byId(view, "divA")).toHaveAttribute("data-status", "ok");
     });
 
-    it("saves a list of ids on its own and reloads the app", async () => {
+    it("saves a list of ids, chosen by name, on its own and reloads the app", async () => {
         const { view, update, reload } = setup();
-        const field = view.getAllByLabelText("DS_UIDs")[0] as HTMLElement;
+        const select = await view.findByTestId("ids-submitDS");
+        await waitFor(() => expect(select).not.toHaveTextContent("Loading"));
 
-        fireEvent.change(field, { target: { value: '["ds1","ds2"]' } });
+        fireEvent.click(within(select).getByTestId(/input$/));
+        fireEvent.click(await view.findByText("Data set 2"));
+        fireEvent.click(view.getByText("Data set 1"));
+        expect(within(select).getByText("blacklistedDs (not found)")).toBeInTheDocument();
         fireEvent.click(byId(view, "submitDS"));
 
         await waitFor(() => expect(reload).toHaveBeenCalled());
         const [changes] = update.mock.calls[0] ?? [];
-        expect(changes?.blacklist?.dataSetIds).toEqual(["ds1", "ds2"]);
+        expect(changes?.blacklist?.dataSetIds).toEqual(["blacklistedDs", "ds2", "ds1"]);
         expect(changes?.blacklist?.tag).toBe("Blacklisted");
     });
 
-    it("shows the format error and does not write", async () => {
-        const { view, update } = setup();
-        const field = view.getAllByLabelText("DS_UIDs")[1] as HTMLElement;
+    it("clears a selected setting with None", async () => {
+        const { view, update, reload } = setup();
+        const select = byId(view, "drpBoxAllUsersUG");
+        await waitFor(() => expect(select).toHaveDisplayValue(/not found/));
 
-        fireEvent.change(field, { target: { value: "not an array" } });
-        fireEvent.click(byId(view, "submitLEG_OPG"));
+        fireEvent.change(select, { target: { value: "" } });
+        fireEvent.click(byId(view, "submitAllUsersUG"));
 
-        expect(await view.findByText("Invalid array format")).toBeInTheDocument();
-        expect(update).not.toHaveBeenCalled();
+        await waitFor(() => expect(reload).toHaveBeenCalled());
+        const [changes] = update.mock.calls[0] ?? [];
+        expect(changes?.metadataIds?.allUsersGroup).toBeUndefined();
+        expect(changes?.metadataIds?.icd10Attribute).toBe(defaultMetadataIds.icd10Attribute);
     });
 });

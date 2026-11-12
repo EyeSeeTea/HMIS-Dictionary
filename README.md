@@ -30,9 +30,10 @@ The configuration relies on the following elements that have to be defined throu
 Some elements are defined at the **Admin** panel:
 - The uid of the *organisationUnitGroupSet*
 - The name of the group of user with editing right in the **Dossier** panel and the **Admin** panel too
-- *dataSets*, *programs* and *indicatorGroups* can be blacklisted
+- *dataSets*, *programs* and *indicatorGroups* can be blacklisted, chosen by name
 - The selectors of **DataSets** and **Programs** can be limited to the items assigned to the organisation units of the user (off by default)
 - The metadata the app relies on, which defaults to the MSF OCBA uids: the *attribute* with the service codes, the *attribute* with the ICD-10 code of *dataElements*, the default user group of Advanced Users, the user group to share the indicator tables with, and the *attribute* of *programs* with their resources
+- Every setting is optional and can be cleared ("None"): the feature that uses it then does nothing. With no admin group, every user can manage the app
 
 Some elements are still hardcoded:
 - The search panel will not show *dataElements* or *indicators* that are not associated to a *dataSet* or an *indicatorGroup*

@@ -10,24 +10,33 @@ export type SettingSelectProps = {
     options: NamedRef[];
     /** What is stored now. */
     savedId: Maybe<Id>;
-    onSubmit: (selected: NamedRef) => void;
+    /** `undefined` when the setting is cleared. */
+    onSubmit: (selected: Maybe<NamedRef>) => void;
     disabled?: boolean;
     /** Ids of the select and of its button, as in the Angular app. */
     selectId: string;
     submitId: string;
 };
 
-/** A select with its Submit button, which only enables once there is a different selection. */
+/**
+ * A select with its Submit button, which only enables once there is a different selection.
+ * "None" clears the setting. A saved id not on the instance is shown by id, so it can be cleared.
+ */
 export const SettingSelect: React.FC<SettingSelectProps> = React.memo(props => {
     const { label, options, savedId, onSubmit, disabled, selectId, submitId } = props;
     const [selectedId, setSelectedId] = React.useState<Maybe<Id>>(savedId);
 
-    const sorted = React.useMemo(
-        () => [...options].sort((a, b) => compareNames(a.name, b.name)),
-        [options]
-    );
+    const sorted = React.useMemo(() => {
+        const byName = [...options].sort((a, b) => compareNames(a.name, b.name));
+        const isMissing = savedId && options.length > 0 && !options.some(o => o.id === savedId);
+        const missing = isMissing
+            ? [{ id: savedId, name: i18n.t("{{id}} (not found)", { id: savedId }) }]
+            : [];
+        return [...missing, ...byName];
+    }, [options, savedId]);
+
     const selected = sorted.find(option => option.id === selectedId);
-    const isDisabled = disabled || !selected || selected.id === savedId;
+    const isDisabled = disabled || options.length === 0 || selectedId === savedId;
 
     return (
         <div className={css.inline}>
@@ -38,9 +47,7 @@ export const SettingSelect: React.FC<SettingSelectProps> = React.memo(props => {
                 value={selected?.id ?? ""}
                 onChange={event => setSelectedId(event.target.value || undefined)}
             >
-                <option value="" disabled>
-                    {i18n.t("Select...")}
-                </option>
+                <option value="">{i18n.t("None")}</option>
                 {sorted.map(option => (
                     <option key={option.id} value={option.id}>
                         {option.name}
@@ -52,7 +59,7 @@ export const SettingSelect: React.FC<SettingSelectProps> = React.memo(props => {
                 id={submitId}
                 className={`${css.submit}${isDisabled ? " disabled" : ""}`}
                 disabled={isDisabled}
-                onClick={() => selected && onSubmit(selected)}
+                onClick={() => onSubmit(selected)}
             >
                 {i18n.t("Submit")}
             </button>

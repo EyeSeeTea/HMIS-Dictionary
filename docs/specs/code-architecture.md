@@ -92,15 +92,15 @@ class User { id; name; username; userGroups: NamedRef[] }                    // 
   belongsToGroupNamed(name): boolean
 
 class AppSettings {                                                          // dataStore HMIS_Dictionary/*
-  adminGroup?: NamedRef                                                      // setup_userGroup { value: name, object: { id, name } }
-  healthServiceGroupSet?: NamedRef                                           // setup_organisationUnitGroupSet { value: id, object: { id, name } }
+  adminGroup?: NamedRef                                                      // setup_userGroup { value: name, object: { id, name } }, {} when cleared
+  healthServiceGroupSet?: NamedRef                                           // setup_organisationUnitGroupSet { value: id, object: { id, name } }, {} when cleared
   dossierConfigComplete: boolean                                             // setup_dossierConfigComplete
   blacklist: { dataElementGroupIds: Id[]; dataSetIds: Id[]; indicatorGroupIds: Id[]; tag }   // tag defaults to "Blacklisted"
   notInUse: { indicatorGroupIds: Id[]; programIndicatorGroupIds: Id[]; tag } // tag defaults to "Not in Use"
   legacy: { dataElementGroupIds: Id[]; optionGroupIds: Id[] }
-  metadataIds: MetadataIds                                                   // metadata_<key> { value: id }, defaults to the MSF uids
+  metadataIds: MetadataIds                                                   // metadata_<key> { value: id }, defaults to the MSF uids, { value: "" } when cleared
 }
-type MetadataIds = { advancedUserGroup; allUsersGroup; healthServiceAttribute; icd10Attribute; programResourcesAttribute }
+type MetadataIds = { advancedUserGroup?; allUsersGroup?; healthServiceAttribute?; icd10Attribute?; programResourcesAttribute? }
   isAdmin(user): boolean                     // user in a group NAMED adminGroup.name, see decision 1
   canManage(user): boolean                   // isAdmin, or adminGroup not configured. Admin tab, editor Save, reader Edit
   showsDossiersTab(): boolean                // healthServiceGroupSet configured

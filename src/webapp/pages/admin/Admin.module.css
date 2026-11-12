@@ -71,15 +71,6 @@
     font-size: 14px;
 }
 
-.invalid {
-    border-color: var(--colors-red500);
-}
-
-.error {
-    color: var(--colors-red700);
-    font-size: 13px;
-}
-
 .submit {
     height: 36px;
     padding: 0 16px;

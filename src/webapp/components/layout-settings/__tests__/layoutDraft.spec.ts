@@ -1,11 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { LayoutSettings } from "$/domain/entities/LayoutSettings";
-import {
-    applyDraft,
-    getDraft,
-    isSameDraft,
-    parseAdvancedGroups,
-} from "$/webapp/components/layout-settings/layoutDraft";
+import { applyDraft, getDraft, isSameDraft } from "$/webapp/components/layout-settings/layoutDraft";
 
 const settings = LayoutSettings.defaults("search", "LjRqO9XzQPs");
 
@@ -43,13 +38,5 @@ describe("layoutDraft", () => {
         expect(
             isSameDraft(draft, { ...draft, objectsBasics: { advanced: false, everyone: false } })
         ).toBe(false);
-    });
-
-    it("accepts only a JSON array of strings", () => {
-        expect(parseAdvancedGroups('["a","b"]')).toEqual({ type: "valid", ids: ["a", "b"] });
-        expect(parseAdvancedGroups("[]")).toEqual({ type: "valid", ids: [] });
-        expect(parseAdvancedGroups("a,b").type).toBe("invalidFormat");
-        expect(parseAdvancedGroups('{"a":1}').type).toBe("invalidFormat");
-        expect(parseAdvancedGroups("[1]").type).toBe("invalidFormat");
     });
 });

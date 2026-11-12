@@ -13,11 +13,8 @@ test.describe("HIS: hide programs from the selector", () => {
         const saved = await api.getKey(key);
         try {
             await admin.load();
-            await admin.submitField(
-                admin.input("PROGRAM_UIDs"),
-                "submitPrograms",
-                JSON.stringify([eventProgram.id])
-            );
+            await admin.ids("submitPrograms").pick(eventProgram.name);
+            await admin.submit("submitPrograms").click();
             await readKeyEventually(api, key, [eventProgram.id]);
 
             await programs.load();

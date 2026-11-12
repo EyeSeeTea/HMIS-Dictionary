@@ -5,7 +5,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-11-10T12:01:17.872Z\n"
+"POT-Creation-Date: 2026-11-12T08:12:14.126Z\n"
 "PO-Revision-Date: 2026-11-05T19:43:47.436Z\n"
 "Language: ar\n"
 
@@ -17,6 +17,21 @@ msgstr "حدث خطأ ما"
 
 msgid "Reload the page. If the problem persists, contact your administrator."
 msgstr "أعد تحميل الصفحة. إذا استمرت المشكلة، فاتصل بالمسؤول."
+
+msgid "Clear all"
+msgstr "مسح الكل"
+
+msgid "No match found"
+msgstr "لا توجد نتائج"
+
+msgid "Type to filter"
+msgstr "اكتب للتصفية"
+
+msgid "None"
+msgstr "لا شيء"
+
+msgid "{{id}} (not found)"
+msgstr "{{id}} (غير موجود)"
 
 msgid "Aggregation Type"
 msgstr "نوع التجميع"
@@ -210,15 +225,8 @@ msgstr "الخدمات - الأساسيات"
 msgid "Settings"
 msgstr "الإعدادات"
 
-msgid "Close"
-msgstr "إغلاق"
-
-msgid ""
-"User group ids (JSON array) whose users are Advanced Users, for example "
-"[\"abc\"]"
-msgstr ""
-"معرّفات مجموعات المستخدمين (مصفوفة JSON) التي يكون مستخدموها مستخدمين "
-"متقدمين، مثلاً [\"abc\"]"
+msgid "User groups whose users are Advanced Users"
+msgstr "مجموعات المستخدمين التي يكون أعضاؤها مستخدمين متقدمين"
 
 msgid "Admin"
 msgstr "الإدارة"
@@ -229,14 +237,14 @@ msgstr "مستخدم متقدم"
 msgid "Normal User"
 msgstr "مستخدم عادي"
 
+msgid "Close"
+msgstr "إغلاق"
+
 msgid "Restore changes"
 msgstr "استعادة التغييرات"
 
 msgid "Apply changes"
 msgstr "تطبيق التغييرات"
-
-msgid "Invalid array format"
-msgstr "تنسيق المصفوفة غير صالح"
 
 msgid "All UID's must be a valid userGroup"
 msgstr "يجب أن تكون جميع معرفات UID لمجموعة مستخدمين صالحة"
@@ -297,9 +305,6 @@ msgstr "الإجمالي: {{total}}"
 
 msgid "View Table"
 msgstr "عرض الجدول"
-
-msgid "The arrays should be formatted as follows:"
-msgstr "يجب أن تكون المصفوفات بالتنسيق التالي:"
 
 msgid "The setting could not be saved"
 msgstr "تعذر حفظ الإعداد"
@@ -372,17 +377,17 @@ msgstr ""
 "يمكن إضافة رمز واحد أو أكثر في حالة dataSets أو indicatorGroups المستخدمة "
 "في عدة خدمات:"
 
-msgid "[Optional] An array of dataElementGroups UIDs to blacklist from the panels."
-msgstr "[اختياري] مصفوفة من معرّفات dataElementGroups لاستبعادها من اللوحات."
+msgid "[Optional] dataElementGroups to blacklist from the panels."
+msgstr "[اختياري] dataElementGroups لاستبعادها من اللوحات."
 
-msgid "[Optional] An array of dataSets UIDs to blacklist from the panels."
-msgstr "[اختياري] مصفوفة من معرّفات dataSets لاستبعادها من اللوحات."
+msgid "[Optional] dataSets to blacklist from the panels."
+msgstr "[اختياري] dataSets لاستبعادها من اللوحات."
 
-msgid "[Optional] An array of programs UIDs to blacklist from the panels."
-msgstr "[اختياري] مصفوفة من معرّفات البرامج لاستبعادها من اللوحات."
+msgid "[Optional] programs to blacklist from the panels."
+msgstr "[اختياري] البرامج لاستبعادها من اللوحات."
 
-msgid "[Optional] An array of indicatorGroups UIDs to blacklist from the panels."
-msgstr "[اختياري] مصفوفة من معرّفات indicatorGroups لاستبعادها من اللوحات."
+msgid "[Optional] indicatorGroups to blacklist from the panels."
+msgstr "[اختياري] indicatorGroups لاستبعادها من اللوحات."
 
 msgid ""
 "[Optional] Text of the tag to display for blacklisted elements in Search "
@@ -406,18 +411,18 @@ msgstr ""
 "Blacklisted."
 
 msgid ""
-"[Optional] An array of not in use indicatorGroups UIDs to hide in the "
-"panels for non-admin users."
+"[Optional] not in use indicatorGroups to hide in the panels for non-admin "
+"users."
 msgstr ""
-"[اختياري] مصفوفة من معرّفات indicatorGroups غير المستخدمة لإخفائها في "
-"اللوحات عن المستخدمين غير المسؤولين."
+"[اختياري] indicatorGroups غير المستخدمة لإخفائها في اللوحات عن المستخدمين "
+"غير المسؤولين."
 
 msgid ""
-"[Optional] An array of not in use programIndicatorGroups UIDs to hide in "
-"the panels for non-admin users."
+"[Optional] not in use programIndicatorGroups to hide in the panels for "
+"non-admin users."
 msgstr ""
-"[اختياري] مصفوفة من معرّفات programIndicatorGroups غير المستخدمة لإخفائها "
-"في اللوحات عن المستخدمين غير المسؤولين."
+"[اختياري] programIndicatorGroups غير المستخدمة لإخفائها في اللوحات عن "
+"المستخدمين غير المسؤولين."
 
 msgid ""
 "[Optional] Text of the tag to display for not in use elements in Search "
@@ -442,13 +447,11 @@ msgstr ""
 "المستخدمة والموجودة في صيغ المؤشرات. إذا لم تُحدَّد قيمة، فستُستخدم Not in "
 "Use."
 
-msgid ""
-"[Optional] An array of legacy dataElementGroups UIDs for the 'Programs' "
-"panel."
-msgstr "[اختياري] مصفوفة من معرّفات dataElementGroups القديمة للوحة 'البرامج'."
+msgid "[Optional] legacy dataElementGroups for the 'Programs' panel."
+msgstr "[اختياري] dataElementGroups القديمة للوحة 'البرامج'."
 
-msgid "[Optional] An array of legacy optionGroups UIDs for the 'Programs' panel."
-msgstr "[اختياري] مصفوفة من معرّفات optionGroups القديمة للوحة 'البرامج'."
+msgid "[Optional] legacy optionGroups for the 'Programs' panel."
+msgstr "[اختياري] optionGroups القديمة للوحة 'البرامج'."
 
 msgid ""
 "These groups contain legacy elements that will be hidden in the 'Programs' "
@@ -542,9 +545,6 @@ msgid ""
 msgstr ""
 "عرض مجموعات البيانات والبرامج المعيّنة للوحدات التنظيمية للمستخدم أو "
 "للوحدات التابعة لها فقط."
-
-msgid "Select..."
-msgstr "اختر..."
 
 msgid "Submit"
 msgstr "إرسال"
@@ -1395,6 +1395,56 @@ msgstr "محرر الملفات"
 
 msgid "Search by name"
 msgstr "البحث بالاسم"
+
+#~ msgid ""
+#~ "User group ids (JSON array) whose users are Advanced Users, for example "
+#~ "[\"abc\"]"
+#~ msgstr ""
+#~ "معرّفات مجموعات المستخدمين (مصفوفة JSON) التي يكون مستخدموها مستخدمين "
+#~ "متقدمين، مثلاً [\"abc\"]"
+
+#~ msgid "Invalid array format"
+#~ msgstr "تنسيق المصفوفة غير صالح"
+
+#~ msgid "The arrays should be formatted as follows:"
+#~ msgstr "يجب أن تكون المصفوفات بالتنسيق التالي:"
+
+#~ msgid "[Optional] An array of dataElementGroups UIDs to blacklist from the panels."
+#~ msgstr "[اختياري] مصفوفة من معرّفات dataElementGroups لاستبعادها من اللوحات."
+
+#~ msgid "[Optional] An array of dataSets UIDs to blacklist from the panels."
+#~ msgstr "[اختياري] مصفوفة من معرّفات dataSets لاستبعادها من اللوحات."
+
+#~ msgid "[Optional] An array of programs UIDs to blacklist from the panels."
+#~ msgstr "[اختياري] مصفوفة من معرّفات البرامج لاستبعادها من اللوحات."
+
+#~ msgid "[Optional] An array of indicatorGroups UIDs to blacklist from the panels."
+#~ msgstr "[اختياري] مصفوفة من معرّفات indicatorGroups لاستبعادها من اللوحات."
+
+#~ msgid ""
+#~ "[Optional] An array of not in use indicatorGroups UIDs to hide in the "
+#~ "panels for non-admin users."
+#~ msgstr ""
+#~ "[اختياري] مصفوفة من معرّفات indicatorGroups غير المستخدمة لإخفائها في "
+#~ "اللوحات عن المستخدمين غير المسؤولين."
+
+#~ msgid ""
+#~ "[Optional] An array of not in use programIndicatorGroups UIDs to hide in "
+#~ "the panels for non-admin users."
+#~ msgstr ""
+#~ "[اختياري] مصفوفة من معرّفات programIndicatorGroups غير المستخدمة لإخفائها "
+#~ "في اللوحات عن المستخدمين غير المسؤولين."
+
+#~ msgid ""
+#~ "[Optional] An array of legacy dataElementGroups UIDs for the 'Programs' "
+#~ "panel."
+#~ msgstr "[اختياري] مصفوفة من معرّفات dataElementGroups القديمة للوحة 'البرامج'."
+
+#~ msgid "[Optional] An array of legacy optionGroups UIDs for the 'Programs' panel."
+#~ msgstr "[اختياري] مصفوفة من معرّفات optionGroups القديمة للوحة 'البرامج'."
+
+#~ msgid "Select..."
+#~ msgstr "اختر..."
 
 #~ msgid "About this version"
 #~ msgstr "حول هذا الإصدار"

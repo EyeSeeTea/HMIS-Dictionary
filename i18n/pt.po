@@ -5,7 +5,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-11-10T12:01:17.872Z\n"
+"POT-Creation-Date: 2026-11-12T08:12:14.126Z\n"
 "PO-Revision-Date: 2026-11-05T19:43:47.436Z\n"
 "Language: pt\n"
 
@@ -17,6 +17,21 @@ msgstr "Algo correu mal"
 
 msgid "Reload the page. If the problem persists, contact your administrator."
 msgstr "Recarregue a página. Se o problema persistir, contacte o seu administrador."
+
+msgid "Clear all"
+msgstr "Limpar tudo"
+
+msgid "No match found"
+msgstr "Nenhum resultado"
+
+msgid "Type to filter"
+msgstr "Digite para filtrar"
+
+msgid "None"
+msgstr "Nenhum"
+
+msgid "{{id}} (not found)"
+msgstr "{{id}} (não encontrado)"
 
 msgid "Aggregation Type"
 msgstr "Tipo de agregação"
@@ -210,15 +225,8 @@ msgstr "Serviços - noções básicas"
 msgid "Settings"
 msgstr "Configurações"
 
-msgid "Close"
-msgstr "Fechar"
-
-msgid ""
-"User group ids (JSON array) whose users are Advanced Users, for example "
-"[\"abc\"]"
-msgstr ""
-"Ids de grupos de utilizadores (array JSON) cujos utilizadores são "
-"utilizadores avançados, por exemplo [\"abc\"]"
+msgid "User groups whose users are Advanced Users"
+msgstr "Grupos de utilizadores cujos utilizadores são Utilizadores Avançados"
 
 msgid "Admin"
 msgstr "Admin"
@@ -229,14 +237,14 @@ msgstr "Usuário avançado"
 msgid "Normal User"
 msgstr "Usuário normal"
 
+msgid "Close"
+msgstr "Fechar"
+
 msgid "Restore changes"
 msgstr "Restaurar alterações"
 
 msgid "Apply changes"
 msgstr "Aplicar alterações"
-
-msgid "Invalid array format"
-msgstr "Formato de lista inválido"
 
 msgid "All UID's must be a valid userGroup"
 msgstr "Todos os UID devem ser grupos de usuários válidos"
@@ -297,9 +305,6 @@ msgstr "Total: {{total}}"
 
 msgid "View Table"
 msgstr "Ver tabela"
-
-msgid "The arrays should be formatted as follows:"
-msgstr "Os arrays devem ter este formato:"
 
 msgid "The setting could not be saved"
 msgstr "Não foi possível salvar a configuração"
@@ -374,17 +379,17 @@ msgstr ""
 "Podem ser adicionados um ou mais códigos no caso de dataSets ou "
 "indicatorGroups usados em vários serviços:"
 
-msgid "[Optional] An array of dataElementGroups UIDs to blacklist from the panels."
-msgstr "[Opcional] Um array de UIDs de dataElementGroups a excluir dos painéis."
+msgid "[Optional] dataElementGroups to blacklist from the panels."
+msgstr "[Opcional] dataElementGroups a excluir dos painéis."
 
-msgid "[Optional] An array of dataSets UIDs to blacklist from the panels."
-msgstr "[Opcional] Um array de UIDs de dataSets a excluir dos painéis."
+msgid "[Optional] dataSets to blacklist from the panels."
+msgstr "[Opcional] dataSets a excluir dos painéis."
 
-msgid "[Optional] An array of programs UIDs to blacklist from the panels."
-msgstr "[Opcional] Um array de UIDs de programas a excluir dos painéis."
+msgid "[Optional] programs to blacklist from the panels."
+msgstr "[Opcional] Programas a excluir dos painéis."
 
-msgid "[Optional] An array of indicatorGroups UIDs to blacklist from the panels."
-msgstr "[Opcional] Um array de UIDs de indicatorGroups a excluir dos painéis."
+msgid "[Optional] indicatorGroups to blacklist from the panels."
+msgstr "[Opcional] indicatorGroups a excluir dos painéis."
 
 msgid ""
 "[Optional] Text of the tag to display for blacklisted elements in Search "
@@ -410,18 +415,18 @@ msgstr ""
 "for indicado nenhum valor, será usado Blacklisted."
 
 msgid ""
-"[Optional] An array of not in use indicatorGroups UIDs to hide in the "
-"panels for non-admin users."
+"[Optional] not in use indicatorGroups to hide in the panels for non-admin "
+"users."
 msgstr ""
-"[Opcional] Um array de UIDs de indicatorGroups não utilizados a ocultar nos "
-"painéis para utilizadores que não são administradores."
+"[Opcional] indicatorGroups em desuso a ocultar nos painéis para "
+"utilizadores não administradores."
 
 msgid ""
-"[Optional] An array of not in use programIndicatorGroups UIDs to hide in "
-"the panels for non-admin users."
+"[Optional] not in use programIndicatorGroups to hide in the panels for "
+"non-admin users."
 msgstr ""
-"[Opcional] Um array de UIDs de programIndicatorGroups não utilizados a "
-"ocultar nos painéis para utilizadores que não são administradores."
+"[Opcional] programIndicatorGroups em desuso a ocultar nos painéis para "
+"utilizadores não administradores."
 
 msgid ""
 "[Optional] Text of the tag to display for not in use elements in Search "
@@ -447,17 +452,11 @@ msgstr ""
 "dos grupos não utilizados presentes nas fórmulas dos indicadores. Se não "
 "for indicado nenhum valor, será usado Not in Use."
 
-msgid ""
-"[Optional] An array of legacy dataElementGroups UIDs for the 'Programs' "
-"panel."
-msgstr ""
-"[Opcional] Um array de UIDs de dataElementGroups obsoletos para o painel "
-"'Programas'."
+msgid "[Optional] legacy dataElementGroups for the 'Programs' panel."
+msgstr "[Opcional] dataElementGroups legados para o painel 'Programas'."
 
-msgid "[Optional] An array of legacy optionGroups UIDs for the 'Programs' panel."
-msgstr ""
-"[Opcional] Um array de UIDs de optionGroups obsoletos para o painel "
-"'Programas'."
+msgid "[Optional] legacy optionGroups for the 'Programs' panel."
+msgstr "[Opcional] optionGroups legados para o painel 'Programas'."
 
 msgid ""
 "These groups contain legacy elements that will be hidden in the 'Programs' "
@@ -555,9 +554,6 @@ msgid ""
 msgstr ""
 "Mostrar apenas os conjuntos de dados e programas atribuídos às unidades "
 "organizacionais do utilizador, ou aos seus descendentes."
-
-msgid "Select..."
-msgstr "Selecionar..."
 
 msgid "Submit"
 msgstr "Enviar"
@@ -1504,6 +1500,60 @@ msgstr "Editor de dossiês"
 
 msgid "Search by name"
 msgstr "Pesquisar por nome"
+
+#~ msgid ""
+#~ "User group ids (JSON array) whose users are Advanced Users, for example "
+#~ "[\"abc\"]"
+#~ msgstr ""
+#~ "Ids de grupos de utilizadores (array JSON) cujos utilizadores são "
+#~ "utilizadores avançados, por exemplo [\"abc\"]"
+
+#~ msgid "Invalid array format"
+#~ msgstr "Formato de lista inválido"
+
+#~ msgid "The arrays should be formatted as follows:"
+#~ msgstr "Os arrays devem ter este formato:"
+
+#~ msgid "[Optional] An array of dataElementGroups UIDs to blacklist from the panels."
+#~ msgstr "[Opcional] Um array de UIDs de dataElementGroups a excluir dos painéis."
+
+#~ msgid "[Optional] An array of dataSets UIDs to blacklist from the panels."
+#~ msgstr "[Opcional] Um array de UIDs de dataSets a excluir dos painéis."
+
+#~ msgid "[Optional] An array of programs UIDs to blacklist from the panels."
+#~ msgstr "[Opcional] Um array de UIDs de programas a excluir dos painéis."
+
+#~ msgid "[Optional] An array of indicatorGroups UIDs to blacklist from the panels."
+#~ msgstr "[Opcional] Um array de UIDs de indicatorGroups a excluir dos painéis."
+
+#~ msgid ""
+#~ "[Optional] An array of not in use indicatorGroups UIDs to hide in the "
+#~ "panels for non-admin users."
+#~ msgstr ""
+#~ "[Opcional] Um array de UIDs de indicatorGroups não utilizados a ocultar nos "
+#~ "painéis para utilizadores que não são administradores."
+
+#~ msgid ""
+#~ "[Optional] An array of not in use programIndicatorGroups UIDs to hide in "
+#~ "the panels for non-admin users."
+#~ msgstr ""
+#~ "[Opcional] Um array de UIDs de programIndicatorGroups não utilizados a "
+#~ "ocultar nos painéis para utilizadores que não são administradores."
+
+#~ msgid ""
+#~ "[Optional] An array of legacy dataElementGroups UIDs for the 'Programs' "
+#~ "panel."
+#~ msgstr ""
+#~ "[Opcional] Um array de UIDs de dataElementGroups obsoletos para o painel "
+#~ "'Programas'."
+
+#~ msgid "[Optional] An array of legacy optionGroups UIDs for the 'Programs' panel."
+#~ msgstr ""
+#~ "[Opcional] Um array de UIDs de optionGroups obsoletos para o painel "
+#~ "'Programas'."
+
+#~ msgid "Select..."
+#~ msgstr "Selecionar..."
 
 #~ msgid "About this version"
 #~ msgstr "Sobre esta versão"

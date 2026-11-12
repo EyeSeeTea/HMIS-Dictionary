@@ -16,13 +16,6 @@
     font-size: 18px;
 }
 
-.x {
-    border: 0;
-    background: none;
-    font-size: 24px;
-    cursor: pointer;
-}
-
 .content {
     padding: 16px 24px;
     overflow-y: auto;

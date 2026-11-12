@@ -8,15 +8,14 @@ import { isSelectionLoading } from "$/webapp/hooks/useSectionLoading";
 import { LoadingBanner } from "$/webapp/components/loading-banner/LoadingBanner";
 import { PageHeader } from "$/webapp/components/page-header/PageHeader";
 import { ConfigBox, ConfigStatus, DetailsBox } from "$/webapp/pages/admin/ConfigBox";
-import { parseIds, stringifyIds } from "$/webapp/pages/admin/adminSettings";
+import { IdsSetting } from "$/webapp/pages/admin/IdsSetting";
 import { SettingSelect } from "$/webapp/pages/admin/SettingSelect";
 import { TextSetting } from "$/webapp/pages/admin/TextSetting";
 import { AppSettingsAttrs } from "$/domain/entities/AppSettings";
 import { MetadataIds } from "$/domain/entities/MetadataIds";
-import { NamedRef } from "$/domain/entities/Ref";
+import { Id, NamedRef } from "$/domain/entities/Ref";
+import { Maybe } from "$/utils/ts-utils";
 import css from "./Admin.module.css";
-
-const exampleIds = '["uid00000001","uid00000002","uid00000003"]';
 
 export const AdminPage: React.FC = React.memo(() => {
     const { compositionRoot, settings } = useAppContext();
@@ -56,21 +55,30 @@ export const AdminPage: React.FC = React.memo(() => {
         );
     };
 
-    const validateIds = (text: string) =>
-        parseIds(text).type === "invalid" ? i18n.t("Invalid array format") : undefined;
-
-    const saveIds = (update: (ids: string[]) => Partial<AppSettingsAttrs>) => (text: string) => {
-        const parsed = parseIds(text);
-        if (parsed.type === "valid") save(update(parsed.ids));
-    };
-
     const { blacklist, notInUse, legacy, metadataIds } = settings;
     const adminOptions = options?.type === "success" ? options.data : undefined;
     const attributes = adminOptions?.attributes ?? [];
     const userGroups = adminOptions?.userGroups ?? [];
+    const lists = adminOptions?.lists;
 
-    const saveMetadataId = (key: keyof MetadataIds) => (selected: NamedRef) =>
-        save({ metadataIds: { ...metadataIds, [key]: selected.id } });
+    /** A list of ids, chosen by name among the metadata of `model`. */
+    const idsSetting = (
+        model: keyof NonNullable<typeof lists>,
+        props: { label: string; savedIds: Id[]; submitId: string },
+        update: (ids: Id[]) => Partial<AppSettingsAttrs>
+    ) => (
+        <IdsSetting
+            key={props.submitId}
+            {...props}
+            options={lists?.[model] ?? []}
+            loading={!lists}
+            disabled={isSaving}
+            onSubmit={ids => save(update(ids))}
+        />
+    );
+
+    const saveMetadataId = (key: keyof MetadataIds) => (selected: Maybe<NamedRef>) =>
+        save({ metadataIds: { ...metadataIds, [key]: selected?.id } });
 
     /** Found on the instance, or a warning: the feature that uses it just does nothing. */
     const exists = (options: NamedRef[], key: keyof MetadataIds): ConfigStatus =>
@@ -94,11 +102,6 @@ export const AdminPage: React.FC = React.memo(() => {
             disabled={isSaving}
             onSubmit={saveMetadataId(key)}
         />
-    );
-    const idsFormat = (
-        <>
-            {i18n.t("The arrays should be formatted as follows:")} <code>{exampleIds}</code>.
-        </>
     );
 
     return (
@@ -235,58 +238,46 @@ export const AdminPage: React.FC = React.memo(() => {
 
             <div className={css.row}>
                 <ConfigBox status="pending">
-                    <TextSetting
-                        name="DEG_UIDs"
-                        submitId="submitDEG"
-                        label={i18n.t(
-                            "[Optional] An array of dataElementGroups UIDs to blacklist from the panels."
-                        )}
-                        value={stringifyIds(blacklist.dataElementGroupIds)}
-                        validate={validateIds}
-                        disabled={isSaving}
-                        onSubmit={saveIds(ids => ({
-                            blacklist: { ...blacklist, dataElementGroupIds: ids },
-                        }))}
-                    />
-                    <TextSetting
-                        name="DS_UIDs"
-                        submitId="submitDS"
-                        label={i18n.t(
-                            "[Optional] An array of dataSets UIDs to blacklist from the panels."
-                        )}
-                        value={stringifyIds(blacklist.dataSetIds)}
-                        validate={validateIds}
-                        disabled={isSaving}
-                        onSubmit={saveIds(ids => ({
-                            blacklist: { ...blacklist, dataSetIds: ids },
-                        }))}
-                    />
-                    <TextSetting
-                        name="PROGRAM_UIDs"
-                        submitId="submitPrograms"
-                        label={i18n.t(
-                            "[Optional] An array of programs UIDs to blacklist from the panels."
-                        )}
-                        value={stringifyIds(blacklist.programIds)}
-                        validate={validateIds}
-                        disabled={isSaving}
-                        onSubmit={saveIds(ids => ({
-                            blacklist: { ...blacklist, programIds: ids },
-                        }))}
-                    />
-                    <TextSetting
-                        name="IG_UIDs"
-                        submitId="submitIG"
-                        label={i18n.t(
-                            "[Optional] An array of indicatorGroups UIDs to blacklist from the panels."
-                        )}
-                        value={stringifyIds(blacklist.indicatorGroupIds)}
-                        validate={validateIds}
-                        disabled={isSaving}
-                        onSubmit={saveIds(ids => ({
-                            blacklist: { ...blacklist, indicatorGroupIds: ids },
-                        }))}
-                    />
+                    {idsSetting(
+                        "dataElementGroups",
+                        {
+                            label: i18n.t(
+                                "[Optional] dataElementGroups to blacklist from the panels."
+                            ),
+                            savedIds: blacklist.dataElementGroupIds,
+                            submitId: "submitDEG",
+                        },
+                        ids => ({ blacklist: { ...blacklist, dataElementGroupIds: ids } })
+                    )}
+                    {idsSetting(
+                        "dataSets",
+                        {
+                            label: i18n.t("[Optional] dataSets to blacklist from the panels."),
+                            savedIds: blacklist.dataSetIds,
+                            submitId: "submitDS",
+                        },
+                        ids => ({ blacklist: { ...blacklist, dataSetIds: ids } })
+                    )}
+                    {idsSetting(
+                        "programs",
+                        {
+                            label: i18n.t("[Optional] programs to blacklist from the panels."),
+                            savedIds: blacklist.programIds,
+                            submitId: "submitPrograms",
+                        },
+                        ids => ({ blacklist: { ...blacklist, programIds: ids } })
+                    )}
+                    {idsSetting(
+                        "indicatorGroups",
+                        {
+                            label: i18n.t(
+                                "[Optional] indicatorGroups to blacklist from the panels."
+                            ),
+                            savedIds: blacklist.indicatorGroupIds,
+                            submitId: "submitIG",
+                        },
+                        ids => ({ blacklist: { ...blacklist, indicatorGroupIds: ids } })
+                    )}
                     <TextSetting
                         name="BL_TAG"
                         submitId="submitBL_Tag"
@@ -306,7 +297,6 @@ export const AdminPage: React.FC = React.memo(() => {
                             "These groups contain blacklisted elements and will not be displayed in the panels."
                         )}
                     </p>
-                    <p>{idsFormat}</p>
                     <p>
                         {i18n.t(
                             "The tag text field is used to mark metadata elements in the blacklisted groups present in Indicator formulas. If no value is set it will default to Blacklisted."
@@ -317,32 +307,28 @@ export const AdminPage: React.FC = React.memo(() => {
 
             <div className={css.row}>
                 <ConfigBox status="pending">
-                    <TextSetting
-                        name="NIU_IG_UIDs"
-                        submitId="submitNIU_IG"
-                        label={i18n.t(
-                            "[Optional] An array of not in use indicatorGroups UIDs to hide in the panels for non-admin users."
-                        )}
-                        value={stringifyIds(notInUse.indicatorGroupIds)}
-                        validate={validateIds}
-                        disabled={isSaving}
-                        onSubmit={saveIds(ids => ({
-                            notInUse: { ...notInUse, indicatorGroupIds: ids },
-                        }))}
-                    />
-                    <TextSetting
-                        name="NIU_PIG_UIDs"
-                        submitId="submitNIU_PIG"
-                        label={i18n.t(
-                            "[Optional] An array of not in use programIndicatorGroups UIDs to hide in the panels for non-admin users."
-                        )}
-                        value={stringifyIds(notInUse.programIndicatorGroupIds)}
-                        validate={validateIds}
-                        disabled={isSaving}
-                        onSubmit={saveIds(ids => ({
-                            notInUse: { ...notInUse, programIndicatorGroupIds: ids },
-                        }))}
-                    />
+                    {idsSetting(
+                        "indicatorGroups",
+                        {
+                            label: i18n.t(
+                                "[Optional] not in use indicatorGroups to hide in the panels for non-admin users."
+                            ),
+                            savedIds: notInUse.indicatorGroupIds,
+                            submitId: "submitNIU_IG",
+                        },
+                        ids => ({ notInUse: { ...notInUse, indicatorGroupIds: ids } })
+                    )}
+                    {idsSetting(
+                        "programIndicatorGroups",
+                        {
+                            label: i18n.t(
+                                "[Optional] not in use programIndicatorGroups to hide in the panels for non-admin users."
+                            ),
+                            savedIds: notInUse.programIndicatorGroupIds,
+                            submitId: "submitNIU_PIG",
+                        },
+                        ids => ({ notInUse: { ...notInUse, programIndicatorGroupIds: ids } })
+                    )}
                     <TextSetting
                         name="NIU_TAG"
                         submitId="submitNIU_Tag"
@@ -360,7 +346,6 @@ export const AdminPage: React.FC = React.memo(() => {
                             "These groups contain elements that are not in use and will be hidden in the panels for non-admin users but visible for admin users."
                         )}
                     </p>
-                    <p>{idsFormat}</p>
                     <p>
                         {i18n.t(
                             "The tag text field is used to mark metadata elements in the not in use groups present in Indicator formulas. If no value is set it will default to Not in Use."
@@ -371,30 +356,28 @@ export const AdminPage: React.FC = React.memo(() => {
 
             <div className={css.row}>
                 <ConfigBox status="pending">
-                    <TextSetting
-                        name="DEG_UIDs"
-                        submitId="submitLEG_DEG"
-                        label={i18n.t(
-                            "[Optional] An array of legacy dataElementGroups UIDs for the 'Programs' panel."
-                        )}
-                        value={stringifyIds(legacy.dataElementGroupIds)}
-                        validate={validateIds}
-                        disabled={isSaving}
-                        onSubmit={saveIds(ids => ({
-                            legacy: { ...legacy, dataElementGroupIds: ids },
-                        }))}
-                    />
-                    <TextSetting
-                        name="DS_UIDs"
-                        submitId="submitLEG_OPG"
-                        label={i18n.t(
-                            "[Optional] An array of legacy optionGroups UIDs for the 'Programs' panel."
-                        )}
-                        value={stringifyIds(legacy.optionGroupIds)}
-                        validate={validateIds}
-                        disabled={isSaving}
-                        onSubmit={saveIds(ids => ({ legacy: { ...legacy, optionGroupIds: ids } }))}
-                    />
+                    {idsSetting(
+                        "dataElementGroups",
+                        {
+                            label: i18n.t(
+                                "[Optional] legacy dataElementGroups for the 'Programs' panel."
+                            ),
+                            savedIds: legacy.dataElementGroupIds,
+                            submitId: "submitLEG_DEG",
+                        },
+                        ids => ({ legacy: { ...legacy, dataElementGroupIds: ids } })
+                    )}
+                    {idsSetting(
+                        "optionGroups",
+                        {
+                            label: i18n.t(
+                                "[Optional] legacy optionGroups for the 'Programs' panel."
+                            ),
+                            savedIds: legacy.optionGroupIds,
+                            submitId: "submitLEG_OPG",
+                        },
+                        ids => ({ legacy: { ...legacy, optionGroupIds: ids } })
+                    )}
                 </ConfigBox>
                 <DetailsBox>
                     <p>
@@ -402,7 +385,6 @@ export const AdminPage: React.FC = React.memo(() => {
                             "These groups contain legacy elements that will be hidden in the 'Programs' panel unless the 'Show legacy data elements and options' option is enabled."
                         )}
                     </p>
-                    <p>{idsFormat}</p>
                 </DetailsBox>
             </div>
 

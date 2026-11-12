@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-11-10T12:01:17.872Z\n"
-"PO-Revision-Date: 2026-11-10T12:01:17.872Z\n"
+"POT-Creation-Date: 2026-11-12T08:12:14.126Z\n"
+"PO-Revision-Date: 2026-11-12T08:12:14.126Z\n"
 
 msgid "No data"
 msgstr ""
@@ -15,6 +15,21 @@ msgid "Something went wrong"
 msgstr ""
 
 msgid "Reload the page. If the problem persists, contact your administrator."
+msgstr ""
+
+msgid "Clear all"
+msgstr ""
+
+msgid "No match found"
+msgstr ""
+
+msgid "Type to filter"
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "{{id}} (not found)"
 msgstr ""
 
 msgid "Aggregation Type"
@@ -209,12 +224,7 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-msgid "Close"
-msgstr ""
-
-msgid ""
-"User group ids (JSON array) whose users are Advanced Users, for example "
-"[\"abc\"]"
+msgid "User groups whose users are Advanced Users"
 msgstr ""
 
 msgid "Admin"
@@ -226,13 +236,13 @@ msgstr ""
 msgid "Normal User"
 msgstr ""
 
+msgid "Close"
+msgstr ""
+
 msgid "Restore changes"
 msgstr ""
 
 msgid "Apply changes"
-msgstr ""
-
-msgid "Invalid array format"
 msgstr ""
 
 msgid "All UID's must be a valid userGroup"
@@ -293,9 +303,6 @@ msgid "Total: {{total}}"
 msgstr ""
 
 msgid "View Table"
-msgstr ""
-
-msgid "The arrays should be formatted as follows:"
 msgstr ""
 
 msgid "The setting could not be saved"
@@ -363,16 +370,16 @@ msgid ""
 "used in multiple services:"
 msgstr ""
 
-msgid "[Optional] An array of dataElementGroups UIDs to blacklist from the panels."
+msgid "[Optional] dataElementGroups to blacklist from the panels."
 msgstr ""
 
-msgid "[Optional] An array of dataSets UIDs to blacklist from the panels."
+msgid "[Optional] dataSets to blacklist from the panels."
 msgstr ""
 
-msgid "[Optional] An array of programs UIDs to blacklist from the panels."
+msgid "[Optional] programs to blacklist from the panels."
 msgstr ""
 
-msgid "[Optional] An array of indicatorGroups UIDs to blacklist from the panels."
+msgid "[Optional] indicatorGroups to blacklist from the panels."
 msgstr ""
 
 msgid ""
@@ -392,13 +399,13 @@ msgid ""
 msgstr ""
 
 msgid ""
-"[Optional] An array of not in use indicatorGroups UIDs to hide in the "
-"panels for non-admin users."
+"[Optional] not in use indicatorGroups to hide in the panels for non-admin "
+"users."
 msgstr ""
 
 msgid ""
-"[Optional] An array of not in use programIndicatorGroups UIDs to hide in "
-"the panels for non-admin users."
+"[Optional] not in use programIndicatorGroups to hide in the panels for "
+"non-admin users."
 msgstr ""
 
 msgid ""
@@ -417,12 +424,10 @@ msgid ""
 "Not in Use."
 msgstr ""
 
-msgid ""
-"[Optional] An array of legacy dataElementGroups UIDs for the 'Programs' "
-"panel."
+msgid "[Optional] legacy dataElementGroups for the 'Programs' panel."
 msgstr ""
 
-msgid "[Optional] An array of legacy optionGroups UIDs for the 'Programs' panel."
+msgid "[Optional] legacy optionGroups for the 'Programs' panel."
 msgstr ""
 
 msgid ""
@@ -493,9 +498,6 @@ msgstr ""
 msgid ""
 "Only list the data sets and programs assigned to the organisation units of "
 "the user, or to their descendants."
-msgstr ""
-
-msgid "Select..."
 msgstr ""
 
 msgid "Submit"

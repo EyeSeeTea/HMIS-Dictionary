@@ -45,14 +45,6 @@ export const FormulaDialog: React.FC<FormulaDialogProps> = React.memo(props => {
             <div id="indicatorFormulaModal" className={css.dialog}>
                 <div className={`modal-header ${css.header}`}>
                     <h4>{title}</h4>
-                    <button
-                        type="button"
-                        className={css.x}
-                        aria-label={i18n.t("Close")}
-                        onClick={onClose}
-                    >
-                        ×
-                    </button>
                 </div>
 
                 <div className={`modal-body ${css.content}`}>

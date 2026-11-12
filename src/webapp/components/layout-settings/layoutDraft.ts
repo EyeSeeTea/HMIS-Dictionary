@@ -52,20 +52,3 @@ function withAccess<T extends LayoutColumn>(item: T, row: RowDraft | undefined):
     const access: Access = row.everyone ? "everyone" : row.advanced ? "advanced" : "admin";
     return { ...item, access };
 }
-
-export type AdvancedGroupsParse = { type: "valid"; ids: string[] } | { type: "invalidFormat" };
-
-/** The field is a JSON array of user group ids, as in the Angular app. */
-export function parseAdvancedGroups(text: string): AdvancedGroupsParse {
-    try {
-        const parsed: unknown = JSON.parse(text);
-        const isValid = Array.isArray(parsed) && parsed.every(item => typeof item === "string");
-        return isValid ? { type: "valid", ids: parsed } : { type: "invalidFormat" };
-    } catch {
-        return { type: "invalidFormat" };
-    }
-}
-
-export function stringifyAdvancedGroups(ids: string[]): string {
-    return JSON.stringify(ids);
-}

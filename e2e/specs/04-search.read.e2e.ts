@@ -541,22 +541,14 @@ test.describe("4. Search", () => {
             expect(await legend.count()).toBeGreaterThanOrEqual(atThree);
         });
 
-        test("Close and the X button close the dialog", async ({ search }) => {
+        test("Close closes the dialog, which has no X button", async ({ search }) => {
             await openDialog(search);
+            await expect(
+                search.formulaDialog.locator(".modal-header").getByRole("button")
+            ).toHaveCount(0);
             await search.formulaDialog
                 .locator(".modal-footer")
                 .getByRole("button", { name: t("CLOSE") })
-                .click();
-            await expect(search.formulaDialog).toBeHidden();
-            await search.root
-                .getByRole("button", { name: t("srch_formula_modal_expand") })
-                .first()
-                .click();
-            await expect(search.formulaDialog).toBeVisible();
-            await expect(search.formulaDialog).toHaveCSS("opacity", "1");
-            await search.formulaDialog
-                .locator(".modal-header")
-                .getByRole("button", { name: "Close" })
                 .click();
             await expect(search.formulaDialog).toBeHidden();
         });

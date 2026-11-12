@@ -1,5 +1,6 @@
 import { UserD2Repository } from "./data/repositories/UserD2Repository";
 import { UserGroupD2Repository } from "./data/repositories/UserGroupD2Repository";
+import { MetadataListD2Repository } from "./data/repositories/MetadataListD2Repository";
 import { AppSettingsD2Repository } from "./data/repositories/AppSettingsD2Repository";
 import { LayoutSettingsD2Repository } from "./data/repositories/LayoutSettingsD2Repository";
 import { SessionD2Repository } from "./data/repositories/SessionD2Repository";
@@ -21,6 +22,8 @@ import { OrgUnitD2Repository } from "./data/repositories/OrgUnitD2Repository";
 import { getTestRepositories } from "./data/repositories/testRepositories";
 import { UserRepository } from "./domain/repositories/UserRepository";
 import { UserGroupRepository } from "./domain/repositories/UserGroupRepository";
+import { MetadataListRepository } from "./domain/repositories/MetadataListRepository";
+import { GetUserGroupsUseCase } from "./domain/usecases/GetUserGroupsUseCase";
 import { AppSettingsRepository } from "./domain/repositories/AppSettingsRepository";
 import { LayoutSettingsRepository } from "./domain/repositories/LayoutSettingsRepository";
 import { SessionRepository } from "./domain/repositories/SessionRepository";
@@ -76,6 +79,7 @@ export type CompositionRoot = ReturnType<typeof getCompositionRoot>;
 export type Repositories = {
     userRepository: UserRepository;
     userGroupRepository: UserGroupRepository;
+    metadataListRepository: MetadataListRepository;
     appSettingsRepository: AppSettingsRepository;
     layoutSettingsRepository: LayoutSettingsRepository;
     sessionRepository: SessionRepository;
@@ -99,6 +103,9 @@ function getCompositionRoot(repositories: Repositories) {
     return {
         users: {
             getCurrent: new GetCurrentUserUseCase(repositories.userRepository),
+        },
+        userGroups: {
+            getAll: new GetUserGroupsUseCase(repositories.userGroupRepository),
         },
         app: {
             getSettings: new GetAppSettingsUseCase(repositories.appSettingsRepository),
@@ -165,7 +172,8 @@ function getCompositionRoot(repositories: Repositories) {
             getOptions: new GetAdminOptionsUseCase(
                 repositories.healthServiceRepository,
                 repositories.userGroupRepository,
-                repositories.attributeRepository
+                repositories.attributeRepository,
+                repositories.metadataListRepository
             ),
             updateSettings: new UpdateAppSettingsUseCase(repositories.appSettingsRepository),
             refreshDossierConfigStatus: new RefreshDossierConfigStatusUseCase(
@@ -186,6 +194,7 @@ export function getWebappCompositionRoot(api: D2Api) {
     return getCompositionRoot({
         userRepository: new UserD2Repository(api),
         userGroupRepository: new UserGroupD2Repository(api),
+        metadataListRepository: new MetadataListD2Repository(api),
         appSettingsRepository: new AppSettingsD2Repository(api),
         layoutSettingsRepository: new LayoutSettingsD2Repository(api),
         sessionRepository: new SessionD2Repository(api),

@@ -16,6 +16,7 @@ export function getTestRepositories(): Repositories {
     return {
         userRepository: new UserTestRepository(),
         userGroupRepository: { getAll: empty, exists: () => success(true) },
+        metadataListRepository: { getAll: empty },
         appSettingsRepository: {
             get: () => success(emptySettings),
             update: () => success(undefined),

@@ -21,9 +21,10 @@ import {
     getDraft,
     isSameDraft,
     LayoutDraft,
-    parseAdvancedGroups,
-    stringifyAdvancedGroups,
 } from "$/webapp/components/layout-settings/layoutDraft";
+import { IdsSelect, isSameIds } from "$/webapp/components/ids-select/IdsSelect";
+import { useFuture } from "$/webapp/hooks/useFuture";
+import { Id } from "$/domain/entities/Ref";
 import css from "./LayoutSettingsDialog.module.css";
 
 export type LayoutSettingsDialogProps = {
@@ -33,24 +34,25 @@ export type LayoutSettingsDialogProps = {
     onApplied: () => void;
 };
 
-type FieldError = "invalidFormat" | "invalidUserGroup" | "saveFailed";
+type FieldError = "invalidUserGroup" | "saveFailed";
 
 export const LayoutSettingsDialog: React.FC<LayoutSettingsDialogProps> = React.memo(props => {
     const { settings, onClose, onApplied } = props;
     const { compositionRoot } = useAppContext();
 
     const initialDraft = React.useMemo(() => getDraft(settings), [settings]);
-    const initialGroups = React.useMemo(
-        () => stringifyAdvancedGroups(settings.advancedUserGroupIds),
-        [settings]
+    const initialGroups = settings.advancedUserGroupIds;
+    const userGroups = useFuture(
+        () => compositionRoot.userGroups.getAll.execute(),
+        [compositionRoot]
     );
 
     const [draft, setDraft] = React.useState<LayoutDraft>(initialDraft);
-    const [groups, setGroups] = React.useState(initialGroups);
+    const [groups, setGroups] = React.useState<Id[]>(initialGroups);
     const [error, setError] = React.useState<FieldError>();
     const [saving, setSaving] = React.useState(false);
 
-    const hasChanges = !isSameDraft(draft, initialDraft) || groups !== initialGroups;
+    const hasChanges = !isSameDraft(draft, initialDraft) || !isSameIds(groups, initialGroups);
 
     const restore = () => {
         setDraft(initialDraft);
@@ -69,11 +71,8 @@ export const LayoutSettingsDialog: React.FC<LayoutSettingsDialogProps> = React.m
         // Nothing changed: only reload, as the Angular app does.
         if (!hasChanges) return onApplied();
 
-        const parsed = parseAdvancedGroups(groups);
-        if (parsed.type === "invalidFormat") return setError("invalidFormat");
-
         setSaving(true);
-        const updated = settings.update(applyDraft(settings.sections, draft), parsed.ids);
+        const updated = settings.update(applyDraft(settings.sections, draft), groups);
 
         compositionRoot.layout.save.execute(updated).run(
             () => onApplied(),
@@ -93,33 +92,22 @@ export const LayoutSettingsDialog: React.FC<LayoutSettingsDialogProps> = React.m
             <div id="layoutSettingsModal" className={css.dialog}>
                 <div className={`modal-header ${css.header}`}>
                     <h4>{i18n.t("Settings")}</h4>
-                    <button
-                        type="button"
-                        className={css.x}
-                        aria-label={i18n.t("Close")}
-                        onClick={onClose}
-                    >
-                        ×
-                    </button>
                 </div>
 
                 <div className={`modal-body ${css.body}`}>
-                    <label htmlFor="advancedUserGroups">
-                        {i18n.t(
-                            'User group ids (JSON array) whose users are Advanced Users, for example ["abc"]'
-                        )}
-                    </label>
-                    <input
-                        id="advancedUserGroups"
-                        name="advancedUserGroups"
-                        type="text"
-                        className={`${css.groups} ${error === "invalidFormat" || error === "invalidUserGroup" ? css.invalid : ""}`}
-                        value={groups}
-                        onFocus={() => setError(undefined)}
-                        onChange={event => {
-                            setGroups(event.target.value);
+                    <p id="advancedUserGroupsLabel">
+                        {i18n.t("User groups whose users are Advanced Users")}
+                    </p>
+                    <IdsSelect
+                        options={userGroups?.type === "success" ? userGroups.data : []}
+                        loading={!userGroups || userGroups.type === "loading"}
+                        selected={groups}
+                        onChange={ids => {
+                            setGroups(ids);
                             setError(undefined);
                         }}
+                        error={error === "invalidUserGroup"}
+                        dataTest="advanced-user-groups"
                     />
                     {getErrorText(error) && <p className={css.error}>{getErrorText(error)}</p>}
 
@@ -227,8 +215,6 @@ const AccessRow: React.FC<AccessRowProps> = ({ rowKey, label, draft, onChange, c
 
 function getErrorText(error: FieldError | undefined): string | undefined {
     switch (error) {
-        case "invalidFormat":
-            return i18n.t("Invalid array format");
         case "invalidUserGroup":
             return i18n.t("All UID's must be a valid userGroup");
         case "saveFailed":

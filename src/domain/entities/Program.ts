@@ -26,7 +26,8 @@ export type ProgramAttribute = NamedRef & {
 };
 
 /** The ids in the resources attribute, "ID1;ID2", also in the documented format "(ID1;ID2)". */
-export function getResourceIds(program: Program, attributeId: Id): Id[] {
+export function getResourceIds(program: Program, attributeId: Maybe<Id>): Id[] {
+    if (!attributeId) return [];
     const value = program.attributeValues.find(v => v.attributeId === attributeId)?.value ?? "";
 
     return value

@@ -157,7 +157,7 @@ Reuses: `ContentSection`, `HelpIcon`. Every write calls `UpdateAppSettings` and 
 - [x] Step 5, Search: `SearchPage` with panels, column selector, filters with highlight, expression texts for the current page, formula dialog, Excel export, visualization link
 - [x] Step 6, Programs: `ProgramsPage` (all sections, legacy toggle kept in the session, load order of the architecture), `programExport` (seven sheets), `ruleActionFields`
 - [x] Step 7, Dossiers: `DossiersPage` (reader and editor share the page, so the selected service survives), `DossierReader`, `DossierEditor` with TinyMCE (lazy-loaded, self-hosted, same toolbar), `locale` in the app context
-- [x] Step 8, Admin: `AdminPage` with the four configuration checks (refreshed on open), `SettingSelect`, `TextSetting` per setting. Lists of ids are JSON arrays with a format check, tags are plain text (Angular showed them quoted). Every write reloads the app.
+- [x] Step 8, Admin: `AdminPage` with the four configuration checks (refreshed on open), `SettingSelect`, `TextSetting` per setting. Lists of ids are chosen by name in a multi-select (`IdsSetting`), tags are plain text (Angular showed them quoted). Every select has a "None" option, to clear the setting. Every write reloads the app.
 
 ## Build order
 

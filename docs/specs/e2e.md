@@ -185,13 +185,12 @@ Language tests set the real `keyUiLocale` user setting on a test user `[W]`, so 
 - [x] Dialog lists sections with their columns, translated
 - [x] Dialog shows the stored access for each row, with the admin column always checked and disabled
 - [x] Restore is disabled with no changes, and undoes the pending changes
-- [x] Close and the X button discard the pending changes
+- [x] Close discards the pending changes, and there is no X button
 - [x] Apply saves to `layoutSettings_<view>` and reloads `[W]`
 - [x] Apply with no changes reloads, with the stored value unchanged
-- [x] Advanced groups: a non-JSON-array value shows the format error, with no write
-- [x] Advanced groups: an unknown group shows the group error, with no write
-- [x] Advanced groups: a valid group is saved `[W]`
-- [x] Focusing the field clears the error
+- [x] Advanced groups: shown by name, and a stored group missing on the instance by its id `[M]`
+- [x] Advanced groups: an unknown group shows the group error, with no write; removing it clears the error `[M]`
+- [x] Advanced groups: a valid group, chosen by name, is saved `[W]`
 - [x] With no stored settings, the module displays with its default access `[M]`
 - [x] Stored settings missing a newer column still show it, on Search and Data Sets `[M]`
 
@@ -234,7 +233,7 @@ Language tests set the real `keyUiLocale` user setting on a test user `[W]`, so 
 - [x] Nested indicators are expanded, with a colour legend listing each one, its description and id
 - [x] Changing the maximum depth updates the formula, within the limits of 1 and 10
 - [x] Cyclic reference displays the cycle message and does not hang `[W]`
-- [x] Close and the X button close the dialog
+- [x] Close closes the dialog, which has no X button
 
 **Search and filters**
 
@@ -514,10 +513,13 @@ Language tests set the real `keyUiLocale` user setting on a test user `[W]`, so 
 - [x] Changing to a group the user is not in hides the Admin tab `[W]`
 - [x] Setting the group set works when the key is missing and when it is present `[W]`
 - [x] Changing the group set changes the services in Dossiers `[W]`
+- [x] None clears the group set, and Dossiers is hidden `[W]`
+- [x] Metadata: None clears a setting, stored as an empty value `[W]`
+- [x] A saved id missing on the instance is shown by id, and can be cleared `[W]`
 
 **Lists and tags**
 
-- [x] Each field below loads the current value, saves when the key is missing and when it is present, and is read back through the API `[W]`:
+- [x] Each field below loads the current value, saves when the key is missing and when it is present, and is read back through the API `[W]`. The lists of ids are chosen by name:
     - [x] Blacklist: data element groups
     - [x] Blacklist: data sets, takes effect in Data Sets
     - [x] Blacklist: indicator groups

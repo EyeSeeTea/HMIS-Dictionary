@@ -3,6 +3,7 @@
  * widgets live only in this file, so moving to React means changing this file and not the specs.
  */
 import { expect, Locator, Page } from "@playwright/test";
+import { escapeRegex } from "./data";
 
 type Root = Page | ReturnType<Page["frameLocator"]>;
 
@@ -173,5 +174,59 @@ export class RichTextEditor {
     /** The app has the text at once, so saving right after this must not lose it (P4). */
     private async commit() {
         await this.root.locator("#drpBoxLanguage").focus();
+    }
+}
+
+/** A @dhis2/ui MultiSelect, by its `dataTest`. Its menu opens in a layer, outside the select. */
+export class MultiSelect {
+    readonly root: Locator;
+
+    constructor(
+        private scope: Root,
+        private dataTest: string
+    ) {
+        this.root = scope.locator(`[data-test="${dataTest}"]`);
+    }
+
+    get chips() {
+        return this.root.locator('[data-test="dhis2-uicore-chip"]');
+    }
+
+    async selected(): Promise<string[]> {
+        await expect(this.root.locator(`[data-test="${this.dataTest}-loading"]`)).toHaveCount(0);
+        return (await this.chips.allInnerTexts()).map(text => text.trim());
+    }
+
+    /** Picks an option by its whole label, filtering first, as the lists can be long. */
+    async pick(label: string) {
+        // Centered first: near an edge, the menu opens partly out of the viewport
+        await this.root.evaluate(element => element.scrollIntoView({ block: "center" }));
+        // On the arrow: the rest of the input has the chips, which remove on click
+        const box = await this.root.boundingBox();
+        if (!box) throw new Error(`${this.dataTest} is not visible`);
+        await this.root.click({ position: { x: box.width - 12, y: box.height / 2 } });
+        const filter = this.scope.locator(`[data-test="${this.dataTest}-filterinput"] input`);
+        await filter.fill(label);
+        await this.scope
+            .locator('[data-test="dhis2-uicore-multiselectoption"]')
+            .filter({ hasText: new RegExp(`^\\s*${escapeRegex(label)}\\s*$`) })
+            .first()
+            .click();
+        await this.scope.locator("body").press("Escape");
+    }
+
+    /** The "Clear all" button of the input, shown when something is selected. */
+    async clear() {
+        await this.selected();
+        const clear = this.root.locator(`[data-test="${this.dataTest}-clear"]`);
+        if ((await clear.count()) > 0) await clear.click();
+        await expect(this.chips).toHaveCount(0);
+    }
+
+    async remove(label: string) {
+        await this.chips
+            .filter({ hasText: label })
+            .locator('[data-test="dhis2-uicore-chip-remove"]')
+            .click();
     }
 }

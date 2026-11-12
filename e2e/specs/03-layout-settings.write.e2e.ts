@@ -60,11 +60,17 @@ test.describe("3. Layout settings and access levels", () => {
     });
 
     test("Advanced groups: a valid group is saved", async ({ app, api }) => {
-        const [group] = await api.list("userGroups", { fields: "id", pageSize: 1, paging: true });
+        const [group] = await api.list<any>("userGroups", {
+            fields: "id,name",
+            pageSize: 1,
+            paging: true,
+        });
         for (const view of views) {
             await api.withKeys([view.key], async () => {
                 await openSettings(app, view.route);
-                await app.settings.groups.fill(JSON.stringify([group.id]));
+                // Only this group: the stored ones may be another instance's, which blocks the save
+                await app.settings.groups.clear();
+                await app.settings.groups.pick(group.name);
                 await Promise.all([app.page.waitForEvent("load"), app.settings.apply.click()]);
                 await expect
                     .poll(async () => (await api.getKey<any>(view.key)).advancedUserGroups)

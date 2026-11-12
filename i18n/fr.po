@@ -5,7 +5,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-11-10T12:01:17.872Z\n"
+"POT-Creation-Date: 2026-11-12T08:12:14.126Z\n"
 "PO-Revision-Date: 2026-11-05T19:43:47.436Z\n"
 "Language: fr\n"
 
@@ -17,6 +17,21 @@ msgstr "Une erreur s'est produite"
 
 msgid "Reload the page. If the problem persists, contact your administrator."
 msgstr "Rechargez la page. Si le problème persiste, contactez votre administrateur."
+
+msgid "Clear all"
+msgstr "Tout effacer"
+
+msgid "No match found"
+msgstr "Aucun résultat"
+
+msgid "Type to filter"
+msgstr "Tapez pour filtrer"
+
+msgid "None"
+msgstr "Aucun"
+
+msgid "{{id}} (not found)"
+msgstr "{{id}} (introuvable)"
 
 msgid "Aggregation Type"
 msgstr "Type d'agrégation"
@@ -210,15 +225,8 @@ msgstr "Services - Principes de base"
 msgid "Settings"
 msgstr "Paramètres"
 
-msgid "Close"
-msgstr "Fermer"
-
-msgid ""
-"User group ids (JSON array) whose users are Advanced Users, for example "
-"[\"abc\"]"
-msgstr ""
-"Ids des groupes d'utilisateurs (tableau JSON) dont les utilisateurs sont "
-"des utilisateurs avancés, par exemple [\"abc\"]"
+msgid "User groups whose users are Advanced Users"
+msgstr "Groupes d'utilisateurs dont les membres sont des Utilisateurs Avancés"
 
 msgid "Admin"
 msgstr "Admin"
@@ -229,14 +237,14 @@ msgstr "Utilisateur avancé"
 msgid "Normal User"
 msgstr "Utilisateur normal"
 
+msgid "Close"
+msgstr "Fermer"
+
 msgid "Restore changes"
 msgstr "Restaurer les modifications"
 
 msgid "Apply changes"
 msgstr "Appliquer les modifications"
-
-msgid "Invalid array format"
-msgstr "Format de liste invalide"
 
 msgid "All UID's must be a valid userGroup"
 msgstr "Tous les UID doivent être des groupes d'utilisateurs valides"
@@ -297,9 +305,6 @@ msgstr "Total : {{total}}"
 
 msgid "View Table"
 msgstr "Voir le tableau"
-
-msgid "The arrays should be formatted as follows:"
-msgstr "Les tableaux doivent avoir ce format :"
 
 msgid "The setting could not be saved"
 msgstr "Le paramètre n'a pas pu être enregistré"
@@ -374,17 +379,17 @@ msgstr ""
 "Un ou plusieurs codes peuvent être ajoutés pour les dataSets ou "
 "indicatorGroups utilisés dans plusieurs services :"
 
-msgid "[Optional] An array of dataElementGroups UIDs to blacklist from the panels."
-msgstr "[Facultatif] Un tableau d'UIDs de dataElementGroups à exclure des panneaux."
+msgid "[Optional] dataElementGroups to blacklist from the panels."
+msgstr "[Facultatif] dataElementGroups à exclure des panneaux."
 
-msgid "[Optional] An array of dataSets UIDs to blacklist from the panels."
-msgstr "[Facultatif] Un tableau d'UIDs de dataSets à exclure des panneaux."
+msgid "[Optional] dataSets to blacklist from the panels."
+msgstr "[Facultatif] dataSets à exclure des panneaux."
 
-msgid "[Optional] An array of programs UIDs to blacklist from the panels."
-msgstr "[Facultatif] Un tableau d'UIDs de programmes à exclure des panneaux."
+msgid "[Optional] programs to blacklist from the panels."
+msgstr "[Facultatif] Programmes à exclure des panneaux."
 
-msgid "[Optional] An array of indicatorGroups UIDs to blacklist from the panels."
-msgstr "[Facultatif] Un tableau d'UIDs d'indicatorGroups à exclure des panneaux."
+msgid "[Optional] indicatorGroups to blacklist from the panels."
+msgstr "[Facultatif] indicatorGroups à exclure des panneaux."
 
 msgid ""
 "[Optional] Text of the tag to display for blacklisted elements in Search "
@@ -410,18 +415,18 @@ msgstr ""
 "aucune valeur n'est indiquée, Blacklisted sera utilisé."
 
 msgid ""
-"[Optional] An array of not in use indicatorGroups UIDs to hide in the "
-"panels for non-admin users."
+"[Optional] not in use indicatorGroups to hide in the panels for non-admin "
+"users."
 msgstr ""
-"[Facultatif] Un tableau d'UIDs d'indicatorGroups non utilisés à masquer "
-"dans les panneaux pour les utilisateurs non administrateurs."
+"[Facultatif] indicatorGroups non utilisés à masquer dans les panneaux pour "
+"les utilisateurs non administrateurs."
 
 msgid ""
-"[Optional] An array of not in use programIndicatorGroups UIDs to hide in "
-"the panels for non-admin users."
+"[Optional] not in use programIndicatorGroups to hide in the panels for "
+"non-admin users."
 msgstr ""
-"[Facultatif] Un tableau d'UIDs de programIndicatorGroups non utilisés à "
-"masquer dans les panneaux pour les utilisateurs non administrateurs."
+"[Facultatif] programIndicatorGroups non utilisés à masquer dans les "
+"panneaux pour les utilisateurs non administrateurs."
 
 msgid ""
 "[Optional] Text of the tag to display for not in use elements in Search "
@@ -447,17 +452,11 @@ msgstr ""
 "des groupes non utilisés présents dans les formules des indicateurs. Si "
 "aucune valeur n'est indiquée, Not in Use sera utilisé."
 
-msgid ""
-"[Optional] An array of legacy dataElementGroups UIDs for the 'Programs' "
-"panel."
-msgstr ""
-"[Facultatif] Un tableau d'UIDs de dataElementGroups obsolètes pour le "
-"panneau 'Programmes'."
+msgid "[Optional] legacy dataElementGroups for the 'Programs' panel."
+msgstr "[Facultatif] dataElementGroups obsolètes pour le panneau 'Programmes'."
 
-msgid "[Optional] An array of legacy optionGroups UIDs for the 'Programs' panel."
-msgstr ""
-"[Facultatif] Un tableau d'UIDs d'optionGroups obsolètes pour le panneau "
-"'Programmes'."
+msgid "[Optional] legacy optionGroups for the 'Programs' panel."
+msgstr "[Facultatif] optionGroups obsolètes pour le panneau 'Programmes'."
 
 msgid ""
 "These groups contain legacy elements that will be hidden in the 'Programs' "
@@ -556,9 +555,6 @@ msgid ""
 msgstr ""
 "N'afficher que les ensembles de données et les programmes assignés aux "
 "unités d'organisation de l'utilisateur, ou à leurs descendants."
-
-msgid "Select..."
-msgstr "Sélectionner..."
 
 msgid "Submit"
 msgstr "Envoyer"
@@ -1532,6 +1528,60 @@ msgstr "Éditeur de dossiers"
 
 msgid "Search by name"
 msgstr "Rechercher par nom"
+
+#~ msgid ""
+#~ "User group ids (JSON array) whose users are Advanced Users, for example "
+#~ "[\"abc\"]"
+#~ msgstr ""
+#~ "Ids des groupes d'utilisateurs (tableau JSON) dont les utilisateurs sont "
+#~ "des utilisateurs avancés, par exemple [\"abc\"]"
+
+#~ msgid "Invalid array format"
+#~ msgstr "Format de liste invalide"
+
+#~ msgid "The arrays should be formatted as follows:"
+#~ msgstr "Les tableaux doivent avoir ce format :"
+
+#~ msgid "[Optional] An array of dataElementGroups UIDs to blacklist from the panels."
+#~ msgstr "[Facultatif] Un tableau d'UIDs de dataElementGroups à exclure des panneaux."
+
+#~ msgid "[Optional] An array of dataSets UIDs to blacklist from the panels."
+#~ msgstr "[Facultatif] Un tableau d'UIDs de dataSets à exclure des panneaux."
+
+#~ msgid "[Optional] An array of programs UIDs to blacklist from the panels."
+#~ msgstr "[Facultatif] Un tableau d'UIDs de programmes à exclure des panneaux."
+
+#~ msgid "[Optional] An array of indicatorGroups UIDs to blacklist from the panels."
+#~ msgstr "[Facultatif] Un tableau d'UIDs d'indicatorGroups à exclure des panneaux."
+
+#~ msgid ""
+#~ "[Optional] An array of not in use indicatorGroups UIDs to hide in the "
+#~ "panels for non-admin users."
+#~ msgstr ""
+#~ "[Facultatif] Un tableau d'UIDs d'indicatorGroups non utilisés à masquer "
+#~ "dans les panneaux pour les utilisateurs non administrateurs."
+
+#~ msgid ""
+#~ "[Optional] An array of not in use programIndicatorGroups UIDs to hide in "
+#~ "the panels for non-admin users."
+#~ msgstr ""
+#~ "[Facultatif] Un tableau d'UIDs de programIndicatorGroups non utilisés à "
+#~ "masquer dans les panneaux pour les utilisateurs non administrateurs."
+
+#~ msgid ""
+#~ "[Optional] An array of legacy dataElementGroups UIDs for the 'Programs' "
+#~ "panel."
+#~ msgstr ""
+#~ "[Facultatif] Un tableau d'UIDs de dataElementGroups obsolètes pour le "
+#~ "panneau 'Programmes'."
+
+#~ msgid "[Optional] An array of legacy optionGroups UIDs for the 'Programs' panel."
+#~ msgstr ""
+#~ "[Facultatif] Un tableau d'UIDs d'optionGroups obsolètes pour le panneau "
+#~ "'Programmes'."
+
+#~ msgid "Select..."
+#~ msgstr "Sélectionner..."
 
 #~ msgid "About this version"
 #~ msgstr "À propos de cette version"
