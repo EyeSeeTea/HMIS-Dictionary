@@ -1,0 +1,514 @@
+import React from "react";
+import { Checkbox, NoticeBox } from "@dhis2/ui";
+import { DossierConfigStatus } from "$/domain/entities/DossierConfigStatus";
+import i18n from "$/utils/i18n";
+import { useAppContext } from "$/webapp/contexts/app-context";
+import { useFuture } from "$/webapp/hooks/useFuture";
+import { isSelectionLoading } from "$/webapp/hooks/useSectionLoading";
+import { LoadingBanner } from "$/webapp/components/loading-banner/LoadingBanner";
+import { PageHeader } from "$/webapp/components/page-header/PageHeader";
+import { ConfigBox, ConfigStatus, DetailsBox } from "$/webapp/pages/admin/ConfigBox";
+import { IdsSetting } from "$/webapp/pages/admin/IdsSetting";
+import { SettingSelect } from "$/webapp/pages/admin/SettingSelect";
+import { TextSetting } from "$/webapp/pages/admin/TextSetting";
+import { AppSettingsAttrs } from "$/domain/entities/AppSettings";
+import { MetadataIds } from "$/domain/entities/MetadataIds";
+import { Id, NamedRef } from "$/domain/entities/Ref";
+import { Maybe } from "$/utils/ts-utils";
+import css from "./Admin.module.css";
+
+export const AdminPage: React.FC = React.memo(() => {
+    const { compositionRoot, settings } = useAppContext();
+    const [isSaving, setSaving] = React.useState(false);
+    const [saveError, setSaveError] = React.useState<string>();
+
+    const options = useFuture(() => compositionRoot.admin.getOptions.execute(), [compositionRoot]);
+
+    // Checks the configuration on open, and reloads if the "complete" flag had to change
+    const refresh = useFuture(
+        () => compositionRoot.admin.refreshDossierConfigStatus.execute(settings),
+        [compositionRoot, settings]
+    );
+
+    // The page reloads when the flag changed, and stays "loading" until then
+    const willReload = refresh?.type === "success" && refresh.data.changed;
+    React.useEffect(() => {
+        if (willReload) window.location.reload();
+    }, [willReload]);
+
+    const status: Partial<DossierConfigStatus> =
+        refresh?.type === "success" ? refresh.data.status : {};
+    const check = (value: boolean | undefined): ConfigStatus =>
+        value === undefined ? "pending" : value ? "ok" : "error";
+
+    /** Every write reloads the app, so the rest of it uses the new settings. */
+    const save = (changes: Partial<AppSettingsAttrs>) => {
+        setSaving(true);
+        setSaveError(undefined);
+
+        compositionRoot.admin.updateSettings.execute(changes).run(
+            () => window.location.reload(),
+            error => {
+                setSaving(false);
+                setSaveError(error.message);
+            }
+        );
+    };
+
+    const { blacklist, notInUse, legacy, metadataIds } = settings;
+    const adminOptions = options?.type === "success" ? options.data : undefined;
+    const attributes = adminOptions?.attributes ?? [];
+    const userGroups = adminOptions?.userGroups ?? [];
+    const lists = adminOptions?.lists;
+
+    /** A list of ids, chosen by name among the metadata of `model`. */
+    const idsSetting = (
+        model: keyof NonNullable<typeof lists>,
+        props: { label: string; savedIds: Id[]; submitId: string },
+        update: (ids: Id[]) => Partial<AppSettingsAttrs>
+    ) => (
+        <IdsSetting
+            key={props.submitId}
+            {...props}
+            options={lists?.[model] ?? []}
+            loading={!lists}
+            disabled={isSaving}
+            onSubmit={ids => save(update(ids))}
+        />
+    );
+
+    const saveMetadataId = (key: keyof MetadataIds) => (selected: Maybe<NamedRef>) =>
+        save({ metadataIds: { ...metadataIds, [key]: selected?.id } });
+
+    /** Found on the instance, or a warning: the feature that uses it just does nothing. */
+    const exists = (options: NamedRef[], key: keyof MetadataIds): ConfigStatus =>
+        !adminOptions
+            ? "pending"
+            : options.some(option => option.id === metadataIds[key])
+              ? "ok"
+              : "pending";
+
+    const metadataSelect = (
+        key: keyof MetadataIds,
+        options: NamedRef[],
+        label: string,
+        ids: { selectId: string; submitId: string }
+    ) => (
+        <SettingSelect
+            {...ids}
+            label={label}
+            options={options}
+            savedId={metadataIds[key]}
+            disabled={isSaving}
+            onSubmit={saveMetadataId(key)}
+        />
+    );
+
+    return (
+        <>
+            <div id="headerPanel">
+                <PageHeader title={i18n.t("Admin")} />
+            </div>
+            <LoadingBanner visible={isSelectionLoading(true, [options, refresh]) || willReload} />
+
+            {saveError && (
+                <NoticeBox error title={i18n.t("The setting could not be saved")}>
+                    {saveError}
+                </NoticeBox>
+            )}
+            {options?.type === "error" && (
+                <NoticeBox error title={i18n.t("Admin")}>
+                    {options.error.message}
+                </NoticeBox>
+            )}
+
+            <div className={css.heading}>
+                <h3>{i18n.t("Dossiers configuration check:")}</h3>
+                <h3>{i18n.t("Details:")}</h3>
+            </div>
+
+            <div className={css.row}>
+                <ConfigBox status={check(status.adminGroup)} id="divUG">
+                    <p>{i18n.t("A userGroup is defined for administrators:")}</p>
+                    <SettingSelect
+                        selectId="drpBoxUG"
+                        submitId="submitUG"
+                        label={i18n.t("User group")}
+                        options={options?.type === "success" ? options.data.userGroups : []}
+                        savedId={settings.adminGroup?.id}
+                        disabled={isSaving}
+                        onSubmit={group => save({ adminGroup: group })}
+                    />
+                </ConfigBox>
+                <DetailsBox>
+                    <p>{i18n.t("The members of this userGroup will have access to:")}</p>
+                    <ul>
+                        <li>
+                            {i18n.t("the 'Admin' panel (which you are currently visualizing) and,")}
+                        </li>
+                        <li>
+                            {i18n.t("to the service description editor in the 'Dossier' panel.")}
+                        </li>
+                    </ul>
+                </DetailsBox>
+            </div>
+
+            <div className={css.row}>
+                <ConfigBox status={check(status.healthServiceGroupSet)} id="divOUGS">
+                    <p>
+                        {i18n.t(
+                            "An organisationUnitGroupSet is defined to contain the list of services."
+                        )}
+                    </p>
+                    <SettingSelect
+                        selectId="drpBoxOUGS"
+                        submitId="submitOUGS"
+                        label={i18n.t("Organisation unit group set")}
+                        options={options?.type === "success" ? options.data.groupSets : []}
+                        savedId={settings.healthServiceGroupSet?.id}
+                        disabled={isSaving}
+                        onSubmit={groupSet => save({ healthServiceGroupSet: groupSet })}
+                    />
+                </ConfigBox>
+                <div />
+            </div>
+
+            <div className={css.row}>
+                <ConfigBox status={check(status.healthServiceCodes)} id="divOUG">
+                    <p>
+                        {i18n.t(
+                            "organisationUnitGroups are associated to the organisationUnitGroupSet as a list of services... and each of the organisationUnitGroups have a code."
+                        )}
+                    </p>
+                </ConfigBox>
+                <DetailsBox>
+                    <p>
+                        {i18n.t(
+                            "To compile the information in the 'Dossiers' panel, the app reads:"
+                        )}
+                    </p>
+                    <ul>
+                        <li>
+                            {i18n.t(
+                                "the translations from the organisationUnitGroups names and descriptions and,"
+                            )}
+                        </li>
+                        <li>
+                            {i18n.t("the code should be formatted as follows, for instance:")}{" "}
+                            <code>*SomeText*_CD1</code>
+                        </li>
+                    </ul>
+                </DetailsBox>
+            </div>
+
+            <div className={css.row}>
+                <ConfigBox status={check(status.healthServiceAttribute)} id="divA">
+                    <p>
+                        {i18n.t(
+                            "An attribute is selected for the service codes, and it is associated with dataSets and indicatorGroups."
+                        )}
+                    </p>
+                    {metadataSelect(
+                        "healthServiceAttribute",
+                        attributes.filter(a => a.dataSetAttribute || a.indicatorGroupAttribute),
+                        i18n.t("Attribute"),
+                        { selectId: "drpBoxA", submitId: "submitA" }
+                    )}
+                </ConfigBox>
+                <DetailsBox>
+                    <p>
+                        {i18n.t(
+                            "The value of this attribute (named serviceCode in MSF) should correspond to, at least, one code of a service. They should be formatted as follows:"
+                        )}
+                    </p>
+                    <ul>
+                        <li>
+                            <code>*AnotherText*_CD1</code>{" "}
+                            {i18n.t("where CD1 is an example of code used for a service.")}
+                        </li>
+                        <li>
+                            {i18n.t(
+                                "One or more codes can be added in the case of dataSets or indicatorGroups used in multiple services:"
+                            )}{" "}
+                            <code>*AnotherText*_CD1_CD2_CD3</code>
+                        </li>
+                    </ul>
+                </DetailsBox>
+            </div>
+
+            <div className={css.row}>
+                <ConfigBox status="pending">
+                    {idsSetting(
+                        "dataElementGroups",
+                        {
+                            label: i18n.t(
+                                "[Optional] dataElementGroups to blacklist from the panels."
+                            ),
+                            savedIds: blacklist.dataElementGroupIds,
+                            submitId: "submitDEG",
+                        },
+                        ids => ({ blacklist: { ...blacklist, dataElementGroupIds: ids } })
+                    )}
+                    {idsSetting(
+                        "dataSets",
+                        {
+                            label: i18n.t("[Optional] dataSets to blacklist from the panels."),
+                            savedIds: blacklist.dataSetIds,
+                            submitId: "submitDS",
+                        },
+                        ids => ({ blacklist: { ...blacklist, dataSetIds: ids } })
+                    )}
+                    {idsSetting(
+                        "programs",
+                        {
+                            label: i18n.t("[Optional] programs to blacklist from the panels."),
+                            savedIds: blacklist.programIds,
+                            submitId: "submitPrograms",
+                        },
+                        ids => ({ blacklist: { ...blacklist, programIds: ids } })
+                    )}
+                    {idsSetting(
+                        "indicatorGroups",
+                        {
+                            label: i18n.t(
+                                "[Optional] indicatorGroups to blacklist from the panels."
+                            ),
+                            savedIds: blacklist.indicatorGroupIds,
+                            submitId: "submitIG",
+                        },
+                        ids => ({ blacklist: { ...blacklist, indicatorGroupIds: ids } })
+                    )}
+                    <TextSetting
+                        name="BL_TAG"
+                        submitId="submitBL_Tag"
+                        label={i18n.t(
+                            "[Optional] Text of the tag to display for blacklisted elements in Search panel indicator formulas."
+                        )}
+                        value={JSON.stringify(blacklist.tag)}
+                        disabled={isSaving}
+                        onSubmit={text =>
+                            save({ blacklist: { ...blacklist, tag: parseTag(text) } })
+                        }
+                    />
+                </ConfigBox>
+                <DetailsBox>
+                    <p>
+                        {i18n.t(
+                            "These groups contain blacklisted elements and will not be displayed in the panels."
+                        )}
+                    </p>
+                    <p>
+                        {i18n.t(
+                            "The tag text field is used to mark metadata elements in the blacklisted groups present in Indicator formulas. If no value is set it will default to Blacklisted."
+                        )}
+                    </p>
+                </DetailsBox>
+            </div>
+
+            <div className={css.row}>
+                <ConfigBox status="pending">
+                    {idsSetting(
+                        "indicatorGroups",
+                        {
+                            label: i18n.t(
+                                "[Optional] not in use indicatorGroups to hide in the panels for non-admin users."
+                            ),
+                            savedIds: notInUse.indicatorGroupIds,
+                            submitId: "submitNIU_IG",
+                        },
+                        ids => ({ notInUse: { ...notInUse, indicatorGroupIds: ids } })
+                    )}
+                    {idsSetting(
+                        "programIndicatorGroups",
+                        {
+                            label: i18n.t(
+                                "[Optional] not in use programIndicatorGroups to hide in the panels for non-admin users."
+                            ),
+                            savedIds: notInUse.programIndicatorGroupIds,
+                            submitId: "submitNIU_PIG",
+                        },
+                        ids => ({ notInUse: { ...notInUse, programIndicatorGroupIds: ids } })
+                    )}
+                    <TextSetting
+                        name="NIU_TAG"
+                        submitId="submitNIU_Tag"
+                        label={i18n.t(
+                            "[Optional] Text of the tag to display for not in use elements in Search panel indicator formulas."
+                        )}
+                        value={JSON.stringify(notInUse.tag)}
+                        disabled={isSaving}
+                        onSubmit={text => save({ notInUse: { ...notInUse, tag: parseTag(text) } })}
+                    />
+                </ConfigBox>
+                <DetailsBox>
+                    <p>
+                        {i18n.t(
+                            "These groups contain elements that are not in use and will be hidden in the panels for non-admin users but visible for admin users."
+                        )}
+                    </p>
+                    <p>
+                        {i18n.t(
+                            "The tag text field is used to mark metadata elements in the not in use groups present in Indicator formulas. If no value is set it will default to Not in Use."
+                        )}
+                    </p>
+                </DetailsBox>
+            </div>
+
+            <div className={css.row}>
+                <ConfigBox status="pending">
+                    {idsSetting(
+                        "dataElementGroups",
+                        {
+                            label: i18n.t(
+                                "[Optional] legacy dataElementGroups for the 'Programs' panel."
+                            ),
+                            savedIds: legacy.dataElementGroupIds,
+                            submitId: "submitLEG_DEG",
+                        },
+                        ids => ({ legacy: { ...legacy, dataElementGroupIds: ids } })
+                    )}
+                    {idsSetting(
+                        "optionGroups",
+                        {
+                            label: i18n.t(
+                                "[Optional] legacy optionGroups for the 'Programs' panel."
+                            ),
+                            savedIds: legacy.optionGroupIds,
+                            submitId: "submitLEG_OPG",
+                        },
+                        ids => ({ legacy: { ...legacy, optionGroupIds: ids } })
+                    )}
+                </ConfigBox>
+                <DetailsBox>
+                    <p>
+                        {i18n.t(
+                            "These groups contain legacy elements that will be hidden in the 'Programs' panel unless the 'Show legacy data elements and options' option is enabled."
+                        )}
+                    </p>
+                </DetailsBox>
+            </div>
+
+            <div className={css.heading}>
+                <h3>{i18n.t("Metadata used by the app:")}</h3>
+            </div>
+
+            <div className={css.row}>
+                <ConfigBox status={exists(userGroups, "advancedUserGroup")} id="divAdvancedUG">
+                    <p>{i18n.t("Default user group of Advanced Users.")}</p>
+                    {metadataSelect("advancedUserGroup", userGroups, i18n.t("User group"), {
+                        selectId: "drpBoxAdvancedUG",
+                        submitId: "submitAdvancedUG",
+                    })}
+                </ConfigBox>
+                <DetailsBox>
+                    <p>
+                        {i18n.t(
+                            "The members of this userGroup are Advanced Users in the panels whose settings were never saved. Once saved, the user groups of each panel are changed in its Settings dialog."
+                        )}
+                    </p>
+                </DetailsBox>
+            </div>
+
+            <div className={css.row}>
+                <ConfigBox status={exists(userGroups, "allUsersGroup")} id="divAllUsersUG">
+                    <p>{i18n.t("User group to share the indicator tables with.")}</p>
+                    {metadataSelect("allUsersGroup", userGroups, i18n.t("User group"), {
+                        selectId: "drpBoxAllUsersUG",
+                        submitId: "submitAllUsersUG",
+                    })}
+                </ConfigBox>
+                <DetailsBox>
+                    <p>
+                        {i18n.t(
+                            "The 'View Table' buttons create a pivot table in the Data Visualizer, shared with this userGroup (for instance, one with all the users). If it does not exist, the table is public, read only."
+                        )}
+                    </p>
+                </DetailsBox>
+            </div>
+
+            <div className={css.row}>
+                <ConfigBox status={exists(attributes, "icd10Attribute")} id="divICD10">
+                    <p>{i18n.t("Attribute of dataElements with the ICD-10 code.")}</p>
+                    {metadataSelect(
+                        "icd10Attribute",
+                        attributes.filter(attribute => attribute.dataElementAttribute),
+                        i18n.t("Attribute"),
+                        { selectId: "drpBoxICD10", submitId: "submitICD10" }
+                    )}
+                </ConfigBox>
+                <DetailsBox>
+                    <p>
+                        {i18n.t(
+                            "Its values are shown in the ICD-10 column of the 'Search' panel. If it does not exist, the column is empty."
+                        )}
+                    </p>
+                </DetailsBox>
+            </div>
+
+            <div className={css.row}>
+                <ConfigBox
+                    status={exists(attributes, "programResourcesAttribute")}
+                    id="divResources"
+                >
+                    <p>{i18n.t("Attribute of programs with their resources.")}</p>
+                    {metadataSelect(
+                        "programResourcesAttribute",
+                        attributes.filter(attribute => attribute.programAttribute),
+                        i18n.t("Attribute"),
+                        { selectId: "drpBoxResources", submitId: "submitResources" }
+                    )}
+                </ConfigBox>
+                <DetailsBox>
+                    <p>
+                        {i18n.t(
+                            "The dashboards, visualizations, event charts and event reports whose ids it lists are shown in the Resources section of the 'Programs' panel, before the event charts and reports of the program. The ids should be formatted as follows:"
+                        )}{" "}
+                        <code>(ID1;ID2)</code>
+                    </p>
+                </DetailsBox>
+            </div>
+
+            <h4>{i18n.t("About dataElements and indicators:")}</h4>
+            <DetailsBox>
+                <ul>
+                    <li>
+                        {i18n.t(
+                            "dataElements are listed unless they belong to a blacklisted data element group. Blacklisted dataset will not be displayed in the results. In the 'Search' panel, dataElements are displayed only from the 'Aggregated' domain. In the tables, the principal information used to display in columns is Name, Form Name and Description and their translations."
+                        )}
+                    </li>
+                    <li>
+                        {i18n.t(
+                            "indicators have to be associated to a indicatorGroup (not blacklisted) to appear in the 'Search' and the 'Indicator' panels. In the tables, the principal information used to display in columns is Name and Description and their translations."
+                        )}
+                    </li>
+                </ul>
+            </DetailsBox>
+
+            <div className={css.heading}>
+                <h3>{i18n.t("Selectors of Data Sets and Programs")}:</h3>
+            </div>
+            <div className={css.setting}>
+                <Checkbox
+                    name="LIMIT_ORG_UNITS"
+                    label={i18n.t(
+                        "Only list the data sets and programs assigned to the organisation units of the user, or to their descendants."
+                    )}
+                    checked={settings.limitSelectorsToUserOrgUnits}
+                    disabled={isSaving}
+                    onChange={({ checked }) => save({ limitSelectorsToUserOrgUnits: checked })}
+                    dataTest="limit-org-units"
+                />
+            </div>
+        </>
+    );
+});
+
+/** The tags are shown as JSON text (`"Tag text"`), as in the Angular app. Plain text is accepted too. */
+function parseTag(text: string): string {
+    try {
+        const parsed: unknown = JSON.parse(text);
+        return typeof parsed === "string" ? parsed : text;
+    } catch {
+        return text;
+    }
+}

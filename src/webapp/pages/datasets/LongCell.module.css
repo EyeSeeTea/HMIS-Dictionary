@@ -1,0 +1,12 @@
+/* Long option lists and formulas scroll on screen, and are printed in full */
+.longCell {
+    max-height: 170px;
+    overflow-y: auto;
+}
+
+@media print {
+    .longCell {
+        max-height: none;
+        overflow: visible;
+    }
+}

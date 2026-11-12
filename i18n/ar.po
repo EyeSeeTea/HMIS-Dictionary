@@ -1,0 +1,1487 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: i18next-conv\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"POT-Creation-Date: 2026-11-12T08:12:14.126Z\n"
+"PO-Revision-Date: 2026-11-05T19:43:47.436Z\n"
+"Language: ar\n"
+
+msgid "No data"
+msgstr "لا توجد بيانات"
+
+msgid "Something went wrong"
+msgstr "حدث خطأ ما"
+
+msgid "Reload the page. If the problem persists, contact your administrator."
+msgstr "أعد تحميل الصفحة. إذا استمرت المشكلة، فاتصل بالمسؤول."
+
+msgid "Clear all"
+msgstr "مسح الكل"
+
+msgid "No match found"
+msgstr "لا توجد نتائج"
+
+msgid "Type to filter"
+msgstr "اكتب للتصفية"
+
+msgid "None"
+msgstr "لا شيء"
+
+msgid "{{id}} (not found)"
+msgstr "{{id}} (غير موجود)"
+
+msgid "Aggregation Type"
+msgstr "نوع التجميع"
+
+msgid "Associated Program Rules"
+msgstr "قواعد البرنامج المرتبطة"
+
+msgid "Boundaries"
+msgstr "الحدود"
+
+msgid "Calculation"
+msgstr "حساب"
+
+msgid "Calculation Mode"
+msgstr "وضع الحساب"
+
+msgid "Categories"
+msgstr "الفئات"
+
+msgid "Category Combination"
+msgstr "تركيبة فئات"
+
+msgid "Category Combinations"
+msgstr "تركيبات الفئات"
+
+msgid "Condition"
+msgstr "الشرط"
+
+msgid "Data Element"
+msgstr "عنصر بيانات"
+
+msgid "DataSets"
+msgstr "مجموعات البيانات"
+
+msgid "DataTypeElement"
+msgstr "نوع عنصر البيانات"
+
+msgid "Denominator"
+msgstr "المقام"
+
+msgid "Denominator description"
+msgstr "وصف المقام"
+
+msgid "Description"
+msgstr "الوصف"
+
+msgid "Program Description"
+msgstr "وصف البرنامج"
+
+msgid "Filter"
+msgstr "تصفية"
+
+msgid "Form Name"
+msgstr "اسم النموذج"
+
+msgid "Formula of Indicator"
+msgstr "صيغة المؤشر"
+
+msgid "Indicators"
+msgstr "المؤشرات"
+
+msgid "Items"
+msgstr "العناصر"
+
+msgid "Mandatory"
+msgstr "إلزامي"
+
+msgid "Name"
+msgstr "الاسم"
+
+msgid "Numerator"
+msgstr "البسط"
+
+msgid "Numerator Description"
+msgstr "وصف البسط"
+
+msgid "Option Set"
+msgstr "مجموعة خيارات"
+
+msgid "Options"
+msgstr "الخيارات"
+
+msgid "Program"
+msgstr "البرنامج"
+
+msgid "Program Indicators"
+msgstr "مؤشرات البرنامج"
+
+msgid "Program Rule Actions"
+msgstr "إجراءات قاعدة البرنامج"
+
+msgid "Program Rule Variables"
+msgstr "متغيرات قاعدة البرنامج"
+
+msgid "Program Rules"
+msgstr "قواعد البرنامج"
+
+msgid "Program Stage"
+msgstr "مرحلة البرنامج"
+
+msgid "Program Stages"
+msgstr "مراحل البرنامج"
+
+msgid "Sections"
+msgstr "الأقسام"
+
+msgid "Short Name"
+msgstr "الاسم المختصر"
+
+msgid "Source Type"
+msgstr "نوع المصدر"
+
+msgid "Stage(s) Referenced"
+msgstr "المراحل المشار إليها"
+
+msgid "Tracked Entity Attributes"
+msgstr "سمات الكيان المتتبع"
+
+msgid "Type"
+msgstr "النوع"
+
+msgid "Type of Program Indicator"
+msgstr "نوع مؤشر البرنامج"
+
+msgid "Value Type"
+msgstr "نوع القيمة"
+
+msgid "Visibility in Data Entry"
+msgstr "الظهور في إدخال البيانات"
+
+msgid "Visualization"
+msgstr "التصور البياني"
+
+msgid "Group Code"
+msgstr "رمز المجموعة"
+
+msgid "Group ID"
+msgstr "معرف المجموعة"
+
+msgid "Group Name"
+msgstr "اسم المجموعة"
+
+msgid "Data Element Groups"
+msgstr "مجموعات عناصر البيانات"
+
+msgid "ICD10"
+msgstr "رمز ICD10"
+
+msgid "Code"
+msgstr "الرمز"
+
+msgid "Denominator Formula (ind. only)"
+msgstr "صيغة المقام (للمؤشرات فقط)"
+
+msgid "Expression Formula (prog. ind. only)"
+msgstr "صيغة التعبير (للمؤشرات البرنامجية فقط)"
+
+msgid "Filter Formula (prog. ind. only)"
+msgstr "صيغة المرشح (للمؤشرات البرنامجية فقط)"
+
+msgid "Form name (datae. only)"
+msgstr "اسم النموذج (لعناصر البيانات فقط)"
+
+msgid "ID"
+msgstr "المعرف"
+
+msgid "Numerator Formula (ind. only)"
+msgstr "صيغة البسط (للمؤشرات فقط)"
+
+msgid "Service Code"
+msgstr "رمز الخدمة"
+
+msgid "Service ID"
+msgstr "معرف الخدمة"
+
+msgid "Service Name"
+msgstr "اسم الخدمة"
+
+msgid "Data Elements or Indicators Groups - Basics"
+msgstr "مجموعات عناصر البيانات أو المؤشرات - الأساسيات"
+
+msgid "Data Elements or Indicators - Basics"
+msgstr "عناصر البيانات أو المؤشرات - الأساسيات"
+
+msgid "Data Elements or Indicators - Descriptions"
+msgstr "عناصر البيانات أو المؤشرات - الأوصاف"
+
+msgid "Services - Basics"
+msgstr "الخدمات - الأساسيات"
+
+msgid "Settings"
+msgstr "الإعدادات"
+
+msgid "User groups whose users are Advanced Users"
+msgstr "مجموعات المستخدمين التي يكون أعضاؤها مستخدمين متقدمين"
+
+msgid "Admin"
+msgstr "الإدارة"
+
+msgid "Advanced User"
+msgstr "مستخدم متقدم"
+
+msgid "Normal User"
+msgstr "مستخدم عادي"
+
+msgid "Close"
+msgstr "إغلاق"
+
+msgid "Restore changes"
+msgstr "استعادة التغييرات"
+
+msgid "Apply changes"
+msgstr "تطبيق التغييرات"
+
+msgid "All UID's must be a valid userGroup"
+msgstr "يجب أن تكون جميع معرفات UID لمجموعة مستخدمين صالحة"
+
+msgid "The settings could not be saved"
+msgstr "تعذر حفظ الإعدادات"
+
+msgid "Some sections could not be loaded"
+msgstr "تعذّر تحميل بعض الأقسام"
+
+msgid "Unknown error"
+msgstr "خطأ غير معروف"
+
+msgid "The sections that depend on them are not shown either."
+msgstr "لا تُعرض أيضاً الأقسام التي تعتمد عليها."
+
+msgid "Loading..."
+msgstr "جار التحميل..."
+
+msgid "Organisation units"
+msgstr "الوحدات التنظيمية"
+
+msgid "No organisation units"
+msgstr "لا توجد وحدات تنظيمية"
+
+msgid "Assigned organisation units"
+msgstr "الوحدات التنظيمية المعيّنة"
+
+msgid "Back"
+msgstr "رجوع"
+
+msgid "Help"
+msgstr "مساعدة"
+
+msgid "Print"
+msgstr "طباعة"
+
+msgid "Print selection"
+msgstr "تحديد الطباعة"
+
+msgid "Table of Content"
+msgstr "جدول المحتويات"
+
+msgid "Go to Index"
+msgstr "الانتقال إلى الفهرس"
+
+msgid "Back to Top"
+msgstr "العودة إلى الأعلى"
+
+msgid "Previous page"
+msgstr "الصفحة السابقة"
+
+msgid "Next page"
+msgstr "الصفحة التالية"
+
+msgid "Total: {{total}}"
+msgstr "الإجمالي: {{total}}"
+
+msgid "View Table"
+msgstr "عرض الجدول"
+
+msgid "The setting could not be saved"
+msgstr "تعذر حفظ الإعداد"
+
+msgid "Dossiers configuration check:"
+msgstr "التحقق من إعداد الملفات:"
+
+msgid "Details:"
+msgstr "التفاصيل:"
+
+msgid "A userGroup is defined for administrators:"
+msgstr "توجد userGroup معرّفة للمسؤولين:"
+
+msgid "User group"
+msgstr "مجموعة المستخدمين"
+
+msgid "The members of this userGroup will have access to:"
+msgstr "سيتمكن أعضاء هذه userGroup من الوصول إلى:"
+
+msgid "the 'Admin' panel (which you are currently visualizing) and,"
+msgstr "لوحة 'الإدارة' (التي تعرضها حالياً) و،"
+
+msgid "to the service description editor in the 'Dossier' panel."
+msgstr "إلى محرر أوصاف الخدمات في لوحة 'الملف'."
+
+msgid "An organisationUnitGroupSet is defined to contain the list of services."
+msgstr "توجد organisationUnitGroupSet معرّفة لتحتوي على قائمة الخدمات."
+
+msgid "Organisation unit group set"
+msgstr "مجموعة مجموعات الوحدات التنظيمية"
+
+msgid ""
+"organisationUnitGroups are associated to the organisationUnitGroupSet as a "
+"list of services... and each of the organisationUnitGroups have a code."
+msgstr ""
+"ترتبط organisationUnitGroups بـ organisationUnitGroupSet كقائمة من "
+"الخدمات... ولكل منها رمز."
+
+msgid "To compile the information in the 'Dossiers' panel, the app reads:"
+msgstr "لتجميع المعلومات في لوحة 'الملفات'، يقرأ التطبيق:"
+
+msgid "the translations from the organisationUnitGroups names and descriptions and,"
+msgstr "ترجمات أسماء organisationUnitGroups وأوصافها و،"
+
+msgid "the code should be formatted as follows, for instance:"
+msgstr "يجب أن يكون الرمز بالتنسيق التالي، على سبيل المثال:"
+
+msgid ""
+"An attribute is selected for the service codes, and it is associated with "
+"dataSets and indicatorGroups."
+msgstr "تم اختيار سمة لرموز الخدمات، وهي مرتبطة بـ dataSets و indicatorGroups."
+
+msgid "Attribute"
+msgstr "السمة"
+
+msgid ""
+"The value of this attribute (named serviceCode in MSF) should correspond "
+"to, at least, one code of a service. They should be formatted as follows:"
+msgstr ""
+"يجب أن تطابق قيمة هذه السمة (المسماة serviceCode في MSF) رمز خدمة واحدًا "
+"على الأقل. ويجب أن تكون بالتنسيق التالي:"
+
+msgid "where CD1 is an example of code used for a service."
+msgstr "حيث CD1 مثال على رمز يُستخدم لخدمة."
+
+msgid ""
+"One or more codes can be added in the case of dataSets or indicatorGroups "
+"used in multiple services:"
+msgstr ""
+"يمكن إضافة رمز واحد أو أكثر في حالة dataSets أو indicatorGroups المستخدمة "
+"في عدة خدمات:"
+
+msgid "[Optional] dataElementGroups to blacklist from the panels."
+msgstr "[اختياري] dataElementGroups لاستبعادها من اللوحات."
+
+msgid "[Optional] dataSets to blacklist from the panels."
+msgstr "[اختياري] dataSets لاستبعادها من اللوحات."
+
+msgid "[Optional] programs to blacklist from the panels."
+msgstr "[اختياري] البرامج لاستبعادها من اللوحات."
+
+msgid "[Optional] indicatorGroups to blacklist from the panels."
+msgstr "[اختياري] indicatorGroups لاستبعادها من اللوحات."
+
+msgid ""
+"[Optional] Text of the tag to display for blacklisted elements in Search "
+"panel indicator formulas."
+msgstr ""
+"[اختياري] نص الوسم المعروض للعناصر المدرجة في القائمة السوداء في صيغ "
+"المؤشرات في لوحة البحث."
+
+msgid ""
+"These groups contain blacklisted elements and will not be displayed in the "
+"panels."
+msgstr "تحتوي هذه المجموعات على عناصر مدرجة في القائمة السوداء ولن تُعرض في اللوحات."
+
+msgid ""
+"The tag text field is used to mark metadata elements in the blacklisted "
+"groups present in Indicator formulas. If no value is set it will default to "
+"Blacklisted."
+msgstr ""
+"يُستخدم حقل نص الوسم لتمييز عناصر البيانات الوصفية في المجموعات المدرجة في "
+"القائمة السوداء والموجودة في صيغ المؤشرات. إذا لم تُحدَّد قيمة، فستُستخدم "
+"Blacklisted."
+
+msgid ""
+"[Optional] not in use indicatorGroups to hide in the panels for non-admin "
+"users."
+msgstr ""
+"[اختياري] indicatorGroups غير المستخدمة لإخفائها في اللوحات عن المستخدمين "
+"غير المسؤولين."
+
+msgid ""
+"[Optional] not in use programIndicatorGroups to hide in the panels for "
+"non-admin users."
+msgstr ""
+"[اختياري] programIndicatorGroups غير المستخدمة لإخفائها في اللوحات عن "
+"المستخدمين غير المسؤولين."
+
+msgid ""
+"[Optional] Text of the tag to display for not in use elements in Search "
+"panel indicator formulas."
+msgstr ""
+"[اختياري] نص الوسم المعروض للعناصر غير المستخدمة في صيغ المؤشرات في لوحة "
+"البحث."
+
+msgid ""
+"These groups contain elements that are not in use and will be hidden in the "
+"panels for non-admin users but visible for admin users."
+msgstr ""
+"تحتوي هذه المجموعات على عناصر غير مستخدمة ستُخفى في اللوحات عن المستخدمين "
+"غير المسؤولين، لكنها تظهر للمسؤولين."
+
+msgid ""
+"The tag text field is used to mark metadata elements in the not in use "
+"groups present in Indicator formulas. If no value is set it will default to "
+"Not in Use."
+msgstr ""
+"يُستخدم حقل نص الوسم لتمييز عناصر البيانات الوصفية في المجموعات غير "
+"المستخدمة والموجودة في صيغ المؤشرات. إذا لم تُحدَّد قيمة، فستُستخدم Not in "
+"Use."
+
+msgid "[Optional] legacy dataElementGroups for the 'Programs' panel."
+msgstr "[اختياري] dataElementGroups القديمة للوحة 'البرامج'."
+
+msgid "[Optional] legacy optionGroups for the 'Programs' panel."
+msgstr "[اختياري] optionGroups القديمة للوحة 'البرامج'."
+
+msgid ""
+"These groups contain legacy elements that will be hidden in the 'Programs' "
+"panel unless the 'Show legacy data elements and options' option is enabled."
+msgstr ""
+"تحتوي هذه المجموعات على عناصر قديمة ستُخفى في لوحة 'البرامج' ما لم يُفعَّل "
+"خيار 'عرض عناصر البيانات والخيارات القديمة'."
+
+msgid "Metadata used by the app:"
+msgstr "البيانات الوصفية التي يستخدمها التطبيق:"
+
+msgid "Default user group of Advanced Users."
+msgstr "مجموعة المستخدمين الافتراضية للمستخدمين المتقدمين."
+
+msgid ""
+"The members of this userGroup are Advanced Users in the panels whose "
+"settings were never saved. Once saved, the user groups of each panel are "
+"changed in its Settings dialog."
+msgstr ""
+"أعضاء هذه userGroup هم مستخدمون متقدمون في اللوحات التي لم تُحفظ إعداداتها "
+"قط. بعد الحفظ، تُغيَّر مجموعات المستخدمين لكل لوحة في نافذة الإعدادات "
+"الخاصة بها."
+
+msgid "User group to share the indicator tables with."
+msgstr "مجموعة المستخدمين التي تُشارك معها جداول المؤشرات."
+
+msgid ""
+"The 'View Table' buttons create a pivot table in the Data Visualizer, "
+"shared with this userGroup (for instance, one with all the users). If it "
+"does not exist, the table is public, read only."
+msgstr ""
+"تنشئ أزرار 'عرض الجدول' جدولًا محوريًا في Data Visualizer، تتم مشاركته مع "
+"هذه userGroup (مثلًا، مجموعة تضم جميع المستخدمين). إذا لم تكن موجودة، يكون "
+"الجدول عامًا للقراءة فقط."
+
+msgid "Attribute of dataElements with the ICD-10 code."
+msgstr "سمة dataElements التي تحتوي على رمز ICD-10."
+
+msgid ""
+"Its values are shown in the ICD-10 column of the 'Search' panel. If it does "
+"not exist, the column is empty."
+msgstr ""
+"تظهر قيمها في عمود ICD-10 في لوحة 'بحث'. إذا لم تكن موجودة، يبقى العمود "
+"فارغًا."
+
+msgid "Attribute of programs with their resources."
+msgstr "سمة البرامج التي تحتوي على مواردها."
+
+msgid ""
+"The dashboards, visualizations, event charts and event reports whose ids it "
+"lists are shown in the Resources section of the 'Programs' panel, before "
+"the event charts and reports of the program. The ids should be formatted as "
+"follows:"
+msgstr ""
+"تظهر لوحات المعلومات والتصورات ومخططات الأحداث وتقارير الأحداث التي يسرد "
+"معرفاتها في قسم الموارد في لوحة 'البرامج'، قبل مخططات وتقارير أحداث "
+"البرنامج. يجب أن تكون المعرفات بالتنسيق التالي:"
+
+msgid "About dataElements and indicators:"
+msgstr "حول dataElements والمؤشرات:"
+
+msgid ""
+"dataElements are listed unless they belong to a blacklisted data element "
+"group. Blacklisted dataset will not be displayed in the results. In the "
+"'Search' panel, dataElements are displayed only from the 'Aggregated' "
+"domain. In the tables, the principal information used to display in columns "
+"is Name, Form Name and Description and their translations."
+msgstr ""
+"تُدرج dataElements ما لم تنتمِ إلى مجموعة عناصر بيانات مدرجة في القائمة "
+"السوداء. لن تُعرض مجموعات البيانات المدرجة في القائمة السوداء في النتائج. "
+"في لوحة 'بحث'، تُعرض dataElements من النطاق 'المجمّع' فقط. في الجداول، "
+"المعلومات الرئيسية المعروضة في الأعمدة هي الاسم والاسم في النموذج والوصف، "
+"مع ترجماتها."
+
+msgid ""
+"indicators have to be associated to a indicatorGroup (not blacklisted) to "
+"appear in the 'Search' and the 'Indicator' panels. In the tables, the "
+"principal information used to display in columns is Name and Description "
+"and their translations."
+msgstr ""
+"يجب أن تكون المؤشرات مرتبطة بـ indicatorGroup (غير مدرجة في القائمة "
+"السوداء) لتظهر في لوحتي 'بحث' و'المؤشرات'. في الجداول، المعلومات الرئيسية "
+"المعروضة في الأعمدة هي الاسم والوصف، مع ترجماتهما."
+
+msgid "Selectors of Data Sets and Programs"
+msgstr "محددات مجموعات البيانات والبرامج"
+
+msgid ""
+"Only list the data sets and programs assigned to the organisation units of "
+"the user, or to their descendants."
+msgstr ""
+"عرض مجموعات البيانات والبرامج المعيّنة للوحدات التنظيمية للمستخدم أو "
+"للوحدات التابعة لها فقط."
+
+msgid "Submit"
+msgstr "إرسال"
+
+msgid "Defines how the values of the data element are aggregated."
+msgstr "يحدد كيفية تجميع قيم عنصر البيانات."
+
+msgid "Number of Elements in Section"
+msgstr "عدد العناصر في القسم"
+
+msgid "No data elements"
+msgstr "لا توجد عناصر بيانات"
+
+msgid "Data Elements Columns"
+msgstr "أعمدة عناصر البيانات"
+
+msgid "Indicator Columns"
+msgstr "أعمدة المؤشرات"
+
+msgid "Data Sets"
+msgstr "مجموعات البيانات"
+
+msgid "Select a Data Set"
+msgstr "اختر مجموعة بيانات"
+
+msgid "Number of Data Sets: {{count}}"
+msgstr "عدد مجموعات البيانات: {{count}}"
+
+msgid "Describing indicators"
+msgstr "جار وصف المؤشرات"
+
+msgid "Data elements"
+msgstr "عناصر البيانات"
+
+msgid "Category combinations"
+msgstr "تركيبات الفئات"
+
+msgid "Defines the categories assigned for that dataset."
+msgstr "يحدد الفئات المعينة لمجموعة البيانات."
+
+msgid ""
+"Defines the category combination name for the category combo used for that "
+"dataset."
+msgstr "يحدد اسم تركيبة الفئات المستخدمة لمجموعة البيانات."
+
+msgid ""
+"Define dimensions that allow users to break down data elements by multiple "
+"attributes for data collection and analysis."
+msgstr ""
+"تحدد أبعادًا تسمح للمستخدمين بتقسيم عناصر البيانات حسب عدة سمات لجمع "
+"البيانات وتحليلها."
+
+msgid ""
+"Defines the specific disaggregation item that can be used to disaggregate "
+"the data collected by the dataset."
+msgstr ""
+"يحدد عنصر التفصيل الذي يمكن استخدامه لتفصيل البيانات التي يتم جمعها بواسطة "
+"مجموعة البيانات."
+
+msgid ""
+"Specifies stages within the program for data collection, which could "
+"include various appointments, follow-ups, or interventions."
+msgstr ""
+"يحدد المراحل داخل البرنامج لجمع البيانات، والتي قد تشمل مواعيد مختلفة أو "
+"زيارات متابعة أو تدخلات."
+
+msgid ""
+"Defines a description of the indicator numerator based on what result the "
+"indicator calculates."
+msgstr "يحدد وصف بسط المؤشر بناءً على النتيجة التي يحسبها المؤشر."
+
+msgid ""
+"Defines the title of the indicator denominator based on what result the "
+"indicator calculates."
+msgstr "يحدد عنوان مقام المؤشر بناءً على النتيجة التي يحسبها المؤشر."
+
+msgid "Defines the name of the indicator assigned/used in a dataset."
+msgstr "يحدد اسم المؤشر المعين أو المستخدم في مجموعة بيانات."
+
+msgid ""
+"Defines the title of the indicator numerator based on what result the "
+"indicator calculates."
+msgstr "يحدد عنوان بسط المؤشر بناءً على النتيجة التي يحسبها المؤشر."
+
+msgid ""
+"Defines the short name of the indicator, used in compact displays and "
+"analytics."
+msgstr "يحدد الاسم المختصر للمؤشر، المستخدم في العروض المدمجة والتحليلات."
+
+msgid ""
+"Defines the type of value that is resulted from the calculation of the "
+"indicator based on the calculation fomula."
+msgstr "يحدد نوع القيمة الناتجة عن حساب المؤشر بناءً على صيغة الحساب."
+
+msgid ""
+"Defines the category combination used for collection in the specified data "
+"element."
+msgstr "يحدد تركيبة الفئات المستخدمة لجمع البيانات لعنصر البيانات المحدد."
+
+msgid "Defines the data type of the specific data element used in the form."
+msgstr "يحدد نوع البيانات لعنصر البيانات المحدد المستخدم في النموذج."
+
+msgid ""
+"Organizational elements that group data elements into meaningful categories "
+" structured logically."
+msgstr "عناصر تنظيمية تقوم بتجميع عناصر البيانات في فئات ذات معنى ومنظمة بشكل منطقي."
+
+msgid "Defines the description of the data element in the section form."
+msgstr "يحدد وصف عنصر البيانات في نموذج القسم."
+
+msgid "Defines the name of the form used in a section."
+msgstr "يحدد اسم النموذج المستخدم في القسم."
+
+msgid "Defines the name of the section."
+msgstr "يحدد اسم القسم."
+
+msgid "Defines the options assigned to the data element in a section."
+msgstr "يحدد الخيارات المعينة لعنصر البيانات داخل القسم."
+
+msgid ""
+"Defines the short name of the data element, used in compact displays and "
+"analytics."
+msgstr "يحدد الاسم المختصر لعنصر البيانات، المستخدم في العروض المدمجة والتحليلات."
+
+msgid "Save"
+msgstr "حفظ"
+
+msgid "Back to reader"
+msgstr "العودة إلى القارئ"
+
+msgid "Edit"
+msgstr "تحرير"
+
+msgid "Dossiers"
+msgstr "الملفات"
+
+msgid "Select a service"
+msgstr "اختر خدمة"
+
+msgid "Number of Services"
+msgstr "عدد الخدمات"
+
+msgid "Number of Data Sets in Service"
+msgstr "عدد مجموعات البيانات في الخدمة"
+
+msgid "Number of Indicator Groups in Service"
+msgstr "عدد مجموعات المؤشرات في الخدمة"
+
+msgid "Description of Service"
+msgstr "وصف الخدمة"
+
+msgid "Data Sets > Sections > Data Elements (Table 1)"
+msgstr "مجموعات البيانات > الأقسام > عناصر البيانات (الجدول 1)"
+
+msgid "Indicator Groups > Indicators (Table 2)"
+msgstr "مجموعات المؤشرات > المؤشرات (الجدول 2)"
+
+msgid "Data Set"
+msgstr "مجموعة بيانات"
+
+msgid "Indicator Group"
+msgstr "مجموعة مؤشرات"
+
+msgid "Section"
+msgstr "قسم"
+
+msgid "Number of Data Elements in Section"
+msgstr "عدد عناصر البيانات في القسم"
+
+msgid "Number of Indicators in Indicator Group"
+msgstr "عدد المؤشرات في مجموعة المؤشرات"
+
+msgid "Comments"
+msgstr "تعليقات"
+
+msgid "No Value"
+msgstr "لا توجد قيمة"
+
+msgid "Data Element - Aggregate Value"
+msgstr "عنصر بيانات - قيمة مجمعة"
+
+msgid "Data Element - Tracker Value"
+msgstr "عنصر بيانات - قيمة التتبع"
+
+msgid "Program Indicator"
+msgstr "مؤشر البرنامج"
+
+msgid "Organisation Unit Group"
+msgstr "مجموعة الوحدات التنظيمية"
+
+msgid "Number"
+msgstr "العدد"
+
+msgid "Denotes the respective dataset with which the indicator belongs to."
+msgstr "يشير إلى مجموعة البيانات التي ينتمي إليها المؤشر."
+
+msgid ""
+"The part of the indicator formula that provides the context for the "
+"Numerator by representing the total or eligible population, events, or "
+"units against which the Numerator is compared."
+msgstr ""
+"الجزء من صيغة المؤشر الذي يوفر السياق للبسط من خلال تمثيل الإجمالي أو الفئة "
+"المؤهلة التي تتم المقارنة معها."
+
+msgid ""
+"Defines the title of the Indicator Denominator based on what the indicator "
+"calculates"
+msgstr "يحدد عنوان مقام المؤشر بناءً على ما يحسبه المؤشر."
+
+msgid "Denotes the specific program with which the indicator belongs to."
+msgstr "يشير إلى البرنامج المحدد الذي ينتمي إليه المؤشر."
+
+msgid "Indicator types define the factor that is applied during aggregation."
+msgstr "تحدد أنواع المؤشرات العامل الذي يتم تطبيقه أثناء التجميع."
+
+msgid ""
+"A set of mathematical operations that is used to calculate rates, "
+"incidences and other values that are a result of data element values that "
+"have been entered into the system."
+msgstr ""
+"مجموعة من العمليات الحسابية المستخدمة لحساب المعدلات والنسب والقيم الأخرى "
+"الناتجة عن عناصر البيانات التي تم إدخالها في النظام."
+
+msgid "A formula consisting of data elements and numbers"
+msgstr "صيغة تتكون من عناصر بيانات وأرقام."
+
+msgid ""
+"The part of the indicator formula that represents the primary count or "
+"measure being calculated."
+msgstr "الجزء من صيغة المؤشر الذي يمثل العد أو القياس الأساسي الذي يتم حسابه."
+
+msgid ""
+"Defines the title of the indicator numerator based on what the indicator "
+"calculates"
+msgstr "يحدد عنوان بسط المؤشر بناءً على ما يحسبه المؤشر."
+
+msgid "Select an Indicator"
+msgstr "اختر مؤشرا"
+
+msgid "Number of Indicators: {{count}}"
+msgstr "عدد المؤشرات: {{count}}"
+
+msgid "Defines the short name, used in compact displays and analytics."
+msgstr "يحدد الاسم المختصر المستخدم في العروض المختصرة والتحليلات."
+
+msgid "Number of Rules in Program"
+msgstr "عدد القواعد في البرنامج"
+
+msgid "There is nothing to export"
+msgstr "لا يوجد ما يمكن تصديره"
+
+msgid "Other sections"
+msgstr "أقسام أخرى"
+
+msgid "Tracked Entity Attribute Columns"
+msgstr "أعمدة سمات الكيان المتتبع"
+
+msgid "Program Indicator Columns"
+msgstr "أعمدة مؤشرات البرنامج"
+
+msgid "Program Rule Columns"
+msgstr "أعمدة قواعد البرنامج"
+
+msgid "Program Rule Variable Columns"
+msgstr "أعمدة متغيرات قواعد البرنامج"
+
+msgid "Select a program"
+msgstr "اختر برنامجا"
+
+msgid "Describing expressions"
+msgstr "جار وصف التعبيرات"
+
+msgid "Legacy options"
+msgstr "الخيارات القديمة"
+
+msgid "Program stages"
+msgstr "مراحل البرنامج"
+
+msgid "Stage"
+msgstr "مرحلة"
+
+msgid "Repeatable"
+msgstr "قابلة للتكرار"
+
+msgid "Program Resources"
+msgstr "موارد البرنامج"
+
+msgid "Actions Types"
+msgstr "أنواع الإجراءات"
+
+msgid "Analytics period boundary type"
+msgstr "نوع حد الفترة التحليلية"
+
+msgid "Boundary target"
+msgstr "هدف الحد"
+
+msgid "Custom Message for Blanked Field"
+msgstr "رسالة مخصصة للحقل الفارغ"
+
+msgid "Date to Send Message"
+msgstr "تاريخ إرسال الرسالة"
+
+msgid "Stage Description"
+msgstr "وصف المرحلة"
+
+msgid "Direct Data Entry"
+msgstr "إدخال بيانات مباشر"
+
+msgid "Display Widget"
+msgstr "أداة عرض"
+
+msgid "Expression"
+msgstr "تعبير"
+
+msgid "Key Label"
+msgstr "تسمية مفتاح"
+
+msgid "Link"
+msgstr "رابط"
+
+msgid "Message Template"
+msgstr "قالب الرسالة"
+
+msgid "Number of Indicators"
+msgstr "عدد المؤشرات"
+
+msgid "Number of Program Indicators"
+msgstr "عدد مؤشرات البرنامج"
+
+msgid "Number of Programs"
+msgstr "عدد البرامج"
+
+msgid "Offset period by amount"
+msgstr "إزاحة الفترة بمقدار"
+
+msgid "Option Group to Hide"
+msgstr "مجموعة خيارات للإخفاء"
+
+msgid "Option Group to Show"
+msgstr "مجموعة خيارات للإظهار"
+
+msgid "Option Set Name"
+msgstr "اسم مجموعة الخيارات"
+
+msgid "Option Set Options"
+msgstr "خيارات مجموعة الخيارات"
+
+msgid "Option to Hide"
+msgstr "خيار للإخفاء"
+
+msgid "Option Stage Section to Hide"
+msgstr "قسم مرحلة لإخفائه"
+
+msgid "Option Stage to Hide"
+msgstr "مرحلة لإخفائها"
+
+msgid "Other"
+msgstr "أخرى"
+
+msgid "Period type"
+msgstr "نوع الفترة"
+
+msgid "Program Rule"
+msgstr "قاعدة البرنامج"
+
+msgid "Program Rule Variable to Assign to"
+msgstr "متغير قاعدة البرنامج المراد تعيينه"
+
+msgid "Number of Rule Variables in Program"
+msgstr "عدد متغيرات القواعد في البرنامج"
+
+msgid "Programs"
+msgstr "البرامج"
+
+msgid "Resource Type"
+msgstr "نوع المورد"
+
+msgid "Resources"
+msgstr "الموارد"
+
+msgid "Number of Resources"
+msgstr "عدد الموارد"
+
+msgid "See options"
+msgstr "عرض الخيارات"
+
+msgid "Static Text"
+msgstr "نص ثابت"
+
+msgid "Number of Tracked Entity Attributes in Program"
+msgstr "عدد سمات الكيان المتتبع في البرنامج"
+
+msgid "Export this page to Excel"
+msgstr "تصدير هذه الصفحة إلى إكسل"
+
+msgid "Show legacy data elements and options"
+msgstr "عرض عناصر البيانات والخيارات القديمة"
+
+msgid "Defines a description of the Health Program used in HMIS."
+msgstr "يحدد وصف البرنامج الصحي المستخدم في نظام HMIS."
+
+msgid ""
+"Refers to the specific details and setup for a health program within the "
+"HMIS system, primarily used for tracking and managing health-related "
+"activities, services, or interventions."
+msgstr ""
+"يشير إلى التفاصيل والإعدادات الخاصة ببرنامج صحي داخل نظام HMIS، ويُستخدم "
+"بشكل أساسي لتتبع وإدارة الأنشطة أو الخدمات أو التدخلات الصحية."
+
+msgid ""
+"Defines the title of the Indicator denominator for what the indicator "
+"calculates."
+msgstr "يحدد عنوان مقام المؤشر لما يقوم المؤشر بحسابه."
+
+msgid ""
+"Metrics defined within the program to measure its outcomes or impact, such "
+"as completion rate, follow-up attendance, or disease incidence rate"
+msgstr ""
+"مقاييس يتم تعريفها داخل البرنامج لقياس نتائجه أو تأثيره، مثل معدل الإكمال "
+"أو حضور المتابعة أو معدل الإصابة بالمرض."
+
+msgid "Defines a description of an indicator used in a program in HMIS."
+msgstr "يحدد وصف المؤشر المستخدم في برنامج داخل نظام HMIS."
+
+msgid "Defines the name of an indicator used in a program in HMIS."
+msgstr "يحدد اسم المؤشر المستخدم في برنامج داخل نظام HMIS."
+
+msgid ""
+"Defines the title of the Indicator numerator for the value the indicator "
+"calculates."
+msgstr "يحدد عنوان بسط المؤشر للقيمة التي يقوم المؤشر بحسابها."
+
+msgid ""
+"Defines the stages of a program that the Indicator is set  for data "
+"calculation in a program in HMIS."
+msgstr "يحدد مراحل البرنامج التي يتم تعيين المؤشر لها لحساب البيانات داخل نظام HMIS."
+
+msgid ""
+"Defines a type of the data value calculated by an indicator used in a "
+"program in HMIS."
+msgstr ""
+"يحدد نوع قيمة البيانات التي يتم حسابها بواسطة المؤشر داخل برنامج في نظام "
+"HMIS."
+
+msgid ""
+"Displays the data visualization set for the Indicator following a "
+"calculation in a program in HMIS."
+msgstr "يعرض إعدادات التصور البياني للمؤشر بعد إجراء الحساب داخل نظام HMIS."
+
+msgid ""
+"Defines an aggregation type of the program indicator used in a program in "
+"HMIS."
+msgstr "يحدد نوع تجميع مؤشر البرنامج المستخدم في برنامج داخل نظام HMIS."
+
+msgid ""
+"Defines the calculation boundaries with which the program indicator "
+"calculates data values of a program in HMIS."
+msgstr ""
+"يحدد حدود الحساب التي يستخدمها مؤشر البرنامج لحساب قيم البيانات داخل نظام "
+"HMIS."
+
+msgid "Defines the calculation mode of the program indicator in a program in HMIS."
+msgstr "يحدد وضع حساب مؤشر البرنامج داخل برنامج في نظام HMIS."
+
+msgid ""
+"Specialized custom metrics indicators built from data collected within a "
+"program, typically calculated from one or more data elements and attributes "
+"gathered through various stages of program activities"
+msgstr ""
+"مؤشرات مخصصة متخصصة يتم إنشاؤها من البيانات التي يتم جمعها داخل البرنامج، "
+"وعادةً ما يتم حسابها من عنصر بيانات واحد أو أكثر ومن السمات التي يتم جمعها "
+"عبر مراحل مختلفة من أنشطة البرنامج."
+
+msgid "Defines a description of the program indicator used in a program in HMIS."
+msgstr "يحدد وصف مؤشر البرنامج المستخدم في برنامج داخل نظام HMIS."
+
+msgid "Defines a filter of the program indicator used in a program in HMIS."
+msgstr "يحدد عامل تصفية لمؤشر البرنامج المستخدم في برنامج داخل نظام HMIS."
+
+msgid "Defines the name of the program indicator used in a program in HMIS."
+msgstr "يحدد اسم مؤشر البرنامج المستخدم في برنامج داخل نظام HMIS."
+
+msgid ""
+"Defines the stages of a Program that the program indicator is set  for data "
+"calculation in a program in HMIS."
+msgstr ""
+"يحدد مراحل البرنامج التي يتم تعيين مؤشر البرنامج لها لحساب البيانات داخل "
+"نظام HMIS."
+
+msgid "Defines the type of program indicator used in a program in HMIS."
+msgstr "يحدد نوع مؤشر البرنامج المستخدم في برنامج داخل نظام HMIS."
+
+msgid ""
+"Displays the data visualization set for the program indicator following a "
+"calculation in a program in HMIS."
+msgstr "يعرض إعدادات التصور البياني لمؤشر البرنامج بعد إجراء الحساب داخل نظام HMIS."
+
+msgid ""
+"Defines the executable actions for a program rule configured for a program "
+"in HMIS."
+msgstr "يحدد الإجراءات التنفيذية لقاعدة البرنامج المكونة لبرنامج داخل نظام HMIS."
+
+msgid ""
+"Defines the set of conditions which a program rule is configured for "
+"execution for a program in HMIS."
+msgstr "يحدد مجموعة الشروط التي يتم تكوين قاعدة البرنامج لتنفيذها داخل نظام HMIS."
+
+msgid ""
+"Rules that allow you to create and control dynamic behavior of the user "
+"interface in the Tracker Capture and Event Capture apps."
+msgstr ""
+"قواعد تتيح لك إنشاء والتحكم في السلوك الديناميكي لواجهة المستخدم في تطبيقي "
+"Tracker Capture وEvent Capture."
+
+msgid "Defines a description of the program rules configured for a program in HMIS."
+msgstr "يحدد وصف قواعد البرنامج المكونة لبرنامج داخل نظام HMIS."
+
+msgid "Defines the name of the program rules configured for a program in HMIS."
+msgstr "يحدد اسم قواعد البرنامج المكونة لبرنامج داخل نظام HMIS."
+
+msgid ""
+"Defines the stages of a program that the rule is defined for the rule "
+"action to execute in a program in HMIS."
+msgstr ""
+"يحدد مراحل البرنامج التي يتم تعريف القاعدة لها لتنفيذ إجراء القاعدة داخل "
+"نظام HMIS."
+
+msgid ""
+"Defines the program rules that are associated to the program rule variable "
+"for a program in HMIS."
+msgstr "يحدد قواعد البرنامج المرتبطة بمتغير قاعدة البرنامج داخل نظام HMIS."
+
+msgid ""
+"Defines the data element of a program rule variable that is configured  for "
+"data collection in a program in HMIS."
+msgstr ""
+"يحدد عنصر البيانات لمتغير قاعدة البرنامج الذي يتم تكوينه لجمع البيانات داخل "
+"نظام HMIS."
+
+msgid "Variables used to create program rule expressions."
+msgstr "متغيرات تُستخدم لإنشاء تعبيرات قواعد البرنامج."
+
+msgid ""
+"Defines a name for the program rule Variables configured for a program in "
+"HMIS."
+msgstr "يحدد اسمًا لمتغيرات قواعد البرنامج المكونة لبرنامج داخل نظام HMIS."
+
+msgid ""
+"Defines the stage of a program that the program rule variable is set  for "
+"data calculation in a program in HMIS."
+msgstr ""
+"يحدد مرحلة البرنامج التي يتم تعيين متغير قاعدة البرنامج لها لحساب البيانات "
+"داخل نظام HMIS."
+
+msgid ""
+"Defines a source type for a program rule variable configured for a program "
+"in HMIS."
+msgstr "يحدد نوع المصدر لمتغير قاعدة البرنامج المكونة لبرنامج داخل نظام HMIS."
+
+msgid ""
+"Defines the tracked entity attributes set for the program rule varibale "
+"used in a program in HMIS."
+msgstr ""
+"يحدد سمات الكيان المتتبع المعينة لمتغير قاعدة البرنامج المستخدم داخل نظام "
+"HMIS."
+
+msgid ""
+"Defines the mode of calculation of the data values to be collected in a "
+"stage of a program in HMIS."
+msgstr ""
+"يحدد وضع حساب قيم البيانات التي سيتم جمعها في مرحلة من البرنامج في نظام "
+"HMIS."
+
+msgid "Defines a description of the stage of a program in HMIS."
+msgstr "يحدد وصف مرحلة من مراحل البرنامج في نظام HMIS."
+
+msgid "Defines the name of the form used in a program stage in HMIS."
+msgstr "يحدد اسم النموذج المستخدم في مرحلة من البرنامج في نظام HMIS."
+
+msgid ""
+"Defines a boolean expression of whether the program stage should be "
+"mandatory in an entry form."
+msgstr ""
+"يحدد تعبيرًا منطقيًا يوضح ما إذا كانت مرحلة البرنامج يجب أن تكون إلزامية في "
+"نموذج الإدخال."
+
+msgid "Defines the name of the data element of a program in HMIS."
+msgstr "يحدد اسم عنصر البيانات الخاص بمرحلة برنامج في نظام HMIS."
+
+msgid ""
+"Defines the option set of the tracked entity attribute data assigned used "
+"in an entry form."
+msgstr "يحدد مجموعة الخيارات لسمة الكيان المتتبع المستخدمة في نموذج الإدخال."
+
+msgid "Defines the type of data to be collected in a stage of a program in HMIS."
+msgstr "يحدد نوع البيانات التي سيتم جمعها في مرحلة من البرنامج في نظام HMIS."
+
+msgid ""
+"Defines a boolean expression of whether the attribute should be mandatory "
+"or not used in an entry form."
+msgstr ""
+"يحدد تعبيرًا منطقيًا يوضح ما إذا كانت السمة يجب أن تكون مرئية أو لا في "
+"نموذج الإدخال."
+
+msgid ""
+"Defines a data aggregation type of the tracked entity attribute for the "
+"patients data collected in an entry form."
+msgstr ""
+"يحدد نوع تجميع البيانات لسمة الكيان المتتبع لبيانات المرضى التي يتم جمعها "
+"في نموذج إدخال."
+
+msgid ""
+"Additional data tied to individuals, like patient ID, age, gender, or "
+"location, for long-term tracking across the HMIS."
+msgstr ""
+"بيانات إضافية مرتبطة بالأفراد مثل معرف المريض أو العمر أو الجنس أو الموقع، "
+"وذلك للتتبع طويل الأمد داخل نظام HMIS."
+
+msgid ""
+"Defines a description of the tracked entity attribute for the patients data "
+"collected in an entry form."
+msgstr "يحدد وصف سمة الكيان المتتبع لبيانات المرضى التي يتم جمعها في نموذج إدخال."
+
+msgid ""
+"Defines the form name of the tracked entity attribute for the patient's "
+"data collected an entry form."
+msgstr ""
+"يحدد اسم النموذج لسمة الكيان المتتبع لبيانات المريض التي يتم جمعها في نموذج "
+"إدخال."
+
+msgid ""
+"Defines a boolean expression of whether the tracked entity attribute should "
+"be visible or not used in an entry form."
+msgstr ""
+"يحدد تعبيرًا منطقيًا يوضح ما إذا كانت سمة الكيان المتتبع يجب أن تكون "
+"إلزامية أو لا في نموذج الإدخال."
+
+msgid ""
+"Defines the name of the tracked entity attribute for the patients data "
+"collected an entry form."
+msgstr "يحدد اسم سمة الكيان المتتبع لبيانات المرضى التي يتم جمعها في نموذج إدخال."
+
+msgid ""
+"Defines a data value type of the tracked entity attribute for the patients "
+"data collected in an entry form."
+msgstr ""
+"يحدد نوع قيمة البيانات لسمة الكيان المتتبع لبيانات المرضى التي يتم جمعها في "
+"نموذج إدخال."
+
+msgid "You have no access to the data of this program"
+msgstr "ليس لديك صلاحية الوصول إلى بيانات هذا البرنامج"
+
+msgid "Show / Hide advanced columns"
+msgstr "إظهار / إخفاء الأعمدة المتقدمة"
+
+msgid "[cyclic indicator reference: {{name}}]"
+msgstr "[مرجع مؤشر دائري: {{name}}]"
+
+msgid "Search"
+msgstr "بحث"
+
+msgid "Loading search data"
+msgstr "جار تحميل بيانات البحث"
+
+msgid "No results"
+msgstr "لا توجد نتائج"
+
+msgid ""
+"Defines the data type of the specific data element  or indicator used in "
+"the form."
+msgstr "يحدد نوع البيانات لعنصر البيانات أو المؤشر المستخدم في النموذج."
+
+msgid "Defines the unique ID of the data element or indicator used in the form."
+msgstr "يحدد المعرف الفريد لعنصر البيانات أو المؤشر المستخدم في النموذج."
+
+msgid ""
+"Defines the unique code assigned to the data element or indicator in the "
+"form."
+msgstr "يحدد الرمز الفريد المعين لعنصر البيانات أو المؤشر في النموذج."
+
+msgid ""
+"Defines the unique ICD10 Code assigned to the specified data element or "
+"indicator in the form."
+msgstr "يحدد رمز ICD10 الفريد المعين لعنصر البيانات أو المؤشر المحدد في النموذج."
+
+msgid ""
+"Defines the name of the data element or indicator assigned/used in a "
+"dataset."
+msgstr "يحدد اسم عنصر البيانات أو المؤشر المعين/المستخدم في مجموعة بيانات."
+
+msgid ""
+"Defines the short name of the data element or indicator, used in compact "
+"displays and analytics."
+msgstr ""
+"يحدد الاسم المختصر لعنصر البيانات أو المؤشر، المستخدم في العروض المدمجة "
+"والتحليلات."
+
+msgid ""
+"Defines the form name in the section form.(Applicable to Data Elements "
+"only)."
+msgstr "يحدد اسم النموذج في نموذج القسم (ينطبق على عناصر البيانات فقط)."
+
+msgid "Defines the description of the Data Element or Indicator used in a form."
+msgstr "يحدد وصف عنصر البيانات أو المؤشر المستخدم في نموذج."
+
+msgid ""
+"Defines a description of the numerator formula used in an Indicator. "
+"Applicable for Indicators."
+msgstr "يحدد وصف صيغة البسط المستخدمة في المؤشر."
+
+msgid ""
+"Defines a description of the denominator formula used in an Indicator. "
+"Applicable for Indicators."
+msgstr "يحدد وصف صيغة المقام المستخدمة في المؤشر."
+
+msgid ""
+"Defines a description of the filter formula used in an Program Indicator. "
+"Applicable for Program Indicators."
+msgstr "يحدد وصف صيغة المرشح المستخدمة في مؤشر البرنامج. ينطبق على مؤشرات البرنامج."
+
+msgid ""
+"Defines a description of the expression formula used in an Program "
+"Indicator. Applicable for Program Indicators."
+msgstr "يحدد وصف صيغة التعبير المستخدمة في مؤشر البرنامج. ينطبق على مؤشرات البرنامج."
+
+msgid ""
+"Defines the unique ID of the data element or indicator group used in a "
+"dataset or the group unique IDs assigned to a program indicator."
+msgstr ""
+"يحدد المعرف الفريد لمجموعة عناصر البيانات أو المؤشرات المستخدمة في مجموعة "
+"بيانات أو المعرفات الفريدة للمجموعات المعينة لمؤشر البرنامج."
+
+msgid ""
+"Defines the unique code assigned to the data element or indicator group "
+"used in a dataset or the group unique codes assigned to a program indicator."
+msgstr ""
+"يحدد الرمز الفريد المعين لمجموعة عناصر البيانات أو المؤشرات المستخدمة في "
+"مجموعة بيانات أو الرموز الفريدة للمجموعات المعينة لمؤشر البرنامج."
+
+msgid ""
+"Defines the name of the data element or indicator groups assigned or used "
+"in a dataset or the group names assigned to a program indicator."
+msgstr ""
+"يحدد اسم مجموعات عناصر البيانات أو المؤشرات المعينة أو المستخدمة في مجموعة "
+"بيانات أو أسماء المجموعات المعينة لمؤشر البرنامج."
+
+msgid "Defines the data element groups a data element belongs to."
+msgstr "يحدد مجموعات عناصر البيانات التي ينتمي إليها عنصر البيانات."
+
+msgid ""
+"Defines the program of a program indicator, or the programs that use a "
+"tracker data element."
+msgstr "يحدد برنامج مؤشر البرنامج، أو البرامج التي تستخدم عنصر بيانات التتبع."
+
+msgid ""
+"Defines the unique service ID of the data element or indicator used in a "
+"dataset."
+msgstr "يحدد المعرف الفريد للخدمة المستخدمة في مجموعة بيانات."
+
+msgid ""
+"Defines the unique service code assigned to the data element or indicator "
+"group used in a dataset."
+msgstr "يحدد الرمز الفريد المعين للخدمة المستخدمة في مجموعة بيانات."
+
+msgid "Defines the name of the Service assigned to the dataset."
+msgstr "يحدد اسم الخدمة المعينة لمجموعة البيانات."
+
+msgid "Clear filters"
+msgstr "مسح عوامل التصفية"
+
+msgid "Show / Hide column filters"
+msgstr "إظهار / إخفاء عوامل تصفية الأعمدة"
+
+msgid "Type here..."
+msgstr "اكتب هنا..."
+
+msgid "Manage Columns"
+msgstr "إدارة الأعمدة"
+
+msgid "Expand"
+msgstr "توسيع"
+
+msgid "Max Depth (1-10):"
+msgstr "أقصى عمق (1-10):"
+
+msgid ""
+"<p><b>Combining terms in the search:</b></p><ul><li><code>a b</code>: rows "
+"with all the words, in any order and in any column. Rows with the exact "
+"phrase go first.</li><li><code>a &amp; b</code>: rows with all the "
+"terms.</li><li><code>a | b</code>: rows with any of the "
+"terms.</li></ul><p><b>DHIS2 terminology:</b></p><ul><li><b>Data "
+"Element:</b> an item of counted data or raw data.</li><li><b>Indicator:</b> "
+"combined data or calculations the system does using data elements. These "
+"could be totals, percentages, rates, etc.</li><li><b>Program Indicator:</b> "
+"a calculation or filtering of individual level data (recorded in Programs). "
+"Some program indicators may be a building block for an indicator (used in "
+"its numerator or denominator).</li><li><b>Group:</b> data elements of the "
+"same data set, entirely or in part, are grouped in a data element group. "
+"Related indicators are grouped in an indicator group.</li><li><b>Data "
+"Set:</b> made up of data elements to collect aggregate data or total "
+"numbers for a specific medical service.</li><li><b>Program:</b> made up of "
+"data elements to collect individual patient data for a particular medical "
+"service.</li></ul>"
+msgstr ""
+"<p><b>الجمع بين المصطلحات في البحث:</b></p><ul><li><code>a b</code>: الصفوف "
+"التي تحتوي على جميع الكلمات، بأي ترتيب وفي أي عمود. تظهر الصفوف التي تحتوي "
+"على العبارة الدقيقة أولاً.</li><li><code>a &amp; b</code>: الصفوف التي "
+"تحتوي على جميع المصطلحات.</li><li><code>a | b</code>: الصفوف التي تحتوي على "
+"أي من المصطلحات.</li></ul><p><b>مصطلحات DHIS2:</b></p><ul><li><b>عنصر "
+"بيانات:</b> بند من البيانات المعدودة أو البيانات "
+"الأولية.</li><li><b>مؤشر:</b> بيانات مجمعة أو حسابات يجريها النظام باستخدام "
+"عناصر البيانات، مثل المجاميع والنسب المئوية والمعدلات.</li><li><b>مؤشر "
+"البرنامج:</b> حساب أو تصفية للبيانات الفردية (المسجلة في البرامج). قد تكون "
+"بعض مؤشرات البرامج جزءاً من مؤشر (في البسط أو "
+"المقام).</li><li><b>مجموعة:</b> تُجمع عناصر البيانات من مجموعة البيانات "
+"نفسها، كلياً أو جزئياً، في مجموعة عناصر بيانات. وتُجمع المؤشرات المرتبطة في "
+"مجموعة مؤشرات.</li><li><b>مجموعة بيانات:</b> تتكون من عناصر بيانات لجمع "
+"البيانات المجمعة أو الأرقام الإجمالية لخدمة طبية "
+"معينة.</li><li><b>برنامج:</b> يتكون من عناصر بيانات لجمع بيانات المرضى "
+"الفردية لخدمة طبية معينة.</li></ul>"
+
+msgid ""
+"<p>This interface is made to simplify user access the terminology "
+"associated with information collected with HMIS.<br><ul><li>Via the "
+"<b>Search</b> tab, you can directly search for a term in all the columns of "
+"the table. You can display column filters as well, which allow you to "
+"search for information in one specific column. Use 'Clear filters' to reset "
+"all the filters. <i>Expert users can use the key word '|' (OR) to search "
+"multiple objects.</i></li><li>Via the <b>Manage Columns</b> tab, you can "
+"select columns to be displayed in the table. <i>Expert users can use the "
+"advanced columns to perform detailed researches via IDs.</i></li></ul>You "
+"can finally export the results of your search to Excel (page by page, and "
+"do not forget to save as .xls).</p>"
+msgstr ""
+"<p>تم إنشاء هذه الواجهة لتسهيل وصول المستخدم إلى المصطلحات المرتبطة "
+"بالمعلومات التي يتم جمعها باستخدام HMIS.<br><ul><li>من خلال علامة التبويب "
+"<b>بحث</b>، يمكنك البحث مباشرة عن مصطلح في جميع أعمدة الجدول. يمكنك أيضًا "
+"عرض عوامل تصفية الأعمدة للبحث في عمود محدد. استخدم 'مسح عوامل التصفية' "
+"لإعادة تعيين جميع عوامل التصفية. <i>يمكن للمستخدمين المتقدمين استخدام "
+"الكلمة المفتاحية '|' (OR) للبحث عن عدة عناصر.</i></li><li>من خلال علامة "
+"التبويب <b>إدارة الأعمدة</b>، يمكنك اختيار الأعمدة التي سيتم عرضها في "
+"الجدول. <i>يمكن للمستخدمين المتقدمين استخدام الأعمدة المتقدمة لإجراء عمليات "
+"بحث تفصيلية باستخدام المعرفات.</i></li></ul>يمكنك أخيرًا تصدير نتائج البحث "
+"إلى إكسل (صفحة بصفحة، ولا تنس الحفظ بصيغة .xls).</p>"
+
+msgid "Dossier editor"
+msgstr "محرر الملفات"
+
+msgid "Search by name"
+msgstr "البحث بالاسم"
+
+#~ msgid ""
+#~ "User group ids (JSON array) whose users are Advanced Users, for example "
+#~ "[\"abc\"]"
+#~ msgstr ""
+#~ "معرّفات مجموعات المستخدمين (مصفوفة JSON) التي يكون مستخدموها مستخدمين "
+#~ "متقدمين، مثلاً [\"abc\"]"
+
+#~ msgid "Invalid array format"
+#~ msgstr "تنسيق المصفوفة غير صالح"
+
+#~ msgid "The arrays should be formatted as follows:"
+#~ msgstr "يجب أن تكون المصفوفات بالتنسيق التالي:"
+
+#~ msgid "[Optional] An array of dataElementGroups UIDs to blacklist from the panels."
+#~ msgstr "[اختياري] مصفوفة من معرّفات dataElementGroups لاستبعادها من اللوحات."
+
+#~ msgid "[Optional] An array of dataSets UIDs to blacklist from the panels."
+#~ msgstr "[اختياري] مصفوفة من معرّفات dataSets لاستبعادها من اللوحات."
+
+#~ msgid "[Optional] An array of programs UIDs to blacklist from the panels."
+#~ msgstr "[اختياري] مصفوفة من معرّفات البرامج لاستبعادها من اللوحات."
+
+#~ msgid "[Optional] An array of indicatorGroups UIDs to blacklist from the panels."
+#~ msgstr "[اختياري] مصفوفة من معرّفات indicatorGroups لاستبعادها من اللوحات."
+
+#~ msgid ""
+#~ "[Optional] An array of not in use indicatorGroups UIDs to hide in the "
+#~ "panels for non-admin users."
+#~ msgstr ""
+#~ "[اختياري] مصفوفة من معرّفات indicatorGroups غير المستخدمة لإخفائها في "
+#~ "اللوحات عن المستخدمين غير المسؤولين."
+
+#~ msgid ""
+#~ "[Optional] An array of not in use programIndicatorGroups UIDs to hide in "
+#~ "the panels for non-admin users."
+#~ msgstr ""
+#~ "[اختياري] مصفوفة من معرّفات programIndicatorGroups غير المستخدمة لإخفائها "
+#~ "في اللوحات عن المستخدمين غير المسؤولين."
+
+#~ msgid ""
+#~ "[Optional] An array of legacy dataElementGroups UIDs for the 'Programs' "
+#~ "panel."
+#~ msgstr "[اختياري] مصفوفة من معرّفات dataElementGroups القديمة للوحة 'البرامج'."
+
+#~ msgid "[Optional] An array of legacy optionGroups UIDs for the 'Programs' panel."
+#~ msgstr "[اختياري] مصفوفة من معرّفات optionGroups القديمة للوحة 'البرامج'."
+
+#~ msgid "Select..."
+#~ msgstr "اختر..."
+
+#~ msgid "About this version"
+#~ msgstr "حول هذا الإصدار"
+
+#~ msgid ""
+#~ "This version of the app has been tested for dhis v2.42.4 with default "
+#~ "locale assumed to be English and accepts translations in Spanish, French, "
+#~ "Portuguese and Arabic. The latest version is available at:"
+#~ msgstr ""
+#~ "تم اختبار هذا الإصدار من التطبيق على dhis v2.42.4 مع اعتبار الإنجليزية "
+#~ "اللغة الافتراضية، ويقبل الترجمات إلى الإسبانية والفرنسية والبرتغالية "
+#~ "والعربية. أحدث إصدار متاح على:"
+
+#~ msgid "Constants with the values 0 and 1."
+#~ msgstr "الثوابت ذات القيمتين 0 و 1."
+
+#~ msgid "Constant 0"
+#~ msgstr "الثابت 0"
+
+#~ msgid "Constant 1"
+#~ msgstr "الثابت 1"
+
+#~ msgid ""
+#~ "In the indicator formulas, constants are shown with their values. If the "
+#~ "constants cannot be read, these two are still shown as 0 and 1."
+#~ msgstr ""
+#~ "في صيغ المؤشرات، تظهر الثوابت بقيمها. إذا تعذّرت قراءة الثوابت، يظل هذان "
+#~ "الثابتان يظهران كـ 0 و 1."
+
+#~ msgid ""
+#~ "An attribute named 'serviceCode' is defined and associated with dataSets "
+#~ "and indicatorGroups."
+#~ msgstr "توجد سمة باسم 'serviceCode' معرّفة ومرتبطة بـ dataSets و indicatorGroups."
+
+#~ msgid ""
+#~ "The serviceCode should correspond to, at least, one code of a service. They "
+#~ "should be formatted as follows:"
+#~ msgstr ""
+#~ "يجب أن يطابق serviceCode رمز خدمة واحدة على الأقل. ويجب أن يكون بالتنسيق "
+#~ "التالي:"

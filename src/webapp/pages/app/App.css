@@ -1,0 +1,35 @@
+html {
+    background-color: #f3f3f3;
+    font-family: Roboto, Arial, sans-serif;
+    overflow-y: scroll;
+}
+
+body {
+    margin: 0;
+}
+
+li {
+    line-height: 1.75;
+}
+
+a {
+    color: initial;
+    text-decoration: none;
+}
+
+@media print {
+    .no-print {
+        display: none !important;
+    }
+}
+
+@media print {
+    #headerDossierPanel {
+        display: none !important;
+    }
+}
+
+/* Visible even with no description, as the Angular page was */
+#dossierDescription {
+    min-height: 24px;
+}

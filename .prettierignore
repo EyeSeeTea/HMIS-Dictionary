@@ -1,6 +1,5 @@
 build
-assets
 node_modules
-bower_components
 *.min.js
 *.min.css
+src/locales/

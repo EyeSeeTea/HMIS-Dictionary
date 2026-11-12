@@ -1,0 +1,53 @@
+.table {
+    margin-top: 16px;
+}
+
+.section {
+    font-weight: 500;
+}
+
+.child {
+    padding-inline-start: 24px;
+}
+
+.hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+}
+
+.dialog {
+    display: flex;
+    flex-direction: column;
+    max-height: 80vh;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px 0;
+}
+
+.header h4 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.body {
+    padding: 16px 24px;
+    overflow-y: auto;
+}
+
+.error {
+    color: var(--colors-red700);
+    font-size: 13px;
+}
+
+.footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 12px 24px 16px;
+}

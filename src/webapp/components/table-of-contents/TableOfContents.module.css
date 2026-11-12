@@ -1,0 +1,31 @@
+.toc {
+    background: white;
+    border: 1px solid var(--colors-grey300);
+    border-radius: 4px;
+    padding: 8px 16px;
+    margin-bottom: 24px;
+}
+
+.toc h4 {
+    margin: 8px 0;
+}
+
+.toc ul {
+    margin: 4px 0;
+    padding-inline-start: 20px;
+}
+
+.toc a,
+.back {
+    color: var(--colors-blue700);
+}
+
+.toc a:hover,
+.back:hover {
+    text-decoration: underline;
+}
+
+.back {
+    font-size: 13px;
+    margin-inline-start: auto;
+}

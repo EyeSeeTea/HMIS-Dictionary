@@ -1,0 +1,45 @@
+.formula {
+    word-break: break-word;
+}
+
+.object {
+    cursor: help;
+}
+
+.status {
+    color: var(--colors-red700);
+    font-weight: 500;
+}
+
+.expanded {
+    border-radius: 3px;
+    padding: 0 2px;
+}
+
+.object {
+    position: relative;
+}
+
+.tooltip {
+    display: none;
+    position: absolute;
+    z-index: 10;
+    left: 0;
+    top: 100%;
+    min-width: 200px;
+    max-width: 360px;
+    padding: 6px 8px;
+    border-radius: 3px;
+    background: #212934;
+    color: white;
+    font-size: 12px;
+}
+
+.object:hover .tooltip {
+    display: block;
+}
+
+.broken {
+    color: var(--colors-red700);
+    font-weight: 500;
+}

@@ -1,0 +1,26 @@
+.wrapper {
+    display: block;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    column-gap: 0.5rem;
+}
+
+.backWrap {
+    padding-top: 10px;
+    margin-bottom: 5px;
+}
+
+.actions {
+    display: flex;
+    gap: 8px;
+}
+
+.row h1 {
+    margin: 8px 0;
+    font-size: 28px;
+    font-weight: 500;
+}

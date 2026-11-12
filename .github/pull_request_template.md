@@ -1,9 +1,9 @@
-### References
+### :pushpin: References
 
 -   **Issue:** Closes #?
 
-### Implementation
+### :memo: Implementation
 
-### Screenshots/Screen capture
+### :video_camera: Screenshots/Screen capture
 
-### Notes to the tester
+### :fire: Notes to the tester

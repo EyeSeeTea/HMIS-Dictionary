@@ -1,0 +1,26 @@
+.panel {
+    background: white;
+    border: 1px solid var(--colors-grey300);
+    border-radius: 4px;
+    margin-bottom: 8px;
+}
+
+.header {
+    width: 100%;
+    text-align: start;
+    padding: 10px 16px;
+    border: 0;
+    background: var(--colors-grey100);
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.arrow {
+    display: inline-block;
+    width: 18px;
+}
+
+.body {
+    padding: 16px;
+}

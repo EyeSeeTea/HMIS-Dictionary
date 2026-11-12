@@ -4,82 +4,136 @@
     "version": "1.16.1",
     "license": "GPL-3.0",
     "author": "MSF OCBA, EyeSeeTea team",
+    "homepage": ".",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/EyeSeeTea/HMIS-Dictionary.git"
     },
-    "homepage": ".",
+    "packageManager": "yarn@4.18.1",
     "dependencies": {
-        "@bower_components/angucomplete-alt": "ghiden/angucomplete-alt#2.5.0",
-        "@bower_components/angular": "angular/bower-angular#1.5.9",
-        "@bower_components/angular-resource": "angular/bower-angular-resource#1.5.9",
-        "@bower_components/angular-sanitize": "angular/bower-angular-sanitize#1.5.9",
-        "@bower_components/angular-table": "file:angular_table_source/@bower_components/angular-table",
-        "@bower_components/angular-translate": "PascalPrecht/bower-angular-translate#~2.11.0",
-        "@bower_components/angular-translate-loader-static-files": "PascalPrecht/bower-angular-translate-loader-static-files#2.11.0",
-        "@bower_components/angular-ui-bootstrap": "angular-ui/bootstrap-bower#2.3.0",
-        "@bower_components/angular-ui-router": "angular-ui/angular-ui-router-bower#0.3.2",
-        "@bower_components/angular-ui-tinymce": "angular-ui/ui-tinymce#0.0.17",
-        "@bower_components/bootstrap": "twbs/bootstrap#3.3.7",
-        "@bower_components/bootstrap-vertical-tabs": "dbtek/bootstrap-vertical-tabs#1.2.1",
-        "@bower_components/d3": "mbostock-bower/d3-bower#4.4.0",
-        "@bower_components/jquery": "jquery/jquery-dist#2.2.4",
-        "@bower_components/lodash": "lodash/lodash#4.17.11",
-        "@bower_components/tinymce": "tinymce/tinymce-dist#4.5",
-        "@eyeseetea/xlsx-populate": "^4.1.0",
-        "angular-sessionstorage": "^1.1.5",
-        "d2-manifest": "1.0.0",
-        "xlsx": "^0.18.5"
+        "$": "link:./src",
+        "@dhis2/app-runtime": "^3",
+        "@dhis2/d2-i18n": "^1",
+        "@dhis2/data-engine": "3.17.0",
+        "@dhis2/ui": "^10",
+        "@eyeseetea/d2-ui-components": "^2",
+        "@eyeseetea/feedback-component": "^0",
+        "@material-ui/core": "^4",
+        "@material-ui/icons": "^4",
+        "@material-ui/styles": "^4",
+        "@tinymce/tinymce-react": "^6.3.1",
+        "buffer": "^6.0.3",
+        "d2-api-40": "npm:@eyeseetea/d2-api@40.11.0-beta.1",
+        "d2-api-42": "npm:@eyeseetea/d2-api@42.22.0-beta.3",
+        "d2-manifest": "^1",
+        "dompurify": "^3.4.17",
+        "purify-ts": "^1",
+        "react": "18.2.0",
+        "react-dom": "18.2.0",
+        "react-router-dom": "5.3.4",
+        "real-cancellable-promise": ">=1",
+        "styled-jsx": "^5",
+        "tinymce": "^8.10.1",
+        "typed-immutable-map": ">=0"
     },
     "devDependencies": {
-        "http-server": "^14.1.1",
-        "prettier": "2.6.1"
+        "@eslint/js": "^9.39.5",
+        "@johanblumenberg/ts-mockito": "^1.0.52",
+        "@playwright/test": "1.60",
+        "@prettier/sync": "^0.6.1",
+        "@testing-library/jest-dom": "^6.9.1",
+        "@testing-library/react": "^14.0.0",
+        "@types/gettext-parser": "^9",
+        "@types/material-ui": "^0.21.12",
+        "@types/node": "^20",
+        "@types/react": "18.2.22",
+        "@types/react-dom": "18.2.7",
+        "@types/react-router-dom": "5.3.3",
+        "@typescript-eslint/eslint-plugin": "^8",
+        "@typescript-eslint/parser": "^8",
+        "@typescript-eslint/utils": "^8.65.0",
+        "@vitejs/plugin-react": "^5.0.4",
+        "eslint": "^9.39.5",
+        "eslint-plugin-no-relative-import-paths": "^1.5.3",
+        "eslint-plugin-react": "^7.37.5",
+        "eslint-plugin-react-hooks": "^7.1.1",
+        "eslint-plugin-testing-library": "^7.16.2",
+        "eslint-plugin-unused-imports": "^4",
+        "exceljs": "^4.4.0",
+        "expect-type": "^0",
+        "gettext-parser": "^9",
+        "husky": "^7",
+        "jsdom": "^21",
+        "knip": "^6.44.1",
+        "prettier": "^3.8.1",
+        "source-map-explorer": "^2",
+        "tsx": "^4.19.3",
+        "typedoc": "^0",
+        "typescript": "5.7.3",
+        "typescript-eslint": "^8",
+        "vite": "^7.3.6",
+        "vite-bundle-visualizer": "^0",
+        "vite-plugin-checker": "^0.14.5",
+        "vitest": "^4.1.12"
+    },
+    "resolutions": {
+        "@types/react": "18.2.22",
+        "@types/react-dom": "18.2.7",
+        "axios": "^1.18.0",
+        "exceljs/uuid": "^11.1.1",
+        "i18next": "19.8.5",
+        "lodash": "^4.18.0",
+        "minimatch@npm:^10.2.2": "^11.0.1",
+        "minimatch@npm:^10.2.5": "^11.0.1",
+        "moment": "^2.31.0",
+        "node-fetch": "^2.6.7",
+        "qs": "^6.16.1",
+        "react-linkify/linkify-it": "^5.0.2"
     },
     "scripts": {
-        "postinstall": "sh build-bower-deps.sh",
-        "build-folder": "rm -rf build/ && d2-manifest package.json manifest.webapp && mkdir build && yarn run manifest && cp -r bower_components app assets languages doc assets/img/Logo_48.png index.html build",
-        "build": "yarn build-folder && rm -f $npm_package_name.zip && cd build && zip --quiet -r ../$npm_package_name.zip *",
-        "start": ". ./.env.local && http-server . -a $HOST -p $PORT -c-1 -P $REACT_APP_DHIS2_BASE_URL --proxy-options.auth $REACT_APP_DHIS2_AUTH",
+        "build": "yarn localize && VITE_DHIS2_BASE_URL='' VITE_DHIS2_AUTH='' yarn build-folder && rm -f $npm_package_name.zip && cd build && zip --quiet -r ../$npm_package_name.zip *",
+        "build-dependencies-visualizer": "vite-bundle-visualizer",
+        "build-folder": "rm -rf build/ && d2-manifest package.json manifest.webapp && tsc && vite build --outDir=build && yarn run manifest && cp -r i18n icon.png build",
+        "check": "yarn typecheck && yarn prettify:check && yarn lint && yarn test",
+        "extract-pot": "yarn run-script src/scripts/dev/ExtractPotScript.ts",
+        "generate-docs": "typedoc --entryPointStrategy expand ./src",
+        "lint": "eslint src",
+        "lint-all": "yarn lint && yarn lint-unused",
+        "lint-unused": "knip",
+        "localize": "yarn update-po && yarn run-script src/scripts/dev/GenerateLocalesScript.ts",
         "manifest": "d2-manifest package.json build/manifest.webapp",
-        "prettify": "prettier \"./**/*.{js,jsx,json,css,ts,tsx}\" --write"
+        "postinstall": "yarn localize || echo '⚠ localize failed — run `yarn localize` before building'",
+        "prepare": "corepack enable 2>/dev/null || true && husky install",
+        "prettify": "prettier \"./**/*.{js,jsx,json,css,ts,tsx}\" --write",
+        "prettify:check": "prettier \"./**/*.{js,jsx,json,css,ts,tsx}\" --check",
+        "run-script": "tsx",
+        "source-map-explorer": "yarn build --sourcemap=true && source-map-explorer --no-border-checks --only-mapped build/assets/*js",
+        "start": "vite --strictPort",
+        "test": "yarn test:unit",
+        "test:unit": "vitest run",
+        "test:unit:watch": "vitest watch",
+        "test:e2e": "playwright test -c e2e/playwright.config.ts",
+        "test:e2e:read": "playwright test -c e2e/playwright.config.ts --project=read",
+        "test:e2e:docker": "e2e/instance/test-docker.sh",
+        "test:e2e:instance": "e2e/scripts/test-instance.sh",
+        "test:e2e:smoke": "playwright test -c e2e/playwright.config.ts --project=read --grep @smoke",
+        "typecheck": "tsc --noEmit",
+        "update-po": "yarn extract-pot && yarn run-script src/scripts/dev/UpdatePoScript.ts"
     },
     "manifest.webapp": {
-        "name": "HMIS Dictionary",
+        "name": "HMIS Dictionary (Beta)",
         "description": "HMIS Dictionary App",
         "icons": {
-            "48": "assets/img/Logo_48.png"
+            "48": "icon.png"
         },
-        "developer1": {
-            "url": "http://rishimsf.github.io/ResumeOnline/",
-            "name": "Rishi Sukul - MSFOCBA",
-            "email": "justRishi2@yahoo.com"
-        },
-        "developer2": {
-            "url": "http://braimbault.github.io/",
-            "name": "Bruno Raimbault - MSFOCBA",
-            "email": "raimbault.bruno@gmail.com"
-        },
-        "developer3": {
-            "name": "Eric Mourin",
-            "email": "ericmourinmarin@gmail.com"
-        },
-        "developer4": {
-            "name": "Víctor García - MSFOCBA",
-            "email": "victor.garcia@barcelona.msf.org"
-        },
-        "developer5": {
-            "name": "Tomàs Sala - MSFOCBA",
-            "email": "tomas.sala@barcelona.msf.org"
-        },
-        "developer6": {
+        "developer": {
             "url": "https://www.eyeseetea.com/",
-            "name": "EyeSeeTea team"
+            "name": "MSF OCBA, EyeSeeTea team"
         },
         "activities": {
             "dhis": {
                 "href": "*"
             }
         }
-    },
-    "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+    }
 }

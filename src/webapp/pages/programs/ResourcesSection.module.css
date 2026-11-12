@@ -1,0 +1,17 @@
+/* A program can have hundreds of event charts and reports */
+.scroll {
+    max-height: 420px;
+    overflow-y: auto;
+}
+
+@media print {
+    .scroll {
+        max-height: none;
+        overflow: visible;
+    }
+}
+
+.noAccess {
+    color: var(--colors-grey600);
+    cursor: not-allowed;
+}

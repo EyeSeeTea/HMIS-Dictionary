@@ -1,0 +1,7 @@
+.icon {
+    display: inline-flex;
+    vertical-align: middle;
+    margin: 0 4px;
+    color: var(--colors-grey600);
+    cursor: help;
+}
