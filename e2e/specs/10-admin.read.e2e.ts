@@ -8,16 +8,6 @@ test.describe("10. Admin", () => {
             await expect(admin.check("divUG")).toBeVisible();
         });
 
-        test("Information box shows the tested version, languages and a link to the repository", async ({
-            admin,
-        }) => {
-            await admin.load();
-            const box = admin.root.locator(".alert-info");
-            await expect(box).toContainText(/dhis v?2\.\d+/i);
-            await expect(box).toContainText("Spanish");
-            await expect(box.getByRole("link")).toHaveAttribute("href", /github\.com\/.*HMIS/i);
-        });
-
         test("Static help and information text is displayed", async ({ admin }) => {
             await admin.load();
             for (const text of [

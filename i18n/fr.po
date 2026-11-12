@@ -5,7 +5,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-11-12T07:51:56.825Z\n"
+"POT-Creation-Date: 2026-11-10T12:01:17.872Z\n"
 "PO-Revision-Date: 2026-11-05T19:43:47.436Z\n"
 "Language: fr\n"
 
@@ -300,19 +300,6 @@ msgstr "Voir le tableau"
 
 msgid "The arrays should be formatted as follows:"
 msgstr "Les tableaux doivent avoir ce format :"
-
-msgid "About this version"
-msgstr "À propos de cette version"
-
-msgid ""
-"This version of the app has been tested for dhis v2.42.4 with default "
-"locale assumed to be English and accepts translations in Spanish, French, "
-"Portuguese and Arabic. The latest version is available at:"
-msgstr ""
-"Cette version de l'application a été testée avec dhis v2.42.4, avec "
-"l'anglais comme langue par défaut, et accepte les traductions en espagnol, "
-"français, portugais et arabe. La dernière version est disponible à "
-"l'adresse :"
 
 msgid "The setting could not be saved"
 msgstr "Le paramètre n'a pas pu être enregistré"
@@ -1545,6 +1532,19 @@ msgstr "Éditeur de dossiers"
 
 msgid "Search by name"
 msgstr "Rechercher par nom"
+
+#~ msgid "About this version"
+#~ msgstr "À propos de cette version"
+
+#~ msgid ""
+#~ "This version of the app has been tested for dhis v2.42.4 with default "
+#~ "locale assumed to be English and accepts translations in Spanish, French, "
+#~ "Portuguese and Arabic. The latest version is available at:"
+#~ msgstr ""
+#~ "Cette version de l'application a été testée avec dhis v2.42.4, avec "
+#~ "l'anglais comme langue par défaut, et accepte les traductions en espagnol, "
+#~ "français, portugais et arabe. La dernière version est disponible à "
+#~ "l'adresse :"
 
 #~ msgid "Constants with the values 0 and 1."
 #~ msgstr "Constantes avec les valeurs 0 et 1."

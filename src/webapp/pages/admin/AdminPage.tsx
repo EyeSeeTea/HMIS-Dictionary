@@ -108,21 +108,6 @@ export const AdminPage: React.FC = React.memo(() => {
             </div>
             <LoadingBanner visible={isSelectionLoading(true, [options, refresh]) || willReload} />
 
-            <div className={`${css.info} alert-info`}>
-                <NoticeBox title={i18n.t("About this version")}>
-                    {i18n.t(
-                        "This version of the app has been tested for dhis v2.42.4 with default locale assumed to be English and accepts translations in Spanish, French, Portuguese and Arabic. The latest version is available at:"
-                    )}{" "}
-                    <a
-                        href="https://github.com/EyeSeeTea/HMIS-Dictionary"
-                        target="_blank"
-                        rel="noreferrer"
-                    >
-                        https://github.com/EyeSeeTea/HMIS-Dictionary
-                    </a>
-                </NoticeBox>
-            </div>
-
             {saveError && (
                 <NoticeBox error title={i18n.t("The setting could not be saved")}>
                     {saveError}
